@@ -12,15 +12,25 @@ public class PlayerMovement : MonoBehaviour
 
     [Header("Move")]
 
-    [SerializeField] private float moveSpeed;
+    private float moveSpeed;
+    [SerializeField] private float walkSpeed;
+    [SerializeField] private float sprintSpeed;
+
+    [Space]
+
     [SerializeField] private float airMultiplier;
-    [SerializeField] private float maxSpeed;
 
     private Vector2 inputVector;
     private Vector3 moveDirection;
 
     [Space]
     [SerializeField] private Transform orientation;
+
+    [Header("Crouching")]
+
+    [SerializeField] private float crouchSpeed;
+    [SerializeField] private float crouchYScale;
+    private float startYScale;
 
     [Header("Jump")]
 
@@ -41,6 +51,14 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float groundDrag;
     [SerializeField] private float airDrag;
 
+    [SerializeField] private MovementState state;
+    public enum MovementState
+    {
+        walking,
+        sprinting,
+        crouching,
+        air
+    }
 
     private void Awake()
     {
@@ -54,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Start()
     {
-        
+        startYScale = transform.localScale.y;
     }
 
     private void Update()
@@ -69,14 +87,53 @@ public class PlayerMovement : MonoBehaviour
         DragControl();
 
         GetInput();
+
+        Crouch();
         Move();
         SpeedControl();
+
+        StateHandler();
 
         //print(rigidBody.velocity);
     }
 
     private void GetInput()
-        => inputVector = controls.Player.Move.ReadValue<Vector2>();
+    {
+        inputVector = controls.Player.Move.ReadValue<Vector2>();
+    }
+
+    private void StateHandler()
+    {
+        if (isGrounded)
+        {
+            state = MovementState.walking;
+            moveSpeed = walkSpeed;
+        }
+
+        else if (isGrounded && controls.Player.Sprint.IsPressed())
+        {
+            state = MovementState.sprinting;
+            moveSpeed = sprintSpeed;
+        }
+
+        else if (controls.Player.Crouch.IsPressed())
+        {
+            state = MovementState.crouching;
+            moveSpeed = crouchSpeed;
+        }
+
+        else if (controls.Player.Crouch.WasReleasedThisFrame())
+        {
+            state = MovementState.walking;
+            moveSpeed = walkSpeed;
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+        }
+
+        else
+        {
+            state = MovementState.air;
+        }
+    }
 
     private void Move()
     {
@@ -88,11 +145,22 @@ public class PlayerMovement : MonoBehaviour
             rigidBody.AddForce(moveDirection.normalized * 10 * moveSpeed * airMultiplier, ForceMode.Force);
     }
 
+    private void Crouch()
+    {
+        if (!controls.Player.Crouch.IsPressed())
+            return;
+
+        transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+        
+        if (isGrounded && controls.Player.Crouch.WasPressedThisFrame())
+            rigidBody.AddForce(Vector3.down * 5f, ForceMode.Impulse);
+    }
+
     private void SpeedControl()
     {
         Vector3 flatVel = new Vector3(rigidBody.velocity.x, 0f, rigidBody.velocity.z);
 
-        if(flatVel.magnitude > maxSpeed)
+        if(flatVel.magnitude > moveSpeed)
         {
             Vector3 limitedVel = flatVel.normalized * moveSpeed;
             rigidBody.velocity = new Vector3(limitedVel.x, rigidBody.velocity.y, limitedVel.z);
@@ -101,8 +169,6 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        print(true);
-
         isGrounded = CheckIfGrouded();
         if (!isGrounded)
             return;
