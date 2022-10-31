@@ -1,23 +1,21 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
-public class PlayerMovement : MonoBehaviour
+[RequireComponent(typeof(Rigidbody))]
+public class PlayerMovementt : MonoBehaviour
 {
     [Header("Required")]
 
-    private CharacterController characterCont;
+    private Rigidbody rigidBody;
     private PlayerControls controls;
 
-    [SerializeField] private float gravity;
-    private Vector3 velocity;
 
     [Header("Move")]
 
     private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float sprintSpeed;
-    [SerializeField] private float maxSpeed; 
+    [SerializeField] private float maxSpeed;
 
     [Space]
 
@@ -55,10 +53,13 @@ public class PlayerMovement : MonoBehaviour
     private bool hasDoubleJump;
 
     [Space]
-    
+
     [SerializeField] private float jumpForce;
 
+    [Header("Drag")]
 
+    [SerializeField] private float groundDrag;
+    [SerializeField] private float airDrag;
 
     [SerializeField] private MovementState state;
     public enum MovementState
@@ -71,7 +72,7 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
-        characterCont = GetComponent<CharacterController>();
+        rigidBody = GetComponent<Rigidbody>();
 
         controls = new PlayerControls();
         controls.Player.Enable();
@@ -82,7 +83,6 @@ public class PlayerMovement : MonoBehaviour
     private void Start()
     {
         startYScale = transform.localScale.y;
-        playerHeight = startYScale;
     }
 
     private void Update()
@@ -92,16 +92,17 @@ public class PlayerMovement : MonoBehaviour
 
         Crouch();
         StateHandler();
+    }
 
+    private void FixedUpdate()
+    {
         DragControl();
 
         GetInput();
 
         Move();
-
-        UpdateVelocity();
+        SpeedControl();
     }
-        
 
 
     private void StateHandler()
@@ -153,9 +154,20 @@ public class PlayerMovement : MonoBehaviour
         moveDirection = orientation.forward * inputVector.y + orientation.right * inputVector.x;
 
         if (onSlope && !exitingSlope)
-            characterCont.Move(GetSlopeMoveDir() * moveSpeed * Time.deltaTime);
-        else 
-            characterCont.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
+        {
+            print(moveSpeed);
+            rigidBody.AddForce(GetSlopeMoveDir() * moveSpeed * 15f, ForceMode.Force);
+
+            if (rigidBody.velocity.y > 0)
+                rigidBody.AddForce(Vector3.down * 80f, ForceMode.Force);
+        }
+
+        else if (isGrounded)
+            rigidBody.AddForce(moveDirection.normalized * 10f * moveSpeed, ForceMode.Force);
+        else
+            rigidBody.AddForce(moveDirection.normalized * 10f * moveSpeed * airMultiplier, ForceMode.Force);
+
+        rigidBody.useGravity = !onSlope;
     }
 
     private void Crouch()
@@ -165,6 +177,11 @@ public class PlayerMovement : MonoBehaviour
 
         transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
         playerHeight = crouchYScale;
+
+        if (isGrounded && controls.Player.Crouch.WasPressedThisFrame())
+        {
+            rigidBody.AddForce(Vector3.down * 10f, ForceMode.Impulse);
+        }
     }
 
     // ~~~~~ Slope
@@ -182,6 +199,30 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector3 GetSlopeMoveDir()
         => Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
+
+    // ~~~~~ Speed
+
+    private void SpeedControl()
+    {
+        if (onSlope && !exitingSlope)
+        {
+            if (rigidBody.velocity.magnitude > moveSpeed)
+                rigidBody.velocity = rigidBody.velocity.normalized * moveSpeed;
+        }
+
+        else
+        {
+            Vector3 flatVel = new Vector3(rigidBody.velocity.x, 0f, rigidBody.velocity.z);
+
+            if (flatVel.magnitude > moveSpeed)
+            {
+                Vector3 limitedVel = flatVel.normalized * moveSpeed;
+                rigidBody.velocity = new Vector3(limitedVel.x, rigidBody.velocity.y, limitedVel.z);
+            }
+        }
+
+    }
+
 
     // -------------- Jumping --------------
 
@@ -202,19 +243,11 @@ public class PlayerMovement : MonoBehaviour
 
         exitingSlope = true;
 
-        velocity.y += jumpForce;
+        rigidBody.velocity = new Vector3(rigidBody.velocity.x, 0f, rigidBody.velocity.z);
+
+        rigidBody.AddForce(transform.up * jumpForce, ForceMode.Impulse);
 
         ResetJump();
-    }
-
-    private void UpdateVelocity()
-    {
-        if (isGrounded && velocity.y < 0)
-            velocity.y = -2f;
-        else
-            velocity.y += gravity * Time.deltaTime;
-
-        characterCont.Move(velocity * Time.deltaTime);
     }
 
     private void ResetJump()
@@ -229,9 +262,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void DragControl()
     {
-        //if (isGrounded)
-            //rigidBody.drag = groundDrag;
-        //else
-            //rigidBody.drag = airDrag;
+        if (isGrounded)
+            rigidBody.drag = groundDrag;
+        else
+            rigidBody.drag = airDrag;
     }
 }
