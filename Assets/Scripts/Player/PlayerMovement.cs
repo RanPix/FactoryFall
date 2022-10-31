@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-[RequireComponent(typeof(CharacterController))]
+[RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 public class PlayerMovement : MonoBehaviour
 {
     [Header("Required")]
@@ -35,7 +35,7 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float crouchYScale;
     private float startYScale;
 
-    [Header("Slope Handling")]
+    [Header("Slope")]
 
     [SerializeField] private float maxSlopeAngle;
     private float playerHeight;
@@ -165,6 +165,10 @@ public class PlayerMovement : MonoBehaviour
 
         transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
         playerHeight = crouchYScale;
+
+        if (isGrounded && controls.Player.Crouch.WasPressedThisFrame())
+            velocity.y -= 10f;
+
     }
 
     // ~~~~~ Slope
