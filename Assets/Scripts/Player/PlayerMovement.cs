@@ -17,7 +17,7 @@ public class PlayerMovement : MonoBehaviour
     private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float sprintSpeed;
-    [SerializeField] private float maxSpeed; 
+    [SerializeField] private float maxSpeed;
 
     [Space]
 
@@ -55,7 +55,7 @@ public class PlayerMovement : MonoBehaviour
     private bool hasDoubleJump;
 
     [Space]
-    
+
     [SerializeField] private float jumpForce;
 
 
@@ -66,6 +66,7 @@ public class PlayerMovement : MonoBehaviour
         walking,
         sprinting,
         crouching,
+        sliding,
         air
     }
 
@@ -87,26 +88,23 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
+        StateHandlerr();
         isGrounded = CheckIfGrouded();
         onSlope = OnSlope();
 
-        Crouch();
-        StateHandler();
-
-        DragControl();
-
         GetInput();
-
-        Move();
-
         UpdateVelocity();
-    }
+
+        Crouch();
         
+        Move();
+    }
 
 
-    private void StateHandler()
+
+    /*private void StateHandler()
     {
-        if (isGrounded && controls.Player.Sprint.IsPressed())
+        if (isGrounded && controls.Player.Walk.IsPressed())
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
@@ -137,10 +135,36 @@ public class PlayerMovement : MonoBehaviour
             state = MovementState.air;
             moveSpeed = walkSpeed;
         }
+    }*/
+
+    private void StateHandlerr()
+    {
+        if (!isGrounded)
+        {
+            state = MovementState.air;
+        }
+        else
+        {
+            if (controls.Player.Crouch.IsPressed())
+            {
+                if (false)
+                    state = MovementState.sliding;
+                else
+                    state = MovementState.crouching;
+            }
+            else if (controls.Player.Walk.IsPressed())
+            {
+                state = MovementState.walking;
+            }
+            else
+            {
+                state = MovementState.sprinting;
+            }
+        }
     }
 
 
-    // -------------- Movement --------------
+    // -------------- Movement -------------- \\
 
 
     private void GetInput()
@@ -154,21 +178,21 @@ public class PlayerMovement : MonoBehaviour
 
         if (onSlope && !exitingSlope)
             characterCont.Move(GetSlopeMoveDir() * moveSpeed * Time.deltaTime);
-        else 
-            characterCont.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
+        else
+            characterCont.Move(
+                moveDirection.normalized * (state == MovementState.walking ? walkSpeed : (state == MovementState.sprinting ? sprintSpeed : crouchSpeed)) * Time.deltaTime); // ohhhhh hell no
     }
 
-    private void Crouch()
+    private void Crouch() 
     {
-        if (!controls.Player.Crouch.IsPressed())
+        if (controls.Player.Crouch.WasReleasedThisFrame() || state == MovementState.air)
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+
+        if (state != MovementState.crouching)
             return;
 
         transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
         playerHeight = crouchYScale;
-
-        if (isGrounded && controls.Player.Crouch.WasPressedThisFrame())
-            velocity.y -= 10f;
-
     }
 
     // ~~~~~ Slope
@@ -187,13 +211,13 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 GetSlopeMoveDir()
         => Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
 
-    // -------------- Jumping --------------
+
+    // -------------- Jumping -------------- \\
 
 
     private void Jump(InputAction.CallbackContext context)
     {
-        isGrounded = CheckIfGrouded();
-        if (!isGrounded)
+        if (state == MovementState.air)
             return;
 
         /*if (canJump)
@@ -230,12 +254,4 @@ public class PlayerMovement : MonoBehaviour
 
     private bool CheckIfGrouded()
         => Physics.CheckSphere(new Vector3(transform.position.x, groundCheck.position.y, transform.position.z), checkRadius, groundLM, QueryTriggerInteraction.Ignore);
-
-    private void DragControl()
-    {
-        //if (isGrounded)
-            //rigidBody.drag = groundDrag;
-        //else
-            //rigidBody.drag = airDrag;
-    }
 }
