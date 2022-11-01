@@ -1,14 +1,17 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEngine.UI;
+using TMPro;
 using Random = UnityEngine.Random;
+[RequireComponent(typeof(AudioSource))]
+[RequireComponent(typeof(Animator))]
 public class Weapon : MonoBehaviour
 {
     public enum states { Active, Destroied }
-
-
     public enum type { Food, Weapon, Instrument };
+
+    private PlayerControls controls;
+
     [SerializeField] private _GunType gunType;
     [SerializeField] private _ShootType shootType;
     [SerializeField] private states _state;
@@ -22,6 +25,8 @@ public class Weapon : MonoBehaviour
 
 
     [Header("Animation")]
+    [SerializeField] private bool useAnimations;
+    [Space(5)]
     [SerializeField] private string shootAnimationName;
     [SerializeField] private string reloadAnimationTriggername;
 
@@ -51,8 +56,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float normalSens;
     [SerializeField] private float scopedSens;
     [SerializeField] private float FOVSmoothing;
-    [Space(10)]
-    //[SerializeField] private Impacts impacts;  WILL BE DONE
 
     [Header("Aiming")]
     [SerializeField] private bool canScope;
@@ -86,11 +89,6 @@ public class Weapon : MonoBehaviour
     [SerializeField] private GameObject weaponHolder;
     [SerializeField] private GameObject weaponItem;
 
-    [Header("KeyBoard")]
-    [SerializeField] public KeyCode fireButton;
-    [SerializeField] private KeyCode ReloadButton;
-    [SerializeField] private KeyCode scopeButton;
-
     [SerializeField] private GameObject M4A1;
 
     private enum _GunType
@@ -110,29 +108,29 @@ public class Weapon : MonoBehaviour
     private AudioSource _audioSource;
     private AudioSource _audioShootSource;
     private Animator _animator;
-    private Text _ammoText;
+    private TMP_Text _ammoText;
     public WeaponAmmo _weaponAmmo;
-    public bool _inScope 
+    public bool inScope 
     { 
         get => _inScope;
-        set 
-        { 
-            _inScope = value; 
-            OnInScopeValuseChange?.Invoke(); 
-        } 
+        private set 
+        {
+            _inScope = value;
+            OnInScopeValuseChange?.Invoke();
+
+        }
     }
+    private bool _inScope;
+    public ConnectorHelper connectorHelper;
     public Action OnInScopeValuseChange;
     private void Awake()
     {
         _state = states.Active;
-        weaponHolder = GameObject.Find("WeaponHolder");
+        controls = new PlayerControls();
+        controls.Enable();
         _cam = Camera.main;
-        _gunCam = GameObject.FindGameObjectWithTag("WeaponCamera").GetComponent<Camera>();
-        _audioSource = GameObject.FindGameObjectWithTag("Player").GetComponent<AudioSource>();
         _audioShootSource = gameObject.GetComponent<AudioSource>();
         _animator = gameObject.GetComponent<Animator>();
-        _ammoText = GameObject.FindGameObjectWithTag("AmmoTextObject").GetComponent<Text>();
-        _weaponAmmo = GameObject.Find(ammoObjectName).GetComponent<WeaponAmmo>();
     }
     private void OnDestroy()
     {
@@ -152,6 +150,13 @@ public class Weapon : MonoBehaviour
 
     private void Start()
     {
+        connectorHelper = ConnectorHelper.Instance;
+        weaponHolder = connectorHelper.weaponHolder;
+        _gunCam = connectorHelper.gunCam;
+        _audioSource = connectorHelper.player.GetComponent<AudioSource>();
+        _ammoText = connectorHelper.ammoText;
+        _weaponAmmo = connectorHelper.weaponAmmo;
+
         canShoot = true;
         weaponAmmoUpdate();
         _weaponAmmo.AmmoText = _ammoText;
@@ -166,18 +171,13 @@ public class Weapon : MonoBehaviour
         switch (_state)
         {
             case states.Active:
-
+                    
                     Aiming();
                     KeyCodes();
                 break;
         }
 
     }
-    /// <summary>
-    /// //////////////////////////////////////////////////////////////////////////////////////////
-    /// </summary>
-
-    //KeyCodes поністю перероблю на нову інпут систему
     private void KeyCodes()
     {
         if (canShoot == true)
@@ -186,35 +186,22 @@ public class Weapon : MonoBehaviour
             {
                 if (Time.time - _nextFire > 1 / fireRate)
                 {
-                    if (gunType == _GunType.Auto)
+                    if (gunType == _GunType.Auto && controls.Player.Fire.IsPressed())
                     {
-                        if (Input.GetKey(fireButton))
-                        {
-                            Shoot();
-                        }
+                        Shoot();
                     }
-                    else if (gunType == _GunType.Semi)
+                    else if (gunType == _GunType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
-                        if (Input.GetKeyDown(fireButton))
-                        {
-                            Shoot();
-                        }
+                        Shoot();
                     }
                 }
             }
-            else
-            {
-
-            }
         }
-        if (Input.GetKeyDown(fireButton))
+        if (controls.Player.Fire.IsPressed() && _weaponAmmo.Ammo <= 0)
         {
-            if (_weaponAmmo.Ammo <= 0)
-            {
-                _audioShootSource.PlayOneShot(empty);
-            }
+            _audioShootSource.PlayOneShot(empty);
         }
-        if (Input.GetKeyDown(ReloadButton))
+        if (controls.Player.Reload.WasPerformedThisFrame())
         {
             if (_weaponAmmo.ReserveAmmo > 0 && _weaponAmmo.Ammo < ammo)
             {
@@ -222,17 +209,6 @@ public class Weapon : MonoBehaviour
             }
         }
     }
-
-    /// <summary>
-    /// /////////////////////////////////////////////////////////////////////////////////////////////////
-    /// </summary>
-
-
-
-
-
-
-
 
 
 
@@ -256,25 +232,17 @@ public class Weapon : MonoBehaviour
 
 
 
-    /// <summary>
-    /// ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// </summary>
-
-
-    //Aiming поністю перероблю на нову інпут систему
-    
-
     private void Aiming()
     {
         Vector3 target = normalLOcalPosition;
 
-        if (Input.GetKey(scopeButton))
+        if (controls.Player.Scope.IsPressed())
         {
             initialSwayPosition = attachment.positionsInScope[attachment.Scopeid];
             target = attachment.positionsInScope[attachment.Scopeid];
             _inScope = true;
         }
-        else if (Input.GetKeyUp(scopeButton))
+        else if (_inScope == true)
         {
             initialSwayPosition = normalLOcalPosition;
             _inScope = false;
@@ -284,20 +252,6 @@ public class Weapon : MonoBehaviour
         Vector3 desiredPosition = Vector3.Lerp(transform.localPosition, target, Time.deltaTime * aimSmoothing);
         transform.localPosition = desiredPosition;
     }
-
-
-    /// <summary>
-    /// //////////////////////////////////////////////////////////////////////////////////////////////////////////////
-    /// </summary>
-
-
-
-
-
-
-
-
-
 
 
 
@@ -318,7 +272,8 @@ public class Weapon : MonoBehaviour
 
         _weaponAmmo.Ammo--;
         _weaponAmmo.ApdataAmmoInScreen();
-        _animator.Play(shootAnimationName);
+        if(useAnimations == true)
+            _animator.Play(shootAnimationName);
     }
 
     private void SpawnBullet()
@@ -392,7 +347,8 @@ public class Weapon : MonoBehaviour
     private IEnumerator ReloadCoroutine()
     {
         canShoot = false;
-        _animator.SetTrigger(reloadAnimationTriggername);
+        if(useAnimations == true)
+            _animator.SetTrigger(reloadAnimationTriggername);
         _audioShootSource.PlayOneShot(reload);
 
         yield return new WaitForSeconds(reloadTime);
@@ -404,18 +360,8 @@ public class Weapon : MonoBehaviour
 
 
 }
-public class Impacts
-{
-    public GameObject brick;
-    public GameObject wood;
-    public GameObject dirt;
-    public GameObject glass;
-    public GameObject metal;
-    public GameObject water;
-    public GameObject rock;
-    public GameObject concrete;
 
-}
+[System.Serializable]
 public class Attachment
 {
     [Header("Silencer")]

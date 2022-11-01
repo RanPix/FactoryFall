@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 2275466185390664511}
   - component: {fileID: 2841052139074584746}
   - component: {fileID: 1076120009624433091}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 7086538532234886701}
   - component: {fileID: 7086538532234886674}
   - component: {fileID: 7086538532234886675}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}

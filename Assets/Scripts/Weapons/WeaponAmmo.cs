@@ -2,10 +2,11 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using TMPro;
 
 public class WeaponAmmo : MonoBehaviour
 {
-    public Text AmmoText;
+    public TMP_Text AmmoText;
     public int ClipSize;
     public int Ammo;
     public int ReserveAmmo;
