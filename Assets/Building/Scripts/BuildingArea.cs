@@ -16,6 +16,7 @@ public class BuildingArea : MonoBehaviour
         thisRenderer = GetComponent<Renderer>();
     }
 
+
     private void Update()
     {
         if (objectsOnArea.Count == 0)
@@ -29,11 +30,14 @@ public class BuildingArea : MonoBehaviour
             thisRenderer.material = falseMat;
         }
     }
-
-    private void OnTriggerEnter(Collider other)
+    
+    private void OnTriggerStay(Collider other)
     {
+        placeIsClear = false;
+
         bool thisObjExists = false;
 
+        
         for (int i = 0; i < objectsOnArea.Count; i++) 
         {
             if (other.gameObject == objectsOnArea[i])
@@ -42,13 +46,13 @@ public class BuildingArea : MonoBehaviour
             }
         }
 
-        if (!thisObjExists) objectsOnArea.Add(other.gameObject); 
-        foreach(GameObject g in objectsOnArea)
-            print(g);
+        if (!thisObjExists) objectsOnArea.Add(other.gameObject);
     }
 
     private void OnTriggerExit(Collider other)
     {
+        placeIsClear = true;
+
         for (int i = 0; i < objectsOnArea.Count; i++)
         {
             if (other.gameObject == objectsOnArea[i])
