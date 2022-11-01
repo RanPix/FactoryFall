@@ -383,8 +383,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb234c1a2fd5cca43afad2c85ed82e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  sensX: 200
-  sensY: 200
+  sensX: 3
+  sensY: 3
   orientation: {fileID: 634615331}
 --- !u!1 &410087039
 GameObject:
@@ -840,7 +840,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   gravity: -9
   walkSpeed: 8
-  sprintSpeed: 12
+  sprintSpeed: 20
   maxSpeed: 0
   airMultiplier: 0.2
   orientation: {fileID: 634615331}

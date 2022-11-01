@@ -40,8 +40,13 @@ public class Look : MonoBehaviour
 
     private void UpdateCamera()
     {
+
+        yRot += inputVector.x * 0.01f * sensX;
+        xRot -= inputVector.y * 0.01f * sensY;
+        /* // Laggy beauty
         yRot = Mathf.LerpAngle(yRot, yRot + inputVector.x, smoothing);
         xRot = Mathf.LerpAngle(xRot, xRot - inputVector.y, smoothing);
+        */
 
         xRot = Mathf.Clamp(xRot, -90f, 90f);
 

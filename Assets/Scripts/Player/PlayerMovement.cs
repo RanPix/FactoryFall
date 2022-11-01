@@ -78,6 +78,7 @@ public class PlayerMovement : MonoBehaviour
         controls.Player.Enable();
 
         controls.Player.Jump.performed += Jump;
+        controls.Player.Redirect.performed += Redirect;
     }
 
     private void Start()
@@ -98,9 +99,13 @@ public class PlayerMovement : MonoBehaviour
         Crouch();
         
         Move();
+        AirMove();
     }
 
-
+    private void LateUpdate()
+    {
+        ResetJump();
+    }
 
     /*private void StateHandler()
     {
@@ -139,27 +144,20 @@ public class PlayerMovement : MonoBehaviour
 
     private void StateHandlerr()
     {
-        if (!isGrounded)
+        if (controls.Player.Crouch.IsPressed())
         {
-            state = MovementState.air;
+            if (false)
+                state = MovementState.sliding;
+            else
+                state = MovementState.crouching;
+        }
+        else if (controls.Player.Sprinting.IsPressed() & ChechIfForward())
+        {
+            state = MovementState.sprinting;
         }
         else
         {
-            if (controls.Player.Crouch.IsPressed())
-            {
-                if (false)
-                    state = MovementState.sliding;
-                else
-                    state = MovementState.crouching;
-            }
-            else if (controls.Player.Walk.IsPressed())
-            {
-                state = MovementState.walking;
-            }
-            else
-            {
-                state = MovementState.sprinting;
-            }
+            state = MovementState.walking;
         }
     }
 
@@ -174,18 +172,29 @@ public class PlayerMovement : MonoBehaviour
 
     private void Move()
     {
-        moveDirection = orientation.forward * inputVector.y + orientation.right * inputVector.x;
+        if (!isGrounded)
+            return;
+
+        moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * (state == MovementState.crouching ? crouchSpeed : (state == MovementState.sprinting ? sprintSpeed : walkSpeed));
 
         if (onSlope && !exitingSlope)
             characterCont.Move(GetSlopeMoveDir() * moveSpeed * Time.deltaTime);
         else
-            characterCont.Move(
-                moveDirection.normalized * (state == MovementState.walking ? walkSpeed : (state == MovementState.sprinting ? sprintSpeed : crouchSpeed)) * Time.deltaTime); // ohhhhh hell no
+            characterCont.Move(moveDirection * Time.deltaTime);
+    }
+
+    private void AirMove()
+    {
+        if(isGrounded)
+            return;
+
+        moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier).normalized * moveDirection.magnitude;
+        characterCont.Move(moveDirection * Time.deltaTime);
     }
 
     private void Crouch() 
     {
-        if (controls.Player.Crouch.WasReleasedThisFrame() || state == MovementState.air)
+        if (controls.Player.Crouch.WasReleasedThisFrame() || !isGrounded)
             transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
 
         if (state != MovementState.crouching)
@@ -217,23 +226,18 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (state == MovementState.air)
+        if (!isGrounded && !hasDoubleJump)
             return;
-
-        /*if (canJump)
-            canJump = false;
-
-        else if (hasDoubleJump)
+        if (hasDoubleJump)
             hasDoubleJump = false;
-
-        else return;*/
 
         exitingSlope = true;
 
         velocity.y += jumpForce;
-
-        ResetJump();
     }
+
+    private void Redirect(InputAction.CallbackContext context)
+        => moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * moveDirection.magnitude;
 
     private void UpdateVelocity()
     {
@@ -247,11 +251,26 @@ public class PlayerMovement : MonoBehaviour
 
     private void ResetJump()
     {
-        canJump = true;
+        if (!isGrounded)
+            return;
+
         hasDoubleJump = true;
         exitingSlope = false;
     }
 
+    // Bool checks
+
     private bool CheckIfGrouded()
         => Physics.CheckSphere(new Vector3(transform.position.x, groundCheck.position.y, transform.position.z), checkRadius, groundLM, QueryTriggerInteraction.Ignore);
+
+    private bool ChechIfForward()
+    {
+        float angle = Quaternion.LookRotation(moveDirection).eulerAngles.y - orientation.eulerAngles.y;
+        angle = angle < 0 ? -angle : angle; // Handmade Abs)
+
+        if (angle < 46 || angle == 315)
+            return true;
+
+        return false;
+    }
 }
