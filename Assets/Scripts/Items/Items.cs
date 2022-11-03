@@ -6,16 +6,16 @@ namespace Items
 {
     public enum ItemTypes
     {
-        Nothing,
-        IronOre,
-        CopperOre
+        Nothing = 0,
+        IronOre = 100,
+        CopperOre = 100
     }
 
     public class Item
     {
         public int count;
-        const int maxStack = 0;
         public ItemTypes itemType = ItemTypes.Nothing;
+        public const int maxStack = (int)itemType;
         public Item()
         {
             count = 0;
@@ -24,19 +24,20 @@ namespace Items
 
     public class ItemIronOre : Item
     {
-        const int maxStack = 100;
+        public const ItemTypes itemType = ItemTypes.IronOre;
+        public const int maxStack = (int)itemType;
         public ItemIronOre(int count)
         {
-            ItemTypes itemType = ItemTypes.IronOre;
             this.count = count;
         }
     }
+
     public class ItemCopperOre : Item
     {
-        const int maxStack = 100;
+        public const ItemTypes itemType = ItemTypes.CopperOre;
+        public const int maxStack = (int)itemType;
         public ItemCopperOre(int count)
         {
-            ItemTypes itemType = ItemTypes.IronOre;
             this.count = count;
         }
     }

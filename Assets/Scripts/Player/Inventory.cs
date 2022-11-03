@@ -10,15 +10,15 @@ public class Inventory : MonoBehaviour
 
     void Awake()
     {
-        slotsCount = 100;//полагодіть get set, я не знаю що тут краще ставити
-        items = new Item[slotsCount];//полагодіть get set, я не знаю що тут краще ставити
+        slotsCount = 100;
+        items = new Item[slotsCount];
         for(int i = 0; i < slotsCount; i++)
         {
             items[i] = new Item();
         }
     }
 
-    public Item PutItem(int slotIndex, Item item)
+    public Item PutItem(int slotIndex, Item item)//пояснення чому не void: я хочу щоб на мишці висів 1 item типу як предмет який тримає мишка, і при визові цієї функції вміст мишки буде замінюватись на Item який повертає ця функція
     {
         if (item.itemType != items[slotIndex].itemType)
         {
@@ -28,7 +28,17 @@ public class Inventory : MonoBehaviour
         }
         else
         {
-            //дороблюй сергійко, дороблюй
+            if (item.count + items[slotIndex].count <= (int)item.itemType)
+            {
+                items[slotIndex].count += item.count;
+                return new Item();
+            }
+            else
+            {
+                item.count -= (int)item.itemType - items[slotIndex].count;
+                items[slotIndex].count = (int)item.itemType;
+                return item;
+            }
         }
         return new Item();
     }
@@ -36,5 +46,10 @@ public class Inventory : MonoBehaviour
     public void Sort()
     {
         //дороблюй сергійко, дороблюй
+    }
+
+    void Update()
+    {
+        Debug.Log(new ItemIronOre(1).GetType());
     }
 }
