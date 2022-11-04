@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
 
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 public class PlayerMovement : MonoBehaviour
@@ -12,28 +13,30 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity;
     private Vector3 velocity;
 
+
     [Header("Move")]
 
     private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float sprintSpeed;
-    [SerializeField] private float maxSpeed;
 
     [Space]
 
-    [SerializeField] private float airMultiplier;
+    [SerializeField, Range(0, 1f)] private float airMultiplier;
 
     private Vector2 inputVector;
     private Vector3 moveDirection;
 
     [Space]
-    [SerializeField] private Transform orientation;
+    
+
 
     [Header("Crouching")]
 
     [SerializeField] private float crouchSpeed;
     [SerializeField] private float crouchYScale;
     private float startYScale;
+
 
     [Header("Slope")]
 
@@ -44,23 +47,41 @@ public class PlayerMovement : MonoBehaviour
     private bool onSlope;
     private bool exitingSlope;
 
+
     [Header("Jump")]
 
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float checkRadius;
-    [SerializeField] private LayerMask groundLM;
 
-    private bool isGrounded;
-    private bool canJump;
-    private bool hasDoubleJump;
 
     [Space]
 
     [SerializeField] private float jumpForce;
 
+    private bool isGrounded;
+
+    [Space]
+
+    [SerializeField] private int maxDoubleJumps = 2;
+    private int hasDoubleJumps;
+
+    [Header("Redirect")]
+
+    [SerializeField] private int maxRedirects = 2;
+    private int hasRedirects;
+
+    [Header("Grapple")]
+
+    [Header("Required")]
+
+    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private LayerMask groundLM;
+    [SerializeField] private float groundCheckRadius;
 
 
-    [SerializeField] private MovementState state;
+
+    private MovementState state;
+
+
     public enum MovementState
     {
         walking,
@@ -89,9 +110,9 @@ public class PlayerMovement : MonoBehaviour
 
     private void Update()
     {
-        StateHandlerr();
+        StateHandler();
         isGrounded = CheckIfGrouded();
-        onSlope = OnSlope();
+        onSlope = IsOnSlope();
 
         GetInput();
         UpdateVelocity();
@@ -104,45 +125,10 @@ public class PlayerMovement : MonoBehaviour
 
     private void LateUpdate()
     {
-        ResetJump();
+        ResetAgilityAbilities();
     }
 
-    /*private void StateHandler()
-    {
-        if (isGrounded && controls.Player.Walk.IsPressed())
-        {
-            state = MovementState.sprinting;
-            moveSpeed = sprintSpeed;
-        }
-
-        else if (isGrounded && controls.Player.Crouch.IsPressed())
-        {
-            state = MovementState.crouching;
-            moveSpeed = crouchSpeed;
-        }
-
-        else if (controls.Player.Crouch.WasReleasedThisFrame())
-        {
-            state = MovementState.walking;
-            moveSpeed = walkSpeed;
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-            playerHeight = startYScale;
-        }
-
-        else if (isGrounded)
-        {
-            state = MovementState.walking;
-            moveSpeed = walkSpeed;
-        }
-
-        else
-        {
-            state = MovementState.air;
-            moveSpeed = walkSpeed;
-        }
-    }*/
-
-    private void StateHandlerr()
+    private void StateHandler()
     {
         if (controls.Player.Crouch.IsPressed())
         {
@@ -166,21 +152,21 @@ public class PlayerMovement : MonoBehaviour
 
 
     private void GetInput()
-    {
-        inputVector = controls.Player.Move.ReadValue<Vector2>();
-    }
+        => inputVector = controls.Player.Move.ReadValue<Vector2>();
 
     private void Move()
     {
         if (!isGrounded)
             return;
 
-        moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * (state == MovementState.crouching ? crouchSpeed : (state == MovementState.sprinting ? sprintSpeed : walkSpeed));
+        moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * 
+            (state == MovementState.crouching ? crouchSpeed : (state == MovementState.sprinting ? sprintSpeed : walkSpeed)); // Speed selection
 
         if (onSlope && !exitingSlope)
             characterCont.Move(GetSlopeMoveDir() * moveSpeed * Time.deltaTime);
         else
-            characterCont.Move(moveDirection * Time.deltaTime);
+            
+        characterCont.Move(moveDirection * Time.deltaTime);
     }
 
     private void AirMove()
@@ -206,17 +192,6 @@ public class PlayerMovement : MonoBehaviour
 
     // ~~~~~ Slope
 
-    private bool OnSlope()
-    {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 1f, groundLM))
-        {
-            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < maxSlopeAngle && angle != 0;
-        }
-
-        return false;
-    }
-
     private Vector3 GetSlopeMoveDir()
         => Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
 
@@ -226,10 +201,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (!isGrounded && !hasDoubleJump)
+        if (!isGrounded && hasDoubleJumps-- < 1)
             return;
-        if (hasDoubleJump)
-            hasDoubleJump = false;
 
         exitingSlope = true;
 
@@ -237,7 +210,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     private void Redirect(InputAction.CallbackContext context)
-        => moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * moveDirection.magnitude;
+    {
+        if (hasRedirects-- > 0)
+            moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * moveDirection.magnitude;
+    }
 
     private void UpdateVelocity()
     {
@@ -249,20 +225,32 @@ public class PlayerMovement : MonoBehaviour
         characterCont.Move(velocity * Time.deltaTime);
     }
 
-    private void ResetJump()
+    private void ResetAgilityAbilities()
     {
         if (!isGrounded)
             return;
 
-        hasDoubleJump = true;
+        hasDoubleJumps = maxDoubleJumps;
+        hasRedirects = maxRedirects;
         exitingSlope = false;
     }
 
     // Bool checks
 
     private bool CheckIfGrouded()
-        => Physics.CheckSphere(new Vector3(transform.position.x, groundCheck.position.y, transform.position.z), checkRadius, groundLM, QueryTriggerInteraction.Ignore);
+        => Physics.CheckSphere(new Vector3(transform.position.x, groundCheck.position.y, transform.position.z), groundCheckRadius, groundLM, QueryTriggerInteraction.Ignore);
 
+    private bool IsOnSlope()
+    {
+        if (Physics.Raycast(groundCheck.position, Vector3.down, out slopeHit, 0.4f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
+        }
+            
+        return false;
+    }
+        
     private bool ChechIfForward()
     {
         float angle = Quaternion.LookRotation(moveDirection).eulerAngles.y - orientation.eulerAngles.y;
