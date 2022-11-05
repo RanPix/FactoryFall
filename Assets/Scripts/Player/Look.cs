@@ -11,7 +11,7 @@ public class Look : MonoBehaviour
 
     [Space]
 
-    [SerializeField] private Transform orientation;
+    [HideInInspector] public Transform orientation;
 
     private Vector2 inputVector;
     private float xRot;

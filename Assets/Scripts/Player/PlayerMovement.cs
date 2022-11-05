@@ -1,9 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
+using Mirror;
 
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [Header("Required")]
 
@@ -13,6 +14,10 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity;
     private Vector3 velocity;
 
+    [Header("Camera")]
+
+    [SerializeField] private GameObject cameraHolder;
+    [SerializeField] private Transform cameraPosition;
 
     [Header("Move")]
 
@@ -91,8 +96,17 @@ public class PlayerMovement : MonoBehaviour
         air
     }
 
-    private void Awake()
+    private void Start()
     {
+        if (!isLocalPlayer)
+            return;
+
+        // Old Awake
+
+        cameraHolder = Instantiate(cameraHolder);
+        cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
+        cameraHolder.GetComponentInChildren<Look>().orientation = orientation;
+
         characterCont = GetComponent<CharacterController>();
 
         controls = new PlayerControls();
@@ -100,16 +114,18 @@ public class PlayerMovement : MonoBehaviour
 
         controls.Player.Jump.performed += Jump;
         controls.Player.Redirect.performed += Redirect;
-    }
 
-    private void Start()
-    {
+        // True Start
+
         startYScale = transform.localScale.y;
         playerHeight = startYScale;
     }
 
     private void Update()
     {
+        if (!isLocalPlayer)
+            return;
+
         StateHandler();
         isGrounded = CheckIfGrouded();
         onSlope = IsOnSlope();
