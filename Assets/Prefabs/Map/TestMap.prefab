@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7129101376168857992}
   - component: {fileID: 7048385813304074727}
   - component: {fileID: 4515829368238564334}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -109,7 +109,7 @@ GameObject:
   - component: {fileID: 652808829712238638}
   - component: {fileID: 5805159105787291037}
   - component: {fileID: 7898687357774548520}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillar (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -206,7 +206,7 @@ GameObject:
   - component: {fileID: 5406426031849888681}
   - component: {fileID: 5489380160614537030}
   - component: {fileID: 9126708032146609142}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slope (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   - component: {fileID: 4962915292066334853}
   - component: {fileID: 7766870468763440862}
   - component: {fileID: 5904522635582463318}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slope (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -400,7 +400,7 @@ GameObject:
   - component: {fileID: 8309196002299599245}
   - component: {fileID: 449343449326959907}
   - component: {fileID: 8459776253643879230}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -497,7 +497,7 @@ GameObject:
   - component: {fileID: 5230207489640720451}
   - component: {fileID: 2470535029723552210}
   - component: {fileID: 4634862379119014911}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Ground
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -595,7 +595,7 @@ GameObject:
   - component: {fileID: 4859299315198900506}
   - component: {fileID: 7617742651235350603}
   - component: {fileID: 1440940211970979441}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillar (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -689,7 +689,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4901701734236546805}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Obstacle (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -726,7 +726,7 @@ GameObject:
   - component: {fileID: 1780468739140910498}
   - component: {fileID: 4764403521078186519}
   - component: {fileID: 4867670554199967274}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillar (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -823,7 +823,7 @@ GameObject:
   - component: {fileID: 2275466185390664511}
   - component: {fileID: 2841052139074584746}
   - component: {fileID: 1076120009624433091}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Pillar
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -917,7 +917,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7086538532234886700}
-  m_Layer: 3
+  m_Layer: 0
   m_Name: TestMap
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -959,7 +959,7 @@ GameObject:
   - component: {fileID: 2214509614704712053}
   - component: {fileID: 5925307946381343762}
   - component: {fileID: 4757196898812882587}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1053,7 +1053,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 5743070583127933961}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Obstacle
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1090,7 +1090,7 @@ GameObject:
   - component: {fileID: 2985494739294365360}
   - component: {fileID: 5950865363638459214}
   - component: {fileID: 3798371097434678243}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1184,7 +1184,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6049168779799402619}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Obstacle (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1221,7 +1221,7 @@ GameObject:
   - component: {fileID: 4324952064263569495}
   - component: {fileID: 344101016014624369}
   - component: {fileID: 2050023424117393872}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slope
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1318,7 +1318,7 @@ GameObject:
   - component: {fileID: 261225039269865895}
   - component: {fileID: 213405845065649442}
   - component: {fileID: 5148965889678153578}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Platform
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1415,7 +1415,7 @@ GameObject:
   - component: {fileID: 3921639216796876506}
   - component: {fileID: 2668934077136613160}
   - component: {fileID: 6422340206428603508}
-  m_Layer: 0
+  m_Layer: 3
   m_Name: Slope (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
