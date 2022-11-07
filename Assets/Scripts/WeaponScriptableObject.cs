@@ -1,9 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+#if UNITY_EDITOR
+using UnityEditor;
+#endif
 [CreateAssetMenu(fileName ="WeaponInfo", menuName = "Weapon/New Weapon")]
 public class WeaponScriptableObject : ScriptableObject
 {
+    public Weapon targetWeapon;
     public Weapon._GunType shootType;
     [Space(10)]
     public float damage;
@@ -44,16 +46,42 @@ public class WeaponScriptableObject : ScriptableObject
 
 
 
-
-    // Start is called before the first frame update
-    void Start()
+/*#if UNITY_EDITOR
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(WeaponScriptableObject))]
+    public class WeaponEditor : Editor
     {
-        
-    }
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
 
-    // Update is called once per frame
-    void Update()
-    {
-        
+            WeaponScriptableObject weaponScriptableObject = (WeaponScriptableObject)target;
+            Weapon weapon = weaponScriptableObject.targetWeapon;
+            if (weapon) 
+            {
+
+                if (weapon.showRayShootVariables)
+                {
+                    weapon.showRayShootVariables = EditorGUILayout.Foldout(weapon.showRayShootVariables, "Ray shoot variables", true);
+
+                }
+                else if (weapon.showPhysicsShootVariables)
+                {
+                    weapon.showPhysicsShootVariables = EditorGUILayout.Foldout(weapon.showPhysicsShootVariables, "Physics shoot variables", true);
+                    GameObject bulletPrefab;
+                    float bulletSpeed;
+                    float bulletTimeToDestroy;
+
+                }
+                else if (weapon.showTriggerShootVariables)
+                {
+                    weapon.showTriggerShootVariables = EditorGUILayout.Foldout(weapon.showTriggerShootVariables, "Trigger shoot variables", true);
+
+                }
+            }
+        }
     }
+#endif*/
+
+
 }

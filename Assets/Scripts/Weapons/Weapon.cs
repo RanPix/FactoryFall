@@ -1,20 +1,18 @@
 using System;
 using System.Collections;
 using UnityEngine;
-using UnityEditor;
 using TMPro;
-using UnityEditor.IMGUI.Controls;
 using Random = UnityEngine.Random;
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Animator))]
 public class Weapon : MonoBehaviour
 {
-    public enum states 
-    { 
+    public enum states
+    {
         Active,
-        Destroied 
+        Destroied
     }
-    public enum ShootType 
+    public enum ShootType
     {
         Ray,
         Physics,
@@ -33,11 +31,16 @@ public class Weapon : MonoBehaviour
     [Space(10)]
 
     [SerializeField] private _GunType gunType;
-    [SerializeField] private ShootType shotType;
+
+    public ShootType shootType;
+
     [SerializeField] private states _state;
     [Space(10)]
     [SerializeField] private LayerMask playerMask;
 
+    public bool showRayShootVariables;
+    public bool showPhysicsShootVariables;
+    public bool showTriggerShootVariables;
 
     [Header("Animation")]
     public bool useAnimations;
@@ -85,12 +88,10 @@ public class Weapon : MonoBehaviour
     [SerializeField] private GameObject bulletSpawner;
     [Space(15)]
 
-
     public bool canShoot;
     public Animator _animator;
     public float _nextFire;
     public WeaponAmmo _weaponAmmo;
-
 
     private PlayerControls controls;
     private Camera _cam;
@@ -98,10 +99,10 @@ public class Weapon : MonoBehaviour
     private AudioSource _audioSource;
     private TMP_Text _ammoText;
 
-    public bool inScope 
-    { 
+    public bool inScope
+    {
         get => _inScope;
-        private set 
+        private set
         {
             _inScope = value;
             OnInScopeValuseChange?.Invoke();
@@ -146,7 +147,6 @@ public class Weapon : MonoBehaviour
         canShoot = true;
         weaponAmmoUpdate();
         _weaponAmmo.AmmoText = _ammoText;
-        _weaponAmmo.ClipSize = maxAmmo;
         OnInScopeValuseChange += Scope;
 
     }
@@ -157,9 +157,9 @@ public class Weapon : MonoBehaviour
         switch (_state)
         {
             case states.Active:
-                    
-                    Aiming();
-                    KeyCodes();
+
+                Aiming();
+                KeyCodes();
                 break;
         }
 
@@ -172,9 +172,10 @@ public class Weapon : MonoBehaviour
             {
                 if (Time.time - _nextFire > 1 / weaponScriptableObject.fireRate)
                 {
-                    if (shotType == ShootType.Trigger && gunType == _GunType.Auto && controls.Player.Fire.IsPressed())
+                        Debug.Log("lopaaaa");
+                    if (shootType != ShootType.Trigger && gunType == _GunType.Auto && controls.Player.Fire.IsPressed())
                     {
-                        switch (shotType)
+                        switch (shootType)
                         {
                             case ShootType.Ray:
                                 rayShootType.Shoot();
@@ -185,9 +186,10 @@ public class Weapon : MonoBehaviour
                                 break;
                         }
                     }
-                    else if (shotType == ShootType.Trigger && gunType == _GunType.Semi && controls.Player.Fire.WasPerformedThisFrame())
+                    else if (shootType != ShootType.Trigger && gunType == _GunType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
-                        switch (shotType)
+                        Debug.Log("lopaaaa");
+                        switch (shootType)
                         {
                             case ShootType.Ray:
                                 rayShootType.Shoot();
@@ -198,11 +200,11 @@ public class Weapon : MonoBehaviour
                                 break;
                         }
                     }
-                    else if(shotType == ShootType.Trigger && controls.Player.Fire.WasPerformedThisFrame())
+                    else if (shootType == ShootType.Trigger && controls.Player.Fire.WasPerformedThisFrame())
                     {
 
                     }
-                    else if(shotType == ShootType.Trigger && controls.Player.Fire.WasReleasedThisFrame())
+                    else if (shootType == ShootType.Trigger && controls.Player.Fire.WasReleasedThisFrame())
                     {
 
                     }
@@ -289,17 +291,6 @@ public class Weapon : MonoBehaviour
                 GameObject particle = Instantiate(particleGO.particle.particleObject, hit.point, Quaternion.LookRotation(hit.normal));
                 Destroy(particle, weaponScriptableObject.TimeTodestroy);
             }
-            
-
-
-
-
-            // так будемо додавати ворогів по яким буде проходити урон  
-            /*GroundEnemy ork = hit.transform.GetComponent<GroundEnemy>();
-            if (ork)
-            {
-                ork.HP -= damage;
-            }*/
         }
     }
 
@@ -339,7 +330,7 @@ public class Weapon : MonoBehaviour
     private IEnumerator ReloadCoroutine()
     {
         canShoot = false;
-        if(useAnimations == true)
+        if (useAnimations == true)
             _animator.SetTrigger(reloadAnimationTriggername);
         _audioSource.PlayOneShot(weaponScriptableObject.reload);
 
@@ -349,6 +340,43 @@ public class Weapon : MonoBehaviour
         _weaponAmmo.ApdataAmmoInScreen();
         canShoot = true;
     }
+
+
+
+    /*
+#if UNITY_EDITOR
+    [CustomEditor(typeof(Weapon))]
+    public class WeaponEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            //            WeaponScriptableObject weaponScriptableObject = (WeaponScriptableObject)target;
+            Weapon weapon = (Weapon)target;
+
+            weapon.showPhysicsShootVariables = EditorGUILayout.Foldout(weapon.showPhysicsShootVariables, "Physics shoot variables", true);
+            weapon.showRayShootVariables = EditorGUILayout.Foldout(weapon.showRayShootVariables, "Ray shoot variables", true);
+            weapon.showTriggerShootVariables = EditorGUILayout.Foldout(weapon.showTriggerShootVariables, "Trigger shoot variables", true);
+
+            if (weapon.showRayShootVariables)
+            {
+
+            }
+            else if (weapon.showPhysicsShootVariables)
+            {
+                GameObject bulletPrefab;
+                float bulletSpeed;
+                float bulletTimeToDestroy;
+
+            }
+            else if (weapon.showTriggerShootVariables)
+            {
+
+            }
+        }
+    }
+#endif*/
 
 
 }
@@ -367,6 +395,11 @@ public class Attachment
     public AttachmentInfo[] scopes;
     public Vector3[] positionsInScope;
 
+
+
 }
+
+
+
 
 

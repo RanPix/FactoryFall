@@ -14,6 +14,8 @@ GameObject:
   - component: {fileID: 9195615305045848528}
   - component: {fileID: 5895251653882600390}
   - component: {fileID: 7827298608436691104}
+  - component: {fileID: 3011430166022200829}
+  - component: {fileID: 8437944730031076779}
   - component: {fileID: 99056375709425474}
   m_Layer: 6
   m_Name: Pistol 1
@@ -217,7 +219,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!114 &99056375709425474
+--- !u!114 &3011430166022200829
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -226,34 +228,38 @@ MonoBehaviour:
   m_GameObject: {fileID: 2738520558268228719}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 950e656aae5d55243baeec94e11e237c, type: 3}
+  m_Script: {fileID: 11500000, guid: d5938bd3de5761d49a7ffda272806c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &8437944730031076779
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2738520558268228719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e8d074af6adf66a45a3a54ea9571e48d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponScriptableObject: {fileID: 11400000, guid: 4e754d2369c961644ad470e5a712dd9a,
+    type: 2}
+  rayShootType: {fileID: 8437944730031076779}
+  physicsShootType: {fileID: 0}
+  triggerShootType: {fileID: 0}
   gunType: 1
   shootType: 0
   _state: 0
-  damage: 0
-  headDamage: 0
-  fireRate: 10
-  weaponRange: 100
-  reloadTime: 2
   playerMask:
     serializedVersion: 2
     m_Bits: 63
+  showRayShootVariables: 1
+  showPhysicsShootVariables: 0
+  showTriggerShootVariables: 0
   useAnimations: 0
   shootAnimationName: 
   reloadAnimationTriggername: 
-  empty: {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
-  reload: {fileID: 8300000, guid: b0b5795352b75b44587bbc12a2d35c08, type: 3}
-  shoots:
-  - {fileID: 8300000, guid: bfac4be1cf2fb1540adf32549e0bf797, type: 3}
-  - {fileID: 8300000, guid: e85a8f797c3cd8a47a4acf2268fb0907, type: 3}
-  - {fileID: 8300000, guid: b88c844966e6c264f8d1ec33b9dad237, type: 3}
-  - {fileID: 8300000, guid: 5418ec9ff0cb522408ed44668076c23f, type: 3}
-  - {fileID: 8300000, guid: f615107e19b548b4f9624caa8d566388, type: 3}
-  - {fileID: 8300000, guid: aced434d003576143830680681f9ec82, type: 3}
-  shootsSilencer:
-  - {fileID: 8300000, guid: 41dc5a6b9884de74ca64a61eea39876c, type: 3}
   canSway: 0
   initialSwayPosition: {x: 0, y: 0, z: 0}
   SwayAmount: 0
@@ -279,18 +285,72 @@ MonoBehaviour:
   ammo: 1000
   maxAmmo: 1000
   reserveAmmo: 1000
-  haveMuzzle: 0
   MuzzlePosition: {fileID: 0}
-  sczaleFactor: 0
-  TimeTodestroy: 10
   muzzle: []
-  bulletPrefab: {fileID: 0}
   bulletSpawner: {fileID: 0}
-  bulletSpeed: 0
-  bulletTimeToDestroy: 0
-  weaponHolder: {fileID: 0}
-  weaponItem: {fileID: 0}
-  M4A1: {fileID: 0}
+  canShoot: 0
+  _animator: {fileID: 0}
+  _nextFire: 0
+  _weaponAmmo: {fileID: 0}
+  connectorHelper: {fileID: 0}
+--- !u!114 &99056375709425474
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2738520558268228719}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 950e656aae5d55243baeec94e11e237c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponScriptableObject: {fileID: 0}
+  rayShootType: {fileID: 0}
+  physicsShootType: {fileID: 0}
+  triggerShootType: {fileID: 0}
+  gunType: 1
+  shootType: 0
+  _state: 0
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 63
+  showRayShootVariables: 0
+  showPhysicsShootVariables: 1
+  showTriggerShootVariables: 0
+  useAnimations: 0
+  shootAnimationName: 
+  reloadAnimationTriggername: 
+  canSway: 0
+  initialSwayPosition: {x: 0, y: 0, z: 0}
+  SwayAmount: 0
+  MaxSwayAmount: 0
+  swaySmoothing: 0
+  attachment:
+    haveSilencer: 0
+    silencerObject: {fileID: 0}
+    Scopeid: 0
+    ironSight: {fileID: 0}
+    scopes: []
+    positionsInScope: []
+  normalFOV: 0
+  scopedFOV: 0
+  normalSens: 0
+  scopedSens: 0
+  FOVSmoothing: 0
+  canScope: 0
+  normalLOcalPosition: {x: 0, y: 0, z: 0}
+  aimingLOcalPosition: {x: 0, y: 0, z: 0}
+  aimSmoothing: 0
+  ammoObjectName: 
+  ammo: 1000
+  maxAmmo: 1000
+  reserveAmmo: 1000
+  MuzzlePosition: {fileID: 0}
+  muzzle: []
+  bulletSpawner: {fileID: 0}
   canShoot: 1
+  _animator: {fileID: 0}
+  _nextFire: 0
   _weaponAmmo: {fileID: 0}
   connectorHelper: {fileID: 0}

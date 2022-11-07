@@ -1,0 +1,14 @@
+{
+    "name": "com.WebRunners.FactoryFall.RunTime",
+    "rootNamespace": "FactoryFall.RunTime",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

@@ -15,9 +15,4 @@ public class RayShootType : Weapon
         if (useAnimations == true)
             _animator.Play(shootAnimationName);
     }
-
-
-
-
-
 }

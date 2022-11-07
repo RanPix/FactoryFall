@@ -1837,6 +1837,27 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1512222141}
     m_Modifications:
+    - target: {fileID: 99056375709425474, guid: 748d19574625db444877ca05561b6aea,
+        type: 3}
+      propertyPath: shootType
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 99056375709425474, guid: 748d19574625db444877ca05561b6aea,
+        type: 3}
+      propertyPath: _weaponAmmo
+      value: 
+      objectReference: {fileID: 57461283}
+    - target: {fileID: 99056375709425474, guid: 748d19574625db444877ca05561b6aea,
+        type: 3}
+      propertyPath: weaponScriptableObject
+      value: 
+      objectReference: {fileID: 11400000, guid: 4e754d2369c961644ad470e5a712dd9a,
+        type: 2}
+    - target: {fileID: 99056375709425474, guid: 748d19574625db444877ca05561b6aea,
+        type: 3}
+      propertyPath: showPhysicsShootVariables
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2738520558268228719, guid: 748d19574625db444877ca05561b6aea,
         type: 3}
       propertyPath: m_Name
@@ -1902,6 +1923,11 @@ PrefabInstance:
       propertyPath: m_ConstrainProportionsScale
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 8437944730031076779, guid: 748d19574625db444877ca05561b6aea,
+        type: 3}
+      propertyPath: _weaponAmmo
+      value: 
+      objectReference: {fileID: 57461283}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 748d19574625db444877ca05561b6aea, type: 3}
 --- !u!4 &2110944448 stripped
