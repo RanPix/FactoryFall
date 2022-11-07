@@ -10,7 +10,6 @@ public enum ItemsTypes
     Coal,
 }
 
-
 public class Item
 {
     static Dictionary<ItemsTypes, int> itemTypesMaxStacks = new Dictionary<ItemsTypes, int>()
@@ -18,6 +17,7 @@ public class Item
         { ItemsTypes.Nothing, 0 },
         { ItemsTypes.IronOre, 100 },
         { ItemsTypes.CopperOre, 100 },
+        { ItemsTypes.Coal, 50 },
     };
 
     public int count = 0;

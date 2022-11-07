@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    private int slotsCount = 36;//зробіть тут get set, я не знаю що тут краще ставити
+    public int slotsCount = 36;//зробіть тут get set, я не знаю що тут краще ставити
     private Item[] items;//зробіть тут get set, я не знаю що тут краще ставити
+    public Item cursorSlot = new Item();
 
     void Awake()
     {
@@ -18,5 +19,7 @@ public class Inventory : MonoBehaviour
     public void Sort()
     {
         //дороблюй сергійко, дороблюй
+        //колись зроблю, Бодя казав можна потім
+        //чи буду я це взагалі робити ближчим часом?
     }
 }
