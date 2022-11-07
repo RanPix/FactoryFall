@@ -42,6 +42,10 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float crouchYScale;
     private float startYScale;
 
+    [Space]
+
+    [SerializeField] private float speedSlideIncrease;
+    private bool gotSlideSpeedIncrease;
 
     [Header("Slope")]
 
@@ -144,13 +148,14 @@ public class PlayerMovement : NetworkBehaviour
         print($"{moveDirection.magnitude}, {velocity.magnitude}, {inputVector}, {isGrounded}");
         print(HasCeiling());
 
-        if (state == MovementState.crouching)
+        if (state == MovementState.crouching | state == MovementState.sliding)
             Crouch();
         else
             Uncrouch();
 
-
-        if (isGrounded)
+        if(state == MovementState.sliding)
+            Slide();
+        else if (isGrounded)
             Move();
         else
             AirMove();
@@ -166,7 +171,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         if (controls.Player.Crouch.IsPressed())
         {
-            if (false)
+            if (moveDirection.magnitude >= sprintSpeed)
                 state = MovementState.sliding;
             else
                 state = MovementState.crouching;
@@ -206,6 +211,19 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Crouch() 
         => transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+
+    private void Slide()
+    {
+        if (!gotSlideSpeedIncrease)
+        {
+            moveDirection *= speedSlideIncrease;
+            gotSlideSpeedIncrease = true;
+        }
+
+        moveDirection = Vector3.Lerp()
+
+        characterCont.Move(moveDirection * Time.deltaTime)
+    }
 
     private void Uncrouch()
         => transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
@@ -247,6 +265,7 @@ public class PlayerMovement : NetworkBehaviour
     {
         hasDoubleJumps = maxDoubleJumps;
         hasRedirects = maxRedirects;
+        gotSlideSpeedIncrease = false;
     }
 
     // Bool checks
