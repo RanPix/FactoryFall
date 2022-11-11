@@ -1,22 +1,27 @@
 using System.Collections.Generic;
 using UnityEngine;
+using Mirror;
 
 public class Furnace : Block, IInteractable
 {
     [Header("Furnace")]
 
-    [SerializeField] private int toSmelt;
-    [SerializeField] private int smelted;
+    [SyncVar][SerializeField] private int toSmelt;
+    [SyncVar][SerializeField] private int smelted;
 
-    [SerializeField] private int fuel;
+    [SyncVar][SerializeField] private int fuel;
     [SerializeField] private float smeltTime;
     private float smeltTimer;
-     
+
     void Update()
     {
+        if (!isServer)
+            return;
+
         Smelt();
     }
 
+    [Server]
     private void Smelt()
     {
         if (fuel < 1 || toSmelt < 1)
@@ -33,14 +38,20 @@ public class Furnace : Block, IInteractable
 
         fuel--;
     }
-    
+
     public void Interact()
     {
-        print("smelt some cock");
+        if (!isServer)
+            return;
+
+        fuel++;
+        toSmelt++;
+        print("smelt some integers");
     }
 
     private void OnDestroy()
     {
+        print($"dropped {toSmelt} queue items and {smelted} smelted items");
         //drop self inventory
     }
 }

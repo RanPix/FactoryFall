@@ -1,8 +1,9 @@
+using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]
-public class PlayerMovement : MonoBehaviour
+public class PlayerMovement : NetworkBehaviour
 {
     [Header("Required")]
 
@@ -12,12 +13,19 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] private float gravity;
     private Vector3 velocity;
 
+    [Header("Camera")]
+
+    [SerializeField] private Transform cameraPos;
+
+    [Space]
+    [SerializeField] private GameObject cameraPrefab;
+
     [Header("Move")]
 
-    private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float sprintSpeed;
     [SerializeField] private float maxSpeed; 
+    private float moveSpeed;
 
     [Space]
 
@@ -58,8 +66,6 @@ public class PlayerMovement : MonoBehaviour
     
     [SerializeField] private float jumpForce;
 
-
-
     [SerializeField] private MovementState state;
     public enum MovementState
     {
@@ -69,24 +75,33 @@ public class PlayerMovement : MonoBehaviour
         air
     }
 
-    private void Awake()
+    private void Start()
     {
+        if (!isLocalPlayer)
+            return;
+
+        cameraPrefab = Instantiate(cameraPrefab);
+        cameraPrefab.GetComponent<MoveCamera>().cameraPosition = cameraPos;
+        cameraPrefab.GetComponentInChildren<Look>().orientation = orientation;
+
         characterCont = GetComponent<CharacterController>();
 
         controls = new PlayerControls();
         controls.Player.Enable();
 
         controls.Player.Jump.performed += Jump;
-    }
 
-    private void Start()
-    {
         startYScale = transform.localScale.y;
         playerHeight = startYScale;
     }
 
+    [Client]
     private void Update()
     {
+        
+        if (!isLocalPlayer)
+            return;
+
         isGrounded = CheckIfGrouded();
         onSlope = OnSlope();
 
@@ -237,5 +252,10 @@ public class PlayerMovement : MonoBehaviour
             //rigidBody.drag = groundDrag;
         //else
             //rigidBody.drag = airDrag;
+    }
+
+    private void OnDestroy()
+    {
+        Destroy(cameraPrefab);
     }
 }

@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Look : MonoBehaviour
 {
@@ -9,9 +10,9 @@ public class Look : MonoBehaviour
 
     private const float smoothing = 0.1f;
 
-    [Space]
+    [HideInInspector] public Transform orientation;
 
-    [SerializeField] private Transform orientation;
+
 
     private Vector2 inputVector;
     private float xRot;
@@ -25,6 +26,8 @@ public class Look : MonoBehaviour
 
     private void Start()
     {
+        controls.Player.FreeCursor.performed += ControlCursor;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
     }
@@ -38,6 +41,7 @@ public class Look : MonoBehaviour
     private void GetInput()
         => inputVector = controls.Player.Look.ReadValue<Vector2>();
 
+   
     private void UpdateCamera()
     {
         yRot = Mathf.LerpAngle(yRot, yRot + inputVector.x, smoothing);
@@ -47,5 +51,13 @@ public class Look : MonoBehaviour
 
         transform.rotation = Quaternion.Euler(xRot, yRot, 0);
         orientation.rotation = Quaternion.Euler(0, yRot, 0);
+    }
+
+    private void ControlCursor(InputAction.CallbackContext context)
+    {
+        if (Cursor.lockState == CursorLockMode.Locked)
+            Cursor.lockState = CursorLockMode.None;
+        else if (Cursor.lockState == CursorLockMode.None)
+            Cursor.lockState = CursorLockMode.Locked;
     }
 }

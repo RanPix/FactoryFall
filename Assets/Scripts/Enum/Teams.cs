@@ -1,6 +1,7 @@
-public enum Teams
+public enum Team
 {
     None,
     Blue,
-    Red
+    Red,
+    Mob
 }
