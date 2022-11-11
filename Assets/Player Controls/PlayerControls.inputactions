@@ -443,11 +443,20 @@
                 },
                 {
                     "name": "TrackedDeviceOrientation",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "a1fd67cb-bbe7-41d9-8906-3d8a8ba9bbba",
-                    "expectedControlType": "Quaternion",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OpenOrCloseInventory",
+                    "type": "Button",
+                    "id": "32e70071-5923-449a-89c8-e69f5b7d2283",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
@@ -867,6 +876,17 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8cdc706b-e1fd-47f1-b588-0a72da3da6de",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenOrCloseInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

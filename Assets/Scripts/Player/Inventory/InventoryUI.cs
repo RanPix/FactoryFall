@@ -1,9 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.InputSystem;
 using UnityEngine;
 
 public class InventoryUI : MonoBehaviour
 {
+    private PlayerControls controls;
+
     [SerializeField] private GameObject inventoryPanel;
 
     [SerializeField] private GameObject inventoryPanelPrefab;
@@ -39,21 +42,18 @@ public class InventoryUI : MonoBehaviour
         inventoryPanel.SetActive(isPanelOpened);
     }
 
-    public void OpenPanel()
+    public void OpenOrClosePanel(InputAction.CallbackContext context)
     {
+        Debug.Log("aboba");//це для тесту че запускається взагалі метод
+        isPanelOpened = !isPanelOpened;
         ReloadInventoryPanel();
-        inventoryPanel.SetActive(true);
-        isPanelOpened = true;
-    }
-
-    public void ClosePanel()
-    {
-        inventoryPanel.SetActive(false);
-        isPanelOpened = false;
     }
 
     void Start()
     {
+        controls = new PlayerControls();
+        controls.UI.Enable();
+        controls.UI.OpenOrCloseInventory.performed += OpenOrClosePanel;
         ReloadInventoryPanel();
     }
 }
