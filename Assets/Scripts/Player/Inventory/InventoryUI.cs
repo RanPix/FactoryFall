@@ -19,16 +19,22 @@ public class InventoryUI : MonoBehaviour
 
     public void ReloadInventoryPanel()//не чіпайте, будь ласка
     {
-        while (inventoryPanel.transform.childCount > 0)
-            Destroy(inventoryPanel.transform.GetChild(0).gameObject);
-        Debug.Log(inventoryPanel);
-        int slotsCounts = gameObject.GetComponent<Inventory>().slotsCount;
-        for (int i = 0; i < slotsCounts; i++)
+        if (isPanelOpened)
         {
-            int x = slotsXOffset + (i % slotsInRow * (distanceBetweenSlots + slotSize));
-            int y = slotsYOffset - (i / slotsInRow * (distanceBetweenSlots + slotSize));
+            while (inventoryPanel.transform.childCount > 0)
+                Destroy(inventoryPanel.transform.GetChild(0).gameObject);
+            Debug.Log(inventoryPanel);
+            int slotsCounts = gameObject.GetComponent<Inventory>().slotsCount;
+            for (int i = 0; i < slotsCounts; i++)
+            {
+                int x = slotsXOffset + (i % slotsInRow * (distanceBetweenSlots + slotSize));
+                int y = slotsYOffset - (i / slotsInRow * (distanceBetweenSlots + slotSize));
 
-            GameObject instantiatedSlot = Instantiate(inventoryPanelSlotPrefab, new Vector3(x, y, 0), new Quaternion(), inventoryPanel.transform);
+                GameObject instantiatedSlot = Instantiate(inventoryPanelSlotPrefab, new Vector3(x, y, 0), new Quaternion(), inventoryPanel.transform);
+                instantiatedSlot.GetComponent<InventorySlotButton>().inventoryObject = gameObject;
+                instantiatedSlot.GetComponent<InventorySlotButton>().slotIndex = i;
+                instantiatedSlot.GetComponent<InventorySlotButton>().ReloadButton();
+            }
         }
         inventoryPanel.SetActive(isPanelOpened);
     }

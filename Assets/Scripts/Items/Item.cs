@@ -2,28 +2,26 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public enum ItemsTypes
+public enum ItemType
 {
     Nothing,
     IronOre,
     CopperOre,
-    Coal,
 }
 
 public class Item
 {
-    static Dictionary<ItemsTypes, int> itemTypesMaxStacks = new Dictionary<ItemsTypes, int>()
+    public static Dictionary<ItemType, int> itemTypesMaxStacks = new Dictionary<ItemType, int>()
     {
-        { ItemsTypes.Nothing, 0 },
-        { ItemsTypes.IronOre, 100 },
-        { ItemsTypes.CopperOre, 100 },
-        { ItemsTypes.Coal, 50 },
+        { ItemType.Nothing, 0 },
+        { ItemType.IronOre, 100 },
+        { ItemType.CopperOre, 100 },
     };
 
     public int count = 0;
-    public new ItemsTypes itemType = ItemsTypes.Nothing;
+    public new ItemType itemType = ItemType.Nothing;
 
-    public Item(int count = 0, ItemsTypes itemType = ItemsTypes.Nothing)
+    public Item(int count = 0, ItemType itemType = ItemType.Nothing)
     {
         this.count = count;
         this.itemType = itemType;

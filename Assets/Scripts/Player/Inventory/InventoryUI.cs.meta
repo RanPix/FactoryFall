@@ -3,7 +3,12 @@ guid: a549d12333deccc44912331ab965eb93
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - inventoryPanel: {instanceID: 0}
+  - inventoryPanelPrefab: {fileID: 4667669481217545893, guid: 449de9cdb3cbbd94badf5350ffa849d3,
+      type: 3}
+  - inventoryPanelSlotPrefab: {fileID: 6847489205253278177, guid: 6d483d3932b9b484ab446bc5a02cd4c1,
+      type: 3}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
