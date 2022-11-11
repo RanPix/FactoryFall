@@ -22,31 +22,33 @@ public class InventoryUI : MonoBehaviour
 
     public void ReloadInventoryPanel()//не чіпайте, будь ласка
     {
-        if (isPanelOpened)
+        foreach (Transform child in inventoryPanel.transform)
         {
-            while (inventoryPanel.transform.childCount > 0)
-                Destroy(inventoryPanel.transform.GetChild(0).gameObject);
-            Debug.Log(inventoryPanel);
-            int slotsCounts = gameObject.GetComponent<Inventory>().slotsCount;
-            for (int i = 0; i < slotsCounts; i++)
-            {
-                int x = slotsXOffset + (i % slotsInRow * (distanceBetweenSlots + slotSize));
-                int y = slotsYOffset - (i / slotsInRow * (distanceBetweenSlots + slotSize));
+            GameObject.Destroy(child.gameObject);
+        }
 
-                GameObject instantiatedSlot = Instantiate(inventoryPanelSlotPrefab, new Vector3(x, y, 0), new Quaternion(), inventoryPanel.transform);
-                instantiatedSlot.GetComponent<InventorySlotButton>().inventoryObject = gameObject;
-                instantiatedSlot.GetComponent<InventorySlotButton>().slotIndex = i;
-                instantiatedSlot.GetComponent<InventorySlotButton>().ReloadButton();
-            }
+        int slotsCounts = gameObject.GetComponent<Inventory>().slotsCount;
+        for (int i = 0; i < slotsCounts; i++)
+        {
+            int x = slotsXOffset + (i % slotsInRow * (distanceBetweenSlots + slotSize));
+            int y = slotsYOffset - (i / slotsInRow * (distanceBetweenSlots + slotSize));
+
+            GameObject instantiatedSlot = Instantiate(inventoryPanelSlotPrefab, new Vector3(x, y, 0), new Quaternion(), inventoryPanel.transform);
+            instantiatedSlot.GetComponent<InventorySlotButton>().inventoryObject = gameObject;
+            instantiatedSlot.GetComponent<InventorySlotButton>().slotIndex = i;
+            instantiatedSlot.GetComponent<InventorySlotButton>().ReloadButton();
         }
         inventoryPanel.SetActive(isPanelOpened);
     }
 
     public void OpenOrClosePanel(InputAction.CallbackContext context)
     {
-        Debug.Log("aboba");//це для тесту че запускається взагалі метод
-        isPanelOpened = !isPanelOpened;
-        ReloadInventoryPanel();
+        if (context.phase == InputActionPhase.Started)
+        {
+
+            isPanelOpened = !isPanelOpened;
+            ReloadInventoryPanel();
+        }
     }
 
     void Start()

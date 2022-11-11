@@ -13,7 +13,7 @@ public class Item
 {
     public static Dictionary<ItemType, int> itemTypesMaxStacks = new Dictionary<ItemType, int>()
     {
-        { ItemType.Nothing, 0 },
+        { ItemType.Nothing, 99999 },
         { ItemType.IronOre, 100 },
         { ItemType.CopperOre, 100 },
     };
@@ -31,8 +31,7 @@ public class Item
     {
         if (itemType != item.itemType)
         {
-            Item TakenItem = this;
-
+            Item TakenItem = new Item(count, itemType);
             count = item.count;
             itemType = item.itemType;
 
@@ -52,8 +51,22 @@ public class Item
                 return item;
             }
         }
-        return new Item();
+        return item;
     }
+
+    public Item SecondaryPutItem(Item item)//пояснення чому не void: я хочу щоб на мишці висів 1 item типу як предмет який тримає мишка, і при визові цієї функції вміст мишки буде замінюватись на Item який повертає ця функція
+    {
+        if ((item.itemType == itemType && count < itemTypesMaxStacks[itemType]) || item.itemType == ItemType.Nothing)
+        {
+            itemType = item.itemType;
+            item.count--;
+            count++;
+        }
+
+        return item;
+    }
+    
+    public override string ToString() => $"{count} {itemType}";
 
     public static Item operator +(Item firstItem, Item secondItem) => new Item(firstItem.count + secondItem.count, firstItem.itemType);
 
@@ -61,13 +74,23 @@ public class Item
 
     public static bool operator <(Item firstItem, Item secondItem) => firstItem.count < secondItem.count;
 
+    public static bool operator >(int count, Item item) => count > item.count;
+
+    public static bool operator <(int count, Item item) => count < item.count;
+
+    public static bool operator >(Item item, int count) => count > item.count;
+
+    public static bool operator <(Item item, int count) => item.count < count;
+
     public static bool operator >(Item[] itemArray, Item item)
     {
+        int a = 0;
         foreach (Item _item in itemArray)
         {
             if (_item.itemType == item.itemType)
             {
-                return item.count > _item.count;
+                a += _item.count;
+                if (a > _item.count) return true;
             }
         }
         return false;
@@ -75,23 +98,27 @@ public class Item
 
     public static bool operator <(Item[] itemArray, Item item)
     {
+        int a = 0;
         foreach (Item _item in itemArray)
         {
             if (_item.itemType == item.itemType)
             {
-                return item.count < _item.count;
+                a += _item.count;
+                if (!(a < item.count)) return false;
             }
         }
-        return false;
+        return true;
     }
 
     public static bool operator >(List<Item> itemArray, Item item)
     {
+        int a = 0;
         foreach (Item _item in itemArray)
         {
             if (_item.itemType == item.itemType)
             {
-                return item.count > _item.count;
+                a += _item.count;
+                if (a > _item.count) return true;
             }
         }
         return false;
@@ -99,13 +126,15 @@ public class Item
 
     public static bool operator <(List<Item> itemArray, Item item)
     {
+        int a = 0;
         foreach (Item _item in itemArray)
         {
             if (_item.itemType == item.itemType)
             {
-                return item.count < _item.count;
+                a += _item.count;
+                if (!(a < item.count)) return false;
             }
         }
-        return false;
+        return true;
     }
 }

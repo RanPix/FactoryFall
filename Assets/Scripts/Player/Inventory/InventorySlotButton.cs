@@ -7,12 +7,14 @@ public class InventorySlotButton : MonoBehaviour
 {
     public int slotIndex;
     public GameObject inventoryObject;
-    private Sprite sprite;
+    [SerializeField] private GameObject ItemCountTextGameObject;
+    [SerializeField] private GameObject ItemImageGameObject;
 
     public void OnClick()
     {
-        Item iteToPut = inventoryObject.GetComponent<CursorInventory>().item;
-        inventoryObject.GetComponent<CursorInventory>().item = inventoryObject.GetComponent<Inventory>().items[slotIndex].PutItem(iteToPut);
+        Item itemToPut = inventoryObject.GetComponent<CursorInventory>().item;
+        inventoryObject.GetComponent<CursorInventory>().item = inventoryObject.GetComponent<Inventory>().items[slotIndex].PutItem(itemToPut);
+        Debug.Log(inventoryObject.GetComponent<CursorInventory>().item);
         ReloadButton();
     }
 
@@ -21,8 +23,9 @@ public class InventorySlotButton : MonoBehaviour
         Inventory inventory = inventoryObject.GetComponent<Inventory>();
         ItemTypeInfo itemTypeInfo = FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(inventory.items[slotIndex].itemType);
 
-        gameObject.GetComponent<Image>().sprite = itemTypeInfo.icon;
+        ItemImageGameObject.GetComponent<Image>().sprite = itemTypeInfo.icon;
         int itemCount = inventory.items[slotIndex].count;
-        transform.GetChild(0).GetComponent<TMPro.TextMeshProUGUI>().text = itemCount > 1 ? itemCount.ToString() : "";
+        ItemCountTextGameObject.GetComponent<TMPro.TextMeshProUGUI>().text = itemCount > 1 ? itemCount.ToString() : "";
+        
     }
 }

@@ -5,6 +5,7 @@ using UnityEngine;
 public class ItemTypeToScriptableObject : MonoBehaviour
 {
     [SerializeField] private List<ItemTypeInfo> itemTypeInfos;
+
     public ItemTypeInfo GetItemTypeInfo(ItemType itemType)
     {
         foreach (ItemTypeInfo itemTypeInfo in itemTypeInfos)
