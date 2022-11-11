@@ -56,7 +56,19 @@ public class Item
 
     public Item SecondaryPutItem(Item item)//пояснення чому не void: я хочу щоб на мишці висів 1 item типу як предмет який тримає мишка, і при визові цієї функції вміст мишки буде замінюватись на Item який повертає ця функція
     {
-        if ((item.itemType == itemType && count < itemTypesMaxStacks[itemType]) || item.itemType == ItemType.Nothing)
+        if (item.itemType == ItemType.Nothing && itemType != ItemType.Nothing)
+        {
+            int itemsLeft = count / 2;
+            int itemsTake = itemsLeft;
+            if (count % 2 != 0)
+            {
+                itemsTake++;
+            }
+            count = itemsLeft;
+            return new Item(itemsTake, itemType);
+        }
+
+        else if ((item.itemType == itemType && count < itemTypesMaxStacks[itemType]) || item.itemType == ItemType.Nothing)
         {
             itemType = item.itemType;
             item.count--;
