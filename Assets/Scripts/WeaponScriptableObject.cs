@@ -5,8 +5,6 @@ using UnityEditor;
 [CreateAssetMenu(fileName ="WeaponInfo", menuName = "Weapon/New Weapon")]
 public class WeaponScriptableObject : ScriptableObject
 {
-    public Weapon targetWeapon;
-    public Weapon._GunType shootType;
     [Space(10)]
     public float damage;
     public float fireRate;

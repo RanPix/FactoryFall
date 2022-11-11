@@ -3,51 +3,42 @@ using System.Collections;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
+public enum States
+{
+    Active,
+    Destroied
+}    
+public enum ShootType
+{
+    Auto,
+    Semi
+}
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Animator))]
-public class Weapon : MonoBehaviour
+
+abstract public class Weapon : MonoBehaviour
 {
-    public enum states
-    {
-        Active,
-        Destroied
-    }
-    public enum ShootType
-    {
-        Ray,
-        Physics,
-        Trigger
-    }
-    public enum _GunType
-    {
-        Auto,
-        Semi
-    }
-    public WeaponScriptableObject weaponScriptableObject;
-    [Header("Weapon`s shoot type scripts")]
-    [SerializeField] private RayShootType rayShootType;
-    [SerializeField] private PhysicsShootType physicsShootType;
-    [SerializeField] private TriggetShootType triggerShootType;
+
+    [SerializeField] protected WeaponScriptableObject weaponScriptableObject;
+
+    [Space]
+    [Header("Enums")]
+    [SerializeField] private States _state;
+
+    [SerializeField] private ShootType _shootType;
+
     [Space(10)]
 
-    [SerializeField] private _GunType gunType;
+    [SerializeField] protected LayerMask playerMask;
 
-    public ShootType shootType;
-
-    [SerializeField] private states _state;
     [Space(10)]
-    [SerializeField] private LayerMask playerMask;
-
-    public bool showRayShootVariables;
-    public bool showPhysicsShootVariables;
-    public bool showTriggerShootVariables;
-
     [Header("Animation")]
-    public bool useAnimations;
-    [Space(5)]
-    public string shootAnimationName;
+    [SerializeField] protected bool useAnimations;
+    [SerializeField] protected Animator animator;
+    [SerializeField] protected string shootAnimationName;
     [SerializeField] private string reloadAnimationTriggername;
 
+    [Space(10)]
     [Header("Sway")]
     [SerializeField] private bool canSway;
     [SerializeField] private Vector3 initialSwayPosition;
@@ -56,48 +47,42 @@ public class Weapon : MonoBehaviour
     [SerializeField] private float swaySmoothing;
 
     [Space(10)]
+    [Header("Aiming")]
+    [SerializeField] private bool canScope;
     [SerializeField] private Attachment attachment;
-
-    [Header("Scope")]
     [SerializeField] private float normalFOV;
     [SerializeField] private float scopedFOV;
     [SerializeField] private float normalSens;
     [SerializeField] private float scopedSens;
     [SerializeField] private float FOVSmoothing;
-
-    [Header("Aiming")]
-    [SerializeField] private bool canScope;
     [SerializeField] private Vector3 normalLOcalPosition;
     [SerializeField] private Vector3 aimingLOcalPosition;
     [SerializeField] private float aimSmoothing;
-
-
-    [Header("Ammo")]
     [SerializeField] private string ammoObjectName;
-    public int ammo;
-    public int maxAmmo;
-    public int reserveAmmo;
-
-    [Header("Muzzle")]
-    [SerializeField] private Transform MuzzlePosition;
 
     [Space(10)]
+    [Header("Ammo")]
+    [SerializeField] protected WeaponAmmo weaponAmmo;
+    [SerializeField] private int ammo;
+    [SerializeField] private int maxAmmo;
+    [SerializeField] private int reserveAmmo;
+
+    [Space(10)]
+    [Header("Muzzle")]
+    [SerializeField] protected Transform muzzlePosition;
     [SerializeField] private GameObject[] muzzle;
-
-    [Header("Physics Shoot")]
+    [Space(10)]
     [SerializeField] private GameObject bulletSpawner;
-    [Space(15)]
-
+    [SerializeField] private ConnectorHelper connectorHelper;
+    [SerializeField] private Action OnInScopeValuseChange;
     public bool canShoot;
-    public Animator _animator;
-    public float _nextFire;
-    public WeaponAmmo _weaponAmmo;
 
+    //protected float nextFire;
     private PlayerControls controls;
-    private Camera _cam;
-    private Camera _gunCam;
-    private AudioSource _audioSource;
-    private TMP_Text _ammoText;
+    protected Camera cam;
+    private Camera gunCam;
+    private AudioSource audioSource;
+    private TMP_Text ammoText;
 
     public bool inScope
     {
@@ -110,53 +95,42 @@ public class Weapon : MonoBehaviour
         }
     }
     private bool _inScope;
-    public ConnectorHelper connectorHelper;
-    public Action OnInScopeValuseChange;
+    #region AbstractVariables
+    protected abstract float nextFire { get; }
+    #endregion
+    #region AbstractMethods
+    public abstract void Shoot();
+    public abstract void Scope();
+    #endregion
+    // Start is called before the first frame update
     private void Awake()
     {
-        _state = states.Active;
         controls = new PlayerControls();
         controls.Enable();
-        _cam = Camera.main;
-        _audioSource = gameObject.GetComponent<AudioSource>();
-        _animator = gameObject.GetComponent<Animator>();
+        audioSource = gameObject.GetComponent<AudioSource>();
+        animator = gameObject.GetComponent<Animator>();
+        WeaponsLink.instance.weapons.Add(this);
     }
-    private void OnDestroy()
-    {
-        _state = states.Destroied;
-    }
-    public void weaponAmmoUpdate()
-    {
-        if (_weaponAmmo)
-        {
-            _weaponAmmo.Ammo = ammo;
-            _weaponAmmo.ClipSize = maxAmmo;
-            _weaponAmmo.ReserveAmmo = reserveAmmo;
-        }
-
-    }
-
-
     private void Start()
     {
-        connectorHelper = ConnectorHelper.Instance;
-        _gunCam = connectorHelper.gunCam;
-        _ammoText = connectorHelper.ammoText;
-        _weaponAmmo = connectorHelper.weaponAmmo;
+        cam = Camera.main;
+        gunCam = cam.GetComponentInChildren<Camera>();
+        GameObject help = Instantiate(weaponAmmo.gameObject);
 
+        weaponAmmo = help.GetComponent<WeaponAmmo>();
         canShoot = true;
-        weaponAmmoUpdate();
-        _weaponAmmo.AmmoText = _ammoText;
-        OnInScopeValuseChange += Scope;
+       weaponAmmo.Ammo = ammo;
+       weaponAmmo.ClipSize = maxAmmo;
+        weaponAmmo.ReserveAmmo = reserveAmmo;
+        weaponAmmo.AmmoText = ammoText;
 
     }
-
     // Update is called once per frame
     void Update()
     {
         switch (_state)
         {
-            case states.Active:
+            case States.Active:
 
                 Aiming();
                 KeyCodes();
@@ -164,91 +138,72 @@ public class Weapon : MonoBehaviour
         }
 
     }
+    protected void RayCasting()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, weaponScriptableObject.weaponShootRange, playerMask))
+        {
+
+        }
+    }
+    protected void SpawnBullet()
+    {
+        GameObject spawnedBullet = Instantiate(weaponScriptableObject.bulletPrefab);
+        spawnedBullet.transform.position = bulletSpawner.transform.position;
+        spawnedBullet.GetComponent<Bullet>().AddForceBullet(bulletSpawner.transform.forward * weaponScriptableObject.bulletSpeed);
+        Destroy(spawnedBullet, weaponScriptableObject.bulletTimeToDestroy);
+
+    }
     private void KeyCodes()
     {
         if (canShoot == true)
         {
-            if (_weaponAmmo.Ammo > 0)
+            if (weaponAmmo.Ammo > 0)
             {
-                if (Time.time - _nextFire > 1 / weaponScriptableObject.fireRate)
+                        
+                if (Time.time - nextFire > 1 / weaponScriptableObject.fireRate)
                 {
-                        Debug.Log("lopaaaa");
-                    if (shootType != ShootType.Trigger && gunType == _GunType.Auto && controls.Player.Fire.IsPressed())
+                    if (_shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
                     {
-                        switch (shootType)
-                        {
-                            case ShootType.Ray:
-                                rayShootType.Shoot();
-                                break;
-
-                            case ShootType.Physics:
-                                physicsShootType.Shoot();
-                                break;
-                        }
+                        Shoot();
                     }
-                    else if (shootType != ShootType.Trigger && gunType == _GunType.Semi && controls.Player.Fire.WasPerformedThisFrame())
+                    else if (_shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
-                        Debug.Log("lopaaaa");
-                        switch (shootType)
-                        {
-                            case ShootType.Ray:
-                                rayShootType.Shoot();
-                                break;
-
-                            case ShootType.Physics:
-                                physicsShootType.Shoot();
-                                break;
-                        }
-                    }
-                    else if (shootType == ShootType.Trigger && controls.Player.Fire.WasPerformedThisFrame())
-                    {
-
-                    }
-                    else if (shootType == ShootType.Trigger && controls.Player.Fire.WasReleasedThisFrame())
-                    {
+                        Shoot();
 
                     }
                 }
             }
         }
-        if (controls.Player.Fire.IsPressed() && _weaponAmmo.Ammo <= 0)
+        if (controls.Player.Fire.IsPressed() && weaponAmmo.Ammo <= 0)
         {
-            _audioSource.PlayOneShot(weaponScriptableObject.empty);
+            audioSource.PlayOneShot(weaponScriptableObject.empty);
         }
         if (controls.Player.Reload.WasPerformedThisFrame())
         {
-            if (_weaponAmmo.ReserveAmmo > 0 && _weaponAmmo.Ammo < ammo)
+            if (weaponAmmo.ReserveAmmo > 0 && weaponAmmo.Ammo < ammo)
             {
                 StartCoroutine(ReloadCoroutine());
             }
         }
     }
-
-
-
-    private void Scope()
+    private IEnumerator ReloadCoroutine()
     {
-        if (_inScope == true)
-        {
-            _cam.fieldOfView = Mathf.Lerp(_cam.fieldOfView, scopedFOV, FOVSmoothing * Time.deltaTime);
-            _gunCam.fieldOfView = Mathf.Lerp(_gunCam.fieldOfView, scopedFOV, FOVSmoothing * Time.deltaTime);
-        }
-        else if (_inScope == false)
-        {
-            _cam.fieldOfView = Mathf.Lerp(_cam.fieldOfView, normalFOV, FOVSmoothing * Time.deltaTime);
-            _gunCam.fieldOfView = Mathf.Lerp(_gunCam.fieldOfView, normalFOV, FOVSmoothing * Time.deltaTime);
-        }
+        canShoot = false;
+        if (useAnimations == true)
+            animator.SetTrigger(reloadAnimationTriggername);
+        audioSource.PlayOneShot(weaponScriptableObject.reload);
+
+        yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
+
+        weaponAmmo.AddAmmo();
+        weaponAmmo.ApdateAmmoInScreen();
+        canShoot = true;
     }
-
-
-
-
-
-
 
     private void Aiming()
     {
-        Vector3 target = normalLOcalPosition;
+        /*Vector3 target = normalLOcalPosition;
 
         if (controls.Player.Scope.IsPressed())
         {
@@ -264,56 +219,26 @@ public class Weapon : MonoBehaviour
         }
 
         Vector3 desiredPosition = Vector3.Lerp(transform.localPosition, target, Time.deltaTime * aimSmoothing);
-        transform.localPosition = desiredPosition;
+        transform.localPosition = desiredPosition;*/
     }
-
-
-
-
-    public void SpawnBullet()
-    {
-        GameObject spawnedBullet = Instantiate(weaponScriptableObject.bulletPrefab);
-        //spawnedBullet.transform.SetParent(weaponBody);
-        spawnedBullet.transform.position = bulletSpawner.transform.position;
-        spawnedBullet.GetComponent<Bullet>().AddForceBullet(bulletSpawner.transform.forward * weaponScriptableObject.bulletSpeed);
-        Destroy(spawnedBullet, weaponScriptableObject.bulletTimeToDestroy);
-    }
-
-    public void RayCasting()
-    {
-
-        RaycastHit hit;
-        if (Physics.Raycast(_cam.transform.position, _cam.transform.forward, out hit, weaponScriptableObject.weaponShootRange, playerMask))
-        {
-            Particle particleGO = hit.transform.GetComponent<Particle>();
-            if (particleGO)
-            {
-                GameObject particle = Instantiate(particleGO.particle.particleObject, hit.point, Quaternion.LookRotation(hit.normal));
-                Destroy(particle, weaponScriptableObject.TimeTodestroy);
-            }
-        }
-    }
-
-
     public void PlayShootSound()
     {
         AudioClip clip = null;
         if (attachment.haveSilencer == true)
         {
             clip = weaponScriptableObject.shootsSilencer[Random.Range(0, weaponScriptableObject.shoots.Length)];
-            _audioSource.clip = clip;
-            _audioSource.Play();
+            audioSource.clip = clip;
+            audioSource.Play();
 
         }
         else if (attachment.haveSilencer == false)
         {
             clip = weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)];
-            _audioSource.clip = clip;
-            _audioSource.Play();
+            audioSource.clip = clip;
+            audioSource.Play();
 
         }
     }
-
     public void SpawmMuzzle()
     {
         if (attachment.haveSilencer == false)
@@ -321,64 +246,12 @@ public class Weapon : MonoBehaviour
             if (weaponScriptableObject.haveMuzzle == true)
             {
                 GameObject currentMuzzle = muzzle[Random.Range(0, muzzle.Length)];
-                GameObject spawnedMuzzle = Instantiate(currentMuzzle, MuzzlePosition.position, MuzzlePosition.rotation);
+                GameObject spawnedMuzzle = Instantiate(currentMuzzle, muzzlePosition.position, muzzlePosition.rotation);
                 spawnedMuzzle.transform.localScale = new Vector3(weaponScriptableObject.scaleFactor, weaponScriptableObject.scaleFactor, weaponScriptableObject.scaleFactor);
                 Destroy(spawnedMuzzle, weaponScriptableObject.TimeTodestroy);
             }
         }
     }
-    private IEnumerator ReloadCoroutine()
-    {
-        canShoot = false;
-        if (useAnimations == true)
-            _animator.SetTrigger(reloadAnimationTriggername);
-        _audioSource.PlayOneShot(weaponScriptableObject.reload);
-
-        yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
-
-        _weaponAmmo.AddAmmo();
-        _weaponAmmo.ApdataAmmoInScreen();
-        canShoot = true;
-    }
-
-
-
-    /*
-#if UNITY_EDITOR
-    [CustomEditor(typeof(Weapon))]
-    public class WeaponEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-
-            //            WeaponScriptableObject weaponScriptableObject = (WeaponScriptableObject)target;
-            Weapon weapon = (Weapon)target;
-
-            weapon.showPhysicsShootVariables = EditorGUILayout.Foldout(weapon.showPhysicsShootVariables, "Physics shoot variables", true);
-            weapon.showRayShootVariables = EditorGUILayout.Foldout(weapon.showRayShootVariables, "Ray shoot variables", true);
-            weapon.showTriggerShootVariables = EditorGUILayout.Foldout(weapon.showTriggerShootVariables, "Trigger shoot variables", true);
-
-            if (weapon.showRayShootVariables)
-            {
-
-            }
-            else if (weapon.showPhysicsShootVariables)
-            {
-                GameObject bulletPrefab;
-                float bulletSpeed;
-                float bulletTimeToDestroy;
-
-            }
-            else if (weapon.showTriggerShootVariables)
-            {
-
-            }
-        }
-    }
-#endif*/
-
-
 }
 [System.Serializable]
 public class Attachment
@@ -394,12 +267,5 @@ public class Attachment
     [Space(10)]
     public AttachmentInfo[] scopes;
     public Vector3[] positionsInScope;
-
-
-
 }
-
-
-
-
 
