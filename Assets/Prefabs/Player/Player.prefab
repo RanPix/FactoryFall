@@ -69,6 +69,7 @@ Transform:
   - {fileID: 841400165053196236}
   - {fileID: 841400163719565615}
   - {fileID: 2943016086881704504}
+  - {fileID: 1044197872754439102}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -109,14 +110,24 @@ MonoBehaviour:
     type: 3}
   cameraPosition: {fileID: 841400163972923480}
   walkSpeed: 8
-  sprintSpeed: 20
-  airMultiplier: 0.2
+  sprintSpeed: 12
+  accelerateLerpTime: 8
+  airMultiplier: 0.25
+  maxAirStrafeSpeed: 25
   crouchSpeed: 4
   crouchYScale: 0.6
+  speedSlideIncrease: 1.3
+  slideSpeedDeaccelerate: 0.3
+  slideStrafeMultiplier: 0.1
+  maxSlideboosSpeed: 25
   maxSlopeAngle: 40
   jumpForce: 10
   maxDoubleJumps: 1
   maxRedirects: 2
+  fovTime: 0.25
+  normalFov: 60
+  redirectFov: 85
+  slideFov: 85
   orientation: {fileID: 841400163098873428}
   groundCheck: {fileID: 841400165053196236}
   ceilingCheck: {fileID: 2943016086881704504}
@@ -453,4 +464,35 @@ Transform:
   m_Children: []
   m_Father: {fileID: 841400163258982987}
   m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &3644855946378929427
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1044197872754439102}
+  m_Layer: 0
+  m_Name: Wall check
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1044197872754439102
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3644855946378929427}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.0000001, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 841400163258982987}
+  m_RootOrder: 5
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}

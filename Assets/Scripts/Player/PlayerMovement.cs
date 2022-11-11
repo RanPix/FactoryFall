@@ -2,6 +2,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
 using Mirror;
+using DG.Tweening;
 
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 public class PlayerMovement : NetworkBehaviour
@@ -17,17 +18,19 @@ public class PlayerMovement : NetworkBehaviour
     [Header("Camera")]
 
     [SerializeField] private GameObject cameraHolder;
+    private Camera camera;
     [SerializeField] private Transform cameraPosition;
 
     [Header("Move")]
 
-    private float moveSpeed;
     [SerializeField] private float walkSpeed;
     [SerializeField] private float sprintSpeed;
+    [SerializeField] private float accelerateLerpTime;
 
     [Space]
 
-    [SerializeField, Range(0, 1f)] private float airMultiplier;
+    [SerializeField, Range(0, 1f)] private float airMultiplier = 0.2f;
+    [SerializeField, Range(0, 1f)] private float maxAirStrafeSpeed = 25;
 
     private Vector2 inputVector;
     private Vector3 moveDirection;
@@ -44,7 +47,10 @@ public class PlayerMovement : NetworkBehaviour
 
     [Space]
 
-    [SerializeField] private float speedSlideIncrease;
+    [SerializeField] private float speedSlideIncrease = 1.5f;
+    [SerializeField] private float slideSpeedDeaccelerate = 1f;
+    [SerializeField] private float slideStrafeMultiplier = 0.1f;
+    [SerializeField] private float maxSlideboosSpeed = 25;
     private bool gotSlideSpeedIncrease;
 
     [Header("Slope")]
@@ -82,6 +88,16 @@ public class PlayerMovement : NetworkBehaviour
 
     [Header("Grapple")]
 
+    [Header("Fov")]
+
+    [SerializeField] private float fovTime = 0.25f;
+
+    [Space]
+
+    [SerializeField] private float normalFov = 85f;
+    [SerializeField] private float redirectFov = 100f;
+    [SerializeField] private float slideFov = 100f;
+
     [Header("Required")]
 
     [SerializeField] private Transform orientation;
@@ -116,6 +132,7 @@ public class PlayerMovement : NetworkBehaviour
         cameraHolder = Instantiate(cameraHolder);
         cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
         cameraHolder.GetComponentInChildren<Look>().orientation = orientation;
+        camera = Camera.main;
 
         characterCont = GetComponent<CharacterController>();
 
@@ -146,37 +163,49 @@ public class PlayerMovement : NetworkBehaviour
         UpdateVelocity();
 
         print($"{moveDirection.magnitude}, {velocity.magnitude}, {inputVector}, {isGrounded}");
-        print(HasCeiling());
+        //print(HasCeiling());
 
         if (state == MovementState.crouching | state == MovementState.sliding)
             Crouch();
         else
             Uncrouch();
 
-        if(state == MovementState.sliding)
-            Slide();
-        else if (isGrounded)
-            Move();
+
+        if (isGrounded)
+            if (state == MovementState.sliding)
+                Slide();
+            else
+            {
+                DoFov(normalFov);
+                Move();
+            }
         else
+        {
+            DoFov(normalFov);
             AirMove();
+        }
     }
 
     private void LateUpdate()
     {
-        if(isGrounded)
+        if (!isLocalPlayer)
+            return;
+        if (isGrounded)
             ResetAgilityAbilities();
+        if (state != MovementState.sliding)
+            gotSlideSpeedIncrease = false;
     }
 
     private void StateHandler()
     {
         if (controls.Player.Crouch.IsPressed())
         {
-            if (moveDirection.magnitude >= sprintSpeed)
+            if (moveDirection.magnitude >= sprintSpeed*0.75 || (state == MovementState.sliding && moveDirection.magnitude > crouchSpeed))
                 state = MovementState.sliding;
             else
                 state = MovementState.crouching;
         }
-        else if (state == MovementState.crouching && HasCeiling())
+        else if ((state == MovementState.crouching || state == MovementState.sliding) && HasCeiling())
             return;
         else if (controls.Player.Sprinting.IsPressed() & ChechIfForward())
         {
@@ -197,15 +226,18 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Move()
     {
-        moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * 
-            (state == MovementState.crouching ? crouchSpeed : (state == MovementState.sprinting ? sprintSpeed : walkSpeed)); // Speed selection
+        moveDirection = Vector3.Lerp(moveDirection, (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized *
+            (state == MovementState.crouching ? crouchSpeed : (state == MovementState.sprinting ? sprintSpeed : walkSpeed)), accelerateLerpTime * Time.deltaTime); // Speed selection
 
         characterCont.Move(moveDirection * Time.deltaTime);
     }
 
     private void AirMove()
     {
-        moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier).normalized * moveDirection.magnitude;
+        if (moveDirection.magnitude < maxAirStrafeSpeed)
+            moveDirection += (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier;
+        else
+            moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier).normalized * moveDirection.magnitude;
         characterCont.Move(moveDirection * Time.deltaTime);
     }
 
@@ -214,15 +246,19 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Slide()
     {
-        if (!gotSlideSpeedIncrease)
+        if (!gotSlideSpeedIncrease && moveDirection.magnitude < maxSlideboosSpeed)
         {
             moveDirection *= speedSlideIncrease;
             gotSlideSpeedIncrease = true;
         }
 
-        moveDirection = Vector3.Lerp()
+        DoFov(slideFov);
 
-        characterCont.Move(moveDirection * Time.deltaTime)
+        moveDirection *= (moveDirection.magnitude - slideSpeedDeaccelerate) / moveDirection.magnitude;
+        moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * slideStrafeMultiplier).normalized * moveDirection.magnitude;
+
+
+        characterCont.Move(moveDirection * Time.deltaTime);
     }
 
     private void Uncrouch()
@@ -242,13 +278,16 @@ public class PlayerMovement : NetworkBehaviour
         if (!isGrounded && hasDoubleJumps-- < 1)
             return;
 
-        velocity.y += jumpForce;
+        velocity.y = velocity.y < jumpForce ? jumpForce : velocity.y + jumpForce;
     }
 
     private void Redirect(InputAction.CallbackContext context)
     {
         if (hasRedirects-- > 0)
+        {
             moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * moveDirection.magnitude;
+            DoFov(redirectFov);
+        }
     }
 
     private void UpdateVelocity()
@@ -265,8 +304,15 @@ public class PlayerMovement : NetworkBehaviour
     {
         hasDoubleJumps = maxDoubleJumps;
         hasRedirects = maxRedirects;
-        gotSlideSpeedIncrease = false;
     }
+
+    // Fov
+
+    private void DoFov(float endValue)
+        => camera.DOFieldOfView(endValue, fovTime);
+
+    private void DoFov(float endValue, float time)
+        => camera.DOFieldOfView(endValue, time);
 
     // Bool checks
 
