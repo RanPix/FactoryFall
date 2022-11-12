@@ -37,7 +37,9 @@ abstract public class Weapon : MonoBehaviour
     [SerializeField] protected Animator animator;
     [SerializeField] protected string shootAnimationName;
     [SerializeField] private string reloadAnimationTriggername;
-
+    [Space(10)]
+    [Header("Audio")]
+    [SerializeField] protected bool useAudio;
     [Space(10)]
     [Header("Sway")]
     [SerializeField] private bool canSway;
@@ -49,7 +51,7 @@ abstract public class Weapon : MonoBehaviour
     [Space(10)]
     [Header("Aiming")]
     [SerializeField] private bool canScope;
-    [SerializeField] private Attachment attachment;
+    [SerializeField] protected Attachment attachment;
     [SerializeField] private float normalFOV;
     [SerializeField] private float scopedFOV;
     [SerializeField] private float normalSens;
@@ -70,7 +72,7 @@ abstract public class Weapon : MonoBehaviour
     [Space(10)]
     [Header("Muzzle")]
     [SerializeField] protected Transform muzzlePosition;
-    [SerializeField] private GameObject[] muzzle;
+    [SerializeField] protected GameObject[] muzzle;
     [Space(10)]
     [SerializeField] private GameObject bulletSpawner;
     [SerializeField] private ConnectorHelper connectorHelper;
@@ -101,6 +103,7 @@ abstract public class Weapon : MonoBehaviour
     #region AbstractMethods
     public abstract void Shoot();
     public abstract void Scope();
+    protected abstract void FireButtonWasReleased();
     #endregion
     // Start is called before the first frame update
     private void Awake()
@@ -109,10 +112,10 @@ abstract public class Weapon : MonoBehaviour
         controls.Enable();
         audioSource = gameObject.GetComponent<AudioSource>();
         animator = gameObject.GetComponent<Animator>();
-        WeaponsLink.instance.weapons.Add(this);
     }
     private void Start()
     {
+        WeaponsLink.instance.weapons.Add(this);
         cam = Camera.main;
         gunCam = cam.GetComponentInChildren<Camera>();
         GameObject help = Instantiate(weaponAmmo.gameObject);
@@ -172,6 +175,10 @@ abstract public class Weapon : MonoBehaviour
                         Shoot();
 
                     }
+                    else if (_shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
+                    {
+                        FireButtonWasReleased();
+                    }
                 }
             }
         }
@@ -192,7 +199,8 @@ abstract public class Weapon : MonoBehaviour
         canShoot = false;
         if (useAnimations == true)
             animator.SetTrigger(reloadAnimationTriggername);
-        audioSource.PlayOneShot(weaponScriptableObject.reload);
+        if(useAudio)
+            audioSource.PlayOneShot(weaponScriptableObject.reload);
 
         yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
 

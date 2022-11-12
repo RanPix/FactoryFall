@@ -17,7 +17,8 @@ public class Pistol : Weapon
         Debug.Log("piu");
         _nextFire = Time.time;
         RayCasting();
-        PlayShootSound();
+        if(useAudio)
+            PlayShootSound();
         SpawmMuzzle();
 
         weaponAmmo.Ammo--;
@@ -28,5 +29,8 @@ public class Pistol : Weapon
     public override void Scope()
     {
 
+    }
+    protected override void FireButtonWasReleased()
+    {
     }
 }
