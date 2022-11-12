@@ -16,10 +16,4 @@ public class TestingGrid : MonoBehaviour
 
         grid = new Grid<GridObject>(gridWidth, gridHeight, gridLength, cellSize, new Vector3(-50, 0, -50), (Grid<GridObject> g, int x, int y, int z) => new GridObject(g, x, y, z));
     }
-
-    void Update()
-    {
-    }
-
-    
 }

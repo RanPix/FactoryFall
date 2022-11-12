@@ -348,6 +348,6 @@ public class PlayerMovement : NetworkBehaviour
 
     private void OnDestroy()
     {
-        Destroy(cameraPrefab);
+        //Destroy(cameraHolder);
     }
 }

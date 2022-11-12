@@ -14,8 +14,6 @@ public class Look : MonoBehaviour
 
     [HideInInspector] public Transform orientation;
 
-    [HideInInspector] public Transform orientation;
-
 
     private Vector2 inputVector;
     private float xRot;

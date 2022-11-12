@@ -105,15 +105,6 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "FreeCursor",
-                    "type": "Button",
-                    "id": "9a2a56ab-4794-4f1b-892a-008bd1b0b6fb",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "PlaceBlock",
                     "type": "Button",
                     "id": "57ce2e5e-1b19-4ab7-8197-e06e4bb1886f",
@@ -437,7 +428,7 @@
                 },
                 {
                     "name": "",
-                    "id": "b966e2ee-97b6-46f5-9053-9830efc76ecc",
+                    "id": "a029c53d-39c7-4e83-ab69-e063fc989624",
                     "path": "<Keyboard>/escape",
                     "interactions": "",
                     "processors": "",
