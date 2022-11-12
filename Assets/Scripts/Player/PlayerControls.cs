@@ -64,7 +64,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Sprint"",
+                    ""name"": ""Walk"",
                     ""type"": ""Button"",
                     ""id"": ""fc47a635-18d5-4bcd-b4c2-27842dc68ffd"",
                     ""expectedControlType"": ""Button"",
@@ -130,6 +130,24 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""name"": ""RotateBlock"",
                     ""type"": ""Button"",
                     ""id"": ""e7f49794-161b-4681-ac47-ed5b19370834"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Sprinting"",
+                    ""type"": ""Button"",
+                    ""id"": ""60b0fce6-2205-4f25-8cc2-73c4d4a96309"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Redirect"",
+                    ""type"": ""Button"",
+                    ""id"": ""81586cf0-464a-4e1c-aa50-f75513350b33"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -375,7 +393,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Sprint"",
+                    ""action"": ""Walk"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 },
@@ -464,6 +482,28 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""RotateBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a71c7eea-724c-494c-8234-344080dca9cd"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Sprinting"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d57f8c53-6293-4c59-973b-a93a5352a84c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Redirect"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -556,11 +596,20 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": ""TrackedDeviceOrientation"",
-                    ""type"": ""PassThrough"",
+                    ""type"": ""Button"",
                     ""id"": ""a1fd67cb-bbe7-41d9-8906-3d8a8ba9bbba"",
-                    ""expectedControlType"": ""Quaternion"",
+                    ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenOrCloseInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""32e70071-5923-449a-89c8-e69f5b7d2283"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": ""Press"",
                     ""initialStateCheck"": false
                 }
             ],
@@ -982,6 +1031,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""TrackedDeviceOrientation"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""8cdc706b-e1fd-47f1-b588-0a72da3da6de"",
+                    ""path"": ""<Keyboard>/i"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenOrCloseInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1055,7 +1115,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_Look = m_Player.FindAction("Look", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
-        m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
+        m_Player_Walk = m_Player.FindAction("Walk", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
         m_Player_RemoveBlock = m_Player.FindAction("RemoveBlock", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
@@ -1063,6 +1123,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_PlaceBlock = m_Player.FindAction("PlaceBlock", throwIfNotFound: true);
         m_Player_PickBlock = m_Player.FindAction("PickBlock", throwIfNotFound: true);
         m_Player_RotateBlock = m_Player.FindAction("RotateBlock", throwIfNotFound: true);
+        m_Player_Sprinting = m_Player.FindAction("Sprinting", throwIfNotFound: true);
+        m_Player_Redirect = m_Player.FindAction("Redirect", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1075,6 +1137,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_UI_RightClick = m_UI.FindAction("RightClick", throwIfNotFound: true);
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
+        m_UI_OpenOrCloseInventory = m_UI.FindAction("OpenOrCloseInventory", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1138,7 +1201,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Look;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Jump;
-    private readonly InputAction m_Player_Sprint;
+    private readonly InputAction m_Player_Walk;
     private readonly InputAction m_Player_Crouch;
     private readonly InputAction m_Player_RemoveBlock;
     private readonly InputAction m_Player_Interact;
@@ -1146,6 +1209,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PlaceBlock;
     private readonly InputAction m_Player_PickBlock;
     private readonly InputAction m_Player_RotateBlock;
+    private readonly InputAction m_Player_Sprinting;
+    private readonly InputAction m_Player_Redirect;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1154,7 +1219,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Look => m_Wrapper.m_Player_Look;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
-        public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
+        public InputAction @Walk => m_Wrapper.m_Player_Walk;
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
         public InputAction @RemoveBlock => m_Wrapper.m_Player_RemoveBlock;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
@@ -1162,6 +1227,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @PlaceBlock => m_Wrapper.m_Player_PlaceBlock;
         public InputAction @PickBlock => m_Wrapper.m_Player_PickBlock;
         public InputAction @RotateBlock => m_Wrapper.m_Player_RotateBlock;
+        public InputAction @Sprinting => m_Wrapper.m_Player_Sprinting;
+        public InputAction @Redirect => m_Wrapper.m_Player_Redirect;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1183,9 +1250,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Jump.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
                 @Jump.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnJump;
-                @Sprint.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
-                @Sprint.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
-                @Sprint.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprint;
+                @Walk.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWalk;
+                @Walk.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWalk;
+                @Walk.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWalk;
                 @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
@@ -1207,6 +1274,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @RotateBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateBlock;
                 @RotateBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateBlock;
                 @RotateBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateBlock;
+                @Sprinting.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprinting;
+                @Sprinting.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprinting;
+                @Sprinting.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprinting;
+                @Redirect.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRedirect;
+                @Redirect.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRedirect;
+                @Redirect.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRedirect;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1223,9 +1296,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Jump.started += instance.OnJump;
                 @Jump.performed += instance.OnJump;
                 @Jump.canceled += instance.OnJump;
-                @Sprint.started += instance.OnSprint;
-                @Sprint.performed += instance.OnSprint;
-                @Sprint.canceled += instance.OnSprint;
+                @Walk.started += instance.OnWalk;
+                @Walk.performed += instance.OnWalk;
+                @Walk.canceled += instance.OnWalk;
                 @Crouch.started += instance.OnCrouch;
                 @Crouch.performed += instance.OnCrouch;
                 @Crouch.canceled += instance.OnCrouch;
@@ -1247,6 +1320,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @RotateBlock.started += instance.OnRotateBlock;
                 @RotateBlock.performed += instance.OnRotateBlock;
                 @RotateBlock.canceled += instance.OnRotateBlock;
+                @Sprinting.started += instance.OnSprinting;
+                @Sprinting.performed += instance.OnSprinting;
+                @Sprinting.canceled += instance.OnSprinting;
+                @Redirect.started += instance.OnRedirect;
+                @Redirect.performed += instance.OnRedirect;
+                @Redirect.canceled += instance.OnRedirect;
             }
         }
     }
@@ -1265,6 +1344,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_RightClick;
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
+    private readonly InputAction m_UI_OpenOrCloseInventory;
     public struct UIActions
     {
         private @PlayerControls m_Wrapper;
@@ -1279,6 +1359,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @RightClick => m_Wrapper.m_UI_RightClick;
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
+        public InputAction @OpenOrCloseInventory => m_Wrapper.m_UI_OpenOrCloseInventory;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1318,6 +1399,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @TrackedDeviceOrientation.started -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnTrackedDeviceOrientation;
+                @OpenOrCloseInventory.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseInventory;
+                @OpenOrCloseInventory.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseInventory;
+                @OpenOrCloseInventory.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseInventory;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1352,6 +1436,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @TrackedDeviceOrientation.started += instance.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.performed += instance.OnTrackedDeviceOrientation;
                 @TrackedDeviceOrientation.canceled += instance.OnTrackedDeviceOrientation;
+                @OpenOrCloseInventory.started += instance.OnOpenOrCloseInventory;
+                @OpenOrCloseInventory.performed += instance.OnOpenOrCloseInventory;
+                @OpenOrCloseInventory.canceled += instance.OnOpenOrCloseInventory;
             }
         }
     }
@@ -1407,7 +1494,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnLook(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnJump(InputAction.CallbackContext context);
-        void OnSprint(InputAction.CallbackContext context);
+        void OnWalk(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
         void OnRemoveBlock(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
@@ -1415,6 +1502,8 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnPlaceBlock(InputAction.CallbackContext context);
         void OnPickBlock(InputAction.CallbackContext context);
         void OnRotateBlock(InputAction.CallbackContext context);
+        void OnSprinting(InputAction.CallbackContext context);
+        void OnRedirect(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
@@ -1428,5 +1517,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnRightClick(InputAction.CallbackContext context);
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
+        void OnOpenOrCloseInventory(InputAction.CallbackContext context);
     }
 }

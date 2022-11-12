@@ -5,6 +5,8 @@ public class Look : MonoBehaviour
 {
     private PlayerControls controls;
 
+    [SerializeField] private GameObject inventoryObject;
+
     [SerializeField] private float sensX;
     [SerializeField] private float sensY;
 
@@ -44,8 +46,18 @@ public class Look : MonoBehaviour
    
     private void UpdateCamera()
     {
+        bool isInventoryOpened = inventoryObject.GetComponent<InventoryUI>().isPanelOpened;
+        Cursor.lockState = isInventoryOpened ? CursorLockMode.Confined : CursorLockMode.Locked;
+        Cursor.visible = isInventoryOpened;
+        if (!isInventoryOpened)
+        {
+            yRot += inputVector.x * 0.01f * sensX;
+            xRot -= inputVector.y * 0.01f * sensY;
+        }
+        /* // Laggy beauty
         yRot = Mathf.LerpAngle(yRot, yRot + inputVector.x, smoothing);
         xRot = Mathf.LerpAngle(xRot, xRot - inputVector.y, smoothing);
+        */
 
         xRot = Mathf.Clamp(xRot, -90f, 90f);
 

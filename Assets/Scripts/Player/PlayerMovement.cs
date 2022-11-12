@@ -63,7 +63,7 @@ public class PlayerMovement : NetworkBehaviour
     private bool hasDoubleJump;
 
     [Space]
-    
+
     [SerializeField] private float jumpForce;
 
     [SerializeField] private MovementState state;
@@ -72,6 +72,7 @@ public class PlayerMovement : NetworkBehaviour
         walking,
         sprinting,
         crouching,
+        sliding,
         air
     }
 
@@ -90,6 +91,8 @@ public class PlayerMovement : NetworkBehaviour
         controls.Player.Enable();
 
         controls.Player.Jump.performed += Jump;
+        controls.Player.Redirect.performed += Redirect;
+    }
 
         startYScale = transform.localScale.y;
         playerHeight = startYScale;
@@ -102,26 +105,27 @@ public class PlayerMovement : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
+        StateHandlerr();
         isGrounded = CheckIfGrouded();
         onSlope = OnSlope();
 
-        Crouch();
-        StateHandler();
-
-        DragControl();
-
         GetInput();
-
-        Move();
-
         UpdateVelocity();
-    }
+
+        Crouch();
         
+        Move();
+        AirMove();
+    }
 
-
-    private void StateHandler()
+    private void LateUpdate()
     {
-        if (isGrounded && controls.Player.Sprint.IsPressed())
+        ResetJump();
+    }
+
+    /*private void StateHandler()
+    {
+        if (isGrounded && controls.Player.Walk.IsPressed())
         {
             state = MovementState.sprinting;
             moveSpeed = sprintSpeed;
@@ -152,10 +156,29 @@ public class PlayerMovement : NetworkBehaviour
             state = MovementState.air;
             moveSpeed = walkSpeed;
         }
+    }*/
+
+    private void StateHandlerr()
+    {
+        if (controls.Player.Crouch.IsPressed())
+        {
+            if (false)
+                state = MovementState.sliding;
+            else
+                state = MovementState.crouching;
+        }
+        else if (controls.Player.Sprinting.IsPressed() & ChechIfForward())
+        {
+            state = MovementState.sprinting;
+        }
+        else
+        {
+            state = MovementState.walking;
+        }
     }
 
 
-    // -------------- Movement --------------
+    // -------------- Movement -------------- \\
 
 
     private void GetInput()
@@ -165,25 +188,36 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Move()
     {
-        moveDirection = orientation.forward * inputVector.y + orientation.right * inputVector.x;
+        if (!isGrounded)
+            return;
+
+        moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * (state == MovementState.crouching ? crouchSpeed : (state == MovementState.sprinting ? sprintSpeed : walkSpeed));
 
         if (onSlope && !exitingSlope)
             characterCont.Move(GetSlopeMoveDir() * moveSpeed * Time.deltaTime);
-        else 
-            characterCont.Move(moveDirection.normalized * moveSpeed * Time.deltaTime);
+        else
+            characterCont.Move(moveDirection * Time.deltaTime);
     }
 
-    private void Crouch()
+    private void AirMove()
     {
-        if (!controls.Player.Crouch.IsPressed())
+        if(isGrounded)
+            return;
+
+        moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier).normalized * moveDirection.magnitude;
+        characterCont.Move(moveDirection * Time.deltaTime);
+    }
+
+    private void Crouch() 
+    {
+        if (controls.Player.Crouch.WasReleasedThisFrame() || !isGrounded)
+            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+
+        if (state != MovementState.crouching)
             return;
 
         transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
         playerHeight = crouchYScale;
-
-        if (isGrounded && controls.Player.Crouch.WasPressedThisFrame())
-            velocity.y -= 10f;
-
     }
 
     // ~~~~~ Slope
@@ -202,29 +236,24 @@ public class PlayerMovement : NetworkBehaviour
     private Vector3 GetSlopeMoveDir()
         => Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
 
-    // -------------- Jumping --------------
+
+    // -------------- Jumping -------------- \\
 
 
     private void Jump(InputAction.CallbackContext context)
     {
-        isGrounded = CheckIfGrouded();
-        if (!isGrounded)
+        if (!isGrounded && !hasDoubleJump)
             return;
-
-        /*if (canJump)
-            canJump = false;
-
-        else if (hasDoubleJump)
+        if (hasDoubleJump)
             hasDoubleJump = false;
-
-        else return;*/
 
         exitingSlope = true;
 
         velocity.y += jumpForce;
-
-        ResetJump();
     }
+
+    private void Redirect(InputAction.CallbackContext context)
+        => moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * moveDirection.magnitude;
 
     private void UpdateVelocity()
     {
@@ -238,20 +267,27 @@ public class PlayerMovement : NetworkBehaviour
 
     private void ResetJump()
     {
-        canJump = true;
+        if (!isGrounded)
+            return;
+
         hasDoubleJump = true;
         exitingSlope = false;
     }
 
+    // Bool checks
+
     private bool CheckIfGrouded()
         => Physics.CheckSphere(new Vector3(transform.position.x, groundCheck.position.y, transform.position.z), checkRadius, groundLM, QueryTriggerInteraction.Ignore);
 
-    private void DragControl()
+    private bool ChechIfForward()
     {
-        //if (isGrounded)
-            //rigidBody.drag = groundDrag;
-        //else
-            //rigidBody.drag = airDrag;
+        float angle = Quaternion.LookRotation(moveDirection).eulerAngles.y - orientation.eulerAngles.y;
+        angle = angle < 0 ? -angle : angle; // Handmade Abs)
+
+        if (angle < 46 || angle == 315)
+            return true;
+
+        return false;
     }
 
     private void OnDestroy()

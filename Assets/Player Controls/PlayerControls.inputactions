@@ -42,7 +42,7 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Sprint",
+                    "name": "Walk",
                     "type": "Button",
                     "id": "fc47a635-18d5-4bcd-b4c2-27842dc68ffd",
                     "expectedControlType": "Button",
@@ -108,6 +108,24 @@
                     "name": "RotateBlock",
                     "type": "Button",
                     "id": "e7f49794-161b-4681-ac47-ed5b19370834",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Sprinting",
+                    "type": "Button",
+                    "id": "60b0fce6-2205-4f25-8cc2-73c4d4a96309",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Redirect",
+                    "type": "Button",
+                    "id": "81586cf0-464a-4e1c-aa50-f75513350b33",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -353,7 +371,7 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Sprint",
+                    "action": "Walk",
                     "isComposite": false,
                     "isPartOfComposite": false
                 },
@@ -442,6 +460,28 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "RotateBlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "a71c7eea-724c-494c-8234-344080dca9cd",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Sprinting",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d57f8c53-6293-4c59-973b-a93a5352a84c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Redirect",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
@@ -534,11 +574,20 @@
                 },
                 {
                     "name": "TrackedDeviceOrientation",
-                    "type": "PassThrough",
+                    "type": "Button",
                     "id": "a1fd67cb-bbe7-41d9-8906-3d8a8ba9bbba",
-                    "expectedControlType": "Quaternion",
+                    "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "OpenOrCloseInventory",
+                    "type": "Button",
+                    "id": "32e70071-5923-449a-89c8-e69f5b7d2283",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
                     "initialStateCheck": false
                 }
             ],
@@ -958,6 +1007,17 @@
                     "processors": "",
                     "groups": "XR",
                     "action": "TrackedDeviceOrientation",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "8cdc706b-e1fd-47f1-b588-0a72da3da6de",
+                    "path": "<Keyboard>/i",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenOrCloseInventory",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
