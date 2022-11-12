@@ -103,6 +103,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "RotateBlock",
+                    "type": "Button",
+                    "id": "e7f49794-161b-4681-ac47-ed5b19370834",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -422,6 +431,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "PickBlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "0941286a-b0bf-4f30-8e53-b09aabc53068",
+                    "path": "<Keyboard>/r",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "RotateBlock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

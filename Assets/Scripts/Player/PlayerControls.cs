@@ -125,6 +125,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""RotateBlock"",
+                    ""type"": ""Button"",
+                    ""id"": ""e7f49794-161b-4681-ac47-ed5b19370834"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -444,6 +453,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""PickBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0941286a-b0bf-4f30-8e53-b09aabc53068"",
+                    ""path"": ""<Keyboard>/r"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""RotateBlock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1042,6 +1062,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_FreeCursor = m_Player.FindAction("FreeCursor", throwIfNotFound: true);
         m_Player_PlaceBlock = m_Player.FindAction("PlaceBlock", throwIfNotFound: true);
         m_Player_PickBlock = m_Player.FindAction("PickBlock", throwIfNotFound: true);
+        m_Player_RotateBlock = m_Player.FindAction("RotateBlock", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1124,6 +1145,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_FreeCursor;
     private readonly InputAction m_Player_PlaceBlock;
     private readonly InputAction m_Player_PickBlock;
+    private readonly InputAction m_Player_RotateBlock;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1139,6 +1161,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @FreeCursor => m_Wrapper.m_Player_FreeCursor;
         public InputAction @PlaceBlock => m_Wrapper.m_Player_PlaceBlock;
         public InputAction @PickBlock => m_Wrapper.m_Player_PickBlock;
+        public InputAction @RotateBlock => m_Wrapper.m_Player_RotateBlock;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1181,6 +1204,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @PickBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickBlock;
                 @PickBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickBlock;
                 @PickBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickBlock;
+                @RotateBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateBlock;
+                @RotateBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateBlock;
+                @RotateBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateBlock;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1218,6 +1244,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @PickBlock.started += instance.OnPickBlock;
                 @PickBlock.performed += instance.OnPickBlock;
                 @PickBlock.canceled += instance.OnPickBlock;
+                @RotateBlock.started += instance.OnRotateBlock;
+                @RotateBlock.performed += instance.OnRotateBlock;
+                @RotateBlock.canceled += instance.OnRotateBlock;
             }
         }
     }
@@ -1385,6 +1414,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnFreeCursor(InputAction.CallbackContext context);
         void OnPlaceBlock(InputAction.CallbackContext context);
         void OnPickBlock(InputAction.CallbackContext context);
+        void OnRotateBlock(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

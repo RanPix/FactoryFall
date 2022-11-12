@@ -8,9 +8,9 @@ public class TestingGrid : MonoBehaviour
 
     private void Awake()
     {
-        int gridWidth = 30;
+        int gridWidth = 100;
         int gridHeight = 10;
-        int gridLength = 30;
+        int gridLength = 100;
 
         float cellSize = 3f;
 
@@ -22,44 +22,4 @@ public class TestingGrid : MonoBehaviour
     }
 
     
-}
-
-public class GridObject
-{
-    private Grid<GridObject> grid;
-    private int x;
-    private int y;
-    private int z;
-
-    private Transform transform;
-
-    public GridObject(Grid<GridObject> grid, int x, int y, int z)
-    {
-        this.grid = grid;
-        this.x = x;
-        this.y = y;
-        this.z = z;
-    }
-
-    public void SetTransform(Transform transform)
-    {
-        this.transform = transform;
-        grid.TriggerGridObjectChanged(x, y, z);
-    }
-
-    public void SetTransform()
-    {
-        transform = null;
-        grid.TriggerGridObjectChanged(x, y, z);
-    }
-
-    public bool CanBuild()
-    {
-        return transform == null;
-    }
-
-    public override string ToString()
-    {
-        return $"{x}, {y}, {z} \n {transform}";
-    }
 }

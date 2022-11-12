@@ -17,7 +17,7 @@ public class Grid<TGritObject>
     private int height;
     private int length;
 
-    private float cellSize;
+    public float cellSize { get; private set; }
 
     private Vector3 originPos;
 
@@ -65,14 +65,14 @@ public class Grid<TGritObject>
         {
             gridArray[x, y, z] = value;
 
-            if (OnGridObjectChanged != null) 
+            if (OnGridObjectChanged != null)
                 OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x, y = y, z = z });
         }
     }
 
     public void TriggerGridObjectChanged(int x, int y, int z)
     {
-        if (OnGridObjectChanged != null) 
+        if (OnGridObjectChanged != null)
             OnGridObjectChanged(this, new OnGridObjectChangedEventArgs { x = x, y = y, z = z });
     }
 
@@ -90,7 +90,9 @@ public class Grid<TGritObject>
             return gridArray[x, y, z];
         }
         else
+        {
             return default(TGritObject);
+        }
     }
 
     public TGritObject GetGridObject(Vector3 worldPosition)
@@ -117,5 +119,54 @@ public class Grid<TGritObject>
                 }
             }
         }
+    }
+}
+
+
+public class GridObject
+{
+    private Grid<GridObject> grid;
+    private int x;
+    private int y;
+    private int z;
+
+    private PlacedObject placedObject;
+
+    public GridObject(Grid<GridObject> grid, int x, int y, int z)
+    {
+        this.grid = grid;
+        this.x = x;
+        this.y = y;
+        this.z = z;
+    }
+
+    public void SetPlacedObject(PlacedObject placedObject)
+    {
+        this.placedObject = placedObject;
+    }
+
+    public void SetPlacedObject()
+    {
+        placedObject = null;
+    }
+
+    public PlacedObject GetPlacedObject()
+    {
+        return placedObject;
+    }
+
+    public void ClearPlacedObject()
+    {
+        placedObject = null;
+    }
+
+    public bool CanBuild()
+    {
+        return placedObject == null;
+    }
+
+    public override string ToString()
+    {
+        return $"{x}, {y}, {z} \n {placedObject}";
     }
 }

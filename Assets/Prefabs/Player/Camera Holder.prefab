@@ -16,6 +16,7 @@ GameObject:
   - component: {fileID: 6624646917229664117}
   - component: {fileID: 3899643395394253103}
   - component: {fileID: 8773982233079687679}
+  - component: {fileID: 736761342149883698}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -153,11 +154,6 @@ MonoBehaviour:
   player: {fileID: 0}
   interactionDistance: 5
   dmg: 10
-  furnace: {fileID: 8749565995505941545, guid: 42c85931c09fd3748a725a36e2788bd6, type: 3}
-  buildDistance: 5
-  buildings:
-  - {fileID: 6407142266871892019, guid: 6281ce5c1c3f4f04cb45692076f1fd23, type: 3}
-  - {fileID: 5947615656580423717, guid: 0f72f1ff64d47ac4491ec3a5876674fd, type: 3}
 --- !u!114 &3899643395394253103
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -271,6 +267,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &736761342149883698
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2354404437450401281}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 21330a9c4fd052a43aee9c83ec73de7b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  buildDistance: 5
+  buildings:
+  - {fileID: 11400000, guid: edc3d9290710b2b42a71f36070a7aec3, type: 2}
+  - {fileID: 11400000, guid: 00572fa81f200e040a7e6e7d7e30439b, type: 2}
 --- !u!1 &2354404437825801241
 GameObject:
   m_ObjectHideFlags: 0
