@@ -14,6 +14,7 @@ public class Look : MonoBehaviour
 
     [HideInInspector] public Transform orientation;
 
+    [HideInInspector] public Transform orientation;
 
 
     private Vector2 inputVector;
@@ -45,15 +46,15 @@ public class Look : MonoBehaviour
 
    
     private void UpdateCamera()
-    {
-        bool isInventoryOpened = inventoryObject.GetComponent<InventoryUI>().isPanelOpened;
+    {
+        bool isInventoryOpened = inventoryObject.GetComponent<InventoryUI>().isPanelOpened;
         Cursor.lockState = isInventoryOpened ? CursorLockMode.Confined : CursorLockMode.Locked;
         Cursor.visible = isInventoryOpened;
-        if (!isInventoryOpened)
-        {
+        if (!isInventoryOpened)
+        {
             yRot += inputVector.x * 0.01f * sensX;
             xRot -= inputVector.y * 0.01f * sensY;
-        }
+        }
         /* // Laggy beauty
         yRot = Mathf.LerpAngle(yRot, yRot + inputVector.x, smoothing);
         xRot = Mathf.LerpAngle(xRot, xRot - inputVector.y, smoothing);

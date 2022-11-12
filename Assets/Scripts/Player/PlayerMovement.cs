@@ -1,6 +1,9 @@
 using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.UIElements;
+using Mirror;
+using DG.Tweening;
 
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 public class PlayerMovement : NetworkBehaviour
@@ -15,33 +18,41 @@ public class PlayerMovement : NetworkBehaviour
 
     [Header("Camera")]
 
-    [SerializeField] private Transform cameraPos;
-
-    [Space]
-    [SerializeField] private GameObject cameraPrefab;
+    [SerializeField] private GameObject cameraHolder;
+    private Camera camera;
+    [SerializeField] private Transform cameraPosition;
 
     [Header("Move")]
 
     [SerializeField] private float walkSpeed;
     [SerializeField] private float sprintSpeed;
-    [SerializeField] private float maxSpeed; 
-    private float moveSpeed;
+    [SerializeField] private float accelerateLerpTime;
 
     [Space]
 
-    [SerializeField] private float airMultiplier;
+    [SerializeField, Range(0, 1f)] private float airMultiplier = 0.2f;
+    [SerializeField, Range(0, 1f)] private float maxAirStrafeSpeed = 25;
 
     private Vector2 inputVector;
     private Vector3 moveDirection;
 
     [Space]
-    [SerializeField] private Transform orientation;
+    
+
 
     [Header("Crouching")]
 
     [SerializeField] private float crouchSpeed;
     [SerializeField] private float crouchYScale;
     private float startYScale;
+
+    [Space]
+
+    [SerializeField] private float speedSlideIncrease = 1.5f;
+    [SerializeField] private float slideSpeedDeaccelerate = 1f;
+    [SerializeField] private float slideStrafeMultiplier = 0.1f;
+    [SerializeField] private float maxSlideboosSpeed = 25;
+    private bool gotSlideSpeedIncrease;
 
     [Header("Slope")]
 
@@ -52,21 +63,57 @@ public class PlayerMovement : NetworkBehaviour
     private bool onSlope;
     private bool exitingSlope;
 
+
     [Header("Jump")]
-
-    [SerializeField] private Transform groundCheck;
-    [SerializeField] private float checkRadius;
-    [SerializeField] private LayerMask groundLM;
-
-    private bool isGrounded;
-    private bool canJump;
-    private bool hasDoubleJump;
-
-    [Space]
 
     [SerializeField] private float jumpForce;
 
-    [SerializeField] private MovementState state;
+    private bool isGrounded;
+
+    [Space]
+
+    [SerializeField] private int maxDoubleJumps = 2;
+    private int hasDoubleJumps;
+
+
+    [Header("Wallrun")]
+
+
+
+
+    [Header("Redirect")]
+
+    [SerializeField] private int maxRedirects = 2;
+    private int hasRedirects;
+
+
+    [Header("Grapple")]
+
+    [Header("Fov")]
+
+    [SerializeField] private float fovTime = 0.25f;
+
+    [Space]
+
+    [SerializeField] private float normalFov = 85f;
+    [SerializeField] private float redirectFov = 100f;
+    [SerializeField] private float slideFov = 100f;
+
+    [Header("Required")]
+
+    [SerializeField] private Transform orientation;
+    [SerializeField] private Transform groundCheck;
+    [SerializeField] private Transform ceilingCheck;
+    [SerializeField] private LayerMask groundLM;
+    [SerializeField] private LayerMask wallLM;
+    [SerializeField] private float groundCheckRadius;
+    [SerializeField] private float ceilingCheckRadius;
+
+
+
+    private MovementState state;
+
+
     public enum MovementState
     {
         walking,
@@ -81,9 +128,12 @@ public class PlayerMovement : NetworkBehaviour
         if (!isLocalPlayer)
             return;
 
-        cameraPrefab = Instantiate(cameraPrefab);
-        cameraPrefab.GetComponent<MoveCamera>().cameraPosition = cameraPos;
-        cameraPrefab.GetComponentInChildren<Look>().orientation = orientation;
+        // Old Awake
+
+        cameraHolder = Instantiate(cameraHolder);
+        cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
+        cameraHolder.GetComponentInChildren<Look>().orientation = orientation;
+        camera = Camera.main;
 
         characterCont = GetComponent<CharacterController>();
 
@@ -92,7 +142,8 @@ public class PlayerMovement : NetworkBehaviour
 
         controls.Player.Jump.performed += Jump;
         controls.Player.Redirect.performed += Redirect;
-    }
+
+        // True Start
 
         startYScale = transform.localScale.y;
         playerHeight = startYScale;
@@ -101,72 +152,63 @@ public class PlayerMovement : NetworkBehaviour
     [Client]
     private void Update()
     {
-        
         if (!isLocalPlayer)
             return;
 
-        StateHandlerr();
+
         isGrounded = CheckIfGrouded();
-        onSlope = OnSlope();
+        onSlope = IsOnSlope();
+
+        StateHandler();
 
         GetInput();
         UpdateVelocity();
 
-        Crouch();
-        
-        Move();
-        AirMove();
+        print($"{moveDirection.magnitude}, {velocity.magnitude}, {inputVector}, {isGrounded}");
+        //print(HasCeiling());
+
+        if (state == MovementState.crouching | state == MovementState.sliding)
+            Crouch();
+        else
+            Uncrouch();
+
+
+        if (isGrounded)
+            if (state == MovementState.sliding)
+                Slide();
+            else
+            {
+                DoFov(normalFov);
+                Move();
+            }
+        else
+        {
+            DoFov(normalFov);
+            AirMove();
+        }
     }
 
     private void LateUpdate()
     {
-        ResetJump();
+        if (!isLocalPlayer)
+            return;
+        if (isGrounded)
+            ResetAgilityAbilities();
+        if (state != MovementState.sliding)
+            gotSlideSpeedIncrease = false;
     }
 
-    /*private void StateHandler()
-    {
-        if (isGrounded && controls.Player.Walk.IsPressed())
-        {
-            state = MovementState.sprinting;
-            moveSpeed = sprintSpeed;
-        }
-
-        else if (isGrounded && controls.Player.Crouch.IsPressed())
-        {
-            state = MovementState.crouching;
-            moveSpeed = crouchSpeed;
-        }
-
-        else if (controls.Player.Crouch.WasReleasedThisFrame())
-        {
-            state = MovementState.walking;
-            moveSpeed = walkSpeed;
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-            playerHeight = startYScale;
-        }
-
-        else if (isGrounded)
-        {
-            state = MovementState.walking;
-            moveSpeed = walkSpeed;
-        }
-
-        else
-        {
-            state = MovementState.air;
-            moveSpeed = walkSpeed;
-        }
-    }*/
-
-    private void StateHandlerr()
+    private void StateHandler()
     {
         if (controls.Player.Crouch.IsPressed())
         {
-            if (false)
+            if (moveDirection.magnitude >= sprintSpeed*0.75 || (state == MovementState.sliding && moveDirection.magnitude > crouchSpeed))
                 state = MovementState.sliding;
             else
                 state = MovementState.crouching;
         }
+        else if ((state == MovementState.crouching || state == MovementState.sliding) && HasCeiling())
+            return;
         else if (controls.Player.Sprinting.IsPressed() & ChechIfForward())
         {
             state = MovementState.sprinting;
@@ -182,56 +224,49 @@ public class PlayerMovement : NetworkBehaviour
 
 
     private void GetInput()
-    {
-        inputVector = controls.Player.Move.ReadValue<Vector2>();
-    }
+        => inputVector = controls.Player.Move.ReadValue<Vector2>();
 
     private void Move()
     {
-        if (!isGrounded)
-            return;
+        moveDirection = Vector3.Lerp(moveDirection, (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized *
+            (state == MovementState.crouching ? crouchSpeed : (state == MovementState.sprinting ? sprintSpeed : walkSpeed)), accelerateLerpTime * Time.deltaTime); // Speed selection
 
-        moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * (state == MovementState.crouching ? crouchSpeed : (state == MovementState.sprinting ? sprintSpeed : walkSpeed));
-
-        if (onSlope && !exitingSlope)
-            characterCont.Move(GetSlopeMoveDir() * moveSpeed * Time.deltaTime);
-        else
-            characterCont.Move(moveDirection * Time.deltaTime);
+        characterCont.Move(moveDirection * Time.deltaTime);
     }
 
     private void AirMove()
     {
-        if(isGrounded)
-            return;
-
-        moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier).normalized * moveDirection.magnitude;
+        if (moveDirection.magnitude < maxAirStrafeSpeed)
+            moveDirection += (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier;
+        else
+            moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier).normalized * moveDirection.magnitude;
         characterCont.Move(moveDirection * Time.deltaTime);
     }
 
     private void Crouch() 
+        => transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
+
+    private void Slide()
     {
-        if (controls.Player.Crouch.WasReleasedThisFrame() || !isGrounded)
-            transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
-
-        if (state != MovementState.crouching)
-            return;
-
-        transform.localScale = new Vector3(transform.localScale.x, crouchYScale, transform.localScale.z);
-        playerHeight = crouchYScale;
-    }
-
-    // ~~~~~ Slope
-
-    private bool OnSlope()
-    {
-        if (Physics.Raycast(transform.position, Vector3.down, out slopeHit, playerHeight * 0.5f + 1f, groundLM))
+        if (!gotSlideSpeedIncrease && moveDirection.magnitude < maxSlideboosSpeed)
         {
-            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
-            return angle < maxSlopeAngle && angle != 0;
+            moveDirection *= speedSlideIncrease;
+            gotSlideSpeedIncrease = true;
         }
 
-        return false;
+        DoFov(slideFov);
+
+        moveDirection *= (moveDirection.magnitude - slideSpeedDeaccelerate) / moveDirection.magnitude;
+        moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * slideStrafeMultiplier).normalized * moveDirection.magnitude;
+
+
+        characterCont.Move(moveDirection * Time.deltaTime);
     }
+
+    private void Uncrouch()
+        => transform.localScale = new Vector3(transform.localScale.x, startYScale, transform.localScale.z);
+
+    // ~~~~~ Slope
 
     private Vector3 GetSlopeMoveDir()
         => Vector3.ProjectOnPlane(moveDirection, slopeHit.normal).normalized;
@@ -242,18 +277,20 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Jump(InputAction.CallbackContext context)
     {
-        if (!isGrounded && !hasDoubleJump)
+        if (!isGrounded && hasDoubleJumps-- < 1)
             return;
-        if (hasDoubleJump)
-            hasDoubleJump = false;
 
-        exitingSlope = true;
-
-        velocity.y += jumpForce;
+        velocity.y = velocity.y < jumpForce ? jumpForce : velocity.y + jumpForce;
     }
 
     private void Redirect(InputAction.CallbackContext context)
-        => moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * moveDirection.magnitude;
+    {
+        if (hasRedirects-- > 0)
+        {
+            moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * moveDirection.magnitude;
+            DoFov(redirectFov);
+        }
+    }
 
     private void UpdateVelocity()
     {
@@ -265,20 +302,39 @@ public class PlayerMovement : NetworkBehaviour
         characterCont.Move(velocity * Time.deltaTime);
     }
 
-    private void ResetJump()
+    private void ResetAgilityAbilities()
     {
-        if (!isGrounded)
-            return;
-
-        hasDoubleJump = true;
-        exitingSlope = false;
+        hasDoubleJumps = maxDoubleJumps;
+        hasRedirects = maxRedirects;
     }
+
+    // Fov
+
+    private void DoFov(float endValue)
+        => camera.DOFieldOfView(endValue, fovTime);
+
+    private void DoFov(float endValue, float time)
+        => camera.DOFieldOfView(endValue, time);
 
     // Bool checks
 
     private bool CheckIfGrouded()
-        => Physics.CheckSphere(new Vector3(transform.position.x, groundCheck.position.y, transform.position.z), checkRadius, groundLM, QueryTriggerInteraction.Ignore);
+        => Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLM, QueryTriggerInteraction.Ignore);
 
+    private bool HasCeiling()
+        => Physics.CheckSphere(ceilingCheck.position, ceilingCheckRadius, groundLM, QueryTriggerInteraction.Ignore);
+
+    private bool IsOnSlope()
+    {
+        if (Physics.Raycast(groundCheck.position, Vector3.down, out slopeHit, 0.4f))
+        {
+            float angle = Vector3.Angle(Vector3.up, slopeHit.normal);
+            return angle < maxSlopeAngle && angle != 0;
+        }
+            
+        return false;
+    }
+        
     private bool ChechIfForward()
     {
         float angle = Quaternion.LookRotation(moveDirection).eulerAngles.y - orientation.eulerAngles.y;
