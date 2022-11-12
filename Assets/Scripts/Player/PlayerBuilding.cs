@@ -83,6 +83,9 @@ public class PlayerBuilding : MonoBehaviour
     {
         if (controls.Player.RemoveBlock.IsPressed())
         {
+            if (gridRef.GetGridObject(transform.position + (transform.forward * buildDistance)) == null)
+                return;
+
             GridObject gridObject = gridRef.GetGridObject(transform.position + (transform.forward * buildDistance));
             PlacedObject placedObject = gridObject.GetPlacedObject();
 
