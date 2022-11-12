@@ -3,7 +3,8 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - canvas
   layers:
   - Default
   - TransparentFX
@@ -11,6 +12,8 @@ TagManager:
   - Ground
   - Water
   - UI
+  - Weapon
+  - Player
   - 
   - Ore
   - Block
