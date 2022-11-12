@@ -66,7 +66,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""Crouch"",
                     ""type"": ""Button"",
-                    ""id"": ""2da8e134-ff6a-4647-9161-90ac9566cffb"",
+                    ""id"": ""1c4ffcd2-ee42-4c58-9a8f-7d3b80779628"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Redirect"",
+                    ""type"": ""Button"",
+                    ""id"": ""c458279c-8c6a-4a53-a782-25b2d4922704"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -109,27 +118,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""RemoveBlock"",
-                    ""type"": ""Button"",
-                    ""id"": ""f96c83ee-1e51-49ad-8e95-c3b4d8f80a5b"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
                     ""name"": ""Interact"",
                     ""type"": ""Button"",
-                    ""id"": ""68bc3852-f216-4af9-a39e-c48d0466840e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""PlaceBlock"",
-                    ""type"": ""Button"",
-                    ""id"": ""57ce2e5e-1b19-4ab7-8197-e06e4bb1886f"",
+                    ""id"": ""214e1081-d135-4077-a9f8-fbed2a2c1c1a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -138,7 +129,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""PickBlock"",
                     ""type"": ""Button"",
-                    ""id"": ""bb7b85de-f282-45f9-bed0-eaff0b5df680"",
+                    ""id"": ""91e65538-0058-44e3-b221-7acf66b1ea59"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -147,25 +138,25 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 {
                     ""name"": ""RotateBlock"",
                     ""type"": ""Button"",
-                    ""id"": ""e7f49794-161b-4681-ac47-ed5b19370834"",
+                    ""id"": ""33bdf627-a853-4940-9573-f85806082f6a"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Sprinting"",
+                    ""name"": ""PlaceBlock"",
                     ""type"": ""Button"",
-                    ""id"": ""60b0fce6-2205-4f25-8cc2-73c4d4a96309"",
+                    ""id"": ""14311637-88d5-4e57-ae64-243152df2a69"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""Redirect"",
+                    ""name"": ""RemoveBlock"",
                     ""type"": ""Button"",
-                    ""id"": ""81586cf0-464a-4e1c-aa50-f75513350b33"",
+                    ""id"": ""47e5e23d-a049-4986-b9f8-78bceca75083"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -362,17 +353,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""cfde7400-84b5-4aeb-9ad8-462f958f3d29"",
-                    ""path"": ""<Keyboard>/leftCtrl"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": ""Keyboard&Mouse"",
-                    ""action"": ""Crouch"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
                     ""id"": ""4becc6b9-2ea5-4cb9-bdfe-337e18d35a80"",
                     ""path"": ""<Mouse>/rightButton"",
                     ""interactions"": """",
@@ -456,6 +436,94 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""FreeCursor"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""072b9860-692c-4e80-8ea0-38f332958867"",
+                    ""path"": ""<Keyboard>/ctrl"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""Crouch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c9fdf5ba-582b-4f2e-83ca-402b12110bbb"",
+                    ""path"": ""<Keyboard>/f"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PlaceBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""4c51b499-3c9e-447b-808e-21bc963e101c"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Redirect"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f3b203cc-4e6a-4bfe-9ed7-adf695b7ad07"",
+                    ""path"": ""<Keyboard>/g"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RemoveBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""7d0f2df5-203d-4d2d-88e3-5e52a8ca5d8e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Interact"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""cde26f84-298a-4c09-8928-825f8ec69c6c"",
+                    ""path"": ""<Keyboard>/b"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""RotateBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""302deba4-0ec8-4961-b929-46419a7e5f98"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=0)"",
+                    ""groups"": """",
+                    ""action"": ""PickBlock"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""649533b3-1062-4c54-9f2f-ac58f4821fc2"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""PickBlock"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1068,17 +1136,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Crouch = m_Player.FindAction("Crouch", throwIfNotFound: true);
+        m_Player_Redirect = m_Player.FindAction("Redirect", throwIfNotFound: true);
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Scope = m_Player.FindAction("Scope", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
         m_Player_FreeCursor = m_Player.FindAction("FreeCursor", throwIfNotFound: true);
-        m_Player_RemoveBlock = m_Player.FindAction("RemoveBlock", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
-        m_Player_PlaceBlock = m_Player.FindAction("PlaceBlock", throwIfNotFound: true);
         m_Player_PickBlock = m_Player.FindAction("PickBlock", throwIfNotFound: true);
         m_Player_RotateBlock = m_Player.FindAction("RotateBlock", throwIfNotFound: true);
-        m_Player_Sprinting = m_Player.FindAction("Sprinting", throwIfNotFound: true);
-        m_Player_Redirect = m_Player.FindAction("Redirect", throwIfNotFound: true);
+        m_Player_PlaceBlock = m_Player.FindAction("PlaceBlock", throwIfNotFound: true);
+        m_Player_RemoveBlock = m_Player.FindAction("RemoveBlock", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1156,17 +1223,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Crouch;
+    private readonly InputAction m_Player_Redirect;
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Scope;
     private readonly InputAction m_Player_Reload;
     private readonly InputAction m_Player_FreeCursor;
-    private readonly InputAction m_Player_RemoveBlock;
     private readonly InputAction m_Player_Interact;
-    private readonly InputAction m_Player_PlaceBlock;
     private readonly InputAction m_Player_PickBlock;
     private readonly InputAction m_Player_RotateBlock;
-    private readonly InputAction m_Player_Sprinting;
-    private readonly InputAction m_Player_Redirect;
+    private readonly InputAction m_Player_PlaceBlock;
+    private readonly InputAction m_Player_RemoveBlock;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1176,17 +1242,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @Sprint => m_Wrapper.m_Player_Sprint;
         public InputAction @Crouch => m_Wrapper.m_Player_Crouch;
+        public InputAction @Redirect => m_Wrapper.m_Player_Redirect;
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Scope => m_Wrapper.m_Player_Scope;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
         public InputAction @FreeCursor => m_Wrapper.m_Player_FreeCursor;
-        public InputAction @RemoveBlock => m_Wrapper.m_Player_RemoveBlock;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
-        public InputAction @PlaceBlock => m_Wrapper.m_Player_PlaceBlock;
         public InputAction @PickBlock => m_Wrapper.m_Player_PickBlock;
         public InputAction @RotateBlock => m_Wrapper.m_Player_RotateBlock;
-        public InputAction @Sprinting => m_Wrapper.m_Player_Sprinting;
-        public InputAction @Redirect => m_Wrapper.m_Player_Redirect;
+        public InputAction @PlaceBlock => m_Wrapper.m_Player_PlaceBlock;
+        public InputAction @RemoveBlock => m_Wrapper.m_Player_RemoveBlock;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1211,6 +1276,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Crouch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
                 @Crouch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnCrouch;
+                @Redirect.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRedirect;
+                @Redirect.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRedirect;
+                @Redirect.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRedirect;
                 @Fire.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
                 @Fire.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFire;
@@ -1223,27 +1291,21 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @FreeCursor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFreeCursor;
                 @FreeCursor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFreeCursor;
                 @FreeCursor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFreeCursor;
-                @RemoveBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveBlock;
-                @RemoveBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveBlock;
-                @RemoveBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveBlock;
                 @Interact.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
                 @Interact.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnInteract;
-                @PlaceBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceBlock;
-                @PlaceBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceBlock;
-                @PlaceBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceBlock;
                 @PickBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickBlock;
                 @PickBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickBlock;
                 @PickBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPickBlock;
                 @RotateBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateBlock;
                 @RotateBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateBlock;
                 @RotateBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRotateBlock;
-                @Sprinting.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprinting;
-                @Sprinting.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprinting;
-                @Sprinting.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnSprinting;
-                @Redirect.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRedirect;
-                @Redirect.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRedirect;
-                @Redirect.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRedirect;
+                @PlaceBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceBlock;
+                @PlaceBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceBlock;
+                @PlaceBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnPlaceBlock;
+                @RemoveBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveBlock;
+                @RemoveBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveBlock;
+                @RemoveBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveBlock;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1263,6 +1325,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Crouch.started += instance.OnCrouch;
                 @Crouch.performed += instance.OnCrouch;
                 @Crouch.canceled += instance.OnCrouch;
+                @Redirect.started += instance.OnRedirect;
+                @Redirect.performed += instance.OnRedirect;
+                @Redirect.canceled += instance.OnRedirect;
                 @Fire.started += instance.OnFire;
                 @Fire.performed += instance.OnFire;
                 @Fire.canceled += instance.OnFire;
@@ -1275,27 +1340,21 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @FreeCursor.started += instance.OnFreeCursor;
                 @FreeCursor.performed += instance.OnFreeCursor;
                 @FreeCursor.canceled += instance.OnFreeCursor;
-                @RemoveBlock.started += instance.OnRemoveBlock;
-                @RemoveBlock.performed += instance.OnRemoveBlock;
-                @RemoveBlock.canceled += instance.OnRemoveBlock;
                 @Interact.started += instance.OnInteract;
                 @Interact.performed += instance.OnInteract;
                 @Interact.canceled += instance.OnInteract;
-                @PlaceBlock.started += instance.OnPlaceBlock;
-                @PlaceBlock.performed += instance.OnPlaceBlock;
-                @PlaceBlock.canceled += instance.OnPlaceBlock;
                 @PickBlock.started += instance.OnPickBlock;
                 @PickBlock.performed += instance.OnPickBlock;
                 @PickBlock.canceled += instance.OnPickBlock;
                 @RotateBlock.started += instance.OnRotateBlock;
                 @RotateBlock.performed += instance.OnRotateBlock;
                 @RotateBlock.canceled += instance.OnRotateBlock;
-                @Sprinting.started += instance.OnSprinting;
-                @Sprinting.performed += instance.OnSprinting;
-                @Sprinting.canceled += instance.OnSprinting;
-                @Redirect.started += instance.OnRedirect;
-                @Redirect.performed += instance.OnRedirect;
-                @Redirect.canceled += instance.OnRedirect;
+                @PlaceBlock.started += instance.OnPlaceBlock;
+                @PlaceBlock.performed += instance.OnPlaceBlock;
+                @PlaceBlock.canceled += instance.OnPlaceBlock;
+                @RemoveBlock.started += instance.OnRemoveBlock;
+                @RemoveBlock.performed += instance.OnRemoveBlock;
+                @RemoveBlock.canceled += instance.OnRemoveBlock;
             }
         }
     }
@@ -1465,17 +1524,16 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnJump(InputAction.CallbackContext context);
         void OnSprint(InputAction.CallbackContext context);
         void OnCrouch(InputAction.CallbackContext context);
+        void OnRedirect(InputAction.CallbackContext context);
         void OnFire(InputAction.CallbackContext context);
         void OnScope(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
         void OnFreeCursor(InputAction.CallbackContext context);
-        void OnRemoveBlock(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
-        void OnPlaceBlock(InputAction.CallbackContext context);
         void OnPickBlock(InputAction.CallbackContext context);
         void OnRotateBlock(InputAction.CallbackContext context);
-        void OnSprinting(InputAction.CallbackContext context);
-        void OnRedirect(InputAction.CallbackContext context);
+        void OnPlaceBlock(InputAction.CallbackContext context);
+        void OnRemoveBlock(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

@@ -44,7 +44,16 @@
                 {
                     "name": "Crouch",
                     "type": "Button",
-                    "id": "2da8e134-ff6a-4647-9161-90ac9566cffb",
+                    "id": "1c4ffcd2-ee42-4c58-9a8f-7d3b80779628",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                },
+                {
+                    "name": "Redirect",
+                    "type": "Button",
+                    "id": "c458279c-8c6a-4a53-a782-25b2d4922704",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -87,27 +96,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "RemoveBlock",
-                    "type": "Button",
-                    "id": "f96c83ee-1e51-49ad-8e95-c3b4d8f80a5b",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
                     "name": "Interact",
                     "type": "Button",
-                    "id": "68bc3852-f216-4af9-a39e-c48d0466840e",
-                    "expectedControlType": "Button",
-                    "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
-                },
-                {
-                    "name": "PlaceBlock",
-                    "type": "Button",
-                    "id": "57ce2e5e-1b19-4ab7-8197-e06e4bb1886f",
+                    "id": "214e1081-d135-4077-a9f8-fbed2a2c1c1a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -116,7 +107,7 @@
                 {
                     "name": "PickBlock",
                     "type": "Button",
-                    "id": "bb7b85de-f282-45f9-bed0-eaff0b5df680",
+                    "id": "91e65538-0058-44e3-b221-7acf66b1ea59",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -125,25 +116,25 @@
                 {
                     "name": "RotateBlock",
                     "type": "Button",
-                    "id": "e7f49794-161b-4681-ac47-ed5b19370834",
+                    "id": "33bdf627-a853-4940-9573-f85806082f6a",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Sprinting",
+                    "name": "PlaceBlock",
                     "type": "Button",
-                    "id": "60b0fce6-2205-4f25-8cc2-73c4d4a96309",
+                    "id": "14311637-88d5-4e57-ae64-243152df2a69",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Redirect",
+                    "name": "RemoveBlock",
                     "type": "Button",
-                    "id": "81586cf0-464a-4e1c-aa50-f75513350b33",
+                    "id": "47e5e23d-a049-4986-b9f8-78bceca75083",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -340,17 +331,6 @@
                 },
                 {
                     "name": "",
-                    "id": "cfde7400-84b5-4aeb-9ad8-462f958f3d29",
-                    "path": "<Keyboard>/leftCtrl",
-                    "interactions": "",
-                    "processors": "",
-                    "groups": "Keyboard&Mouse",
-                    "action": "Crouch",
-                    "isComposite": false,
-                    "isPartOfComposite": false
-                },
-                {
-                    "name": "",
                     "id": "4becc6b9-2ea5-4cb9-bdfe-337e18d35a80",
                     "path": "<Mouse>/rightButton",
                     "interactions": "",
@@ -434,6 +414,94 @@
                     "processors": "",
                     "groups": "",
                     "action": "FreeCursor",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "072b9860-692c-4e80-8ea0-38f332958867",
+                    "path": "<Keyboard>/ctrl",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "Crouch",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c9fdf5ba-582b-4f2e-83ca-402b12110bbb",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PlaceBlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "4c51b499-3c9e-447b-808e-21bc963e101c",
+                    "path": "<Mouse>/rightButton",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Redirect",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "f3b203cc-4e6a-4bfe-9ed7-adf695b7ad07",
+                    "path": "<Keyboard>/g",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RemoveBlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "7d0f2df5-203d-4d2d-88e3-5e52a8ca5d8e",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "cde26f84-298a-4c09-8928-825f8ec69c6c",
+                    "path": "<Keyboard>/b",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "RotateBlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "302deba4-0ec8-4961-b929-46419a7e5f98",
+                    "path": "<Keyboard>/1",
+                    "interactions": "",
+                    "processors": "Scale(factor=0)",
+                    "groups": "",
+                    "action": "PickBlock",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "649533b3-1062-4c54-9f2f-ac58f4821fc2",
+                    "path": "<Keyboard>/2",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "PickBlock",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

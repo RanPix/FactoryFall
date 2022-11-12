@@ -122,8 +122,8 @@ abstract public class Weapon : MonoBehaviour
 
         weaponAmmo = help.GetComponent<WeaponAmmo>();
         canShoot = true;
-       weaponAmmo.Ammo = ammo;
-       weaponAmmo.ClipSize = maxAmmo;
+        weaponAmmo.Ammo = ammo;
+        weaponAmmo.ClipSize = maxAmmo;
         weaponAmmo.ReserveAmmo = reserveAmmo;
         weaponAmmo.AmmoText = ammoText;
 

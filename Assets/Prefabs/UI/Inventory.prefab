@@ -65,7 +65,7 @@ MonoBehaviour:
     type: 3}
   inventoryPanelSlotPrefab: {fileID: 6847489205253278177, guid: 6d483d3932b9b484ab446bc5a02cd4c1,
     type: 3}
-  isPanelOpened: 1
+  isPanelOpened: 0
 --- !u!114 &2717916188277975233
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -126,18 +126,6 @@ MonoBehaviour:
     m_ActionName: Player/Walk[/Keyboard/leftShift]
   - m_PersistentCalls:
       m_Calls: []
-    m_ActionId: 2da8e134-ff6a-4647-9161-90ac9566cffb
-    m_ActionName: Player/Crouch[/Keyboard/leftCtrl]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 60b0fce6-2205-4f25-8cc2-73c4d4a96309
-    m_ActionName: Player/Sprinting[/Keyboard/shift]
-  - m_PersistentCalls:
-      m_Calls: []
-    m_ActionId: 81586cf0-464a-4e1c-aa50-f75513350b33
-    m_ActionName: Player/Redirect[/Mouse/rightButton]
-  - m_PersistentCalls:
-      m_Calls: []
     m_ActionId: 8c73a003-c2b7-46fc-b803-346cf788234a
     m_ActionName: UI/Navigate[/Keyboard/w,/Keyboard/upArrow,/Keyboard/s,/Keyboard/downArrow,/Keyboard/a,/Keyboard/leftArrow,/Keyboard/d,/Keyboard/rightArrow]
   - m_PersistentCalls:
@@ -192,6 +180,46 @@ MonoBehaviour:
         m_CallState: 2
     m_ActionId: 32e70071-5923-449a-89c8-e69f5b7d2283
     m_ActionName: UI/OpenOrCloseInventory[/Keyboard/i]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 1c4ffcd2-ee42-4c58-9a8f-7d3b80779628
+    m_ActionName: Player/Crouch[/Keyboard/ctrl]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: c458279c-8c6a-4a53-a782-25b2d4922704
+    m_ActionName: Player/Redirect[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: ed14871f-1dc4-4b07-a213-2e59f0260416
+    m_ActionName: Player/Scope[/Mouse/rightButton]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 532d5ada-af13-4bed-9015-71ac560e83f8
+    m_ActionName: Player/Reload[/Keyboard/r]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 6b707a34-f40e-4370-a809-774d91df077d
+    m_ActionName: Player/FreeCursor[/Keyboard/escape]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 214e1081-d135-4077-a9f8-fbed2a2c1c1a
+    m_ActionName: Player/Interact[/Keyboard/e]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 91e65538-0058-44e3-b221-7acf66b1ea59
+    m_ActionName: Player/PickBlock[/Keyboard/1,/Keyboard/2]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 33bdf627-a853-4940-9573-f85806082f6a
+    m_ActionName: Player/RotateBlock[/Keyboard/b]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 14311637-88d5-4e57-ae64-243152df2a69
+    m_ActionName: Player/PlaceBlock[/Keyboard/f]
+  - m_PersistentCalls:
+      m_Calls: []
+    m_ActionId: 47e5e23d-a049-4986-b9f8-78bceca75083
+    m_ActionName: Player/RemoveBlock[/Keyboard/g]
   m_NeverAutoSwitchControlSchemes: 0
   m_DefaultControlScheme: 
   m_DefaultActionMap: UI

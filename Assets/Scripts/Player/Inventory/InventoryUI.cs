@@ -7,7 +7,7 @@ public class InventoryUI : MonoBehaviour
 {
     private PlayerControls controls;
 
-    [SerializeField] private GameObject inventoryPanel;
+    private GameObject inventoryPanel;
 
     [SerializeField] private GameObject inventoryPanelPrefab;
     [SerializeField] private GameObject inventoryPanelSlotPrefab;
@@ -15,16 +15,26 @@ public class InventoryUI : MonoBehaviour
     public bool isPanelOpened = false;
 
     const int slotsXOffset = 45;
-    const int slotsYOffset = 500;
+    const int slotsYOffset = 470;
     const int distanceBetweenSlots = 5;
     const int slotSize = 80;
     const int slotsInRow = 9;
+    void Start()
+    {
+        inventoryPanel = Instantiate(inventoryPanelPrefab, GameObject.Find("Canvas").transform);
+
+        controls = new PlayerControls();
+        controls.UI.Enable();
+        controls.UI.OpenOrCloseInventory.performed += OpenOrClosePanel;
+        ReloadInventoryPanel();
+    }
 
     public void ReloadInventoryPanel()//не чіпайте, будь ласка
     {
+        
         foreach (Transform child in inventoryPanel.transform)
         {
-            GameObject.Destroy(child.gameObject);
+            Destroy(child.gameObject);
         }
 
         int slotsCounts = gameObject.GetComponent<Inventory>().slotsCount;
@@ -45,17 +55,9 @@ public class InventoryUI : MonoBehaviour
     {
         if (context.phase == InputActionPhase.Started)
         {
-
             isPanelOpened = !isPanelOpened;
             ReloadInventoryPanel();
         }
     }
 
-    void Start()
-    {
-        controls = new PlayerControls();
-        controls.UI.Enable();
-        controls.UI.OpenOrCloseInventory.performed += OpenOrClosePanel;
-        ReloadInventoryPanel();
-    }
 }

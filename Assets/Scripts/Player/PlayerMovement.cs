@@ -16,11 +16,8 @@ public class PlayerMovement : NetworkBehaviour
     [SerializeField] private float gravity;
     private Vector3 velocity;
 
-    [Header("Camera")]
 
-    [SerializeField] private GameObject cameraHolder;
     private Camera camera;
-    [SerializeField] private Transform cameraPosition;
 
     [Header("Move")]
 
@@ -129,10 +126,6 @@ public class PlayerMovement : NetworkBehaviour
             return;
 
         // Old Awake
-
-        cameraHolder = Instantiate(cameraHolder);
-        cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
-        cameraHolder.GetComponentInChildren<Look>().orientation = orientation;
         camera = Camera.main;
 
         characterCont = GetComponent<CharacterController>();
@@ -164,7 +157,7 @@ public class PlayerMovement : NetworkBehaviour
         GetInput();
         UpdateVelocity();
 
-        print($"{moveDirection.magnitude}, {velocity.magnitude}, {inputVector}, {isGrounded}");
+        //print($"{moveDirection.magnitude}, {velocity.magnitude}, {inputVector}, {isGrounded}");
         //print(HasCeiling());
 
         if (state == MovementState.crouching | state == MovementState.sliding)
@@ -209,7 +202,7 @@ public class PlayerMovement : NetworkBehaviour
         }
         else if ((state == MovementState.crouching || state == MovementState.sliding) && HasCeiling())
             return;
-        else if (controls.Player.Sprinting.IsPressed() & ChechIfForward())
+        else if (controls.Player.Sprint.IsPressed() & ChechIfForward())
         {
             state = MovementState.sprinting;
         }
@@ -311,10 +304,10 @@ public class PlayerMovement : NetworkBehaviour
     // Fov
 
     private void DoFov(float endValue)
-        => camera.DOFieldOfView(endValue, fovTime);
+        => GetComponent<Camera>().DOFieldOfView(endValue, fovTime);
 
     private void DoFov(float endValue, float time)
-        => camera.DOFieldOfView(endValue, time);
+        => GetComponent<Camera>().DOFieldOfView(endValue, time);
 
     // Bool checks
 

@@ -5,10 +5,24 @@ public class GamePlayer : NetworkBehaviour, IDamagable
 {
     [SerializeField] private Health health;
 
+    [SerializeField] private InventoryUI inventory;
+
+    [Header("Camera")]
+
+    [SerializeField] private GameObject cameraHolder;
+    [SerializeField] private Transform cameraPosition;
+    [SerializeField] private Transform orientation;
+
     private void Start()
     {
         if (!isLocalPlayer)
             return;
+
+        cameraHolder = Instantiate(cameraHolder);
+        cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
+        cameraHolder.GetComponentInChildren<Look>().orientation = orientation;
+
+        cameraHolder.GetComponentInChildren<Look>().inventoryUI = inventory;
 
         //PlayerInteraction.instance.player = this;
     }
