@@ -19,7 +19,7 @@ public class Item
     };
 
     public int count = 0;
-    public new ItemType itemType = ItemType.Nothing;
+    public ItemType itemType = ItemType.Nothing;
 
     public Item(int count = 0, ItemType itemType = ItemType.Nothing)
     {

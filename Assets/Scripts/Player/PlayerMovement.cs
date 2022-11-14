@@ -2,7 +2,6 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.UIElements;
-using Mirror;
 using DG.Tweening;
 
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]

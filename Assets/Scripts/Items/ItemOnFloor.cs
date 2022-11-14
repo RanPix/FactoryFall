@@ -8,8 +8,8 @@ public class ItemOnFloor : MonoBehaviour
 
     public Item Take()
     {
-        return item;
         Destroy(gameObject);
+        return item;
     }
     
     public Item PutItem(Item itemToPut) => item.PutItem(itemToPut);
