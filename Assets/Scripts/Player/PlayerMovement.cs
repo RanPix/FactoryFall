@@ -1,9 +1,6 @@
 using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.UIElements;
-using Mirror;
-using DG.Tweening;
 
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]
 public class PlayerMovement : NetworkBehaviour
@@ -171,12 +168,10 @@ public class PlayerMovement : NetworkBehaviour
                 Slide();
             else
             {
-                DoFov(normalFov);
                 Move();
             }
         else
         {
-            DoFov(normalFov);
             AirMove();
         }
     }
@@ -213,7 +208,7 @@ public class PlayerMovement : NetworkBehaviour
     }
 
 
-    // -------------- Movement -------------- \\
+    #region OldMovement
 
 
     private void GetInput()
@@ -229,10 +224,25 @@ public class PlayerMovement : NetworkBehaviour
 
     private void AirMove()
     {
-        if (moveDirection.magnitude < maxAirStrafeSpeed)
-            moveDirection += (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier;
+        var moveDirectionMagnitude = moveDirection.magnitude;
+        var orientationXZ = orientation.forward * inputVector.y + orientation.right * inputVector.x;
+        var orientationXZNormalized = orientationXZ.normalized;
+
+        print($"print Before: moveDirection: {moveDirection}, {orientationXZNormalized}, {airMultiplier}, {maxAirStrafeSpeed}");
+
+        if (moveDirectionMagnitude < maxAirStrafeSpeed)
+        {
+            moveDirection += orientationXZNormalized * airMultiplier;
+        }
         else
-            moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * airMultiplier).normalized * moveDirection.magnitude;
+        {
+            moveDirection =
+                (moveDirection + orientationXZNormalized *
+                    airMultiplier).normalized * moveDirectionMagnitude;
+        }
+
+        print($"print After: moveDirection: {moveDirection}, {orientationXZNormalized}, {airMultiplier}, {maxAirStrafeSpeed}");
+
         characterCont.Move(moveDirection * Time.deltaTime);
     }
 
@@ -246,8 +256,6 @@ public class PlayerMovement : NetworkBehaviour
             moveDirection *= speedSlideIncrease;
             gotSlideSpeedIncrease = true;
         }
-
-        DoFov(slideFov);
 
         moveDirection *= (moveDirection.magnitude - slideSpeedDeaccelerate) / moveDirection.magnitude;
         moveDirection = (moveDirection + (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * slideStrafeMultiplier).normalized * moveDirection.magnitude;
@@ -281,7 +289,6 @@ public class PlayerMovement : NetworkBehaviour
         if (hasRedirects-- > 0)
         {
             moveDirection = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized * moveDirection.magnitude;
-            DoFov(redirectFov);
         }
     }
 
@@ -300,14 +307,6 @@ public class PlayerMovement : NetworkBehaviour
         hasDoubleJumps = maxDoubleJumps;
         hasRedirects = maxRedirects;
     }
-
-    // Fov
-
-    private void DoFov(float endValue)
-        => GetComponent<Camera>().DOFieldOfView(endValue, fovTime);
-
-    private void DoFov(float endValue, float time)
-        => GetComponent<Camera>().DOFieldOfView(endValue, time);
 
     // Bool checks
 
@@ -333,11 +332,19 @@ public class PlayerMovement : NetworkBehaviour
         float angle = Quaternion.LookRotation(moveDirection).eulerAngles.y - orientation.eulerAngles.y;
         angle = angle < 0 ? -angle : angle; // Handmade Abs)
 
-        if (angle < 46 || angle == 315)
+        if (angle < 46 || angle > 315)
             return true;
 
         return false;
     }
+
+    #endregion
+
+    #region New Movement
+
+
+
+    #endregion
 
     private void OnDestroy()
     {
