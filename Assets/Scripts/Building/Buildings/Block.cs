@@ -1,6 +1,7 @@
 using UnityEngine;
 using Mirror;
 
+[RequireComponent(typeof(PlacedObject))]
 public class Block : NetworkBehaviour, IDamagable
 {
     [SerializeField] protected string blockName;
@@ -18,7 +19,7 @@ public class Block : NetworkBehaviour, IDamagable
     [Space]
     [SerializeField] private float timeToRemove;
 
-    [Header("yes")]
+    [Header("Energy")]
     [SerializeField] private bool canRecieveEnergy;
     [SyncVar][SerializeField] protected float energy;
 

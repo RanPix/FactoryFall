@@ -6,12 +6,29 @@ public class Furnace : Block, IInteractable
 {
     [Header("Furnace")]
 
-    [SyncVar][SerializeField] private int toSmelt;
-    [SyncVar][SerializeField] private int smelted;
+    [SyncVar][SerializeField] private Item[] toSmelt;
+    [SyncVar][SerializeField] private Item[] smelted;
 
-    [SyncVar][SerializeField] private int fuel;
+    [SyncVar][SerializeField] private Item fuel;
     [SerializeField] private float smeltTime;
     private float smeltTimer;
+    
+    [Header("UI")]
+
+    [SerializeField] private Transform furnaceUI;
+
+    [SerializeField] private RecipeList recipeList;
+
+    private void Start()
+    {
+        if (isLocalPlayer)
+        {
+            furnaceUI = Instaniate(furnacceUI, GameObject.Find("Canvas").transform);
+            furnaceUI.SetActive(false);
+        }
+    }
+
+    
 
     void Update()
     {
@@ -24,34 +41,66 @@ public class Furnace : Block, IInteractable
     [Server]
     private void Smelt()
     {
-        if (fuel < 1 || toSmelt < 1)
+        if (!CanSmelt())
             return;
+
+        Recipe foundRecipe;
+        foreach (Recipe recipe in recipeList.Recipes)
+        {
+            if (recipe.CanCraft(toSmelt))
+            {
+                foundRecipe = recipe;
+                break;
+            }
+            else
+                return;
+        }
+
+        (Item[], Item[]) SmeltResult = foundRecipe.Craft(toSmelt);
+
+        toSmelt = SmeltResult.Item1;
+        smelted = SmeltResult.Item2;
+        
+        fuel.count--;
+    }
+
+    private bool CanSmelt()
+    {
+        if (fuel < 1 || ItemArrLess(toSmelt, 1))
+        {
+            smeltTimer = 0f;
+            return false;
+        }
 
         smeltTimer += Time.deltaTime;
 
         if (smeltTimer < smeltTime)
-            return;
+            return false;
         smeltTimer = 0f;
 
-        smelted++;
-        toSmelt--;
-
-        fuel--;
+        return true;//:skull:
     }
 
     public void Interact()
     {
-        if (!isServer)
-            return;
-
-        fuel++;
-        toSmelt++;
-        print("smelt some integers");
+        if (isLocalPlayer)
+        {
+            furnaceUI.SetActive(true);
+        }
     }
 
     private void OnDestroy()
     {
         print($"dropped {toSmelt} queue items and {smelted} smelted items");
         //drop self inventory
+    }
+
+    private bool ItemArrLess(Item[] itemArray, int amount)
+    {
+        int a = 0;
+        foreach (Item item in itemArray)
+            a += item.count;
+
+        return a > amount;
     }
 }

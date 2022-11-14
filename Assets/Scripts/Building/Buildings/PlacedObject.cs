@@ -25,10 +25,10 @@ public class PlacedObject : MonoBehaviour
         return placedBlockType.GetGridPositionList(origin, dir);
     }
 
-    public void DestroySelf()
-    {
-        Destroy(gameObject);
-    }
+    //public void DestroySelf()
+    //{
+    //    Destroy(gameObject);
+    //}
 
 
 }

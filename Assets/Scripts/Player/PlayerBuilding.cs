@@ -51,13 +51,10 @@ public class PlayerBuilding : MonoBehaviour
         bool canBuild = true;
         foreach (Vector3Int position in positionsList)
         {
-            if (gridRef.GetGridObject(position.x, position.y, position.z) == null)
-            {
-                canBuild = false;
-                break;
-            }
+            bool isNullPosition = gridRef.GetGridObject(position.x, position.y, position.z) == null;
+            bool canBuildInThisPosition = !gridRef.GetGridObject(position.x, position.y, position.z).CanBuild();
 
-            if (!gridRef.GetGridObject(position.x, position.y, position.z).CanBuild())
+            if (isNullPosition || canBuildInThisPosition)
             {
                 canBuild = false;
                 break;
@@ -91,17 +88,19 @@ public class PlayerBuilding : MonoBehaviour
 
             if (placedObject != null)
             {
-                placedObject.DestroySelf();
 
                 List<Vector3Int> positionsList = placedObject.GetGridPositionList();
 
                 foreach (Vector3Int position in positionsList)
                     gridRef.GetGridObject(position.x, position.y, position.z).ClearPlacedObject();
+
+                Destroy(placedObject);
+                //placedObject.DestroySelf();
             }
         }
 
         return;
-        //tbd
+
         if (controls.Player.RemoveBlock.IsPressed())
         {
             bool blockHit = Physics.Raycast(transform.position, transform.forward, out building, buildDistance);
@@ -127,6 +126,7 @@ public class PlayerBuilding : MonoBehaviour
                 if (removingTimer > removedBlock.GetRemoveTime())
                 {
                     Destroy(removedBlock);
+
                     removingTimer = 0f;
                     removedBlock = null;
                 }
