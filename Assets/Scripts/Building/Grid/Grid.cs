@@ -13,13 +13,13 @@ public class Grid<TGritObject>
         public int z;
     }
 
-    private int width;
-    private int height;
-    private int length;
+    public int width { get; private set; }
+    public int height { get; private set; }
+    public int length { get; private set; }
 
     public float cellSize { get; private set; }
 
-    private Vector3 originPos;
+    public Vector3 originPos { get; private set; }
 
     private TGritObject[,,] gridArray;
 

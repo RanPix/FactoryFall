@@ -9,7 +9,6 @@ public class Block : NetworkBehaviour, IDamagable
     [Header("Stats")]
 
     [SerializeField] protected bool isDestroyable = true;
-    [SerializeField] protected bool isSupport = false;
 
     [Space]
     [SerializeField] protected float defence;

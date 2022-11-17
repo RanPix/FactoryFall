@@ -1,10 +1,8 @@
 using UnityEngine;
 using Mirror;
 
-public class GamePlayer : NetworkBehaviour, IDamagable
+public class GamePlayer : NetworkBehaviour
 {
-    [SerializeField] private Health health;
-
     [SerializeField] private InventoryUI inventory;
 
     [Header("Camera")]
@@ -43,9 +41,4 @@ public class GamePlayer : NetworkBehaviour, IDamagable
     private void RemoveBlockServer(Block block) =>
         block.RemoveBlock();*/
 
-    public bool Damage(float damage)
-    {
-        health.currentHealth -= damage;
-        return false;
-    }
 }

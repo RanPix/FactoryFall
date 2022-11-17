@@ -60,8 +60,22 @@ public class Furnace : CraftingBlock, IInteractable
 
         (Item[], Item[]) SmeltResult = foundRecipe.Craft(toSmelt);
 
-        toSmelt = SmeltResult.Item1;
-        smelted = SmeltResult.Item2;
+        Recipe foundRecipe;
+        foreach (Recipe recipe in recipeList.Recipes)
+        {
+            if (recipe.CanCraft(toSmelt))
+            {
+                foundRecipe = recipe;
+                break;
+            }
+            else
+                return;
+        }
+
+        //(Item[], Item[]) SmeltResult = foundRecipe.Craft(toSmelt);
+
+        //toSmelt = SmeltResult.Item1;
+        //smelted = SmeltResult.Item2;
         
         fuel.count--;
     }*/
