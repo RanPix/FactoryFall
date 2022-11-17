@@ -7,11 +7,18 @@ public enum CraftableOn
 
 public struct Recipe
 {
-    private Item[] neededItems;
-    private Item[] craftResult;
-    
+    public Item[] neededItems { get; private set; }
+    public Item[] craftResult { get; private set; }
+    public float craftTime { get; private set; }
+    public CraftableOn[] craftableOn { get; private set; }
 
-    private CraftableOn[] canCraftOn;
+    public Recipe(Item[] neededItems, Item[] craftResult, float craftTime, CraftableOn[] craftableOn)
+    {
+        this.neededItems = neededItems;
+        this.craftResult = craftResult;
+        this.craftTime = craftTime;
+        this.craftableOn = craftableOn;
+    }
 
     public (Item[]/*rest*/, Item[]/*craft result*/) Craft(Item[] givenItems)
     {
@@ -29,8 +36,9 @@ public struct Recipe
         return (givenItems, craftResult);
     }
 
-    public bool CanCraft(Item[] givenItems)
+    public bool CanCraft(Item[] givenItems, float craftingProgress)
     {
+        if (craftingProgress < craftTime) return false;
         if (neededItems.Length < givenItems.Length)
             return false;
         
@@ -41,4 +49,15 @@ public struct Recipe
 
         return result;
     }
+
+    public static bool operator ==(Recipe firstRecipe, Recipe secondRecipe)
+    {
+        bool isResultsEquals = firstRecipe.craftResult == secondRecipe.craftResult;
+        bool isNeededItemsEquals = firstRecipe.neededItems == secondRecipe.neededItems;
+        bool isCanCraftOnEquals = firstRecipe.craftableOn == secondRecipe.craftableOn;
+        bool isCraftTimesOnEquals = firstRecipe.craftableOn == secondRecipe.craftableOn;
+        return isResultsEquals && isNeededItemsEquals && isCanCraftOnEquals && isCraftTimesOnEquals;
+    }
+
+    public static bool operator !=(Recipe firstRecipe, Recipe secondRecipe) => !(firstRecipe == secondRecipe);
 }

@@ -7,6 +7,8 @@ public class ItemTypeInfo : ScriptableObject
 {
     public ItemType itemType;
 
+    public int maxStack;
+    
     public string itemName;
     public string description;
 

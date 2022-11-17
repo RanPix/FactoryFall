@@ -100,8 +100,9 @@ public class PlayerBuilding : MonoBehaviour
         }
 
         return;
+        //something. idk what is it but it unreachable
 
-        if (controls.Player.RemoveBlock.IsPressed())
+        /*if (controls.Player.RemoveBlock.IsPressed())
         {
             bool blockHit = Physics.Raycast(transform.position, transform.forward, out building, buildDistance);
 
@@ -136,6 +137,6 @@ public class PlayerBuilding : MonoBehaviour
         {
             removingTimer = 0f;
             removedBlock = null;
-        }
+        }*/
     }
 }

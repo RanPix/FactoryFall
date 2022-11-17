@@ -7,16 +7,19 @@ public enum ItemType
     Nothing,
     IronOre,
     CopperOre,
+    IronPlate,
+    CopperPlate,
+    Coal
 }
 
 public class Item
 {
-    public static Dictionary<ItemType, int> itemTypesMaxStacks = new Dictionary<ItemType, int>()
+    /*public static Dictionary<ItemType, int> itemTypesMaxStacks = new Dictionary<ItemType, int>()
     {
         { ItemType.Nothing, 99999 },
         { ItemType.IronOre, 100 },
         { ItemType.CopperOre, 100 },
-    };
+    };*/
 
     public int count = 0;
     public ItemType itemType = ItemType.Nothing;
@@ -37,25 +40,27 @@ public class Item
 
             return TakenItem;
         }
+
+        int maxStack = MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(item.itemType).maxStack;
+
+        if (item.count + count <= maxStack)
+        {
+            count += item.count;
+            return new Item();
+        }
+
         else
         {
-            if (item.count + count <= itemTypesMaxStacks[item.itemType])
-            {
-                count += item.count;
-                return new Item();
-            }
-            else
-            {
-                item.count -= itemTypesMaxStacks[item.itemType] - count;
-                count = itemTypesMaxStacks[item.itemType];
-                return item;
-            }
+            item.count -= maxStack - count;
+            count = maxStack;
+            return item;
         }
-        return item;
     }
 
     public Item SecondaryPutItem(Item item)//пояснення чому не void: я хочу щоб на мишці висів 1 item типу як предмет який тримає мишка, і при визові цієї функції вміст мишки буде замінюватись на Item який повертає ця функція
     {
+        int maxStack = MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(itemType).maxStack;
+
         if (item.itemType == ItemType.Nothing && itemType != ItemType.Nothing)
         {
             int itemsLeft = count / 2;
@@ -67,8 +72,7 @@ public class Item
             count = itemsLeft;
             return new Item(itemsTake, itemType);
         }
-
-        else if ((item.itemType == itemType && count < itemTypesMaxStacks[itemType]) || item.itemType == ItemType.Nothing)
+        else if ((item.itemType == itemType && count < maxStack) || item.itemType == ItemType.Nothing)
         {
             itemType = item.itemType;
             item.count--;
@@ -79,12 +83,11 @@ public class Item
     }
 
     public override string ToString() => $"{count}, {itemType}";
+    public bool IsNull() => count == null && itemType == null;
 
     public static Item operator +(Item firstItem, Item secondItem) => new Item(firstItem.count + secondItem.count, firstItem.itemType);
-
     public static bool operator ==(Item firstItem, Item secondItem) => firstItem.count == secondItem.count && firstItem.itemType == secondItem.itemType;
     public static bool operator !=(Item firstItem, Item secondItem) => !(firstItem == secondItem);
-
     public static bool operator ==(Item[] itemArray, Item item)
     {
         int a = 0;//amount of items of type of item type in item array
@@ -99,22 +102,14 @@ public class Item
         return a == item.count;
     }
     public static bool operator !=(Item[] itemArray, Item item) => !(itemArray == item);
-
     public static bool operator ==(Item item, Item[] itemArray) => itemArray == item;
     public static bool operator !=(Item item, Item[] itemArray) => !(itemArray == item);
-
     public static bool operator >(Item firstItem, Item secondItem) => firstItem.count > secondItem.count;
-
     public static bool operator <(Item firstItem, Item secondItem) => firstItem.count < secondItem.count;
-
     public static bool operator >(int count, Item item) => count > item.count;
-
     public static bool operator <(int count, Item item) => count < item.count;
-
     public static bool operator >(Item item, int count) => item.count > count;
-
     public static bool operator <(Item item, int count) => item.count < count;
-
     public static bool operator >(Item[] itemArray, Item item)
     {
         int a = 0;//amount of items of type of item type in item array
@@ -128,7 +123,6 @@ public class Item
         }
         return false;
     }
-
     public static bool operator <(Item[] itemArray, Item item)
     {
         int a = 0;//amount of items of type of item type in item array
@@ -142,7 +136,6 @@ public class Item
         }
         return true;
     }
-
     public static bool operator >(List<Item> itemArray, Item item)
     {
         int a = 0;//amount of items of type of item type in item array
@@ -156,7 +149,6 @@ public class Item
         }
         return false;
     }
-
     public static bool operator <(List<Item> itemArray, Item item)
     {
         int a = 0;//amount of items of type of item type in item array
@@ -172,7 +164,7 @@ public class Item
     }
 }
 
-public static class SUS_ItemExtensions//сеодно ця назва більше ніде не з'явиться
+public static class SUS___SUSSUS_AMONGUS_____________________________________________ItemExtensions//сеодно ця назва більше ніде не з'явиться
 {
     public static bool bebraless(this Item[] itemArray, int amount)
     {
@@ -185,6 +177,10 @@ public static class SUS_ItemExtensions//сеодно ця назва більш�
 
     public static bool bebramore(this Item[] itemArray, int amount)
     {
+
+
+
+
         int a = 0;
         foreach (Item item in itemArray)
             a += item.count;

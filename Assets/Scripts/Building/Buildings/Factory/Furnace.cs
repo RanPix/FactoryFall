@@ -2,20 +2,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 
-public class Furnace : Block, IInteractable
+public class Furnace : CraftingBlock, IInteractable
 {
     [Header("Furnace")]
+    
 
-    [SyncVar][SerializeField] private Item[] toSmelt;
-    [SyncVar][SerializeField] private Item[] smelted;
+    //[SyncVar][SerializeField] private Item[] toSmelt;
+    //[SyncVar][SerializeField] private Item[] smelted;
 
-    [SyncVar][SerializeField] private Item fuel;
+    //[SyncVar][SerializeField] private Item fuel;
     [SerializeField] private float smeltTime;
     private float smeltTimer;
     
     [Header("UI")]
 
-    [SerializeField] private Transform furnaceUI;
+    [SerializeField] private Transform furnaceUIPrefab;
+    private Transform furnaceUI;
 
     [SerializeField] private RecipeList recipeList;
 
@@ -23,11 +25,11 @@ public class Furnace : Block, IInteractable
     {
         if (isLocalPlayer)
         {
-            furnaceUI = Instaniate(furnacceUI, GameObject.Find("Canvas").transform);
-            furnaceUI.SetActive(false);
+            furnaceUI = Instantiate(furnaceUI, GameObject.Find("Canvas").transform);
+            furnaceUI.gameObject.SetActive(false);
         }
     }
-
+    
     
 
     void Update()
@@ -35,19 +37,19 @@ public class Furnace : Block, IInteractable
         if (!isServer)
             return;
 
-        Smelt();
+        //Smelt();
     }
 
     [Server]
-    private void Smelt()
+    /*private void Smelt()
     {
         if (!CanSmelt())
             return;
 
-        Recipe foundRecipe;
+        Recipe foundRecipe = recipeList.Recipes[0];
         foreach (Recipe recipe in recipeList.Recipes)
         {
-            if (recipe.CanCraft(toSmelt))
+            if (recipe.CanCraft(toSmelt, ))
             {
                 foundRecipe = recipe;
                 break;
@@ -62,11 +64,11 @@ public class Furnace : Block, IInteractable
         smelted = SmeltResult.Item2;
         
         fuel.count--;
-    }
+    }*/
 
     private bool CanSmelt()
     {
-        if (fuel < 1 || ItemArrLess(toSmelt, 1))
+        /*if (fuel < 1 || ItemArrLess(toSmelt, 1))
         {
             smeltTimer = 0f;
             return false;
@@ -77,21 +79,21 @@ public class Furnace : Block, IInteractable
         if (smeltTimer < smeltTime)
             return false;
         smeltTimer = 0f;
-
+        */
         return true;//:skull:
     }
 
-    public void Interact()
+    public void Interact(GameObject inventoryObject)
     {
-        if (isLocalPlayer)
+        /*if (isLocalPlayer)
         {
-            furnaceUI.SetActive(true);
-        }
+            furnaceUI.gameObject.SetActive(true);
+        }*/
     }
 
     private void OnDestroy()
     {
-        print($"dropped {toSmelt} queue items and {smelted} smelted items");
+        //print($"dropped {toSmelt} queue items and {smelted} smelted items");
         //drop self inventory
     }
 

@@ -14,7 +14,6 @@ public class InventorySlotButton : MonoBehaviour
     {
         Item itemToPut = inventoryObject.GetComponent<CursorInventory>().item;
         inventoryObject.GetComponent<CursorInventory>().item = inventoryObject.GetComponent<Inventory>().items[slotIndex].PutItem(itemToPut);
-        //Debug.Log(inventoryObject.GetComponent<CursorInventory>().item);
         ReloadButton();
     }
 
