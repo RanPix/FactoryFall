@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6565447381523948292}
   - component: {fileID: -2204971738263214565}
   - component: {fileID: 538594160121999698}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: building fundment
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -47,8 +47,8 @@ BoxCollider:
   m_IsTrigger: 0
   m_Enabled: 1
   serializedVersion: 2
-  m_Size: {x: 3, y: 3, z: 6}
-  m_Center: {x: 1.5, y: 1.5, z: 3}
+  m_Size: {x: 3, y: 3, z: 3}
+  m_Center: {x: 1.5, y: 1.5, z: 1.5}
 --- !u!114 &6565447381523948292
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -82,7 +82,6 @@ MonoBehaviour:
   syncInterval: 0.1
   blockName: Fundment
   isDestroyable: 1
-  isSupport: 0
   defence: 5
   damageCut: 2
   health: 200
@@ -108,6 +107,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5947615656580423718}
     m_Modifications:
+    - target: {fileID: 7752507569329478741, guid: 90fbcbfbb0488764aac7e858e71aaa76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 9135621430003473886, guid: 90fbcbfbb0488764aac7e858e71aaa76,
         type: 3}
       propertyPath: m_RootOrder
@@ -167,6 +171,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: base
+      objectReference: {fileID: 0}
+    - target: {fileID: 9135621430003473887, guid: 90fbcbfbb0488764aac7e858e71aaa76,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90fbcbfbb0488764aac7e858e71aaa76, type: 3}

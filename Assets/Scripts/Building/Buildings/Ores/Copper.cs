@@ -6,7 +6,6 @@ public class Copper : Ore
     private void Start()
     {
         isDestroyable = false;
-        isSupport = false;
     }
 
     public override bool Damage(float damage)

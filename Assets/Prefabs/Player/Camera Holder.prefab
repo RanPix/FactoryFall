@@ -198,10 +198,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 21330a9c4fd052a43aee9c83ec73de7b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  buildDistance: 5
+  groundLM:
+    serializedVersion: 2
+    m_Bits: 8
+  buildDistance: 13
   buildings:
   - {fileID: 11400000, guid: edc3d9290710b2b42a71f36070a7aec3, type: 2}
   - {fileID: 11400000, guid: 00572fa81f200e040a7e6e7d7e30439b, type: 2}
+  buildingGhost: {fileID: 8319869901349210329, guid: 637f11561b604d04e9918c4eca2d8458,
+    type: 3}
 --- !u!1 &1815510803479595639
 GameObject:
   m_ObjectHideFlags: 0

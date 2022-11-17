@@ -17,4 +17,5 @@ MonoBehaviour:
   visual: {fileID: 9135621430003473886, guid: 90fbcbfbb0488764aac7e858e71aaa76, type: 3}
   gridWidth: 1
   gridHeight: 1
-  gridLength: 2
+  gridLength: 1
+  <isSupport>k__BackingField: 1

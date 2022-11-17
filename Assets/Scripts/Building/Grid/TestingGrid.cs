@@ -8,9 +8,9 @@ public class TestingGrid : MonoBehaviour
 
     private void Awake()
     {
-        int gridWidth = 100;
-        int gridHeight = 10;
-        int gridLength = 100;
+        int gridWidth = 25;
+        int gridHeight = 6;
+        int gridLength = 25;
 
         float cellSize = 3f;
 

@@ -3,6 +3,8 @@ using UnityEngine;
 
 public class PlacedObject : MonoBehaviour
 {
+    
+
     public static PlacedObject Create(Vector3 worldPosition, Vector3Int origin, PlacedBlockType.Dir dir, PlacedBlockType placedBlockType)
     {
         Transform placedObjectInstance = Instantiate(placedBlockType.Prefab, worldPosition, Quaternion.Euler(0, placedBlockType.GetRotationAngle(dir), 0));
@@ -13,11 +15,15 @@ public class PlacedObject : MonoBehaviour
         placedObject.origin = origin;
         placedObject.dir = dir;
 
+        placedObject.isSupport = placedBlockType.isSupport;
+
         return placedObject;
     }
 
+    public bool isSupport { get; private set; }
+
     private PlacedBlockType placedBlockType;
-    private Vector3Int origin;
+    public Vector3Int origin { get; private set; }
     private PlacedBlockType.Dir dir;
 
     public List<Vector3Int> GetGridPositionList()
@@ -25,10 +31,8 @@ public class PlacedObject : MonoBehaviour
         return placedBlockType.GetGridPositionList(origin, dir);
     }
 
-    //public void DestroySelf()
-    //{
-    //    Destroy(gameObject);
-    //}
-
-
+    public void DestroySelf()
+    {
+        Destroy(gameObject);
+    }
 }

@@ -6,10 +6,10 @@ public class Furnace : Block, IInteractable
 {
     [Header("Furnace")]
 
-    [SyncVar][SerializeField] private Item[] toSmelt;
-    [SyncVar][SerializeField] private Item[] smelted;
+    [SerializeField] private Item[] toSmelt;
+    [SerializeField] private Item[] smelted;
 
-    [SyncVar][SerializeField] private Item fuel;
+    [SerializeField] private Item fuel;
     [SerializeField] private float smeltTime;
     private float smeltTimer;
     
@@ -23,8 +23,8 @@ public class Furnace : Block, IInteractable
     {
         if (isLocalPlayer)
         {
-            furnaceUI = Instaniate(furnacceUI, GameObject.Find("Canvas").transform);
-            furnaceUI.SetActive(false);
+            //furnaceUI = Instaniate(furnacceUI, GameObject.Find("Canvas").transform);
+            //furnaceUI.SetActive(false);
         }
     }
 
@@ -56,10 +56,10 @@ public class Furnace : Block, IInteractable
                 return;
         }
 
-        (Item[], Item[]) SmeltResult = foundRecipe.Craft(toSmelt);
+        //(Item[], Item[]) SmeltResult = foundRecipe.Craft(toSmelt);
 
-        toSmelt = SmeltResult.Item1;
-        smelted = SmeltResult.Item2;
+        //toSmelt = SmeltResult.Item1;
+        //smelted = SmeltResult.Item2;
         
         fuel.count--;
     }
@@ -85,7 +85,7 @@ public class Furnace : Block, IInteractable
     {
         if (isLocalPlayer)
         {
-            furnaceUI.SetActive(true);
+            //furnaceUI.SetActive(true);
         }
     }
 
