@@ -175,12 +175,12 @@ abstract public class Weapon : MonoBehaviour
                         Shoot();
 
                     }
-                    else if (_shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
-                    {
-                        FireButtonWasReleased();
-                    }
                 }
             }
+        }
+        if (_shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
+        {
+            FireButtonWasReleased();
         }
         if (controls.Player.Fire.IsPressed() && weaponAmmo.Ammo <= 0)
         {

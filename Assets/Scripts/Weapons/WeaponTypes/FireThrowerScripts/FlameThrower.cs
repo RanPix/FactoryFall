@@ -10,14 +10,11 @@ public class FlameThrower : Weapon
     private float _nextFire = 0;
     private bool fireTriggerEnable = false;
     [SerializeField] private FlameThrowerTrigger flameThrowerTriggerGO;
-    private FlameThrowerTrigger FlameThrowerTrigger;
-
 
     public override void Shoot()
     {
         Debug.Log("piu");
         _nextFire = Time.time;
-        //RayCasting();
         if (!fireTriggerEnable)
         {
             InstantiateFireTrigger();
@@ -34,7 +31,7 @@ public class FlameThrower : Weapon
     public void InstantiateFireTrigger()
     {
         fireTriggerEnable = true;
-        FlameThrowerTrigger.enabled = true;
+        flameThrowerTriggerGO.gameObject.SetActive(true);
     }
     public override void Scope()
     {
@@ -56,7 +53,7 @@ public class FlameThrower : Weapon
     protected override void FireButtonWasReleased()
     {
         fireTriggerEnable = false;
-        FlameThrowerTrigger.enabled = false;
+        flameThrowerTriggerGO.gameObject.SetActive(false);
     }
 
 }
