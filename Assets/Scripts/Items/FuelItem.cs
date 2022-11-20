@@ -2,14 +2,17 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FuelItem : Item
+namespace ItemSystem
 {
-    public int FuelValue;
-
-    public FuelItem(int count = 0, ItemType itemType = ItemType.Nothing)
+    public class FuelItem : Item
     {
-        this.count = count;
-        this.itemType = itemType;
-        this.FuelValue = ((FuelItemTypeInfo)MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(itemType)).fuelValue;
+        public int FuelValue;
+
+        public FuelItem(int count = 0, ItemType itemType = ItemType.Nothing)
+        {
+            this.count = count;
+            this.itemType = itemType;
+            this.FuelValue = ((FuelItemTypeInfo)MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(itemType)).fuelValue;
+        }
     }
 }

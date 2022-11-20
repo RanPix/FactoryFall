@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using ItemSystem;
 
 public class CraftingBlock : Block
 {
@@ -61,10 +62,5 @@ public class CraftingBlock : Block
 
         }
         
-    }
-
-    private void SetRecipeByInput()
-    {
-
     }
 }

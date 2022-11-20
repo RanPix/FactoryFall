@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
+using ItemSystem;
 
 public class Furnace : CraftingBlock, IInteractable
 {

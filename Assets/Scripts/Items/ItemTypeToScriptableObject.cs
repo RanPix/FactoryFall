@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
+using ItemSystem;
 public class ItemTypeToScriptableObject : MonoBehaviour
 {
     [SerializeField] private List<ItemTypeInfo> itemTypeInfos;
