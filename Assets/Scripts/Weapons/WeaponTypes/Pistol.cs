@@ -33,4 +33,9 @@ public class Pistol : Weapon
     protected override void FireButtonWasReleased()
     {
     }
+
+    protected override void SpawnBullet()
+    {
+        
+    }
 }

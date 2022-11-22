@@ -74,12 +74,12 @@ abstract public class Weapon : MonoBehaviour
     [SerializeField] protected Transform muzzlePosition;
     [SerializeField] protected GameObject[] muzzle;
     [Space(10)]
-    [SerializeField] private GameObject bulletSpawner;
+    [SerializeField] protected GameObject bulletSpawner;
     [SerializeField] private ConnectorHelper connectorHelper;
     [SerializeField] private Action OnInScopeValuseChange;
     public bool canShoot;
 
-    //protected float nextFire;
+    //protected float _nextFire;
     private PlayerControls controls;
     protected Camera cam;
     private Camera gunCam;
@@ -104,6 +104,7 @@ abstract public class Weapon : MonoBehaviour
     public abstract void Shoot();
     public abstract void Scope();
     protected abstract void FireButtonWasReleased();
+    protected abstract void SpawnBullet();
     #endregion
     // Start is called before the first frame update
     private void Awake()
@@ -148,14 +149,6 @@ abstract public class Weapon : MonoBehaviour
         {
 
         }
-    }
-    protected void SpawnBullet()
-    {
-        GameObject spawnedBullet = Instantiate(weaponScriptableObject.bulletPrefab);
-        spawnedBullet.transform.position = bulletSpawner.transform.position;
-        spawnedBullet.GetComponent<Bullet>().AddForceBullet(bulletSpawner.transform.forward * weaponScriptableObject.bulletSpeed);
-        Destroy(spawnedBullet, weaponScriptableObject.bulletTimeToDestroy);
-
     }
     private void KeyCodes()
     {

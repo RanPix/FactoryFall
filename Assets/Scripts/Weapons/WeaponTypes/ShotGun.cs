@@ -44,4 +44,9 @@ public class ShotGun : Weapon
         }
         Debug.DrawRay(cam.transform.position, V3*10, Color.green, 2);
     }
+
+    protected override void SpawnBullet()
+    {
+        
+    }
 }

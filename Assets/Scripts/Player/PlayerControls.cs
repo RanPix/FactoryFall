@@ -98,6 +98,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""FreeCursor"",
+                    ""type"": ""Button"",
+                    ""id"": ""6b707a34-f40e-4370-a809-774d91df077d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -373,6 +382,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": ""Keyboard&Mouse"",
                     ""action"": ""Reload"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""b966e2ee-97b6-46f5-9053-9830efc76ecc"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""FreeCursor"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -968,6 +988,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_Fire = m_Player.FindAction("Fire", throwIfNotFound: true);
         m_Player_Scope = m_Player.FindAction("Scope", throwIfNotFound: true);
         m_Player_Reload = m_Player.FindAction("Reload", throwIfNotFound: true);
+        m_Player_FreeCursor = m_Player.FindAction("FreeCursor", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1047,6 +1068,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Fire;
     private readonly InputAction m_Player_Scope;
     private readonly InputAction m_Player_Reload;
+    private readonly InputAction m_Player_FreeCursor;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1059,6 +1081,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @Fire => m_Wrapper.m_Player_Fire;
         public InputAction @Scope => m_Wrapper.m_Player_Scope;
         public InputAction @Reload => m_Wrapper.m_Player_Reload;
+        public InputAction @FreeCursor => m_Wrapper.m_Player_FreeCursor;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1092,6 +1115,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Reload.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
                 @Reload.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
                 @Reload.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnReload;
+                @FreeCursor.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFreeCursor;
+                @FreeCursor.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFreeCursor;
+                @FreeCursor.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnFreeCursor;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1120,6 +1146,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @Reload.started += instance.OnReload;
                 @Reload.performed += instance.OnReload;
                 @Reload.canceled += instance.OnReload;
+                @FreeCursor.started += instance.OnFreeCursor;
+                @FreeCursor.performed += instance.OnFreeCursor;
+                @FreeCursor.canceled += instance.OnFreeCursor;
             }
         }
     }
@@ -1284,6 +1313,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnFire(InputAction.CallbackContext context);
         void OnScope(InputAction.CallbackContext context);
         void OnReload(InputAction.CallbackContext context);
+        void OnFreeCursor(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

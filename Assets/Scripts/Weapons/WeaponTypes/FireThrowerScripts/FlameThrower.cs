@@ -56,4 +56,8 @@ public class FlameThrower : Weapon
         flameThrowerTriggerGO.gameObject.SetActive(false);
     }
 
+    protected override void SpawnBullet()
+    {
+        
+    }
 }
