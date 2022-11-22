@@ -7,16 +7,6 @@ using ItemSystem;
 
 namespace ItemSystem
 {
-    public enum ItemType
-    {
-        Nothing,
-        IronOre,
-        CopperOre,
-        IronPlate,
-        CopperPlate,
-        Coal
-    }
-
     public class Item
     {
         public int count = 0;
@@ -159,31 +149,6 @@ namespace ItemSystem
                 }
             }
             return true;
-        }
-    }
-
-    public static class SUS___SUSSUS_AMONGUS_____________________________________________ItemExtensions//сеодно ця назва більше ніде не з'явиться
-    {
-        public static bool bebraless(this Item[] itemArray, int amount)
-        {
-            int a = 0;
-            foreach (Item item in itemArray)
-                a += item.count;
-
-            return a > amount;
-        }
-
-        public static bool bebramore(this Item[] itemArray, int amount)
-        {
-
-
-
-
-            int a = 0;
-            foreach (Item item in itemArray)
-                a += item.count;
-
-            return a < amount;
         }
     }
 }

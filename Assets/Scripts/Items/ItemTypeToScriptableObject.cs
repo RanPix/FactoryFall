@@ -1,20 +1,23 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ItemSystem;
-public class ItemTypeToScriptableObject : MonoBehaviour
-{
-    [SerializeField] private List<ItemTypeInfo> itemTypeInfos;
 
-    public ItemTypeInfo GetItemTypeInfo(ItemType itemType)
+namespace ItemSystem
+{
+    public class ItemTypeToScriptableObject : MonoBehaviour
     {
-        foreach (ItemTypeInfo itemTypeInfo in itemTypeInfos)
+        [SerializeField] private List<ItemTypeInfo> itemTypeInfos;
+
+        public ItemTypeInfo GetItemTypeInfo(ItemType itemType)
         {
-            if (itemTypeInfo.itemType == itemType)
+            foreach (ItemTypeInfo itemTypeInfo in itemTypeInfos)
             {
-                return itemTypeInfo;
+                if (itemTypeInfo.itemType == itemType)
+                {
+                    return itemTypeInfo;
+                }
             }
+            return itemTypeInfos[0];
         }
-        return itemTypeInfos[0];
     }
 }

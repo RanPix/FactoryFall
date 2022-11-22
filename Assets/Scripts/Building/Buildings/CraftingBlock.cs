@@ -6,24 +6,14 @@ using ItemSystem;
 public class CraftingBlock : Block
 {
     CraftableOn type;
-    [SerializeField] private RecipeList recipeList;
+    private RecipeList recipeList;
     Recipe currentRecipe;
-    
-    [Header("Slots")]
 
-    [Header("Electricity")]
-
-    [SerializeField] bool haveElectricity;
-    [SerializeField] bool needElectricity;
-
-    [Header("Fuel")]
-
-    [SerializeField] bool haveFuel;
-    [SerializeField] bool needFuel;
+    public Slot[] inputSlots;
+    public Slot[] outputSlots;
 
     bool canCraft = true;
-    Item[] outputItems;
-    Item[] FuelItems;
+    float craftingProgress = 0;
 
     private void Awake()
     {
@@ -37,29 +27,34 @@ public class CraftingBlock : Block
 
     private void Crafting()
     {
-        BlockInventory inventory = gameObject.GetComponent<BlockInventory>();
-        bool isCanCraftOn = false;
-        foreach (CraftableOn craftableOn in currentRecipe.craftableOn)
-        {
-            if (type == craftableOn)
-            {
-                isCanCraftOn = true;
-                break;
-            }
-        }
+        if (!canCraft)
+            return;
 
-        if (isCanCraftOn && inventory != null && needFuel ? haveFuel : true && needElectricity ? haveElectricity : true && canCraft)
-        {
-            
-        }
     }
 
-    public void SetRecipe(Recipe recipe)
+    public bool CanSetRecipe(Recipe recipe)
+    {
+        bool result = false;
+        foreach (CraftableOn craftableOn in recipe.craftableOn)
+        {
+            result = result || craftableOn == type;
+        }
+        return result;
+    }
+
+    public void TrySetRecipe(Recipe recipe)
+    {
+        if (CanSetRecipe(recipe))
+            SetRecipe(recipe);
+    }
+
+    protected void SetRecipe(Recipe recipe)
     {
         currentRecipe = recipe;
+        
         foreach (Item item in recipe.neededItems)
         {
-
+            
         }
         
     }

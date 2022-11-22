@@ -1,17 +1,19 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using ItemSystem;
 
-[CreateAssetMenu(fileName = "Item Type Info", menuName = "ItemTypeInfo")]
-public class ItemTypeInfo : ScriptableObject
+namespace ItemSystem
 {
-    public ItemType itemType;
+    [CreateAssetMenu(fileName = "Item Type Info", menuName = "ItemTypeInfo")]
+    public class ItemTypeInfo : ScriptableObject
+    {
+        public ItemType itemType;
 
-    public int maxStack;
+        public int maxStack;
     
-    public string itemName;
-    public string description;
+        public string itemName;
+        public string description;
 
-    public Sprite icon;
+        public Sprite icon;
+    }
 }

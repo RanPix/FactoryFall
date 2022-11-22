@@ -1,16 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using ItemSystem;
 
-public class BlockStorageSlotUI : MonoBehaviour
+public abstract class SlotUI : MonoBehaviour
 {
     [SerializeField] GameObject inventoryObject;
-    
     [SerializeField] GameObject ItemImageGameObject;
     [SerializeField] GameObject ItemCountTextGameObject;
 
-    public int slotIndex;
     void Awake()
     {
         ReloadUI();
@@ -18,17 +18,23 @@ public class BlockStorageSlotUI : MonoBehaviour
 
     public void OnClick()
     {
-        BlockInventory blockInventory = gameObject.GetComponent<BlockInventory>();
-        gameObject.GetComponent<BlockStorageSlot>().PutItem();
+        Slot newSlotItem = GetSlot();
+        Item cursorItem = inventoryObject.GetComponent<CursorInventory>().item;
+        inventoryObject.GetComponent<CursorInventory>().item = newSlotItem.item.PutItem(cursorItem);
+        SetSlot(newSlotItem);
+        ReloadUI();
     }
+
+    public abstract Slot GetSlot();
+    public Item GetItem() => GetSlot().item;
+    public abstract void SetSlot(Slot slot);
 
     public void ReloadUI()
     {
-        BlockInventory blockStorage = gameObject.GetComponent<BlockInventory>();
-        if (blockStorage != null)
-        {
-            Item item = blockStorage.items[slotIndex];
+        Item item = GetSlot().item;
 
+        if (!item.IsNull())
+        {
             ItemTypeInfo itemTypeInfo = FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(item.itemType);
             ItemImageGameObject.GetComponent<Image>().sprite = itemTypeInfo.icon;
             ItemCountTextGameObject.GetComponent<TMPro.TextMeshProUGUI>().text = item.count > 1 ? item.count.ToString() : "";

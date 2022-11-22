@@ -15,15 +15,4 @@ public class Slot
 
     [SerializeField] private bool isFiltering;
     [SerializeField] public ItemType filteringType;
-
-    public void PutItem()
-    {
-        Item itemToPut = inventoryObject.GetComponent<CursorInventory>().item;
-
-        if (isFiltering)
-            if (itemToPut.itemType != ItemType.Nothing && itemToPut.itemType != filteringType)
-                return;
-
-        inventoryObject.GetComponent<CursorInventory>().item = item.PutItem(itemToPut);
-    }
 }
