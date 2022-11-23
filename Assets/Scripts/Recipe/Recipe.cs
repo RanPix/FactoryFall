@@ -9,13 +9,15 @@ public enum CraftableOn
 
 public struct Recipe
 {
+    public string name { get; private set; }
     public Item[] neededItems { get; private set; }
     public Item[] craftResult { get; private set; }
     public float craftTime { get; private set; }
     public CraftableOn[] craftableOn { get; private set; }
 
-    public Recipe(Item[] neededItems, Item[] craftResult, float craftTime, CraftableOn[] craftableOn)
+    public Recipe(string name, Item[] neededItems, Item[] craftResult, float craftTime, CraftableOn[] craftableOn)
     {
+        this.name = name;
         this.neededItems = neededItems;
         this.craftResult = craftResult;
         this.craftTime = craftTime;

@@ -31,6 +31,8 @@ namespace ItemSystem
 
             int maxStack = MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(item.itemType).maxStack;
 
+            Debug.Log($"maxStack = {maxStack}");
+
             if (item.count + count <= maxStack)
             {
                 count += item.count;

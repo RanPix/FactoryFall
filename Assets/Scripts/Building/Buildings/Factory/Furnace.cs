@@ -20,8 +20,6 @@ public class Furnace : CraftingBlock, IInteractable
     [SerializeField] private Transform furnaceUIPrefab;
     private Transform furnaceUI;
 
-    [SerializeField] private RecipeList recipeList;
-
     private void Start()
     {
         if (isLocalPlayer)

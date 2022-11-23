@@ -6,7 +6,7 @@ public class CraftingBlockInputSlotUI : SlotUI
 {
     GameObject craftingBlock;
     int slotIndex;
-    public override Slot GetSlot() => craftingBlock.GetComponent<CraftingBlock>().inputSlots[slotIndex];
+    public override Slot GetSlot() => craftingBlock != null ? craftingBlock.GetComponent<CraftingBlock>().inputSlots[slotIndex] : new Slot();
 
     public override void SetSlot(Slot slot)
     {

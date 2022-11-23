@@ -16,4 +16,4 @@ MonoBehaviour:
   maxStack: 100
   itemName: Iron plate
   description: ireon opalt
-  icon: {fileID: 0}
+  icon: {fileID: 21300000, guid: 0f9640859ad35fb4db3e2f46cc27d7bb, type: 3}

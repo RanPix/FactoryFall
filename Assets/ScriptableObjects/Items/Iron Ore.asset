@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: Iron Ore
   m_EditorClassIdentifier: 
   itemType: 1
+  maxStack: 100
   itemName: iron ore
   description: it's just iron ore, u know what it's doing
-  icon: {fileID: 21300000, guid: df12153fda69e1c40967b9e4283b7ffe, type: 3}
+  icon: {fileID: 21300000, guid: addf8e1b080206b4d85dcf5cc93bfdf7, type: 3}

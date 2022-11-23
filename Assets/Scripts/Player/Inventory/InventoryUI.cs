@@ -44,9 +44,9 @@ public class InventoryUI : MonoBehaviour
             int y = slotsYOffset - (i / slotsInRow * (distanceBetweenSlots + slotSize));
 
             GameObject instantiatedSlot = Instantiate(inventoryPanelSlotPrefab, new Vector3(x, y, 0), new Quaternion(), inventoryPanel.transform);
-            instantiatedSlot.GetComponent<InventorySlotButton>().inventoryObject = gameObject;
-            instantiatedSlot.GetComponent<InventorySlotButton>().slotIndex = i;
-            instantiatedSlot.GetComponent<InventorySlotButton>().ReloadButton();
+            instantiatedSlot.GetComponent<InventorySlotUI>().inventoryObject = gameObject;
+            instantiatedSlot.GetComponent<InventorySlotUI>().slotIndex = i;
+            instantiatedSlot.GetComponent<InventorySlotUI>().ReloadUI();
         }
         inventoryPanel.SetActive(isPanelOpened);
     }

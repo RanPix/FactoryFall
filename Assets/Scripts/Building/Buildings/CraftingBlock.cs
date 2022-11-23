@@ -5,8 +5,9 @@ using ItemSystem;
 
 public class CraftingBlock : Block
 {
-    CraftableOn type;
-    private RecipeList recipeList;
+    [SerializeField] CraftableOn type;
+    [SerializeField] private RecipeList recipeList;
+
     Recipe currentRecipe;
 
     public Slot[] inputSlots;

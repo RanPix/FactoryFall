@@ -12,9 +12,8 @@ GameObject:
   - component: {fileID: 7728466632104729281}
   - component: {fileID: 3209208088056657917}
   - component: {fileID: 2410747908459248974}
-  - component: {fileID: 255586566751139663}
   m_Layer: 5
-  m_Name: Slot
+  m_Name: SlotUI
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -124,9 +123,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 255586566751139663}
+      - m_Target: {fileID: 1424760098729395409}
         m_TargetAssemblyTypeName: SlotUI, Assembly-CSharp
-        m_MethodName: OnClick
+        m_MethodName: 
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -136,22 +135,6 @@ MonoBehaviour:
           m_StringArgument: 
           m_BoolArgument: 0
         m_CallState: 2
---- !u!114 &255586566751139663
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1424760098729395409}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 49a4c2a31e2eca04d9b3935c788d53c2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  inventoryObject: {fileID: 0}
-  ItemImageGameObject: {fileID: 2152799135645274131}
-  ItemCountTextGameObject: {fileID: 4288743250658037368}
-  slotIndex: 0
 --- !u!1 &2152799135645274131
 GameObject:
   m_ObjectHideFlags: 0

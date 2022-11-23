@@ -60,10 +60,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a549d12333deccc44912331ab965eb93, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inventoryPanel: {fileID: 0}
   inventoryPanelPrefab: {fileID: 4667669481217545893, guid: 449de9cdb3cbbd94badf5350ffa849d3,
     type: 3}
-  inventoryPanelSlotPrefab: {fileID: 6847489205253278177, guid: 6d483d3932b9b484ab446bc5a02cd4c1,
+  inventoryPanelSlotPrefab: {fileID: 6722638488822817361, guid: 77fb59dacedda87438ee2a3d3b5b4cea,
     type: 3}
   isPanelOpened: 0
 --- !u!114 &2717916188277975233

@@ -7,7 +7,7 @@ using ItemSystem;
 
 public abstract class SlotUI : MonoBehaviour
 {
-    [SerializeField] GameObject inventoryObject;
+    public GameObject inventoryObject;
     [SerializeField] GameObject ItemImageGameObject;
     [SerializeField] GameObject ItemCountTextGameObject;
 
@@ -18,10 +18,11 @@ public abstract class SlotUI : MonoBehaviour
 
     public void OnClick()
     {
-        Slot newSlotItem = GetSlot();
-        Item cursorItem = inventoryObject.GetComponent<CursorInventory>().item;
-        inventoryObject.GetComponent<CursorInventory>().item = newSlotItem.item.PutItem(cursorItem);
-        SetSlot(newSlotItem);
+        Slot SlotItem = GetSlot();
+        Item CursorItem = inventoryObject.GetComponent<CursorInventory>().item;
+        CursorItem = SlotItem.PutItem(CursorItem);
+        inventoryObject.GetComponent<CursorInventory>().item = CursorItem;
+        SetSlot(SlotItem);
         ReloadUI();
     }
 

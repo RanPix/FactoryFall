@@ -5,14 +5,33 @@ using ItemSystem;
 
 public class Slot
 {
-    [Header("Main")]
+    public Item item;
+    private bool isFiltering;
+    public ItemType filteringType;
 
-    [SerializeField] private int slotIndex;
-    [SerializeField] public Item item;
-    [SerializeField] private GameObject inventoryObject;
+    public Item PutItem(Item item)
+    {
+        return this.item.PutItem(item);
+    }
 
-    [Header("Filtering")]
+    public Slot()
+    {
+        item = new Item();
+        isFiltering = false;
+        filteringType = ItemType.Nothing;
+    }
 
-    [SerializeField] private bool isFiltering;
-    [SerializeField] public ItemType filteringType;
+    public Slot(Item item, bool isFiltering = false, ItemType filteringType = ItemType.Nothing)
+    {
+        this.item = item;
+        this.isFiltering = isFiltering;
+        this.filteringType = filteringType;
+    }
+
+    public Slot(int itemCount, ItemType itemType, bool isFiltering = false, ItemType filteringType = ItemType.Nothing)
+    {
+        this.item = new Item(itemCount, itemType);
+        this.isFiltering = isFiltering;
+        this.filteringType = filteringType;
+    }
 }
