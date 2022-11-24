@@ -29,7 +29,7 @@ namespace ItemSystem
                 return TakenItem;
             }
 
-            int maxStack = MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(item.itemType).maxStack;
+            int maxStack = MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(item.itemType).MaxStack;
 
             Debug.Log($"maxStack = {maxStack}");
 
@@ -49,7 +49,7 @@ namespace ItemSystem
 
         public Item SecondaryPutItem(Item item)//пояснення чому не void: я хочу щоб на мишці висів 1 item типу як предмет який тримає мишка, і при визові цієї функції вміст мишки буде замінюватись на Item який повертає ця функція
         {
-            int maxStack = MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(itemType).maxStack;
+            int maxStack = MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(itemType).MaxStack;
 
             if (item.itemType == ItemType.Nothing && itemType != ItemType.Nothing)
             {

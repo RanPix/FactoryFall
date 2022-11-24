@@ -8,7 +8,7 @@ public class CraftingBlock : Block
     [SerializeField] CraftableOn type;
     [SerializeField] private RecipeList recipeList;
 
-    Recipe currentRecipe;
+    public Recipe currentRecipe { get; private set; }
 
     public Slot[] inputSlots;
     public Slot[] outputSlots;
@@ -26,8 +26,14 @@ public class CraftingBlock : Block
         Crafting();
     }
 
+    private void CanCraft()
+    {
+
+    }
+
     private void Crafting()
     {
+        
         if (!canCraft)
             return;
 

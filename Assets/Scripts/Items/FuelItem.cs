@@ -6,13 +6,13 @@ namespace ItemSystem
 {
     public class FuelItem : Item
     {
-        public int FuelValue;
+        public int fuelValue;
 
         public FuelItem(int count = 0, ItemType itemType = ItemType.Nothing)
         {
             this.count = count;
             this.itemType = itemType;
-            this.FuelValue = ((FuelItemTypeInfo)MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(itemType)).fuelValue;
+            this.fuelValue = ((FuelItemTypeInfo)MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(itemType)).FuelValue;
         }
     }
 }

@@ -37,7 +37,7 @@ public abstract class SlotUI : MonoBehaviour
         if (!item.IsNull())
         {
             ItemTypeInfo itemTypeInfo = FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(item.itemType);
-            ItemImageGameObject.GetComponent<Image>().sprite = itemTypeInfo.icon;
+            ItemImageGameObject.GetComponent<Image>().sprite = itemTypeInfo.Icon;
             ItemCountTextGameObject.GetComponent<TMPro.TextMeshProUGUI>().text = item.count > 1 ? item.count.ToString() : "";
         }
     }

@@ -63,7 +63,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  blockName: 
+  blockName: Furnace
   isDestroyable: 1
   defence: 10
   damageCut: 8
@@ -71,9 +71,10 @@ MonoBehaviour:
   timeToRemove: 5
   canRecieveEnergy: 0
   energy: 0
+  type: 0
+  recipeList: {fileID: 11400000, guid: cc11af09506aa9047a98283f6338b27e, type: 2}
   smeltTime: 1
-  furnaceUI: {fileID: 0}
-  recipeList: {fileID: 0}
+  furnaceUIPrefab: {fileID: 0}
 --- !u!114 &7929104383440511061
 MonoBehaviour:
   m_ObjectHideFlags: 0

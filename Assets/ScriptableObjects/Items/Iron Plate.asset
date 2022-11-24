@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 026d47ec80e189745809af3ba2e6ce82, type: 3}
   m_Name: Iron Plate
   m_EditorClassIdentifier: 
-  itemType: 0
+  itemType: 3
   maxStack: 100
   itemName: Iron plate
   description: ireon opalt

@@ -3,8 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 using ItemSystem;
 
-[CreateAssetMenu(fileName = "Fuel Item Type Info", menuName = "ItemTypeInfo")]
+[CreateAssetMenu(fileName = "Fuel Item Type Info", menuName = "FuelItemTypeInfo")]
 public class FuelItemTypeInfo : ItemTypeInfo
 {
-    public int fuelValue;
+    [SerializeField] private int fuelValue;
+    public int FuelValue => fuelValue;
 }

@@ -3,15 +3,9 @@ using UnityEngine;
 using Mirror;
 using ItemSystem;
 
-public class Furnace : CraftingBlock, IInteractable
+public class Furnace : CraftingBlock
 {
     [Header("Furnace")]
-    
-
-    //[SyncVar][SerializeField] private Item[] toSmelt;
-    //[SyncVar][SerializeField] private Item[] smelted;
-
-    //[SyncVar][SerializeField] private Item fuel;
     [SerializeField] private float smeltTime;
     private float smeltTimer;
     

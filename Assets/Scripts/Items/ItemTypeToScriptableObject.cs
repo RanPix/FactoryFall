@@ -12,7 +12,7 @@ namespace ItemSystem
         {
             foreach (ItemTypeInfo itemTypeInfo in itemTypeInfos)
             {
-                if (itemTypeInfo.itemType == itemType)
+                if (itemTypeInfo.ItemType == itemType)
                 {
                     return itemTypeInfo;
                 }

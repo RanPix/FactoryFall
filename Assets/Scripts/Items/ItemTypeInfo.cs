@@ -7,13 +7,18 @@ namespace ItemSystem
     [CreateAssetMenu(fileName = "Item Type Info", menuName = "ItemTypeInfo")]
     public class ItemTypeInfo : ScriptableObject
     {
-        public ItemType itemType;
+        [SerializeField] private ItemType itemType;
+        public ItemType ItemType => itemType;
 
-        public int maxStack;
-    
-        public string itemName;
-        public string description;
+        [SerializeField] private int maxStack;
+        public int MaxStack => maxStack;
 
-        public Sprite icon;
+        [SerializeField] private string itemName;
+        public string ItemName => itemName;
+        [SerializeField] private string description;
+        public string Description => description;
+
+        [SerializeField] private Sprite icon;
+        public Sprite Icon => icon;
     }
 }

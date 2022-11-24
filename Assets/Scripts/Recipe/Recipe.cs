@@ -6,8 +6,8 @@ public enum CraftableOn
     Player,
     Assembler
 }
-
-public struct Recipe
+[System.Serializable]
+public class Recipe
 {
     public string name { get; private set; }
     public Item[] neededItems { get; private set; }

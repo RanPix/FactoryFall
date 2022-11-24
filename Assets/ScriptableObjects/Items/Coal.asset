@@ -15,6 +15,6 @@ MonoBehaviour:
   itemType: 5
   maxStack: 50
   itemName: Coal
-  description: cool coally piece of dinosaurs shit
+  description: cool coally piece of dinosaurs shit (it isn't dinosaurs shit, i know)
   icon: {fileID: 0}
-  fuelValue: 0
+  fuelValue: 4
