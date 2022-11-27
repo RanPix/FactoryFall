@@ -1,10 +1,9 @@
 using Mirror;
 using UnityEngine;
-using UnityEngine.EventSystems;
-using UnityEngine.InputSystem;
+using FiniteStateMachine;
 
-[RequireComponent(typeof(CharacterController), typeof(AudioSource))]
-public class PlayerMovementV2 : NetworkBehaviour
+[RequireComponent(typeof(CharacterController), typeof(AudioSource), typeof(Animator))]
+public class PlayerMovementV2 : StateMachine
 {
     [Header("Required")]
 
@@ -18,9 +17,10 @@ public class PlayerMovementV2 : NetworkBehaviour
     [SerializeField] private float groundCheckRadius;
     [SerializeField] private float ceilingCheckRadius;
 
-    private CharacterController characterCont;
-    private PlayerControls controls;
+    public CharacterController characterCont { get; private set; }
+    public PlayerControls controls { get; private set; }
     private Camera camera;
+    private Animator animator;
 
     [Header("Speed")]
 
@@ -29,8 +29,9 @@ public class PlayerMovementV2 : NetworkBehaviour
     [SerializeField] private float crouchSpeed;
     [Space]
     [SerializeField] private float accelerationLerp;
-    [SerializeField, Range(0f, 1f)] private float airStrafeMultiplier;
-    [SerializeField, Range(0f, 1f)] private float slideStrafeMultiplier;
+
+    [field: SerializeField, Range(0f, 1f)] public float airStrafeMultiplier { get; private set; }
+    [field: SerializeField, Range(0f, 1f)] public float slideStrafeMultiplier { get; private set; }
 
     [Header("Jump")]
 
@@ -40,8 +41,8 @@ public class PlayerMovementV2 : NetworkBehaviour
     [SerializeField] private int maxDoubleJumps;
     private int hasDoubleJumps;
 
-    [Header("Air Strafe")]
-    [SerializeField] private float maxAirStrafeSpeed;
+    [field: Header("Air Strafe")]
+    [field: SerializeField] public float maxAirStrafeSpeed { get; private set; }
 
 
     private MovementState state;
@@ -51,15 +52,20 @@ public class PlayerMovementV2 : NetworkBehaviour
     {
         walking,
         sprinting,
-
+        crouch
     }
 
-    private Vector3 horizontalMoveDirection;
-    private Vector3 verticalMoveDirection;
+    [HideInInspector] public BaseState idle { get; private set; }
+    [HideInInspector] public BaseState walk { get; private set; }
+
+    public Vector3 horizontalMoveDirection;
+    public Vector3 verticalMoveDirection;
     private Vector3 input;
 
     private float desiredSpeed;
     private float magnitude;
+
+    private int isCrouchedHash;
 
     private bool isOnGround;
     private bool hasCeiling;
@@ -71,6 +77,7 @@ public class PlayerMovementV2 : NetworkBehaviour
 
         camera = Camera.main;
 
+        animator = GetComponent<Animator>();
         characterCont = GetComponent<CharacterController>();
 
         controls = new PlayerControls();
@@ -78,43 +85,24 @@ public class PlayerMovementV2 : NetworkBehaviour
 
         controls.Player.Jump.performed += Jump;
 
+        isCrouchedHash = Animator.StringToHash("isCrouched");
+
         airStrafeMultiplier *= 20;
         slideStrafeMultiplier *= 20;
-    }
 
-    private void Update()
-    {
-        if (!isLocalPlayer)
-            return;
+        idle = new Idle(this);
+        walk = new Walk(this);
 
-        isOnGround = CheckIfOnGround();
-        hasCeiling = CheckIfHasCeiling();
-        magnitude = horizontalMoveDirection.magnitude;
-
-        GetInputs();
-        StateHandler();
-
-        Gravity();
-
-        if (isOnGround)
-        {
-            GroundMovement();
-            ResetDoubleJumps();
-        }
-        else
-        {
-            AirMovement();
-        }
-
-        Move();
-
-        print($"{horizontalMoveDirection.magnitude}, {airStrafeMultiplier}");
     }
 
     [Client]
     private void StateHandler()
     {
-        if (controls.Player.Sprint.IsPressed() && CheckIfMovingForward())
+        if (controls.Player.Crouch.IsPressed())
+        {
+            state = MovementState.crouch;
+        }
+        else if (controls.Player.Sprint.IsPressed() && CheckIfMovingForward())
         {
             state = MovementState.sprinting;
             desiredSpeed = sprintSpeed;
@@ -126,16 +114,16 @@ public class PlayerMovementV2 : NetworkBehaviour
         }
     }
 
-    private void GetInputs()
+    protected override BaseState GetInitialState()
     {
-        Vector2 inputVector = controls.Player.Move.ReadValue<Vector2>();
-        input = (orientation.forward * inputVector.y + orientation.right * inputVector.x).normalized;
+        return idle;
     }
+
+
 
     #region Move
 
-    private void Move()
-        => characterCont.Move((horizontalMoveDirection + verticalMoveDirection) * Time.deltaTime);
+    
 
     private void Gravity()
     {
@@ -143,8 +131,6 @@ public class PlayerMovementV2 : NetworkBehaviour
             verticalMoveDirection.y = 0;
         else
             verticalMoveDirection.y -= gravity * Time.deltaTime;
-
-
     }
 
     private void GroundMovement()
@@ -154,36 +140,8 @@ public class PlayerMovementV2 : NetworkBehaviour
         horizontalMoveDirection = Vector3.Lerp(horizontalMoveDirection, input * desiredSpeed, accelerationLerp * Time.deltaTime);
     }
 
-    private void AirMovement()
-    {
-        if (magnitude < maxAirStrafeSpeed)
-        {
-            horizontalMoveDirection = horizontalMoveDirection + input * airStrafeMultiplier * Time.deltaTime;
-
-            if (horizontalMoveDirection.magnitude > maxAirStrafeSpeed)
-                horizontalMoveDirection = horizontalMoveDirection.normalized * maxAirStrafeSpeed;
-        }
-        else
-        {
-            horizontalMoveDirection = (horizontalMoveDirection + input * airStrafeMultiplier * Time.deltaTime).normalized * magnitude;    
-        }
-    }
 
     #region Jump
-
-    private void Jump(InputAction.CallbackContext context)
-    {
-        if (!isOnGround && hasDoubleJumps-- < 1)
-            return;
-
-        if (verticalMoveDirection.y < jumpForce)
-            verticalMoveDirection.y = jumpForce;
-        else
-            verticalMoveDirection.y += jumpForce;
-    }
-
-    private void ResetDoubleJumps()
-        => hasDoubleJumps = maxDoubleJumps;
 
     private void ResetDoubleJumps(int jumpsToRecover)
     {
@@ -202,21 +160,18 @@ public class PlayerMovementV2 : NetworkBehaviour
 
     #region Bool checks
 
-    private bool CheckIfOnGround()
+    public bool CheckIfOnGround()
         => Physics.CheckSphere(groundCheck.position, groundCheckRadius, groundLM, QueryTriggerInteraction.Ignore);
 
-    private bool CheckIfHasCeiling()
+    public bool CheckIfHasCeiling()
         => Physics.CheckSphere(ceilingCheck.position, ceilingCheckRadius, groundLM, QueryTriggerInteraction.Ignore);
 
-    private bool CheckIfMovingForward()
+    public bool CheckIfMovingForward()
     {
         float angle = Quaternion.LookRotation(horizontalMoveDirection).eulerAngles.y - orientation.eulerAngles.y;
         angle = angle < 0 ? -angle : angle; // Handmade Abs)
 
-        if (angle < 50 || angle > 310)
-            return true;
-
-        return false;
+        return angle is < 50 or > 310;
     }
 
     #endregion

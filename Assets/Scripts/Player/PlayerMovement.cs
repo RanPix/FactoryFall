@@ -3,11 +3,9 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 
 [RequireComponent(typeof(CharacterController), typeof(AudioSource))]
-public class PlayerMovement : NetworkBehaviour
+public class OldPlayerMovement : NetworkBehaviour
 {
-    [Header("Required")]
-
-    private CharacterController characterCont;
+    public CharacterController characterCont { get; private set; }
     private PlayerControls controls;
 
     [SerializeField] private float gravity;
