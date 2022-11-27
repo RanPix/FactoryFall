@@ -1,29 +1,51 @@
 using UnityEngine;
-using FiniteStateMachine;
-using Unity.Mathematics;
 
 namespace FiniteMovementStateMachine
 {
-    public class BaseMovementState : BaseState
+    public class BaseMovementState
     {
-        protected new MovementMachine stateMachine;
-        protected PlayerControls controls;
-        protected Vector3 input;
+        public string name { get; private set; }
 
-        public BaseMovementState(string name, MovementMachine stateMachine) : base(name, stateMachine)
+        protected MovementDataIntersection data;
+
+        protected MovementMachine stateMachine;
+        protected PlayerControls controls;
+        protected Vector2 input;
+        protected PlayerMovement movement;
+
+        public BaseMovementState(string name, MovementMachine stateMachine)
         {
-            
+            this.name = name;
+            this.stateMachine = stateMachine;
+
+            movement = stateMachine.gameObject.GetComponent<PlayerMovement>();
         }
 
-        public override void UpdateLogic()
+        #region State Logic
+
+        public virtual void Enter(MovementDataIntersection inputData)
+        {
+            data = inputData;
+        }
+
+        public virtual void UpdateLogic()
         {
             GetInput();
         }
 
-        protected void GetInput()
+        public virtual void UpdatePhysics()
         {
-            Vector2 controlInput = controls.Player.Move.ReadValue<Vector2>();
-            input = new Vector3(controlInput.x, 0, controlInput.y).normalized;
+            movement.Move(data.GetMoveVector3());
         }
+
+        public virtual MovementDataIntersection Exit()
+        {
+            return data;
+        }
+
+        #endregion
+
+        private void GetInput()
+            => input = controls.Player.Move.ReadValue<Vector2>().normalized;
     }
 }

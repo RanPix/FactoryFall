@@ -4,9 +4,11 @@ public class Walk : BaseMovementState
 {
     public Walk(MovementMachine stateMachine) : base("Walk", stateMachine) { }
 
-    public override void Enter()
+    public override void Enter(MovementDataIntersection data)
     {
-        base.Enter();
+        base.Enter(data);
+
+
     }
 
     public override void UpdateLogic()

@@ -6,10 +6,16 @@ public class CameraScript : MonoBehaviour
     [Header("Fov")]
 
     [SerializeField] private float fovTime = 0.25f;
+    private Camera cam;
+
+    private void Awake()
+    {
+        cam ??= GetComponent<Camera>();
+    }
 
     private void DoFov(float endValue)
-        => GetComponent<Camera>().DOFieldOfView(endValue, fovTime);
+        => cam.DOFieldOfView(endValue, fovTime);
 
     private void DoFov(float endValue, float time)
-        => GetComponent<Camera>().DOFieldOfView(endValue, time);
+        => cam.DOFieldOfView(endValue, time);
 }
