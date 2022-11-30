@@ -129,6 +129,9 @@ public abstract class Mob : MonoBehaviour
 
     }
 
+    public abstract void Movement();
+    public abstract void Animations();
+
 
     public GameObject FindTheNearestEnemy()
     {

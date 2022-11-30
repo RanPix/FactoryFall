@@ -31,9 +31,6 @@ public class ShotGun : Weapon
     {
 
     }
-    protected override void FireButtonWasReleased()
-    {
-    }
     protected new void RayCasting()
     {
         RaycastHit hit;
@@ -46,6 +43,11 @@ public class ShotGun : Weapon
     }
 
     protected override void SpawnBullet()
+    {
+        
+    }
+
+    protected override void FireButtonWasReleased()
     {
         
     }

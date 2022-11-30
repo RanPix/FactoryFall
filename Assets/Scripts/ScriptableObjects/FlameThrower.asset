@@ -22,7 +22,7 @@ MonoBehaviour:
   reload: {fileID: 0}
   shoots: []
   shootsSilencer: []
-  haveMuzzle: 1
+  haveMuzzle: 0
   scaleFactor: 1
   TimeTodestroy: 1
   bulletPrefab: {fileID: 0}

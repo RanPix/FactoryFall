@@ -11,6 +11,10 @@ public class FlameThrower : Weapon
     private bool fireTriggerEnable = false;
     [SerializeField] private FlameThrowerTrigger flameThrowerTriggerGO;
 
+    /*private void Start()
+    {
+        OnFireButtonReleased += FireButtonWasReleased;
+    }*/
     public override void Shoot()
     {
         Debug.Log("piu");
@@ -21,7 +25,10 @@ public class FlameThrower : Weapon
         }
         if(useAudio)
             PlayShootSound();
-        SpawmMuzzle();
+        if (weaponScriptableObject.haveMuzzle == true)
+        {
+            SpawmMuzzle();
+        }
 
         weaponAmmo.Ammo--;
         weaponAmmo.ApdateAmmoInScreen();
@@ -35,7 +42,7 @@ public class FlameThrower : Weapon
     }
     public override void Scope()
     {
-
+        
     }
     private new void SpawmMuzzle()
     {
@@ -60,4 +67,5 @@ public class FlameThrower : Weapon
     {
         
     }
+    
 }

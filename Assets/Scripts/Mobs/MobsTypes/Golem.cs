@@ -23,5 +23,15 @@ public class Golem : Mob
         mobAnimator.Play(AttackAnimationsNames[Random.Range(0,AttackAnimationsNames.Length)]);
         _targetGObj.GetComponent<HP>().hp -= damage;
     }
+
+    public override void Movement()
+    {
+        
+    }
+
+    public override void Animations()
+    {
+        throw new System.NotImplementedException();
+    }
 }
 

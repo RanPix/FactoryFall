@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 public enum States
 {
@@ -76,7 +77,17 @@ abstract public class Weapon : MonoBehaviour
     [Space(10)]
     [SerializeField] protected GameObject bulletSpawner;
     [SerializeField] private ConnectorHelper connectorHelper;
-    [SerializeField] private Action OnInScopeValuseChange;
+    [Space(15)]
+    [Header("Events")]
+    private Action OnInScopeValuseChange;
+    public Action OnFireButtonPressed;
+    public Action OnFireButtonPerformed;
+    public Action OnFireButtonReleased;
+    public Action OnReloadButtonPerformed;
+    public Action OnScopeButtonPressed;
+    //public Action OnFireButton;
+
+    [Space(10)]
     public bool canShoot;
 
     //protected float _nextFire;
@@ -103,8 +114,8 @@ abstract public class Weapon : MonoBehaviour
     #region AbstractMethods
     public abstract void Shoot();
     public abstract void Scope();
-    protected abstract void FireButtonWasReleased();
     protected abstract void SpawnBullet();
+    protected abstract void FireButtonWasReleased();
     #endregion
     // Start is called before the first frame update
     private void Awake()
@@ -123,10 +134,19 @@ abstract public class Weapon : MonoBehaviour
 
         weaponAmmo = help.GetComponent<WeaponAmmo>();
         canShoot = true;
-       weaponAmmo.Ammo = ammo;
-       weaponAmmo.ClipSize = maxAmmo;
+        weaponAmmo.Ammo = ammo;
+        weaponAmmo.ClipSize = maxAmmo;
         weaponAmmo.ReserveAmmo = reserveAmmo;
         weaponAmmo.AmmoText = ammoText;
+
+        #region Events
+
+        OnFireButtonPressed += Shoot;
+        OnFireButtonPerformed += Shoot;
+        OnReloadButtonPerformed += Reload;
+
+
+        #endregion
 
     }
     // Update is called once per frame
@@ -142,6 +162,7 @@ abstract public class Weapon : MonoBehaviour
         }
 
     }
+    
     protected void RayCasting()
     {
         RaycastHit hit;
@@ -162,18 +183,20 @@ abstract public class Weapon : MonoBehaviour
                     if (_shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
                     {
                         Shoot();
+                        OnFireButtonPressed?.Invoke();
                     }
                     else if (_shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
                         Shoot();
-
+                        OnFireButtonPerformed?.Invoke();
                     }
                 }
             }
         }
         if (_shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
         {
-            FireButtonWasReleased();
+            FireButtonWasReleased(); 
+            OnFireButtonReleased?.Invoke();
         }
         if (controls.Player.Fire.IsPressed() && weaponAmmo.Ammo <= 0)
         {
@@ -183,7 +206,8 @@ abstract public class Weapon : MonoBehaviour
         {
             if (weaponAmmo.ReserveAmmo > 0 && weaponAmmo.Ammo < ammo)
             {
-                StartCoroutine(ReloadCoroutine());
+                OnReloadButtonPerformed?.Invoke();
+                //StartCoroutine(ReloadCoroutine());
             }
         }
     }
@@ -202,6 +226,10 @@ abstract public class Weapon : MonoBehaviour
         canShoot = true;
     }
 
+    private void Reload()
+    {
+        StartCoroutine(ReloadCoroutine());
+    }
     private void Aiming()
     {
         /*Vector3 target = normalLOcalPosition;

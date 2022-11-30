@@ -320,6 +320,31 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2354404438631997051}
     m_Modifications:
+    - target: {fileID: 3815030991158524276, guid: 6e1364e3bf0587d41a02bf6210c02513,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208356575627759406, guid: 6e1364e3bf0587d41a02bf6210c02513,
+        type: 3}
+      propertyPath: m_Height
+      value: 2.2642298
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208356575627759406, guid: 6e1364e3bf0587d41a02bf6210c02513,
+        type: 3}
+      propertyPath: m_Center.x
+      value: 0.00000007958041
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208356575627759406, guid: 6e1364e3bf0587d41a02bf6210c02513,
+        type: 3}
+      propertyPath: m_Center.y
+      value: -0.13211314
+      objectReference: {fileID: 0}
+    - target: {fileID: 4208356575627759406, guid: 6e1364e3bf0587d41a02bf6210c02513,
+        type: 3}
+      propertyPath: m_Center.z
+      value: -0.0000000709847
+      objectReference: {fileID: 0}
     - target: {fileID: 5034660596625616486, guid: 6e1364e3bf0587d41a02bf6210c02513,
         type: 3}
       propertyPath: m_Name
@@ -328,7 +353,7 @@ PrefabInstance:
     - target: {fileID: 5034660596625616486, guid: 6e1364e3bf0587d41a02bf6210c02513,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5662543774836258012, guid: 6e1364e3bf0587d41a02bf6210c02513,
         type: 3}
@@ -385,6 +410,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6220390925485780084, guid: 6e1364e3bf0587d41a02bf6210c02513,
+        type: 3}
+      propertyPath: m_LocalScale.x
+      value: 0.39940414
+      objectReference: {fileID: 0}
+    - target: {fileID: 6220390925485780084, guid: 6e1364e3bf0587d41a02bf6210c02513,
+        type: 3}
+      propertyPath: m_LocalScale.y
+      value: 0.6776492
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 6e1364e3bf0587d41a02bf6210c02513, type: 3}
 --- !u!4 &1340478564571238915 stripped
@@ -408,7 +443,7 @@ PrefabInstance:
     - target: {fileID: 5831742615033762332, guid: e140d8a0ea00d904e90ebbe0a85883e3,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6603776436273154214, guid: e140d8a0ea00d904e90ebbe0a85883e3,
         type: 3}
