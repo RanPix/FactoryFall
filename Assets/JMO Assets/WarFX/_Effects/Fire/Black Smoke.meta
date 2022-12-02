@@ -1,5 +1,9 @@
 fileFormatVersion: 2
+<<<<<<< Updated upstream:Assets/JMO Assets/WarFX/_Effects/Fire/Black Smoke.meta
 guid: 1a39ac28710b75b47af234c9144c2a0e
+=======
+guid: a2f8f7a5d7181e94290240370f9a741b
+>>>>>>> Stashed changes:Assets/Scripts/Mobs.meta
 folderAsset: yes
 DefaultImporter:
   externalObjects: {}

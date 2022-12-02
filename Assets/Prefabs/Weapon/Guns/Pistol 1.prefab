@@ -240,6 +240,7 @@ MonoBehaviour:
   animator: {fileID: 0}
   shootAnimationName: 
   reloadAnimationTriggername: 
+  useAudio: 0
   canSway: 0
   initialSwayPosition: {x: 0, y: 0, z: 0}
   SwayAmount: 0

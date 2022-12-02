@@ -1,0 +1,32 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 162ba52033ec48040bcb2fc9496950b8, type: 3}
+  m_Name: Pistol
+  m_EditorClassIdentifier: 
+  damage: 24
+  fireRate: 60
+  weaponShootRange: 1000
+  reloadTime: 3
+  shootAnimationName: 
+  reloadAnimationTriggername: 
+  empty: {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
+  reload: {fileID: 8300000, guid: b0b5795352b75b44587bbc12a2d35c08, type: 3}
+  shoots:
+  - {fileID: 8300000, guid: bfac4be1cf2fb1540adf32549e0bf797, type: 3}
+  shootsSilencer:
+  - {fileID: 8300000, guid: 41dc5a6b9884de74ca64a61eea39876c, type: 3}
+  haveMuzzle: 0
+  scaleFactor: 0
+  TimeTodestroy: 0
+  bulletPrefab: {fileID: 0}
+  bulletSpeed: 0
+  bulletTimeToDestroy: 0
