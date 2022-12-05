@@ -1,6 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using ItemSystem;
 
 public class Slot
@@ -9,10 +6,8 @@ public class Slot
     private bool isFiltering;
     public ItemType filteringType;
 
-    public Item PutItem(Item item)
-    {
-        return this.item.PutItem(item);
-    }
+    public Item PutItem(Item item) 
+        => this.item.PutItem(item);
 
     public Slot()
     {

@@ -13,17 +13,17 @@ public abstract class CraftingBlockUI : MonoBehaviour, IInteractable
     
     [Header("Slots Positioning Info")]
 
-    [SerializeField] int slotSize;
-    [SerializeField] int distanceBetweenSlots;
-    [SerializeField] int inputSlotsXOffset;
-    [SerializeField] int inputSlotsYOffset;
-    [SerializeField] int outputSlotsXOffset;
-    [SerializeField] int outputSlotsYOffset;
+    [SerializeField] static int slotSize;
+    [SerializeField] static int distanceBetweenSlots;
+    [SerializeField] static int inputSlotsXOffset;
+    [SerializeField] static int inputSlotsYOffset;
+    [SerializeField] static int outputSlotsXOffset;
+    [SerializeField] static int outputSlotsYOffset;
 
-    public GameObject canvas;
-    private GameObject panel;
-    private Transform inputSlotsTransform;
-    private Transform outputSlotsTransform;
+    protected GameObject canvas;
+    protected GameObject panel;
+    protected Transform inputSlotsTransform;
+    protected Transform outputSlotsTransform;
     
 
     private bool isPanelOpened;

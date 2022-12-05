@@ -8,6 +8,7 @@ public class InventoryUI : MonoBehaviour
     private PlayerControls controls;
 
     private GameObject inventoryPanel;
+    public Transform canvas { get; private set; }
 
     [SerializeField] private GameObject inventoryPanelPrefab;
     [SerializeField] private GameObject inventoryPanelSlotPrefab;
@@ -21,7 +22,9 @@ public class InventoryUI : MonoBehaviour
     const int slotsInRow = 9;
     void Start()
     {
-        inventoryPanel = Instantiate(inventoryPanelPrefab, GameObject.Find("Canvas").transform);
+        canvas = GameObject.Find("Canvas").transform;
+
+        inventoryPanel = Instantiate(inventoryPanelPrefab, canvas);
 
         controls = new PlayerControls();
         controls.UI.Enable();

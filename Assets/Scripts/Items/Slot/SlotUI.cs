@@ -1,6 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using ItemSystem;
@@ -8,10 +5,10 @@ using ItemSystem;
 public abstract class SlotUI : MonoBehaviour
 {
     public GameObject inventoryObject;
-    [SerializeField] GameObject ItemImageGameObject;
-    [SerializeField] GameObject ItemCountTextGameObject;
+    [SerializeField] private GameObject ItemImageGameObject;
+    [SerializeField] private GameObject ItemCountTextGameObject;
 
-    void Awake()
+    void Start()
     {
         ReloadUI();
     }
@@ -27,12 +24,15 @@ public abstract class SlotUI : MonoBehaviour
     }
 
     public abstract Slot GetSlot();
-    public Item GetItem() => GetSlot().item;
+
+    public Item GetItem()
+        => GetSlot().item;
+
     public abstract void SetSlot(Slot slot);
 
     public void ReloadUI()
     {
-        Item item = GetSlot().item;
+        Item item = GetItem();
 
         if (!item.IsNull())
         {

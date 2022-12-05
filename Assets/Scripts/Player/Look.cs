@@ -21,6 +21,7 @@ public class Look : MonoBehaviour
 
     private void Awake()
     {
+        inventoryUI = transform.parent.GetComponentInChildren<InventoryUI>();
         controls = new PlayerControls();
         controls.Player.Enable();
     }

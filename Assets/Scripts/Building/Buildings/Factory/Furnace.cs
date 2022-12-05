@@ -3,27 +3,17 @@ using UnityEngine;
 using Mirror;
 using ItemSystem;
 
-public class Furnace : CraftingBlock
+public abstract class Furnace : CraftingBlock
 {
-    [Header("Furnace")]
-    [SerializeField] private float smeltTime;
-    private float smeltTimer;
+    Slot FuelSlot;
     
-    [Header("UI")]
-
-    [SerializeField] private Transform furnaceUIPrefab;
-    private Transform furnaceUI;
 
     private void Start()
     {
-        if (isLocalPlayer)
-        {
-            furnaceUI = Instantiate(furnaceUI, GameObject.Find("Canvas").transform);
-            furnaceUI.gameObject.SetActive(false);
-        }
+        
     }
-    
-    
+
+    public override bool CanCraft() => false;
 
     void Update()
     {

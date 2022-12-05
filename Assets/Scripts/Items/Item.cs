@@ -1,7 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
-using ItemSystem;
 
 //GameObject.Find() = ♂️♂️
 
@@ -30,8 +28,6 @@ namespace ItemSystem
             }
 
             int maxStack = MonoBehaviour.FindObjectOfType<ItemTypeToScriptableObject>().GetItemTypeInfo(item.itemType).MaxStack;
-
-            Debug.Log($"maxStack = {maxStack}");
 
             if (item.count + count <= maxStack)
             {
@@ -75,9 +71,12 @@ namespace ItemSystem
         public override string ToString() => $"{count}, {itemType}";
         public bool IsNull() => count == null && itemType == null;
 
-        public static Item operator +(Item firstItem, Item secondItem) => new Item(firstItem.count + secondItem.count, firstItem.itemType);
-        public static bool operator ==(Item firstItem, Item secondItem) => firstItem.count == secondItem.count && firstItem.itemType == secondItem.itemType;
-        public static bool operator !=(Item firstItem, Item secondItem) => !(firstItem == secondItem);
+        public static Item operator +(Item firstItem, Item secondItem) 
+            => new Item(firstItem.count + secondItem.count, firstItem.itemType);
+        public static bool operator ==(Item firstItem, Item secondItem) 
+            => firstItem.count == secondItem.count && firstItem.itemType == secondItem.itemType;
+        public static bool operator !=(Item firstItem, Item secondItem) 
+            => !(firstItem == secondItem);
         public static bool operator ==(Item[] itemArray, Item item)
         {
             int a = 0;//amount of items of type of item type in item array
@@ -91,15 +90,24 @@ namespace ItemSystem
             }
             return a == item.count;
         }
-        public static bool operator !=(Item[] itemArray, Item item) => !(itemArray == item);
-        public static bool operator ==(Item item, Item[] itemArray) => itemArray == item;
-        public static bool operator !=(Item item, Item[] itemArray) => !(itemArray == item);
-        public static bool operator >(Item firstItem, Item secondItem) => firstItem.count > secondItem.count;
-        public static bool operator <(Item firstItem, Item secondItem) => firstItem.count < secondItem.count;
-        public static bool operator >(int count, Item item) => count > item.count;
-        public static bool operator <(int count, Item item) => count < item.count;
-        public static bool operator >(Item item, int count) => item.count > count;
-        public static bool operator <(Item item, int count) => item.count < count;
+        public static bool operator !=(Item[] itemArray, Item item) 
+            => !(itemArray == item);
+        public static bool operator ==(Item item, Item[] itemArray) 
+            => itemArray == item;
+        public static bool operator !=(Item item, Item[] itemArray) 
+            => !(itemArray == item);
+        public static bool operator >(Item firstItem, Item secondItem) 
+            => firstItem.count > secondItem.count;
+        public static bool operator <(Item firstItem, Item secondItem) 
+            => firstItem.count < secondItem.count;
+        public static bool operator >(int count, Item item) 
+            => count > item.count;
+        public static bool operator <(int count, Item item) 
+            => count < item.count;
+        public static bool operator >(Item item, int count)
+            => item.count > count;
+        public static bool operator <(Item item, int count)
+            => item.count < count;
         public static bool operator >(Item[] itemArray, Item item)
         {
             int a = 0;//amount of items of type of item type in item array
@@ -126,6 +134,30 @@ namespace ItemSystem
             }
             return true;
         }
+        public static bool operator >(Item item, Item[] itemArray)
+        {
+            int a = 0;//amount of items of type of item type in item array
+            foreach (Item _item in itemArray)
+            {
+                if (_item.itemType == item.itemType)
+                {
+                    a += _item.count;
+                }
+            }
+            return item > a;
+        }
+        public static bool operator <(Item item, Item[] itemArray)
+        {
+            int a = 0;//amount of items of type of item type in itemArray
+            foreach (Item _item in itemArray)
+            {
+                if (_item.itemType == item.itemType)
+                {
+                    a += _item.count;
+                }
+            }
+            return item < a;
+        }
         public static bool operator >(List<Item> itemArray, Item item)
         {
             int a = 0;//amount of items of type of item type in item array
@@ -134,10 +166,9 @@ namespace ItemSystem
                 if (_item.itemType == item.itemType)
                 {
                     a += _item.count;
-                    if (a > item) return true;
                 }
             }
-            return false;
+            return a > item;
         }
         public static bool operator <(List<Item> itemArray, Item item)
         {
@@ -147,10 +178,9 @@ namespace ItemSystem
                 if (_item.itemType == item.itemType)
                 {
                     a += _item.count;
-                    if (!(a < item)) return false;
                 }
             }
-            return true;
+            return !(a < item);
         }
     }
 }

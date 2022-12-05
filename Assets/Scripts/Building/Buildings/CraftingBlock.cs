@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using ItemSystem;
 
-public class CraftingBlock : Block
+public abstract class CraftingBlock : Block
 {
     [SerializeField] CraftableOn type;
     [SerializeField] private RecipeList recipeList;
@@ -26,17 +26,21 @@ public class CraftingBlock : Block
         Crafting();
     }
 
-    private void CanCraft()
-    {
+    public abstract bool CanCraft();
 
+    public bool IsEnoughInputItems()
+    {
+        foreach (Item item in currentRecipe.craftResult)
+        {
+            if (item < currentRecipe.craftResult) return false;
+        }
+        return true;
     }
 
     private void Crafting()
     {
-        
-        if (!canCraft)
+        if (!CanCraft() && !IsEnoughInputItems())
             return;
-
     }
 
     public bool CanSetRecipe(Recipe recipe)
@@ -58,11 +62,10 @@ public class CraftingBlock : Block
     protected void SetRecipe(Recipe recipe)
     {
         currentRecipe = recipe;
-        
+
         foreach (Item item in recipe.neededItems)
         {
             
         }
-        
     }
 }

@@ -3,7 +3,7 @@ using Mirror;
 
 public class GamePlayer : NetworkBehaviour
 {
-    [SerializeField] private InventoryUI inventory;
+    //[SerializeField] public GameObject inventory;
 
     [Header("Camera")]
 
@@ -20,7 +20,7 @@ public class GamePlayer : NetworkBehaviour
         cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
         cameraHolder.GetComponentInChildren<Look>().orientation = orientation;
 
-        cameraHolder.GetComponentInChildren<Look>().inventoryUI = inventory;
+        //acameraHolder.GetComponentInChildren<Look>().inventoryUI = inventory.GetComponent<InventoryUI>();
 
         //PlayerInteraction.instance.player = this;
     }

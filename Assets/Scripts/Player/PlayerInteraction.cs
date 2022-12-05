@@ -6,6 +6,7 @@ public class PlayerInteraction : MonoBehaviour
     public static PlayerInteraction instance;
     public GamePlayer player;
 
+    [SerializeField] private GameObject inventory;
     [SerializeField] private float interactionDistance;
 
     private PlayerControls controls;
@@ -16,7 +17,6 @@ public class PlayerInteraction : MonoBehaviour
     private void Start()
     {
         instance = this;
-
         controls = new PlayerControls();
         controls.Player.Enable();
     }
@@ -31,9 +31,9 @@ public class PlayerInteraction : MonoBehaviour
         if (controls.Player.Interact.WasPerformedThisFrame())
         {
             if (Physics.Raycast(transform.position, transform.forward, out interact, interactionDistance))
-                interact.transform.GetComponent<IInteractable>();
+            {
+                interact.transform.GetComponent<IInteractable>().Interact(inventory);
+            }
         }
-
-        
     }
 }
