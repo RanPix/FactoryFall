@@ -1,22 +1,27 @@
 using Mirror;
+using UnityEngine;
 
 namespace FiniteMovementStateMachine
 {
+    [RequireComponent(typeof(CharacterController))]
     public class MovementMachine : NetworkBehaviour
     {
         private bool notLocalPlayer;
 
         protected BaseMovementState currentState;
-        private Idle idle;
-        private Walk walk;
-        
+        [HideInInspector] public Idle idle { get; private set; }
+        [HideInInspector] public Walk walk { get; private set; }
+        [HideInInspector] public MidAir midAir { get; private set; }
 
         private void Awake()
         {
             notLocalPlayer = !isLocalPlayer;
 
-            idle = new Idle(this);
-            walk = new Walk(this);
+            PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>());
+
+            idle = new(this, movementControl);
+            walk = new(this, movementControl);
+            midAir = new(this, movementControl);
         }
 
 

@@ -11,14 +11,15 @@ namespace FiniteMovementStateMachine
         protected MovementMachine stateMachine;
         protected PlayerControls controls;
         protected Vector2 input;
-        protected PlayerMovement movement;
+        private readonly PlayerMovement movementControl;
 
-        public BaseMovementState(string name, MovementMachine stateMachine)
+        protected bool isGrounded;
+
+        public BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl)
         {
             this.name = name;
             this.stateMachine = stateMachine;
-
-            movement = stateMachine.gameObject.GetComponent<PlayerMovement>();
+            this.movementControl = movementControl;
         }
 
         #region State Logic
@@ -31,11 +32,12 @@ namespace FiniteMovementStateMachine
         public virtual void UpdateLogic()
         {
             GetInput();
+            CheckIfGrounded();
         }
 
         public virtual void UpdatePhysics()
         {
-            movement.Move(data.GetMoveVector3());
+            movementControl.Move(data.GetMoveVector3());
         }
 
         public virtual MovementDataIntersection Exit()
@@ -47,5 +49,9 @@ namespace FiniteMovementStateMachine
 
         private void GetInput()
             => input = controls.Player.Move.ReadValue<Vector2>().normalized;
+
+        private void CheckIfGrounded()
+            => isGrounded = Physics.CheckSphere(DataFields.groundCheck.position, DataFields.groundCheckRadius, DataFields.groundCheckLM, QueryTriggerInteraction.Ignore);
+
     }
 }

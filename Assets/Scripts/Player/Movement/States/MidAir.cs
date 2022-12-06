@@ -1,13 +1,12 @@
 using FiniteMovementStateMachine;
 using UnityEngine;
 
-public class Idle : BaseMovementState
+public class MidAir : BaseMovementState
 {
     private bool jumpInput;
-
-
-    public Idle(MovementMachine stateMachine, PlayerMovement movementControl)
-        : base("Idle", stateMachine, movementControl) { }
+    
+    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl)
+        : base("MidAir", stateMachine, movementControl) { }
 
     public override void Enter(MovementDataIntersection inputData)
     {
@@ -23,10 +22,10 @@ public class Idle : BaseMovementState
     {
         base.UpdateLogic();
 
-        if(input != Vector2.zero)
+        if (input != Vector2.zero)
             stateMachine.ChangeState(stateMachine.walk);
 
-        if(jumpInput || isGrounded)
+        if (jumpInput || isGrounded)
             stateMachine.ChangeState(stateMachine.midAir);
     }
 

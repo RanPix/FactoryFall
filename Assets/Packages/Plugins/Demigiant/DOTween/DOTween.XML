@@ -1357,7 +1357,7 @@
         </member>
         <member name="T:DG.Tweening.TweenExtensions">
             <summary>
-            Methods that extend Tween objects and allow to control or get data from them
+            Methods that extend Tween objects and allow to control or get inputDate from them
             </summary>
         </member>
         <member name="M:DG.Tweening.TweenExtensions.Complete(DG.Tweening.Tween)">

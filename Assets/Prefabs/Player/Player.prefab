@@ -41,7 +41,6 @@ GameObject:
   m_Component:
   - component: {fileID: 841400163258982987}
   - component: {fileID: 841400163258982990}
-  - component: {fileID: 568494732509130896}
   - component: {fileID: 627041124257517008}
   - component: {fileID: 841400163258982986}
   - component: {fileID: 2911324726990273139}
@@ -94,41 +93,6 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
---- !u!114 &568494732509130896
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 841400163258982976}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0df744c27da801640a7548fdcd087735, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  orientation: {fileID: 841400163098873428}
-  groundCheck: {fileID: 841400165053196236}
-  ceilingCheck: {fileID: 2943016086881704504}
-  groundLM:
-    serializedVersion: 2
-    m_Bits: 8
-  wallLM:
-    serializedVersion: 2
-    m_Bits: 256
-  groundCheckRadius: 0.4
-  ceilingCheckRadius: 0.4
-  sprintSpeed: 16
-  walkSpeed: 8
-  crouchSpeed: 4
-  accelerationLerp: 8
-  airStrafeMultiplier: 0.25
-  slideStrafeMultiplier: 0.1
-  jumpForce: 10
-  gravity: 10
-  maxDoubleJumps: 2
-  maxAirStrafeSpeed: 20
 --- !u!114 &627041124257517008
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -2,10 +2,9 @@ using UnityEngine;
 
 namespace FiniteMovementStateMachine
 {
-    [RequireComponent(typeof(CharacterController))]
     public class PlayerMovement
     {
-        private CharacterController controller;
+        private readonly CharacterController controller;
 
         public PlayerMovement(CharacterController controller)
         {
