@@ -111,10 +111,11 @@ MonoBehaviour:
     <speedMultiplier>k__BackingField: 1
     <interpolationRate>k__BackingField: 8
     <walkSpeed>k__BackingField: 8
+    <runSpeed>k__BackingField: 12
     <jumpHeight>k__BackingField: 10
     <jumpOverlap>k__BackingField: 1
     <doubleJumps>k__BackingField: 1
-    <gravity>k__BackingField: 10
+    <gravity>k__BackingField: 15
     <groundCheck>k__BackingField: {fileID: 841400165053196236}
     <groundCheckRadius>k__BackingField: 0.4
     <groundCheckLM>k__BackingField:

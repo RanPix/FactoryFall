@@ -6,6 +6,8 @@ public class Idle : BaseMovementState
     public Idle(MovementMachine stateMachine, PlayerMovement movementControl)
         : base("Idle", stateMachine, movementControl) { }
 
+    #region State logic
+
     public override void Enter(MovementDataIntersection inputData)
     {
         base.Enter(inputData);
@@ -24,15 +26,6 @@ public class Idle : BaseMovementState
         if(!isGrounded || data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
     }
-
-    public override void UpdatePhysics()
-    {
-
-    }
-
-    public override MovementDataIntersection Exit()
-    {
-
-        return base.Exit();
-    }
+    
+    #endregion
 }

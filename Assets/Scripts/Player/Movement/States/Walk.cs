@@ -9,43 +9,32 @@ public class Walk : BaseMovementState
 
     private void ChangeVelocity()
     {
-        Vector2 desiredSpeed = stateMachine.fields.walkSpeed * input;
+        Vector2 desiredSpeed = stateMachine.fields.walkSpeed * input * stateMachine.fields.speedMultiplier;
 
         data.horizontalMove =
             Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.fields.interpolationRate * Time.deltaTime);
     }
 
-    public override void Enter(MovementDataIntersection inputData)
-    {
-        base.Enter(inputData);
-
-
-    }
-
+    #region State logic
+    
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        
+
         ChangeVelocity();
 
         data.CalculateHorizontalMagnitude();
 
-        if(!isGrounded || data.gotJumpInput)
+        Debug.Log($"Is moving forward: {isMovingForward}\nIs sprinting: {controls.Player.Sprint.IsPressed()}");
+
+        if (!isGrounded || data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
-
-        if(!CheckIfMoving())
+        else if (!CheckIfMoving())
             stateMachine.ChangeState(stateMachine.idle);
-        
-    }
+        else if (isMovingForward && controls.Player.Sprint.IsPressed())
+            stateMachine.ChangeState(stateMachine.run);
 
-    public override void UpdatePhysics()
-    {
-        base.UpdatePhysics();
     }
-
-    public override MovementDataIntersection Exit()
-    {
-
-        return base.Exit();
-    }
+    
+    #endregion
 }

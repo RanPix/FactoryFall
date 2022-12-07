@@ -14,6 +14,7 @@ namespace FiniteMovementStateMachine
         [HideInInspector] public Idle idle { get; private set; }
         [HideInInspector] public Walk walk { get; private set; }
         [HideInInspector] public MidAir midAir { get; private set; }
+        [HideInInspector] public Run run { get; private set; }
 
         protected void Start()
         {
@@ -24,6 +25,7 @@ namespace FiniteMovementStateMachine
             idle = new(this, movementControl);
             walk = new(this, movementControl);
             midAir = new(this, movementControl);
+            run = new(this, movementControl);
 
             if (notLocalPlayer)
                 return;

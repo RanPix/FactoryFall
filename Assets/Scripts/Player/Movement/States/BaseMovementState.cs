@@ -1,5 +1,6 @@
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace FiniteMovementStateMachine
@@ -16,6 +17,7 @@ namespace FiniteMovementStateMachine
         private readonly PlayerMovement movementControl;
 
         protected bool isGrounded;
+        protected bool isMovingForward;
 
         public BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl)
         {
@@ -40,11 +42,12 @@ namespace FiniteMovementStateMachine
         {
             GetInput();
             CheckIfGrounded();
+            CheckIfMovingForward();
         }
 
         public virtual void UpdatePhysics()
         {
-            movementControl.Move(data.GetMoveVector3());
+            movementControl.Move(data.moveVector3);
         }
 
         public virtual MovementDataIntersection Exit()
@@ -67,11 +70,20 @@ namespace FiniteMovementStateMachine
         protected bool CheckIfMoving()
         {
             if(input != Vector2.zero)
-                return data.horizontalMagnitude > 0.15f;
+                return data.horizontalMagnitude > 0.1f;
             return data.horizontalMagnitude < math.EPSILON;
         }
 
         private void AddJump(InputAction.CallbackContext context)
             => data.gotJumpInput = true;
+
+        private void CheckIfMovingForward()
+        {
+            float angle = Quaternion.LookRotation(data.moveVector3).eulerAngles.y - stateMachine.fields.orientation.eulerAngles.y;
+            angle = angle < 0 ? -angle : angle; // Handmade Abs)
+
+            isMovingForward = angle is < 45.1f or > 314.9f;
+            Debug.Log(angle);
+        }
     }
 }

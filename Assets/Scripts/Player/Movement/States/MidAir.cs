@@ -9,6 +9,23 @@ public class MidAir : BaseMovementState
     public MidAir(MovementMachine stateMachine, PlayerMovement movementControl)
         : base("MidAir", stateMachine, movementControl) { }
 
+    private void ChangeVelocity()
+    {
+        if (data.horizontalMagnitude > stateMachine.fields.maxAirSpeed)
+        {
+            Vector2 speedAdition = input * stateMachine.fields.maxAirSpeed * stateMachine.fields.airMultiplier;
+            Vector2 desiredSpeed = data.horizontalMove + speedAdition;
+
+            if (desiredSpeed.magnitude > stateMachine.fields.maxAirSpeed)
+                desiredSpeed = desiredSpeed.normalized;
+
+            //Vector2.Lerp(data.horizontalMove )
+        }
+
+    }
+
+    #region State logic
+
     public override void Enter(MovementDataIntersection inputData)
     {
         base.Enter(inputData);
@@ -16,11 +33,13 @@ public class MidAir : BaseMovementState
         hasDoubleJumps = stateMachine.fields.doubleJumps;
     }
 
-    
-
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        
+        ChangeVelocity();
+
+        data.CalculateHorizontalMagnitude();
 
         ApplyGravity();
 
@@ -36,16 +55,13 @@ public class MidAir : BaseMovementState
         }
     }
 
-    public override void UpdatePhysics()
-    {
-        base.UpdatePhysics();
-    }
-
     public override MovementDataIntersection Exit()
     {
         data.verticalMove = 0f;
         return base.Exit();
     }
+
+    #endregion
 
     private void ApplyGravity()
         => data.verticalMove -= stateMachine.fields.gravity * Time.deltaTime;

@@ -12,6 +12,7 @@ namespace FiniteMovementStateMachine
 
         [field: Space]
         [field: SerializeField] public float walkSpeed { get; private set; }
+        [field: SerializeField] public float runSpeed { get; private set; }
 
         [field: Header("Vertical movement")]
 
@@ -19,6 +20,12 @@ namespace FiniteMovementStateMachine
         [field: SerializeField] public bool jumpOverlap { get; private set; }
         [field: SerializeField] public int doubleJumps { get; private set; }
         [field: SerializeField] public float gravity { get; private set; }
+
+
+        [field: Space]
+        [field: SerializeField] public float maxAirSpeed { get; private set; }
+        [field: SerializeField, Range(0, 1)] public float airMultiplier { get; private set; }
+
 
 
         [field: Header("Checks")]
@@ -45,13 +52,11 @@ namespace FiniteMovementStateMachine
 
         public bool gotJumpInput;
 
+        public Vector3 moveVector3 => new(horizontalMove.x, verticalMove, horizontalMove.y);
 
         public float horizontalMagnitude { get; private set; }
 
         public void CalculateHorizontalMagnitude()
             => horizontalMagnitude = horizontalMove.magnitude;
-
-        public Vector3 GetMoveVector3()
-            => new(horizontalMove.x, verticalMove, horizontalMove.y);
     }
 }
