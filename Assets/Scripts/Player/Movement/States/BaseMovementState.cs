@@ -1,4 +1,6 @@
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 namespace FiniteMovementStateMachine
 {
@@ -20,6 +22,11 @@ namespace FiniteMovementStateMachine
             this.name = name;
             this.stateMachine = stateMachine;
             this.movementControl = movementControl;
+
+            controls = new PlayerControls();
+            controls.Player.Enable();
+
+            controls.Player.Jump.performed += AddJump;
         }
 
         #region State Logic
@@ -48,10 +55,23 @@ namespace FiniteMovementStateMachine
         #endregion
 
         private void GetInput()
-            => input = controls.Player.Move.ReadValue<Vector2>().normalized;
+        {
+            Vector2 inputVector = controls.Player.Move.ReadValue<Vector2>();
+            Vector3 orientatedInputVector = stateMachine.fields.orientation.forward * inputVector.y + stateMachine.fields.orientation.right * inputVector.x;
+            input = new Vector2(orientatedInputVector.x, orientatedInputVector.z);
+        }
 
         private void CheckIfGrounded()
-            => isGrounded = Physics.CheckSphere(DataFields.groundCheck.position, DataFields.groundCheckRadius, DataFields.groundCheckLM, QueryTriggerInteraction.Ignore);
+            => isGrounded = Physics.CheckSphere(stateMachine.fields.groundCheck.position, stateMachine.fields.groundCheckRadius, stateMachine.fields.groundCheckLM, QueryTriggerInteraction.Ignore);
 
+        protected bool CheckIfMoving()
+        {
+            if(input != Vector2.zero)
+                return data.horizontalMagnitude > 0.15f;
+            return data.horizontalMagnitude < math.EPSILON;
+        }
+
+        private void AddJump(InputAction.CallbackContext context)
+            => data.gotJumpInput = true;
     }
 }

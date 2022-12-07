@@ -1,10 +1,11 @@
 using FiniteMovementStateMachine;
+using Unity.Mathematics;
 using UnityEngine;
 
 public class MidAir : BaseMovementState
 {
-    private bool jumpInput;
-    
+    private int hasDoubleJumps;
+
     public MidAir(MovementMachine stateMachine, PlayerMovement movementControl)
         : base("MidAir", stateMachine, movementControl) { }
 
@@ -12,31 +13,61 @@ public class MidAir : BaseMovementState
     {
         base.Enter(inputData);
 
-        data.horizontalMove = Vector2.zero;
-        data.verticalMove = 0f;
-
-        jumpInput = false;
+        hasDoubleJumps = stateMachine.fields.doubleJumps;
     }
+
+    
 
     public override void UpdateLogic()
     {
         base.UpdateLogic();
 
-        if (input != Vector2.zero)
-            stateMachine.ChangeState(stateMachine.walk);
+        ApplyGravity();
 
-        if (jumpInput || isGrounded)
-            stateMachine.ChangeState(stateMachine.midAir);
+        if(data.gotJumpInput)
+            TryJump();
+
+        if(isGrounded && data.verticalMove < math.EPSILON)
+        {
+            if(CheckIfMoving())
+                stateMachine.ChangeState(stateMachine.walk);
+            else
+                stateMachine.ChangeState(stateMachine.idle);
+        }
     }
 
     public override void UpdatePhysics()
     {
-
+        base.UpdatePhysics();
     }
 
     public override MovementDataIntersection Exit()
     {
-
+        data.verticalMove = 0f;
         return base.Exit();
+    }
+
+    private void ApplyGravity()
+        => data.verticalMove -= stateMachine.fields.gravity * Time.deltaTime;
+
+    private void TryJump()
+    {
+        if (isGrounded)
+            data.verticalMove += stateMachine.fields.jumpHeight;
+        else if (hasDoubleJumps-- > 0)
+            DoubleJump();
+
+        data.gotJumpInput = false;
+    }
+
+    private void DoubleJump()
+    {
+        if (stateMachine.fields.jumpOverlap)
+            data.verticalMove =
+                data.verticalMove < stateMachine.fields.jumpHeight ? 
+                    stateMachine.fields.jumpHeight : 
+                    data.verticalMove + stateMachine.fields.jumpHeight;
+        else
+            data.verticalMove += stateMachine.fields.jumpHeight;
     }
 }

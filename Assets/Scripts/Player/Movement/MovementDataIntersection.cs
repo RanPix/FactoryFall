@@ -3,21 +3,39 @@ using UnityEngine;
 namespace FiniteMovementStateMachine
 {
     [System.Serializable]
-    public static class DataFields
+    public class DataFields
     {
-        [Header("MoveSpeeds")]
-        public static readonly float speedMultiplier;
-        public static readonly float interpolationRate;
-        [Space]
-        public static readonly float walkSpeed;
-        [Header("Checks")]
-        public static readonly Transform groundCheck;
-        public static readonly float groundCheckRadius;
-        public static readonly LayerMask groundCheckLM;
-        [Space]
-        public static readonly Transform ceilingCheck;
-        public static readonly float ceilingCheckRadius;
-        public static readonly LayerMask ceilingCheckLM;
+        [field: Header("Move Speeds")]
+        [field: SerializeField] public float speedMultiplier { get; private set; }
+        [field: SerializeField] public float interpolationRate { get; private set; }
+
+
+        [field: Space]
+        [field: SerializeField] public float walkSpeed { get; private set; }
+
+        [field: Header("Vertical movement")]
+
+        [field: SerializeField] public float jumpHeight { get; private set; }
+        [field: SerializeField] public bool jumpOverlap { get; private set; }
+        [field: SerializeField] public int doubleJumps { get; private set; }
+        [field: SerializeField] public float gravity { get; private set; }
+
+
+        [field: Header("Checks")]
+        [field: SerializeField] public Transform groundCheck { get; private set; }
+        [field: SerializeField] public float groundCheckRadius { get; private set; }
+        [field: SerializeField] public LayerMask groundCheckLM { get; private set; }
+
+
+        [field: Space]
+        [field: SerializeField] public Transform ceilingCheck { get; private set; }
+        [field: SerializeField] public float ceilingCheckRadius { get; private set; }
+        [field: SerializeField] public LayerMask ceilingCheckLM { get; private set; }
+
+
+        [field: Header("Required")]
+        [field: SerializeField] public Transform orientation { get; private set; }
+
     }
 
     public struct MovementDataIntersection

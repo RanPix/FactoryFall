@@ -3,9 +3,6 @@ using UnityEngine;
 
 public class Idle : BaseMovementState
 {
-    private bool jumpInput;
-
-
     public Idle(MovementMachine stateMachine, PlayerMovement movementControl)
         : base("Idle", stateMachine, movementControl) { }
 
@@ -15,8 +12,6 @@ public class Idle : BaseMovementState
 
         data.horizontalMove = Vector2.zero;
         data.verticalMove = 0f;
-
-        jumpInput = false;
     }
 
     public override void UpdateLogic()
@@ -26,7 +21,7 @@ public class Idle : BaseMovementState
         if(input != Vector2.zero)
             stateMachine.ChangeState(stateMachine.walk);
 
-        if(jumpInput || isGrounded)
+        if(!isGrounded || data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
     }
 

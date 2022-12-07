@@ -41,11 +41,11 @@ GameObject:
   m_Component:
   - component: {fileID: 841400163258982987}
   - component: {fileID: 841400163258982990}
+  - component: {fileID: -3092277884635814602}
   - component: {fileID: 627041124257517008}
   - component: {fileID: 841400163258982986}
   - component: {fileID: 2911324726990273139}
   - component: {fileID: 4804469322116124112}
-  - component: {fileID: 4741971290225240163}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -93,6 +93,39 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 1, z: 0}
+--- !u!114 &-3092277884635814602
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841400163258982976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8005f0cbc4bc18d4ab8efbe1f472469c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  fields:
+    <speedMultiplier>k__BackingField: 1
+    <interpolationRate>k__BackingField: 8
+    <walkSpeed>k__BackingField: 8
+    <jumpHeight>k__BackingField: 10
+    <jumpOverlap>k__BackingField: 1
+    <doubleJumps>k__BackingField: 1
+    <gravity>k__BackingField: 10
+    <groundCheck>k__BackingField: {fileID: 841400165053196236}
+    <groundCheckRadius>k__BackingField: 0.4
+    <groundCheckLM>k__BackingField:
+      serializedVersion: 2
+      m_Bits: 8
+    <ceilingCheck>k__BackingField: {fileID: 2943016086881704504}
+    <ceilingCheckRadius>k__BackingField: 0.4
+    <ceilingCheckLM>k__BackingField:
+      serializedVersion: 2
+      m_Bits: 8
+    <orientation>k__BackingField: {fileID: 841400163098873428}
 --- !u!114 &627041124257517008
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -265,26 +298,6 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
---- !u!95 &4741971290225240163
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 841400163258982976}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 1e8abab3e2cefe948a8b254c5c332037, type: 2}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
 --- !u!1 &841400163719565600
 GameObject:
   m_ObjectHideFlags: 0

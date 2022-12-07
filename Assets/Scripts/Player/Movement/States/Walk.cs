@@ -1,4 +1,3 @@
-using System;
 using FiniteMovementStateMachine;
 using Unity.Mathematics;
 using UnityEngine;
@@ -10,10 +9,10 @@ public class Walk : BaseMovementState
 
     private void ChangeVelocity()
     {
-        Vector2 desiredSpeed = DataFields.walkSpeed * input;
+        Vector2 desiredSpeed = stateMachine.fields.walkSpeed * input;
 
         data.horizontalMove =
-            Vector2.Lerp(data.horizontalMove, desiredSpeed, DataFields.interpolationRate * Time.deltaTime);
+            Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.fields.interpolationRate * Time.deltaTime);
     }
 
     public override void Enter(MovementDataIntersection inputData)
@@ -26,10 +25,15 @@ public class Walk : BaseMovementState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-
+        
         ChangeVelocity();
 
-        if(data.horizontalMagnitude < math.EPSILON)
+        data.CalculateHorizontalMagnitude();
+
+        if(!isGrounded || data.gotJumpInput)
+            stateMachine.ChangeState(stateMachine.midAir);
+
+        if(!CheckIfMoving())
             stateMachine.ChangeState(stateMachine.idle);
         
     }

@@ -6,6 +6,8 @@ namespace FiniteMovementStateMachine
     [RequireComponent(typeof(CharacterController))]
     public class MovementMachine : NetworkBehaviour
     {
+        [SerializeField] public DataFields fields;
+        
         private bool notLocalPlayer;
 
         protected BaseMovementState currentState;
@@ -13,7 +15,7 @@ namespace FiniteMovementStateMachine
         [HideInInspector] public Walk walk { get; private set; }
         [HideInInspector] public MidAir midAir { get; private set; }
 
-        private void Awake()
+        protected void Start()
         {
             notLocalPlayer = !isLocalPlayer;
 
@@ -22,11 +24,7 @@ namespace FiniteMovementStateMachine
             idle = new(this, movementControl);
             walk = new(this, movementControl);
             midAir = new(this, movementControl);
-        }
 
-
-        protected void Start()
-        {
             if (notLocalPlayer)
                 return;
 
@@ -38,6 +36,7 @@ namespace FiniteMovementStateMachine
         {
             if (notLocalPlayer)
                 return;
+            Debug.Log($"Im in {currentState}",this);
 
             currentState?.UpdateLogic();
         }

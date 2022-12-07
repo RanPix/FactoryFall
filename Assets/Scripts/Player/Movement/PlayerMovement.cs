@@ -12,6 +12,6 @@ namespace FiniteMovementStateMachine
         }
 
         public void Move(Vector3 direction)
-            => controller.Move(direction);
+            => controller.Move(direction * Time.deltaTime);
     }
 }
