@@ -11,17 +11,19 @@ public class MidAir : BaseMovementState
 
     private void ChangeVelocity()
     {
-        if (data.horizontalMagnitude > stateMachine.fields.maxAirSpeed)
-        {
-            Vector2 speedAdition = input * stateMachine.fields.maxAirSpeed * stateMachine.fields.airMultiplier;
-            Vector2 desiredSpeed = data.horizontalMove + speedAdition;
+        Vector2 changedInput = input;
+        changedInput.x *= 0.5f;
+        changedInput = changedInput.normalized;
 
-            if (desiredSpeed.magnitude > stateMachine.fields.maxAirSpeed)
-                desiredSpeed = desiredSpeed.normalized;
+        Vector2 addition = input * stateMachine.fields.airSpeed * Time.deltaTime;
+        Vector2 desiredSpeed = data.horizontalMove + addition;
 
-            //Vector2.Lerp(data.horizontalMove )
-        }
+        if (desiredSpeed.magnitude > stateMachine.fields.maxAirSpeed)
+            desiredSpeed = desiredSpeed.normalized * stateMachine.fields.maxAirSpeed;
 
+        data.horizontalMove = desiredSpeed; 
+
+        //Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.fields.interpolationRate * Time.deltaTime);
     }
 
     #region State logic

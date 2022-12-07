@@ -116,6 +116,8 @@ MonoBehaviour:
     <jumpOverlap>k__BackingField: 1
     <doubleJumps>k__BackingField: 1
     <gravity>k__BackingField: 15
+    <maxAirSpeed>k__BackingField: 20
+    <airSpeed>k__BackingField: 5
     <groundCheck>k__BackingField: {fileID: 841400165053196236}
     <groundCheckRadius>k__BackingField: 0.4
     <groundCheckLM>k__BackingField:

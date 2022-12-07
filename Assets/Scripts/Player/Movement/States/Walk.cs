@@ -25,8 +25,6 @@ public class Walk : BaseMovementState
 
         data.CalculateHorizontalMagnitude();
 
-        Debug.Log($"Is moving forward: {isMovingForward}\nIs sprinting: {controls.Player.Sprint.IsPressed()}");
-
         if (!isGrounded || data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
         else if (!CheckIfMoving())

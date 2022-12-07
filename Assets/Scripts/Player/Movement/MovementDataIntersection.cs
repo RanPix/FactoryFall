@@ -24,7 +24,7 @@ namespace FiniteMovementStateMachine
 
         [field: Space]
         [field: SerializeField] public float maxAirSpeed { get; private set; }
-        [field: SerializeField, Range(0, 1)] public float airMultiplier { get; private set; }
+        [field: SerializeField] public float airSpeed { get; private set; }
 
 
 
