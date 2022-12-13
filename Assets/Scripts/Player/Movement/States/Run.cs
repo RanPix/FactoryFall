@@ -1,6 +1,5 @@
 using FiniteMovementStateMachine;
 using UnityEngine;
-using UnityEngine.EventSystems;
 
 public class Run : BaseMovementState
 {

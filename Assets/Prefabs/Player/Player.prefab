@@ -107,28 +107,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  fields:
-    <speedMultiplier>k__BackingField: 1
-    <interpolationRate>k__BackingField: 8
-    <walkSpeed>k__BackingField: 8
-    <runSpeed>k__BackingField: 12
-    <jumpHeight>k__BackingField: 10
-    <jumpOverlap>k__BackingField: 1
-    <doubleJumps>k__BackingField: 1
-    <gravity>k__BackingField: 15
-    <maxAirSpeed>k__BackingField: 20
-    <airSpeed>k__BackingField: 5
-    <groundCheck>k__BackingField: {fileID: 841400165053196236}
-    <groundCheckRadius>k__BackingField: 0.4
-    <groundCheckLM>k__BackingField:
-      serializedVersion: 2
-      m_Bits: 8
-    <ceilingCheck>k__BackingField: {fileID: 2943016086881704504}
-    <ceilingCheckRadius>k__BackingField: 0.4
-    <ceilingCheckLM>k__BackingField:
-      serializedVersion: 2
-      m_Bits: 8
-    <orientation>k__BackingField: {fileID: 841400163098873428}
+  <fields>k__BackingField: {fileID: 11400000, guid: 53d9904dc9acb0049bf1ad622fd714e9,
+    type: 2}
+  <orientation>k__BackingField: {fileID: 841400163098873428}
+  <groundCheck>k__BackingField: {fileID: 841400165053196236}
+  <ceilingCheck>k__BackingField: {fileID: 2943016086881704504}
 --- !u!114 &627041124257517008
 MonoBehaviour:
   m_ObjectHideFlags: 0

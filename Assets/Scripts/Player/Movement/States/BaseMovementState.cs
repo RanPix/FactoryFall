@@ -1,6 +1,5 @@
 using Unity.Mathematics;
 using UnityEngine;
-using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 namespace FiniteMovementStateMachine
@@ -60,12 +59,12 @@ namespace FiniteMovementStateMachine
         private void GetInput()
         {
             Vector2 inputVector = controls.Player.Move.ReadValue<Vector2>();
-            Vector3 orientatedInputVector = stateMachine.fields.orientation.forward * inputVector.y + stateMachine.fields.orientation.right * inputVector.x;
+            Vector3 orientatedInputVector = stateMachine.orientation.forward * inputVector.y + stateMachine.orientation.right * inputVector.x;
             input = new Vector2(orientatedInputVector.x, orientatedInputVector.z);
         }
 
         private void CheckIfGrounded()
-            => isGrounded = Physics.CheckSphere(stateMachine.fields.groundCheck.position, stateMachine.fields.groundCheckRadius, stateMachine.fields.groundCheckLM, QueryTriggerInteraction.Ignore);
+            => isGrounded = Physics.CheckSphere(stateMachine.groundCheck.position, stateMachine.fields.groundCheckRadius, stateMachine.fields.groundCheckLM, QueryTriggerInteraction.Ignore);
 
         protected bool CheckIfMoving()
         {
@@ -79,11 +78,10 @@ namespace FiniteMovementStateMachine
 
         private void CheckIfMovingForward()
         {
-            float angle = Quaternion.LookRotation(data.moveVector3).eulerAngles.y - stateMachine.fields.orientation.eulerAngles.y;
+            float angle = Quaternion.LookRotation(data.moveVector3).eulerAngles.y - stateMachine.orientation.eulerAngles.y;
             angle = angle < 0 ? -angle : angle; // Handmade Abs)
 
             isMovingForward = angle is < 45.1f or > 314.9f;
-            Debug.Log(angle);
         }
     }
 }

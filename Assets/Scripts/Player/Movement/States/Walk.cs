@@ -1,5 +1,4 @@
 using FiniteMovementStateMachine;
-using Unity.Mathematics;
 using UnityEngine;
 
 public class Walk : BaseMovementState

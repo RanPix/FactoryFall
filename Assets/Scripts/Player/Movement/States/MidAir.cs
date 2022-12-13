@@ -1,13 +1,19 @@
 using FiniteMovementStateMachine;
+using System;
 using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class MidAir : BaseMovementState
 {
     private int hasDoubleJumps;
+    private int hasRedirects;
 
     public MidAir(MovementMachine stateMachine, PlayerMovement movementControl)
-        : base("MidAir", stateMachine, movementControl) { }
+        : base("MidAir", stateMachine, movementControl)
+    {
+        controls.Player.Redirect.performed += TryRedirect;
+    }
 
     private void ChangeVelocity()
     {
@@ -17,6 +23,8 @@ public class MidAir : BaseMovementState
 
         Vector2 addition = input * stateMachine.fields.airSpeed * Time.deltaTime;
         Vector2 desiredSpeed = data.horizontalMove + addition;
+
+        data.CalculateHorizontalMagnitude();
 
         if (desiredSpeed.magnitude > stateMachine.fields.maxAirSpeed)
             desiredSpeed = desiredSpeed.normalized * stateMachine.fields.maxAirSpeed;
@@ -33,6 +41,7 @@ public class MidAir : BaseMovementState
         base.Enter(inputData);
 
         hasDoubleJumps = stateMachine.fields.doubleJumps;
+        hasRedirects = stateMachine.fields.redirects;
     }
 
     public override void UpdateLogic()
@@ -87,5 +96,23 @@ public class MidAir : BaseMovementState
                     data.verticalMove + stateMachine.fields.jumpHeight;
         else
             data.verticalMove += stateMachine.fields.jumpHeight;
+    }
+
+    private void TryRedirect(InputAction.CallbackContext context)
+    {
+        if (!CheckForCharges())
+            return;
+
+        data.CalculateHorizontalMagnitude();
+
+        data.horizontalMove = data.horizontalMagnitude * input;
+    }
+
+    private bool CheckForCharges()
+    {
+        if(!data.IsMovingHorizontally())
+            return false;
+
+        return hasRedirects-- > 0;
     }
 }

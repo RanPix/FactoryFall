@@ -6,11 +6,14 @@ namespace FiniteMovementStateMachine
     [RequireComponent(typeof(CharacterController))]
     public class MovementMachine : NetworkBehaviour
     {
-        [SerializeField] public DataFields fields;
-        
+        [field: SerializeField] public PlayerDataFields fields { get; private set; }
+        [field: SerializeField] public Transform  orientation { get; private set; }
+        [field: SerializeField] public Transform groundCheck { get; private set; }
+        [field: SerializeField] public Transform ceilingCheck { get; private set; }
+
         private bool notLocalPlayer;
 
-        protected BaseMovementState currentState;
+        public BaseMovementState currentState { get; protected set; }
         [HideInInspector] public Idle idle { get; private set; }
         [HideInInspector] public Walk walk { get; private set; }
         [HideInInspector] public MidAir midAir { get; private set; }
@@ -20,15 +23,15 @@ namespace FiniteMovementStateMachine
         {
             notLocalPlayer = !isLocalPlayer;
 
+            if (notLocalPlayer)
+                return;
+
             PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>());
 
             idle = new(this, movementControl);
             walk = new(this, movementControl);
             midAir = new(this, movementControl);
             run = new(this, movementControl);
-
-            if (notLocalPlayer)
-                return;
 
             currentState = GetInitialState();
             currentState?.Enter(new MovementDataIntersection());
@@ -38,7 +41,7 @@ namespace FiniteMovementStateMachine
         {
             if (notLocalPlayer)
                 return;
-            Debug.Log($"Im in {currentState}",this);
+            //Debug.Log($"Im in {currentState}",this);
 
             currentState?.UpdateLogic();
         }
