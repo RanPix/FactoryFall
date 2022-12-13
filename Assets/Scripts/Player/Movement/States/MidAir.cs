@@ -9,10 +9,12 @@ public class MidAir : BaseMovementState
     private int hasDoubleJumps;
     private int hasRedirects;
 
+    private bool gotRedirect;
+
     public MidAir(MovementMachine stateMachine, PlayerMovement movementControl)
         : base("MidAir", stateMachine, movementControl)
     {
-        controls.Player.Redirect.performed += TryRedirect;
+        controls.Player.Redirect.performed += AddRedirect;
     }
 
     private void ChangeVelocity()
@@ -42,12 +44,16 @@ public class MidAir : BaseMovementState
 
         hasDoubleJumps = stateMachine.fields.doubleJumps;
         hasRedirects = stateMachine.fields.redirects;
+
+        gotRedirect = false;
     }
 
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        
+
+        Debug.Log($"Before {gotRedirect}, {hasRedirects}", stateMachine);
+
         ChangeVelocity();
 
         data.CalculateHorizontalMagnitude();
@@ -56,6 +62,11 @@ public class MidAir : BaseMovementState
 
         if(data.gotJumpInput)
             TryJump();
+
+        if(gotRedirect)
+            TryRedirect();
+
+        Debug.Log($"After {gotRedirect}, {hasRedirects}", stateMachine);
 
         if(isGrounded && data.verticalMove < math.EPSILON)
         {
@@ -98,14 +109,21 @@ public class MidAir : BaseMovementState
             data.verticalMove += stateMachine.fields.jumpHeight;
     }
 
-    private void TryRedirect(InputAction.CallbackContext context)
+    private void AddRedirect(InputAction.CallbackContext context)
+        => gotRedirect = true;
+
+    private bool TryRedirect()
     {
+        gotRedirect = false;
+
         if (!CheckForCharges())
-            return;
+            return false;
 
         data.CalculateHorizontalMagnitude();
 
         data.horizontalMove = data.horizontalMagnitude * input;
+
+        return true;
     }
 
     private bool CheckForCharges()
