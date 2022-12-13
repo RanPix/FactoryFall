@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class TestingGrid : MonoBehaviour
 {
-    public Grid<GridObject> grid;
+    public Grid3D<GridObject> grid;
 
     private void Awake()
     {
@@ -14,6 +14,6 @@ public class TestingGrid : MonoBehaviour
 
         float cellSize = 3f;
 
-        grid = new Grid<GridObject>(gridWidth, gridHeight, gridLength, cellSize, new Vector3(-50, 0, -50), (Grid<GridObject> g, int x, int y, int z) => new GridObject(g, x, y, z));
+        grid = new Grid3D<GridObject>(gridWidth, gridHeight, gridLength, cellSize, new Vector3(-50, 0, -50), (Grid3D<GridObject> g, int x, int y, int z) => new GridObject(g, x, y, z));
     }
 }

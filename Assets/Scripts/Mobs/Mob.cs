@@ -72,10 +72,10 @@ public abstract class Mob : MonoBehaviour
         gameObject.transform.GetChild(0).GetComponent<Renderer>().material = materials[Randommaterial];
         int weaponNumber = Random.Range(0, mobsWeapons.Length);
         mobsWeapons[weaponNumber].SetActive(true);
-        switch (weaponNumber)
-        {
+        //switch (weaponNumber)
+        //{
 
-        }
+        //}
         ChooseState();
     }
 

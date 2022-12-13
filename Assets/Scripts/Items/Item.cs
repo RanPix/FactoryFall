@@ -51,7 +51,7 @@ public class Item
                 return item;
             }
         }
-        return item;
+        //return item;
     }
 
     public Item SecondaryPutItem(Item item)//пояснення чому не void: я хочу щоб на мишці висів 1 item типу як предмет який тримає мишка, і при визові цієї функції вміст мишки буде замінюватись на Item який повертає ця функція

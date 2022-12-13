@@ -16,7 +16,7 @@ public class PlayerMovement : NetworkBehaviour
     private Vector3 velocity;
 
 
-    private Camera camera;
+    private Camera cam;
 
     [Header("Move")]
 
@@ -125,7 +125,7 @@ public class PlayerMovement : NetworkBehaviour
             return;
 
         // Old Awake
-        camera = Camera.main;
+        cam = Camera.main;
 
         characterCont = GetComponent<CharacterController>();
 

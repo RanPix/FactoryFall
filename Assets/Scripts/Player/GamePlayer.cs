@@ -1,51 +1,54 @@
 using UnityEngine;
 using Mirror;
+using GameBase;
+using Player.Info;
 
-public class GamePlayer : NetworkBehaviour, IDamagable
+namespace Player
 {
-    [SerializeField] private Health health;
-
-    [SerializeField] private InventoryUI inventory;
-
-    [Header("Camera")]
-
-    [SerializeField] private GameObject cameraHolder;
-    [SerializeField] private Transform cameraPosition;
-    [SerializeField] private Transform orientation;
-
-    private void Start()
+    public class GamePlayer : NetworkBehaviour
     {
-        if (!isLocalPlayer)
-            return;
+        private PlayerInfo playerInfo;
 
-        cameraHolder = Instantiate(cameraHolder);
-        cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
-        cameraHolder.GetComponentInChildren<Look>().orientation = orientation;
+        [SerializeField] private Health health;
+        [SerializeField] private Damage damage;
 
-        cameraHolder.GetComponentInChildren<Look>().inventoryUI = inventory;
+        [SerializeField] private InventoryUI inventory;
 
-        //PlayerInteraction.instance.player = this;
-    }
+        [Header("Camera")]
 
-    /*public void Interact(IInteractable interact) =>
-        InteractServer(interact);
-
-    [Command]
-    private void InteractServer(IInteractable interact) =>
-        interact.Interact();
+        [SerializeField] private GameObject cameraHolder;
+        [SerializeField] private Transform cameraPosition;
+        [SerializeField] private Transform orientation;
 
 
+        private void Start()
+        {
+            if (!isLocalPlayer)
+                return;
 
-    public void RemoveBlock(Block block) =>
-        RemoveBlockServer(block);
+            cameraHolder = Instantiate(cameraHolder);
+            cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
+            cameraHolder.GetComponentInChildren<Look>().orientation = orientation;
 
-    [Command]
-    private void RemoveBlockServer(Block block) =>
-        block.RemoveBlock();*/
+            cameraHolder.GetComponentInChildren<Look>().inventoryUI = inventory;
 
-    public bool Damage(float damage)
-    {
-        health.currentHealth -= damage;
-        return false;
+            //PlayerInteraction.instance.player = this;
+        }
+
+        /*public void Interact(IInteractable interact) =>
+            InteractServer(interact);
+
+        [Command]
+        private void InteractServer(IInteractable interact) =>
+            interact.Interact();
+
+
+
+        public void RemoveBlock(Block block) =>
+            RemoveBlockServer(block);
+
+        [Command]
+        private void RemoveBlockServer(Block block) =>
+            block.RemoveBlock();*/
     }
 }

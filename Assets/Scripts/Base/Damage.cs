@@ -1,6 +1,12 @@
-[System.Serializable]
-public struct Damage
+using UnityEngine;
+using Player.Info;
+
+namespace GameBase
 {
-    public float damage;
-    public GameTeam damagingTeam;
+    [System.Serializable]
+    public struct Damage
+    {
+        [field: SerializeField] public float damage { get; private set; }
+        public PlayerInfo damagingTeam;
+    }
 }
