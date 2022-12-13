@@ -20,7 +20,7 @@ public abstract class Mob : MonoBehaviour
 {
     public MobStates state;
 
-    [SerializeField] private NavMeshAgent agent;
+    [SerializeField] protected NavMeshAgent agent;
 
     [Space(10)]
 
@@ -63,7 +63,8 @@ public abstract class Mob : MonoBehaviour
     public abstract void Shoot();
     #endregion
 
-    [HideInInspector] public List<GameObject> enemiesInTargetZone;
+    public List<GameObject> enemiesInTargetZone;
+    public List<GameObject> enemiesInAttackZone;
 
     // Start is called before the first frame update
     void Start()
@@ -72,10 +73,10 @@ public abstract class Mob : MonoBehaviour
         gameObject.transform.GetChild(0).GetComponent<Renderer>().material = materials[Randommaterial];
         int weaponNumber = Random.Range(0, mobsWeapons.Length);
         mobsWeapons[weaponNumber].SetActive(true);
-        //switch (weaponNumber)
-        //{
+        /*switch (weaponNumber)
+        {
 
-        //}
+        }*/
         ChooseState();
     }
 
@@ -100,14 +101,8 @@ public abstract class Mob : MonoBehaviour
         switch (state)
         {
             case MobStates.Calm:
-                agent.SetDestination(new Vector3());
-                mobAnimator.Play("stay");
                 break;
             case MobStates.Aggressive:
-                Debug.Log("target");
-                mobAnimator.Play("run");
-                agent.SetDestination(targetGObj.transform.position);
-
                 break;
 
             case MobStates.Atack:

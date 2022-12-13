@@ -44,5 +44,42 @@ public class WeaponScriptableObject : ScriptableObject
 
 
 
+/*#if UNITY_EDITOR
+    [CanEditMultipleObjects]
+    [CustomEditor(typeof(WeaponScriptableObject))]
+    public class WeaponEditor : Editor
+    {
+        public override void OnInspectorGUI()
+        {
+            base.OnInspectorGUI();
+
+            WeaponScriptableObject weaponScriptableObject = (WeaponScriptableObject)target;
+            Weapon weapon = weaponScriptableObject.targetWeapon;
+            if (weapon) 
+            {
+
+                if (weapon.showRayShootVariables)
+                {
+                    weapon.showRayShootVariables = EditorGUILayout.Foldout(weapon.showRayShootVariables, "Ray shoot variables", true);
+
+                }
+                else if (weapon.showPhysicsShootVariables)
+                {
+                    weapon.showPhysicsShootVariables = EditorGUILayout.Foldout(weapon.showPhysicsShootVariables, "Physics shoot variables", true);
+                    GameObject bulletPrefab;
+                    float bulletSpeed;
+                    float bulletTimeToDestroy;
+
+                }
+                else if (weapon.showTriggerShootVariables)
+                {
+                    weapon.showTriggerShootVariables = EditorGUILayout.Foldout(weapon.showTriggerShootVariables, "Trigger shoot variables", true);
+
+                }
+            }
+        }
+    }
+#endif*/
+
 
 }
