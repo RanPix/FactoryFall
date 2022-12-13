@@ -52,8 +52,6 @@ public class MidAir : BaseMovementState
     {
         base.UpdateLogic();
 
-        Debug.Log($"Before {gotRedirect}, {hasRedirects}", stateMachine);
-
         ChangeVelocity();
 
         data.CalculateHorizontalMagnitude();
@@ -65,8 +63,6 @@ public class MidAir : BaseMovementState
 
         if(gotRedirect)
             TryRedirect();
-
-        Debug.Log($"After {gotRedirect}, {hasRedirects}", stateMachine);
 
         if(isGrounded && data.verticalMove < math.EPSILON)
         {

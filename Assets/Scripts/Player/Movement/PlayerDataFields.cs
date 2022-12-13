@@ -59,6 +59,6 @@ namespace FiniteMovementStateMachine
             => horizontalMagnitude = horizontalMove.magnitude;
 
         public bool IsMovingHorizontally()
-            => horizontalMove.x > 0 || horizontalMove.y > 0;
+            => horizontalMove != Vector2.zero;
     }
 }
