@@ -9,7 +9,7 @@ namespace GameBase
         [field: SerializeField] public float maxHealth { get; private set; }
         [field: SyncVar] public float currentHealth { get; private set; }
 
-        public Action onDeath { get; private set; }
+        public Action onDeath;
 
         public void Damage(Damage damage)
         {
