@@ -7,26 +7,23 @@ public class GamePlayer : NetworkBehaviour, IDamagable
 
     [SerializeField] private InventoryUI inventory;
 
-    [Header("Camera")]
+    [field: SerializeField]public GameObject cameraHolder { get; private set; }
+    [Header("Camera")] 
 
-    [SerializeField] private GameObject cameraHolder;
     [SerializeField] private Transform cameraPosition;
     [SerializeField] private Transform orientation;
     private void Start()
     {
-        if (isLocalPlayer)
+        if (!isLocalPlayer)
         {
-            cameraHolder = Instantiate(cameraHolder);
-            cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
-            cameraHolder.GetComponent<Look>().orientation = orientation;
-            cameraHolder.GetComponent<Look>().inventoryUI = inventory;
-            cameraHolder.GetComponent<Look>()._isLocalPlayer = true;
-            NetworkServer.Spawn(cameraHolder);
+            return;
         }
-        else
-        {
-            cameraHolder.GetComponentInChildren<AudioListener>().enabled = false;
-        }
+        cameraHolder = Instantiate(cameraHolder);
+        cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
+        cameraHolder.GetComponent<Look>().orientation = orientation;
+        cameraHolder.GetComponent<Look>().inventoryUI = inventory;
+        cameraHolder.GetComponent<Look>()._isLocalPlayer = true;
+
         /*if (!isLocalPlayer)
         {
             cameraHolder.GetComponentInChildren<Camera>().enabled = false;
@@ -38,11 +35,6 @@ public class GamePlayer : NetworkBehaviour, IDamagable
         //PlayerInteraction.instance.player = this;
     }
 
-    [Command]
-    public void SpawnOnServer()
-    {
-        NetworkServer.Spawn(cameraHolder);
-    }
 
     /*public void Interact(IInteractable interact) =>
         InteractServer(interact);

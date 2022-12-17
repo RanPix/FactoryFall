@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using Mirror;
 using UnityEngine;
 using TMPro;
 using Random = UnityEngine.Random;
@@ -16,7 +17,7 @@ public enum ShootType
 [RequireComponent(typeof(AudioSource))]
 [RequireComponent(typeof(Animator))]
 
-abstract public class Weapon : MonoBehaviour
+abstract public class Weapon : NetworkBehaviour
 {
 
     [SerializeField] protected WeaponScriptableObject weaponScriptableObject;
@@ -77,12 +78,17 @@ abstract public class Weapon : MonoBehaviour
     [SerializeField] private GameObject bulletSpawner;
     [SerializeField] private ConnectorHelper connectorHelper;
     [SerializeField] private Action OnInScopeValuseChange;
+
+
     public bool canShoot;
+    [HideInInspector] public bool _isLocalPlayer { get; set; } = false;
+
+
 
     //protected float nextFire;
     private PlayerControls controls;
-    protected Camera cam;
-    private Camera gunCam;
+    public Camera cam;
+    public Camera gunCam;
     private AudioSource audioSource;
     private TMP_Text ammoText;
 
@@ -106,18 +112,18 @@ abstract public class Weapon : MonoBehaviour
     protected abstract void FireButtonWasReleased();
     #endregion
     // Start is called before the first frame update
-    private void Awake()
-    {
-        controls = new PlayerControls();
-        controls.Enable();
-        audioSource = gameObject.GetComponent<AudioSource>();
-        animator = gameObject.GetComponent<Animator>();
-    }
     private void Start()
     {
+        if(!_isLocalPlayer)
+            return;
+        audioSource = gameObject.GetComponentInChildren<AudioSource>();
+        animator = gameObject.GetComponentInChildren<Animator>();
+        controls = new PlayerControls();
+        controls.Enable();
         WeaponsLink.instance.weapons.Add(this);
+        Debug.Log("Start");
         cam = Camera.main;
-        gunCam = cam.GetComponentInChildren<Camera>();
+        gunCam = cam.GetComponentInChildren<Camera>();  
         GameObject help = Instantiate(weaponAmmo.gameObject);
 
         weaponAmmo = help.GetComponent<WeaponAmmo>();
@@ -130,7 +136,9 @@ abstract public class Weapon : MonoBehaviour
     }
     // Update is called once per frame
     void Update()
-    {
+    { 
+        if(!_isLocalPlayer)
+        return;
         switch (_state)
         {
             case States.Active:
