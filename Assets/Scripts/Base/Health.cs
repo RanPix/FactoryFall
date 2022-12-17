@@ -1,8 +1,27 @@
+using Mirror;
 using UnityEngine;
+using System;
 
-[System.Serializable]
-public class Health
+namespace GameBase
 {
-    public float maxHealth;
-    public float currentHealth;
+    public class Health : NetworkBehaviour
+    {
+        [field: SerializeField] public float maxHealth { get; private set; }
+        [field: SyncVar] public float currentHealth { get; private set; }
+
+        public Action onDeath;
+
+        public void Damage(Damage damage)
+        {
+            currentHealth -= damage.damage;   
+
+            if (currentHealth < 1)
+                onDeath?.Invoke();
+        }
+
+        public void Regen(float amount)
+        {
+            currentHealth = Mathf.Clamp(currentHealth + amount, 1, maxHealth);
+        }
+    }
 }

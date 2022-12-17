@@ -12,7 +12,7 @@ public class PlayerBuilding : MonoBehaviour
     private Block removedBlock;
 
     [SerializeField] private float buildDistance;
-    private Grid<GridObject> gridRef;
+    private Grid3D<GridObject> gridRef;
 
     [SerializeField] private PlacedBlockType[] buildings;
     private int buildingType;
@@ -102,6 +102,7 @@ public class PlayerBuilding : MonoBehaviour
 
         return;
         //tbd
+        /*
         if (controls.Player.RemoveBlock.IsPressed())
         {
             bool blockHit = Physics.Raycast(transform.position, transform.forward, out building, buildDistance);
@@ -137,5 +138,6 @@ public class PlayerBuilding : MonoBehaviour
             removingTimer = 0f;
             removedBlock = null;
         }
+        */
     }
 }

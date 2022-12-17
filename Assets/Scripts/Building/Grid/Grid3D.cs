@@ -1,9 +1,8 @@
 using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grid<TGritObject>
+public class Grid3D<TGritObject>
 {
     public event EventHandler<OnGridObjectChangedEventArgs> OnGridObjectChanged;
     public class OnGridObjectChangedEventArgs : EventArgs
@@ -23,7 +22,7 @@ public class Grid<TGritObject>
 
     private TGritObject[,,] gridArray;
 
-    public Grid(int width, int height, int length, float cellSize, Vector3 originPos, Func<Grid<TGritObject>, int, int, int, TGritObject> createGridObject)
+    public Grid3D(int width, int height, int length, float cellSize, Vector3 originPos, Func<Grid3D<TGritObject>, int, int, int, TGritObject> createGridObject)
     {
         this.width = width;
         this.height = height;
@@ -125,14 +124,14 @@ public class Grid<TGritObject>
 
 public class GridObject
 {
-    private Grid<GridObject> grid;
+    private Grid3D<GridObject> grid;
     private int x;
     private int y;
     private int z;
 
     private PlacedObject placedObject;
 
-    public GridObject(Grid<GridObject> grid, int x, int y, int z)
+    public GridObject(Grid3D<GridObject> grid, int x, int y, int z)
     {
         this.grid = grid;
         this.x = x;

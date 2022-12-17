@@ -4,7 +4,6 @@ using System.Collections.Generic;
 public class PlayerInteraction : MonoBehaviour
 {
     public static PlayerInteraction instance;
-    public GamePlayer player;
 
     [SerializeField] private float interactionDistance;
 
