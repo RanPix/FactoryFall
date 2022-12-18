@@ -23,13 +23,13 @@ public class MidAir : BaseMovementState
         changedInput.x *= 0.5f;
         changedInput = changedInput.normalized;
 
-        Vector2 addition = input * stateMachine.fields.airSpeed * Time.deltaTime;
+        Vector2 addition = input * stateMachine.fields.AirSpeed * Time.deltaTime;
         Vector2 desiredSpeed = data.horizontalMove + addition;
 
         data.CalculateHorizontalMagnitude();
 
-        if (desiredSpeed.magnitude > stateMachine.fields.maxAirSpeed)
-            desiredSpeed = desiredSpeed.normalized * stateMachine.fields.maxAirSpeed;
+        if (desiredSpeed.magnitude > stateMachine.fields.MaxAirSpeed)
+            desiredSpeed = desiredSpeed.normalized * stateMachine.fields.MaxAirSpeed;
 
         data.horizontalMove = desiredSpeed; 
 
@@ -42,8 +42,8 @@ public class MidAir : BaseMovementState
     {
         base.Enter(inputData);
 
-        hasDoubleJumps = stateMachine.fields.doubleJumps;
-        hasRedirects = stateMachine.fields.redirects;
+        hasDoubleJumps = stateMachine.fields.DoubleJumps;
+        hasRedirects = stateMachine.fields.Redirects;
 
         gotRedirect = false;
     }
@@ -64,13 +64,20 @@ public class MidAir : BaseMovementState
         if(gotRedirect)
             TryRedirect();
 
-        if(isGrounded && data.verticalMove < math.EPSILON)
+        CheckForChangeState();
+    }
+
+    protected override void CheckForChangeState()
+    {
+        if (isGrounded && data.verticalMove < math.EPSILON)
         {
-            if(CheckIfMoving())
+            if (CheckIfHaveInput())
                 stateMachine.ChangeState(stateMachine.walk);
             else
                 stateMachine.ChangeState(stateMachine.idle);
         }
+        else if(gotWall)
+            stateMachine.ChangeState(stateMachine.wallrun);
     }
 
     public override MovementDataIntersection Exit()
@@ -82,12 +89,12 @@ public class MidAir : BaseMovementState
     #endregion
 
     private void ApplyGravity()
-        => data.verticalMove -= stateMachine.fields.gravity * Time.deltaTime;
+        => data.verticalMove -= stateMachine.fields.Gravity * Time.deltaTime;
 
     private void TryJump()
     {
         if (isGrounded)
-            data.verticalMove += stateMachine.fields.jumpHeight;
+            data.verticalMove += stateMachine.fields.JumpHeight;
         else if (hasDoubleJumps-- > 0)
             DoubleJump();
 
@@ -96,30 +103,28 @@ public class MidAir : BaseMovementState
 
     private void DoubleJump()
     {
-        if (stateMachine.fields.jumpOverlap)
+        if (stateMachine.fields.JumpOverlap)
             data.verticalMove =
-                data.verticalMove < stateMachine.fields.jumpHeight ? 
-                    stateMachine.fields.jumpHeight : 
-                    data.verticalMove + stateMachine.fields.jumpHeight;
+                data.verticalMove < stateMachine.fields.JumpHeight ? 
+                    stateMachine.fields.JumpHeight : 
+                    data.verticalMove + stateMachine.fields.JumpHeight;
         else
-            data.verticalMove += stateMachine.fields.jumpHeight;
+            data.verticalMove += stateMachine.fields.JumpHeight;
     }
 
     private void AddRedirect(InputAction.CallbackContext context)
         => gotRedirect = true;
 
-    private bool TryRedirect()
+    private void TryRedirect()
     {
         gotRedirect = false;
 
-        if (!CheckForCharges())
-            return false;
+        if (!CheckForCharges()) 
+            return;
 
         data.CalculateHorizontalMagnitude();
 
         data.horizontalMove = data.horizontalMagnitude * input;
-
-        return true;
     }
 
     private bool CheckForCharges()

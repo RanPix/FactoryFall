@@ -1,4 +1,5 @@
-using Unity.Mathematics;
+using System;
+using System.Reflection;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -14,6 +15,8 @@ namespace FiniteMovementStateMachine
         protected PlayerControls controls;
         protected Vector2 input;
         private readonly PlayerMovement movementControl;
+
+        protected bool gotWall;
 
         protected bool isGrounded;
         protected bool isMovingForward;
@@ -32,26 +35,50 @@ namespace FiniteMovementStateMachine
 
         #region State Logic
 
+        /// <summary>
+        ///     Called once on start of state <br/>
+        ///     In case of override base should be put at the start of method
+        /// </summary>
         public virtual void Enter(MovementDataIntersection inputData)
         {
             data = inputData;
         }
 
+        /// <summary>
+        ///     Called every frame before Update Physics. Should be used only for calculation and changes between states <br/>
+        ///     In case of override base should be put at the start of method
+        /// </summary>
         public virtual void UpdateLogic()
         {
             GetInput();
             CheckIfGrounded();
             CheckIfMovingForward();
+
+            gotWall = data.CheckForWalls(stateMachine);
         }
 
+        /// <summary>
+        ///     Called every frame after Update Logic. Should be only overrided in case of special movement situations
+        /// </summary>
         public virtual void UpdatePhysics()
         {
             movementControl.Move(data.moveVector3);
         }
 
+        /// <summary>
+        ///     Called on exit of state <br/>
+        ///     In case of override base should be put in the end of method
+        /// </summary>
         public virtual MovementDataIntersection Exit()
         {
             return data;
+        }
+
+        /// <summary> Don't override with base </summary>
+        protected virtual void CheckForChangeState()
+        {
+            Debug.LogWarning($"I was in {name} for a brief moment.\n  Override {MethodBase.GetCurrentMethod()?.Name} method");
+            throw new NotImplementedException();
         }
 
         #endregion
@@ -64,14 +91,10 @@ namespace FiniteMovementStateMachine
         }
 
         private void CheckIfGrounded()
-            => isGrounded = Physics.CheckSphere(stateMachine.groundCheck.position, stateMachine.fields.groundCheckRadius, stateMachine.fields.groundCheckLM, QueryTriggerInteraction.Ignore);
+            => isGrounded = Physics.CheckSphere(stateMachine.groundCheck.position, stateMachine.fields.GroundCheckRadius, stateMachine.fields.GroundCheckLm, QueryTriggerInteraction.Ignore);
 
-        protected bool CheckIfMoving()
-        {
-            if(input != Vector2.zero)
-                return data.horizontalMagnitude > 0.1f;
-            return data.horizontalMagnitude < math.EPSILON;
-        }
+        protected bool CheckIfHaveInput()
+            => input != Vector2.zero;
 
         private void AddJump(InputAction.CallbackContext context)
             => data.gotJumpInput = true;

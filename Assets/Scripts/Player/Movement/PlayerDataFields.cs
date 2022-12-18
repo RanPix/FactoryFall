@@ -1,3 +1,5 @@
+using Unity.VisualScripting;
+using UnityEditorInternal;
 using UnityEngine;
 
 namespace FiniteMovementStateMachine
@@ -7,46 +9,55 @@ namespace FiniteMovementStateMachine
     {
         [Header("Move Speeds")] 
 
-        public float speedMultiplier;
-        public float interpolationRate;
+        public float SpeedMultiplier;
+        public float InterpolationRate;
 
         [Space]
 
-        public float walkSpeed;
-        public float runSpeed;
+        public float WalkSpeed;
+        public float RunSpeed;
+        public float WallrunSpeed;
 
         [Header("Vertical movement")] 
 
-        public float jumpHeight;
+        public float JumpHeight;
 
-        public bool jumpOverlap;
-        public int doubleJumps;
-        public float gravity;
+        public bool JumpOverlap;
+        public int DoubleJumps;
+        public float Gravity;
         
         [Space] 
 
-        public float maxAirSpeed;
-        public float airSpeed;
+        public float MaxAirSpeed;
+        public float AirSpeed;
 
         [Header("Redirect")] 
         
-        public int redirects;
+        public int Redirects;
 
         [Header("Checks")] 
         
-        public float groundCheckRadius;
-        public LayerMask groundCheckLM;
+        public float GroundCheckRadius;
+        public LayerMask GroundCheckLm;
 
         [Space]
         
-        public float ceilingCheckRadius;
-        public LayerMask ceilingCheckLM;
+        public float CeilingCheckRadius;
+        public LayerMask CeilingCheckLm;
+
+        [Space]
+
+        public float WallrunRayCheckDistance;
+        public LayerMask WallCheckLm;
     }
 
     public struct MovementDataIntersection
     {
         public Vector2 horizontalMove;
         public float verticalMove;
+
+        public (Vector3 right, Vector3 left) WallNormal;
+        public Vector3 lastWallNormal;
 
         public bool gotJumpInput;
 
@@ -59,6 +70,44 @@ namespace FiniteMovementStateMachine
             => horizontalMagnitude = horizontalMove.magnitude;
 
         public bool IsMovingHorizontally()
-            => horizontalMove != Vector2.zero;
+          => horizontalMove != Vector2.zero;
+
+        public bool GetWalls(MovementMachine stateMachine) // Im ready to die for this one TwT
+        {
+            Transform orientation = stateMachine.orientation;
+            RaycastHit hitInfo;
+            bool foundWall = false;
+
+            WallNormal = (Vector3.zero, Vector3.zero);
+
+            if (Physics.Raycast(orientation.position, orientation.right, out hitInfo,
+            stateMachine.fields.WallrunRayCheckDistance, stateMachine.fields.WallCheckLm,
+                    QueryTriggerInteraction.Ignore))
+            {
+                WallNormal.right = hitInfo.normal;
+                foundWall = true;
+            }
+
+            if (Physics.Raycast(orientation.position, -orientation.right, out hitInfo,
+            stateMachine.fields.WallrunRayCheckDistance, stateMachine.fields.WallCheckLm,
+                    QueryTriggerInteraction.Ignore))
+            {
+                WallNormal.left = hitInfo.normal;
+                foundWall = true;
+            }
+
+            return foundWall;
+        }
+
+        public bool CheckForWalls(MovementMachine stateMachine) // For this one even more
+            => Physics.Raycast(stateMachine.orientation.position, stateMachine.orientation.right,
+                   stateMachine.fields.WallrunRayCheckDistance, stateMachine.fields.WallCheckLm,
+                   QueryTriggerInteraction.Ignore)
+               ||
+               Physics.Raycast(stateMachine.orientation.position, -stateMachine.orientation.right,
+                   stateMachine.fields.WallrunRayCheckDistance, stateMachine.fields.WallCheckLm,
+                   QueryTriggerInteraction.Ignore);
+
+
     }
 }

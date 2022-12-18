@@ -8,10 +8,10 @@ public class Walk : BaseMovementState
 
     private void ChangeVelocity()
     {
-        Vector2 desiredSpeed = stateMachine.fields.walkSpeed * input * stateMachine.fields.speedMultiplier;
+        Vector2 desiredSpeed = stateMachine.fields.WalkSpeed * input * stateMachine.fields.SpeedMultiplier;
 
         data.horizontalMove =
-            Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.fields.interpolationRate * Time.deltaTime);
+            Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.fields.InterpolationRate * Time.deltaTime);
     }
 
     #region State logic
@@ -24,14 +24,18 @@ public class Walk : BaseMovementState
 
         data.CalculateHorizontalMagnitude();
 
+        CheckForChangeState();
+    }
+
+    protected override void CheckForChangeState()
+    {
         if (!isGrounded || data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
-        else if (!CheckIfMoving())
+        else if (!CheckIfHaveInput())
             stateMachine.ChangeState(stateMachine.idle);
         else if (isMovingForward && controls.Player.Sprint.IsPressed())
             stateMachine.ChangeState(stateMachine.run);
-
     }
-    
+
     #endregion
 }

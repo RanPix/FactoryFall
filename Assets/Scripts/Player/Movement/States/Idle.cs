@@ -20,12 +20,17 @@ public class Idle : BaseMovementState
     {
         base.UpdateLogic();
 
-        if(input != Vector2.zero)
+        CheckForChangeState();
+    }
+
+    protected override void CheckForChangeState()
+    {
+        if (input != Vector2.zero)
             stateMachine.ChangeState(stateMachine.walk);
 
-        if(!isGrounded || data.gotJumpInput)
+        if (!isGrounded || data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
     }
-    
+
     #endregion
 }

@@ -18,6 +18,7 @@ namespace FiniteMovementStateMachine
         [HideInInspector] public Walk walk { get; private set; }
         [HideInInspector] public MidAir midAir { get; private set; }
         [HideInInspector] public Run run { get; private set; }
+        [HideInInspector] public Wallrun wallrun { get; private set; }
 
         protected void Start()
         {
@@ -32,6 +33,7 @@ namespace FiniteMovementStateMachine
             walk = new(this, movementControl);
             midAir = new(this, movementControl);
             run = new(this, movementControl);
+            wallrun = new(this, movementControl);
 
             currentState = GetInitialState();
             currentState?.Enter(new MovementDataIntersection());
@@ -41,7 +43,8 @@ namespace FiniteMovementStateMachine
         {
             if (notLocalPlayer)
                 return;
-            //Debug.Log($"Im in {currentState}",this);
+
+            Debug.Log($"Im in {currentState}",this);
 
             currentState?.UpdateLogic();
         }
