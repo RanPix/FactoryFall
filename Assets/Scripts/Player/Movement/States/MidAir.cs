@@ -11,29 +11,10 @@ public class MidAir : BaseMovementState
 
     private bool gotRedirect;
 
-    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl)
-        : base("MidAir", stateMachine, movementControl)
+    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
+        : base("MidAir", stateMachine, movementControl, fields)
     {
         controls.Player.Redirect.performed += AddRedirect;
-    }
-
-    private void ChangeVelocity()
-    {
-        Vector2 changedInput = input;
-        changedInput.x *= 0.5f;
-        changedInput = changedInput.normalized;
-
-        Vector2 addition = input * stateMachine.fields.AirSpeed * Time.deltaTime;
-        Vector2 desiredSpeed = data.horizontalMove + addition;
-
-        data.CalculateHorizontalMagnitude();
-
-        if (desiredSpeed.magnitude > stateMachine.fields.MaxAirSpeed)
-            desiredSpeed = desiredSpeed.normalized * stateMachine.fields.MaxAirSpeed;
-
-        data.horizontalMove = desiredSpeed; 
-
-        //Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.fields.interpolationRate * Time.deltaTime);
     }
 
     #region State logic
@@ -42,8 +23,8 @@ public class MidAir : BaseMovementState
     {
         base.Enter(inputData);
 
-        hasDoubleJumps = stateMachine.fields.DoubleJumps;
-        hasRedirects = stateMachine.fields.Redirects;
+        hasDoubleJumps = fields.ScriptableFields.DoubleJumps;
+        hasRedirects = fields.ScriptableFields.Redirects;
 
         gotRedirect = false;
     }
@@ -88,13 +69,32 @@ public class MidAir : BaseMovementState
 
     #endregion
 
+    private void ChangeVelocity()
+    {
+        Vector2 changedInput = input;
+        changedInput.x *= 0.5f;
+        changedInput = changedInput.normalized;
+
+        Vector2 addition = input * fields.ScriptableFields.AirSpeed * Time.deltaTime;
+        Vector2 desiredSpeed = data.horizontalMove + addition;
+
+        data.CalculateHorizontalMagnitude();
+
+        if (desiredSpeed.magnitude > fields.ScriptableFields.MaxAirSpeed)
+            desiredSpeed = desiredSpeed.normalized * fields.ScriptableFields.MaxAirSpeed;
+
+        data.horizontalMove = desiredSpeed;
+
+        //Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.ScriptableFields.interpolationRate * Time.deltaTime);
+    }
+
     private void ApplyGravity()
-        => data.verticalMove -= stateMachine.fields.Gravity * Time.deltaTime;
+        => data.verticalMove -= fields.ScriptableFields.Gravity * Time.deltaTime;
 
     private void TryJump()
     {
         if (isGrounded)
-            data.verticalMove += stateMachine.fields.JumpHeight;
+            data.verticalMove += fields.ScriptableFields.JumpHeight;
         else if (hasDoubleJumps-- > 0)
             DoubleJump();
 
@@ -103,13 +103,13 @@ public class MidAir : BaseMovementState
 
     private void DoubleJump()
     {
-        if (stateMachine.fields.JumpOverlap)
+        if (fields.ScriptableFields.JumpOverlap)
             data.verticalMove =
-                data.verticalMove < stateMachine.fields.JumpHeight ? 
-                    stateMachine.fields.JumpHeight : 
-                    data.verticalMove + stateMachine.fields.JumpHeight;
+                data.verticalMove < fields.ScriptableFields.JumpHeight ?
+                    fields.ScriptableFields.JumpHeight : 
+                    data.verticalMove + fields.ScriptableFields.JumpHeight;
         else
-            data.verticalMove += stateMachine.fields.JumpHeight;
+            data.verticalMove += fields.ScriptableFields.JumpHeight;
     }
 
     private void AddRedirect(InputAction.CallbackContext context)

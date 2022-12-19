@@ -12,21 +12,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cd756bb8f7b0aab4697965cacfc77840, type: 3}
   m_Name: PlayerDataFields
   m_EditorClassIdentifier: 
-  speedMultiplier: 1
-  interpolationRate: 8
-  walkSpeed: 8
-  runSpeed: 12
-  jumpHeight: 10
-  jumpOverlap: 1
-  doubleJumps: 1
-  gravity: 10
-  maxAirSpeed: 20
-  airSpeed: 0.2
-  groundCheckRadius: 4
-  groundCheckLM:
+  SpeedMultiplier: 1
+  InterpolationRate: 8
+  WalkSpeed: 8
+  RunSpeed: 12
+  WallrunSpeed: 15
+  JumpHeight: 10
+  JumpOverlap: 1
+  DoubleJumps: 1
+  Gravity: 10
+  MaxAirSpeed: 20
+  AirSpeed: 5
+  Redirects: 2
+  GroundCheckRadius: 0.4
+  GroundCheckLm:
     serializedVersion: 2
     m_Bits: 8
-  ceilingCheckRadius: 4
-  ceilingCheckLM:
+  CeilingCheckRadius: 0.4
+  CeilingCheckLm:
     serializedVersion: 2
     m_Bits: 8
+  WallrunRayCheckDistance: 0.7
+  WallCheckLm:
+    serializedVersion: 2
+    m_Bits: 264

@@ -3,22 +3,16 @@ using UnityEngine;
 
 public class Idle : BaseMovementState
 {
-    public Idle(MovementMachine stateMachine, PlayerMovement movementControl)
-        : base("Idle", stateMachine, movementControl) { }
+    public Idle(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
+        : base("Idle", stateMachine, movementControl, fields) { }
 
     #region State logic
-
-    public override void Enter(MovementDataIntersection inputData)
-    {
-        base.Enter(inputData);
-
-        data.horizontalMove = Vector2.zero;
-        data.verticalMove = 0f;
-    }
 
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+
+        ChangeVelocity();
 
         CheckForChangeState();
     }
@@ -33,4 +27,10 @@ public class Idle : BaseMovementState
     }
 
     #endregion
+
+    private void ChangeVelocity()
+    {
+        data.horizontalMove =
+            Vector2.Lerp(data.horizontalMove, Vector2.zero, fields.ScriptableFields.InterpolationRate * Time.deltaTime);
+    }
 }

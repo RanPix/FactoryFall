@@ -3,22 +3,15 @@ using UnityEngine;
 
 public class Walk : BaseMovementState
 {
-    public Walk(MovementMachine stateMachine, PlayerMovement movementControl)
-        : base("Walk", stateMachine, movementControl) { }
-
-    private void ChangeVelocity()
-    {
-        Vector2 desiredSpeed = stateMachine.fields.WalkSpeed * input * stateMachine.fields.SpeedMultiplier;
-
-        data.horizontalMove =
-            Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.fields.InterpolationRate * Time.deltaTime);
-    }
+    public Walk(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
+        : base("Walk", stateMachine, movementControl, fields) { }
 
     #region State logic
     
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        CheckIfMovingForward();
 
         ChangeVelocity();
 
@@ -38,4 +31,12 @@ public class Walk : BaseMovementState
     }
 
     #endregion
+
+    private void ChangeVelocity()
+    {
+        Vector2 desiredSpeed = fields.ScriptableFields.WalkSpeed * input * fields.ScriptableFields.SpeedMultiplier;
+
+        data.horizontalMove =
+            Vector2.Lerp(data.horizontalMove, desiredSpeed, fields.ScriptableFields.InterpolationRate * Time.deltaTime);
+    }
 }

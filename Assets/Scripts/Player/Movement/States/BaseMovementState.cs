@@ -7,25 +7,26 @@ namespace FiniteMovementStateMachine
 {
     public class BaseMovementState
     {
-        public string name { get; private set; }
+        public readonly string name;
+
+        protected readonly PlayerDataFields fields;
+        protected readonly MovementMachine stateMachine; // State machine state is attached to
+        protected readonly PlayerControls controls; // Input system
+        private readonly PlayerMovement movementControl; // Character controller container
 
         protected MovementDataIntersection data;
+        protected Vector2 input { get; private set; }
 
-        protected MovementMachine stateMachine;
-        protected PlayerControls controls;
-        protected Vector2 input;
-        private readonly PlayerMovement movementControl;
+        protected bool gotWall { get; private set; }
+        protected bool isGrounded { get; private set; }
+        protected bool isMovingForward { get; private set; }
 
-        protected bool gotWall;
-
-        protected bool isGrounded;
-        protected bool isMovingForward;
-
-        public BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl)
+        public BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
         {
             this.name = name;
             this.stateMachine = stateMachine;
             this.movementControl = movementControl;
+            this.fields = fields;
 
             controls = new PlayerControls();
             controls.Player.Enable();
@@ -52,9 +53,7 @@ namespace FiniteMovementStateMachine
         {
             GetInput();
             CheckIfGrounded();
-            CheckIfMovingForward();
-
-            gotWall = data.CheckForWalls(stateMachine);
+            CheckForWalls();
         }
 
         /// <summary>
@@ -83,25 +82,34 @@ namespace FiniteMovementStateMachine
 
         #endregion
 
-        private void GetInput()
+        protected void GetInput()
         {
             Vector2 inputVector = controls.Player.Move.ReadValue<Vector2>();
-            Vector3 orientatedInputVector = stateMachine.orientation.forward * inputVector.y + stateMachine.orientation.right * inputVector.x;
+            Vector3 orientatedInputVector = fields.orientation.forward * inputVector.y + fields.orientation.right * inputVector.x;
             input = new Vector2(orientatedInputVector.x, orientatedInputVector.z);
         }
 
-        private void CheckIfGrounded()
-            => isGrounded = Physics.CheckSphere(stateMachine.groundCheck.position, stateMachine.fields.GroundCheckRadius, stateMachine.fields.GroundCheckLm, QueryTriggerInteraction.Ignore);
+        protected void CheckIfGrounded()
+            => isGrounded = Physics.CheckSphere(fields.groundCheck.position, fields.ScriptableFields.GroundCheckRadius, fields.ScriptableFields.GroundCheckLm, QueryTriggerInteraction.Ignore);
 
         protected bool CheckIfHaveInput()
             => input != Vector2.zero;
 
-        private void AddJump(InputAction.CallbackContext context)
+        private void AddJump(InputAction.CallbackContext context) // Adds jump to queue while changing states
             => data.gotJumpInput = true;
 
-        private void CheckIfMovingForward()
+        protected void CheckForWalls()
+            => gotWall = Physics.Raycast(fields.wallCheck.position, fields.orientation.right,
+                             fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
+                   QueryTriggerInteraction.Ignore)
+               ||
+               Physics.Raycast(fields.wallCheck.position, -fields.orientation.right,
+                   fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
+                   QueryTriggerInteraction.Ignore);
+
+        protected void CheckIfMovingForward()
         {
-            float angle = Quaternion.LookRotation(data.moveVector3).eulerAngles.y - stateMachine.orientation.eulerAngles.y;
+            float angle = Quaternion.LookRotation(data.moveVector3).eulerAngles.y - fields.orientation.eulerAngles.y;
             angle = angle < 0 ? -angle : angle; // Handmade Abs)
 
             isMovingForward = angle is < 45.1f or > 314.9f;

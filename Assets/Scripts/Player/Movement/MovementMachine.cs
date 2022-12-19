@@ -3,14 +3,9 @@ using UnityEngine;
 
 namespace FiniteMovementStateMachine
 {
-    [RequireComponent(typeof(CharacterController))]
+    [RequireComponent(typeof(CharacterController), typeof(PlayerDataFields))]
     public class MovementMachine : NetworkBehaviour
     {
-        [field: SerializeField] public PlayerDataFields fields { get; private set; }
-        [field: SerializeField] public Transform  orientation { get; private set; }
-        [field: SerializeField] public Transform groundCheck { get; private set; }
-        [field: SerializeField] public Transform ceilingCheck { get; private set; }
-
         private bool notLocalPlayer;
 
         public BaseMovementState currentState { get; protected set; }
@@ -27,19 +22,13 @@ namespace FiniteMovementStateMachine
             if (notLocalPlayer)
                 return;
 
-            PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>());
-
-            idle = new(this, movementControl);
-            walk = new(this, movementControl);
-            midAir = new(this, movementControl);
-            run = new(this, movementControl);
-            wallrun = new(this, movementControl);
+            InitializeStates();
 
             currentState = GetInitialState();
             currentState?.Enter(new MovementDataIntersection());
         }
 
-        protected void Update()
+        private void Update()
         {
             if (notLocalPlayer)
                 return;
@@ -49,7 +38,7 @@ namespace FiniteMovementStateMachine
             currentState?.UpdateLogic();
         }
 
-        protected void LateUpdate()
+        private void LateUpdate()
         {
             if (notLocalPlayer)
                 return;
@@ -57,7 +46,19 @@ namespace FiniteMovementStateMachine
             currentState?.UpdatePhysics();
         }
 
-        protected BaseMovementState GetInitialState()
+        private void InitializeStates()
+        {
+            PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>());
+            PlayerDataFields fields = GetComponent<PlayerDataFields>();
+
+            idle = new(this, movementControl, fields);
+            walk = new(this, movementControl, fields);
+            midAir = new(this, movementControl, fields);
+            run = new(this, movementControl, fields);
+            wallrun = new(this, movementControl, fields);
+        }
+
+        private BaseMovementState GetInitialState()
             => idle;
 
         public void ChangeState(BaseMovementState newState)

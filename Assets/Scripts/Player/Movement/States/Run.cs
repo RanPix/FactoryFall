@@ -3,22 +3,15 @@ using UnityEngine;
 
 public class Run : BaseMovementState
 {
-    public Run(MovementMachine stateMachine, PlayerMovement movementControl)
-        : base("run", stateMachine, movementControl) { }
-
-    private void ChangeVelocity()
-    {
-        Vector2 desiredSpeed = stateMachine.fields.RunSpeed * input * stateMachine.fields.SpeedMultiplier;
-
-        data.horizontalMove =
-            Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.fields.InterpolationRate * Time.deltaTime);
-    }
-
+    public Run(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
+        : base("run", stateMachine, movementControl, fields) { }
+    
     #region State logic
 
     public override void UpdateLogic()
     {
         base.UpdateLogic();
+        CheckIfMovingForward();
 
         ChangeVelocity();
 
@@ -35,4 +28,11 @@ public class Run : BaseMovementState
 
     #endregion
 
+    private void ChangeVelocity()
+    {
+        Vector2 desiredSpeed = fields.ScriptableFields.RunSpeed * input * fields.ScriptableFields.SpeedMultiplier;
+
+        data.horizontalMove =
+            Vector2.Lerp(data.horizontalMove, desiredSpeed, fields.ScriptableFields.InterpolationRate * Time.deltaTime);
+    }
 }
