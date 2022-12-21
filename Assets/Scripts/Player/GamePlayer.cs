@@ -19,13 +19,14 @@ namespace Player
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform orientation;
 
+        [SerializeField] private GameObject healthBarPrefab;
+
         private Transform cam;
 
         private void Start()
         {
             if (isLocalPlayer)
             {
-
                 cameraHolder = Instantiate(cameraHolder);
                 cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
                 cameraHolder.GetComponent<Look>().orientation = orientation;
@@ -37,6 +38,9 @@ namespace Player
                 NetworkServer.Spawn(cameraHolder);
                 
                 health.onDeath += OnDeath;
+
+                GameObject healthBar = Instantiate(healthBarPrefab, GameObject.Find("Canvas").transform);
+                healthBar.GetComponent<HealthBar>().playerHealth = GetComponent<Health>();
             }
             else
             {

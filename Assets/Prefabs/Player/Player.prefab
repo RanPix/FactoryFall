@@ -47,6 +47,7 @@ GameObject:
   - component: {fileID: 841400163258982986}
   - component: {fileID: 2911324726990273139}
   - component: {fileID: 4804469322116124112}
+  - component: {fileID: 2775897222214642296}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -161,6 +162,8 @@ MonoBehaviour:
     type: 3}
   cameraPosition: {fileID: 841400163972923480}
   orientation: {fileID: 841400163098873428}
+  healthBarPrefab: {fileID: 4203298332218061752, guid: 6d56f640da95a044795c8ca3e1c3e160,
+    type: 3}
 --- !u!114 &2135578962297529565
 MonoBehaviour:
   m_ObjectHideFlags: 0

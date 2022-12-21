@@ -11,6 +11,9 @@ namespace GameBase
 
         public Action onDeath;
 
+        private void Start()
+            => currentHealth = maxHealth;
+
         public void Damage(Damage damage)
         {
             currentHealth -= damage.damage;   

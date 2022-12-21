@@ -5,5 +5,6 @@ public class NetworkManagerFF : NetworkManager
 {
     public override void OnClientConnect()
     {
+
     }
 }
