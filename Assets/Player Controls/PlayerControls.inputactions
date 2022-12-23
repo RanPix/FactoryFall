@@ -609,6 +609,15 @@
                     "processors": "",
                     "interactions": "Press",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenOrCloseMenu",
+                    "type": "Button",
+                    "id": "c703b8b0-bab6-4512-8c63-4e5207d2c131",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1038,6 +1047,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "OpenOrCloseInventory",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "dc92c02f-ce21-46d5-a2a1-0486b91f07a5",
+                    "path": "<Keyboard>/escape",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "OpenOrCloseMenu",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

@@ -20,6 +20,7 @@ namespace Player
         [SerializeField] private Transform orientation;
 
         [SerializeField] private GameObject healthBarPrefab;
+        [SerializeField] private GameObject ammoTextPrefab;
 
         private Transform cam;
 
