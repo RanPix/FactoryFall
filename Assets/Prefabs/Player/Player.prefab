@@ -163,6 +163,8 @@ MonoBehaviour:
     type: 3}
   cameraPosition: {fileID: 841400163972923480}
   orientation: {fileID: 841400163098873428}
+  healthBarPrefab: {fileID: 4203298332218061752, guid: 6d56f640da95a044795c8ca3e1c3e160,
+    type: 3}
 --- !u!114 &2135578962297529565
 MonoBehaviour:
   m_ObjectHideFlags: 0

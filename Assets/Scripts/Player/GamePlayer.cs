@@ -19,13 +19,15 @@ namespace Player
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform orientation;
 
+        [SerializeField] private GameObject healthBarPrefab;
+        [SerializeField] private GameObject ammoTextPrefab;
+
         private Transform cam;
 
         private void Start()
         {
             if (isLocalPlayer)
             {
-                Debug.Log("localPlayer");
                 cameraHolder = Instantiate(cameraHolder);
                 cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
                 cameraHolder.GetComponent<Look>().orientation = orientation;
@@ -34,7 +36,10 @@ namespace Player
                 cam = cameraHolder.GetComponentInChildren<Camera>().transform;
 
                 
-                //health.onDeath += OnDeath;
+                health.onDeath += OnDeath;
+
+                GameObject healthBar = Instantiate(healthBarPrefab, GameObject.Find("Canvas").transform);
+                healthBar.GetComponent<HealthBar>().playerHealth = GetComponent<Health>();
             }
             else
             {

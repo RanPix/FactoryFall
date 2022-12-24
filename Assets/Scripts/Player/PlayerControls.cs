@@ -651,6 +651,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": ""Press"",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenOrCloseMenu"",
+                    ""type"": ""Button"",
+                    ""id"": ""c703b8b0-bab6-4512-8c63-4e5207d2c131"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1082,6 +1091,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""OpenOrCloseInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""dc92c02f-ce21-46d5-a2a1-0486b91f07a5"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""OpenOrCloseMenu"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1180,6 +1200,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_UI_TrackedDevicePosition = m_UI.FindAction("TrackedDevicePosition", throwIfNotFound: true);
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_OpenOrCloseInventory = m_UI.FindAction("OpenOrCloseInventory", throwIfNotFound: true);
+        m_UI_OpenOrCloseMenu = m_UI.FindAction("OpenOrCloseMenu", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1403,6 +1424,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDevicePosition;
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_OpenOrCloseInventory;
+    private readonly InputAction m_UI_OpenOrCloseMenu;
     public struct UIActions
     {
         private @PlayerControls m_Wrapper;
@@ -1418,6 +1440,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @TrackedDevicePosition => m_Wrapper.m_UI_TrackedDevicePosition;
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @OpenOrCloseInventory => m_Wrapper.m_UI_OpenOrCloseInventory;
+        public InputAction @OpenOrCloseMenu => m_Wrapper.m_UI_OpenOrCloseMenu;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1460,6 +1483,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @OpenOrCloseInventory.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseInventory;
                 @OpenOrCloseInventory.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseInventory;
                 @OpenOrCloseInventory.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseInventory;
+                @OpenOrCloseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseMenu;
+                @OpenOrCloseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseMenu;
+                @OpenOrCloseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseMenu;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1497,6 +1523,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @OpenOrCloseInventory.started += instance.OnOpenOrCloseInventory;
                 @OpenOrCloseInventory.performed += instance.OnOpenOrCloseInventory;
                 @OpenOrCloseInventory.canceled += instance.OnOpenOrCloseInventory;
+                @OpenOrCloseMenu.started += instance.OnOpenOrCloseMenu;
+                @OpenOrCloseMenu.performed += instance.OnOpenOrCloseMenu;
+                @OpenOrCloseMenu.canceled += instance.OnOpenOrCloseMenu;
             }
         }
     }
@@ -1578,5 +1607,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnTrackedDevicePosition(InputAction.CallbackContext context);
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnOpenOrCloseInventory(InputAction.CallbackContext context);
+        void OnOpenOrCloseMenu(InputAction.CallbackContext context);
     }
 }
