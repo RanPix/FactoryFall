@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlameThrower : Weapon
 {
     #region AbstractVariables
-    protected override float nextFire => _nextFire;
+    public override float nextFire => _nextFire;
     #endregion
     private float _nextFire = 0;
     private bool fireTriggerEnable = false;
@@ -53,7 +53,7 @@ public class FlameThrower : Weapon
             }
         }
     }
-    protected override void FireButtonWasReleased()
+    public override void FireButtonWasReleased()
     {
         fireTriggerEnable = false;
         FlameThrowerTrigger.enabled = false;
