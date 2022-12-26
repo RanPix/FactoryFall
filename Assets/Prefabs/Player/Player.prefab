@@ -164,6 +164,9 @@ MonoBehaviour:
   orientation: {fileID: 841400163098873428}
   healthBarPrefab: {fileID: 4203298332218061752, guid: 6d56f640da95a044795c8ca3e1c3e160,
     type: 3}
+  ammoTextPrefab: {fileID: 0}
+  cross: {fileID: 6576587256434848733, guid: ecdfb8302ca630c4ab7f736dcc5ba725, type: 3}
+  menu: {fileID: 5572774209256950057, guid: d37a061eff4b9c64696edba900215302, type: 3}
 --- !u!114 &2135578962297529565
 MonoBehaviour:
   m_ObjectHideFlags: 0

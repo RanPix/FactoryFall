@@ -21,6 +21,8 @@ namespace Player
 
         [SerializeField] private GameObject healthBarPrefab;
         [SerializeField] private GameObject ammoTextPrefab;
+        [SerializeField] private GameObject cross;
+        [SerializeField] private GameObject menu;
 
         private Transform cam;
 
@@ -31,7 +33,6 @@ namespace Player
                 cameraHolder = Instantiate(cameraHolder);
                 cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
                 cameraHolder.GetComponent<Look>().orientation = orientation;
-                cameraHolder.GetComponent<Look>().inventoryUI = inventory;
                 cameraHolder.GetComponent<Look>()._isLocalPlayer = true;
 
                 cam = cameraHolder.GetComponentInChildren<Camera>().transform;
@@ -40,8 +41,15 @@ namespace Player
                 
                 health.onDeath += OnDeath;
 
-                GameObject healthBar = Instantiate(healthBarPrefab, GameObject.Find("Canvas").transform);
+                Transform canvas = GameObject.Find("Canvas").transform;
+
+                Instantiate(cross, canvas);
+
+                GameObject healthBar = Instantiate(healthBarPrefab, canvas);
                 healthBar.GetComponent<HealthBar>().playerHealth = GetComponent<Health>();
+
+                GameObject menuOnScene = Instantiate(menu, canvas);
+                menuOnScene.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
             }
             else
             {
