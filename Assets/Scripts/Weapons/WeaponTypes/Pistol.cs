@@ -7,7 +7,7 @@ using System;
 public class Pistol : Weapon
 {
     #region AbstractVariables
-    protected override float nextFire => _nextFire;
+    public override float nextFire => _nextFire;
     #endregion
     private float _nextFire = 0;
 
@@ -30,7 +30,7 @@ public class Pistol : Weapon
     {
 
     }
-    protected override void FireButtonWasReleased()
+    public override void FireButtonWasReleased()
     {
     }
 }

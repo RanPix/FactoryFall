@@ -14,7 +14,7 @@ namespace Player
         [SerializeField] private Damage damage;
 
         [SerializeField] private InventoryUI inventory;
-    [field: SerializeField]public GameObject cameraHolder { get; private set; }
+        [field: SerializeField]public GameObject cameraHolder { get; private set; }
 
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform orientation;
@@ -34,10 +34,8 @@ namespace Player
                 cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
                 cameraHolder.GetComponent<Look>().orientation = orientation;
                 cameraHolder.GetComponent<Look>()._isLocalPlayer = true;
-
                 cam = cameraHolder.GetComponentInChildren<Camera>().transform;
 
-                NetworkServer.Spawn(cameraHolder);
                 
                 health.onDeath += OnDeath;
 
@@ -53,7 +51,9 @@ namespace Player
             }
             else
             {
-                cameraHolder.GetComponentInChildren<AudioListener>().enabled = false;
+                GetComponent<Health>().enabled = false;
+                GetComponent<SpawnWeapon>().weapon.GetComponent<Weapon>()._isLocalPlayer = false;
+                //enabled = false;
             }
             /*if (!isLocalPlayer)
             {
@@ -68,30 +68,26 @@ namespace Player
 
         private void Update()
         {
+            if(!isLocalPlayer)
+                return;/*
             Ray ray = new Ray(cam.position, cam.forward);
-            Shoot(ray);
+            Shoot(ray);*/
         }
 
         private void OnDeath()
         {
             StartCoroutine(Respawn());
 
-            cameraHolder.SetActive(false);
-            gameObject.SetActive(false);
+            /*cameraHolder.SetActive(false);
+            gameObject.SetActive(false);*/
         }
 
         private IEnumerator Respawn()
         {
             yield return new WaitForSeconds(2f);
 
-            cameraHolder.SetActive(true);
-            gameObject.SetActive(true);
-        }
-
-        [Command]
-        public void SpawnOnServer()
-        {
-            NetworkServer.Spawn(cameraHolder);
+            /*cameraHolder.SetActive(true);
+            gameObject.SetActive(true);*/
         }
 
         /*public void Interact(IInteractable interact) =>
