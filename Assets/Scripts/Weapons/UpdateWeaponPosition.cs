@@ -7,18 +7,20 @@ using UnityEngine;
 public class UpdateWeaponPosition : NetworkBehaviour
 {
     protected Transform weaponPosition;
-    [SyncVar]public GameObject localCameraHolder;
-    [field: SerializeField] public bool _isServer { get; set; } = false;
-    public override void OnStartServer()
+    public GameObject localCameraHolder;
+    [HideInInspector] public bool _isLocalPlayer { get; set; } = false;
+
+    private void Start()
     {
-            weaponPosition = localCameraHolder.transform.GetChild(0).GetChild(0).GetChild(0);
+        weaponPosition = localCameraHolder.transform.GetChild(0).GetChild(0).GetChild(0);
     }
     private void LateUpdate()
     {
-        if(!_isServer)
-            return;
-        transform.position = weaponPosition.position;
-        transform.forward = localCameraHolder.transform.GetChild(0).forward;
+        if (_isLocalPlayer)
+        {
+            transform.position = weaponPosition.position;
+            transform.forward = localCameraHolder.transform.GetChild(0).forward;
+        }
     }
 
 

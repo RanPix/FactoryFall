@@ -3,7 +3,6 @@ using System.Collections;
 using Mirror;
 using UnityEngine;
 using TMPro;
-using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 public enum States
 {
@@ -21,13 +20,13 @@ public enum ShootType
 abstract public class Weapon : NetworkBehaviour
 {
 
-    [SerializeField] public WeaponScriptableObject weaponScriptableObject;
+    [SerializeField] protected WeaponScriptableObject weaponScriptableObject;
 
     [Space]
     [Header("Enums")]
     [SerializeField] private States _state;
 
-    [SerializeField] public ShootType _shootType;
+    [SerializeField] private ShootType _shootType;
 
     [Space(10)]
 
@@ -66,8 +65,8 @@ abstract public class Weapon : NetworkBehaviour
 
     [Space(10)]
     [Header("Ammo")]
-    [SerializeField] public WeaponAmmo weaponAmmo;
-    [SerializeField] public int ammo;
+    [SerializeField] protected WeaponAmmo weaponAmmo;
+    [SerializeField] private int ammo;
     [SerializeField] private int maxAmmo;
     [SerializeField] private int reserveAmmo;
 
@@ -80,17 +79,17 @@ abstract public class Weapon : NetworkBehaviour
     [SerializeField] private ConnectorHelper connectorHelper;
     [SerializeField] private Action OnInScopeValuseChange;
 
-    public GameObject player;
+
     public bool canShoot;
-    [field: SerializeField] public bool _isLocalPlayer { get; set; } = false;
-    public PlayerControls controls { get; private set; }
+    [HideInInspector] public bool _isLocalPlayer { get; set; } = false;
 
 
 
     //protected float nextFire;
+    private PlayerControls controls;
     public Camera cam;
     public Camera gunCam;
-    public AudioSource audioSource;
+    private AudioSource audioSource;
     private TMP_Text ammoText;
 
     public bool inScope
@@ -105,25 +104,24 @@ abstract public class Weapon : NetworkBehaviour
     }
     private bool _inScope;
     #region AbstractVariables
-    public abstract float nextFire { get; }
+    protected abstract float nextFire { get; }
     #endregion
     #region AbstractMethods
     public abstract void Shoot();
     public abstract void Scope();
-    public abstract void FireButtonWasReleased();
+    protected abstract void FireButtonWasReleased();
     #endregion
-
-
     // Start is called before the first frame update
     private void Start()
     {
+        if(!_isLocalPlayer)
+            return;
         audioSource = gameObject.GetComponentInChildren<AudioSource>();
         animator = gameObject.GetComponentInChildren<Animator>();
         controls = new PlayerControls();
         controls.Enable();
-        if(!_isLocalPlayer)
-            return;
         WeaponsLink.instance.weapons.Add(this);
+        Debug.Log("Start");
         cam = Camera.main;
         gunCam = cam.GetComponentInChildren<Camera>();  
         GameObject help = Instantiate(weaponAmmo.gameObject);
@@ -138,10 +136,19 @@ abstract public class Weapon : NetworkBehaviour
     }
     // Update is called once per frame
     void Update()
-    {
+    { 
+        if(!_isLocalPlayer)
+        return;
+        switch (_state)
+        {
+            case States.Active:
+
+                Aiming();
+                KeyCodes();
+                break;
+        }
 
     }
-    [Command]
     protected void RayCasting()
     {
         RaycastHit hit;
@@ -150,18 +157,15 @@ abstract public class Weapon : NetworkBehaviour
 
         }
     }
-    [Command]
-    protected /*IEnumerator*/ void SpawnBullet()
+    protected void SpawnBullet()
     {
-        GameObject spawnedBullet = NetworkManager.Instantiate(weaponScriptableObject.bulletPrefab);
+        GameObject spawnedBullet = Instantiate(weaponScriptableObject.bulletPrefab);
         spawnedBullet.transform.position = bulletSpawner.transform.position;
         spawnedBullet.GetComponent<Bullet>().AddForceBullet(bulletSpawner.transform.forward * weaponScriptableObject.bulletSpeed);
-        NetworkServer.Spawn(spawnedBullet);
-        /*yield return new WaitForSeconds(weaponScriptableObject.bulletTimeToDestroy);*/
-        NetworkServer.Destroy(spawnedBullet);
+        Destroy(spawnedBullet, weaponScriptableObject.bulletTimeToDestroy);
 
     }
-    /*public void KeyCodes()
+    private void KeyCodes()
     {
         if (canShoot == true)
         {
@@ -197,9 +201,8 @@ abstract public class Weapon : NetworkBehaviour
                 StartCoroutine(ReloadCoroutine());
             }
         }
-
-    }*/
-    public IEnumerator ReloadCoroutine()
+    }
+    private IEnumerator ReloadCoroutine()
     {
         canShoot = false;
         if (useAnimations == true)

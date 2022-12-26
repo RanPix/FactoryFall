@@ -445,7 +445,6 @@ MonoBehaviour:
   bulletSpawner: {fileID: 0}
   connectorHelper: {fileID: 0}
   canShoot: 0
-  <_isLocalPlayer>k__BackingField: 1
   cam: {fileID: 0}
   gunCam: {fileID: 0}
 --- !u!114 &5921181912047968716
