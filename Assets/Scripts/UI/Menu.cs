@@ -20,12 +20,21 @@ public class Menu : MonoBehaviour
         OpenOrCloseMenu(new InputAction.CallbackContext());
     }
 
-    void OpenOrCloseMenu(InputAction.CallbackContext context)
+    public void OpenOrCloseMenu(InputAction.CallbackContext context)
     {
         isOpened = !isOpened;
         look.isMenuOpened = isOpened;
         Cursor.visible = isOpened;
         Cursor.lockState = isOpened? CursorLockMode.None : CursorLockMode.Locked;
+        panel.SetActive(isOpened);
+    }
+
+    public void CloseMenu()
+    {
+        isOpened = false;
+        look.isMenuOpened = isOpened;
+        Cursor.visible = isOpened;
+        Cursor.lockState = isOpened ? CursorLockMode.None : CursorLockMode.Locked;
         panel.SetActive(isOpened);
     }
 }
