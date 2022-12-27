@@ -4,6 +4,7 @@ using Mirror;
 using GameBase;
 using Player.Info;
 
+
 namespace Player
 {
     public class GamePlayer : NetworkBehaviour
@@ -22,12 +23,15 @@ namespace Player
         [SerializeField] private GameObject healthBarPrefab;
         [SerializeField] private GameObject ammoTextPrefab;
 
+        [SerializeField] private LayerMask localPlayerLayer;
+
         private Transform cam;
 
         private void Start()
         {
             if (isLocalPlayer)
             {
+                gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
                 cameraHolder = Instantiate(cameraHolder);
                 cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
                 cameraHolder.GetComponent<Look>().orientation = orientation;
@@ -35,6 +39,7 @@ namespace Player
                 cameraHolder.GetComponent<Look>()._isLocalPlayer = true;
                 cam = cameraHolder.GetComponentInChildren<Camera>().transform;
 
+                GetComponent<SyncRotation>().reference = cam;
                 
                 health.onDeath += OnDeath;
 
@@ -43,8 +48,6 @@ namespace Player
             }
             else
             {
-                GetComponent<Health>().enabled = false;
-                GetComponent<SpawnWeapon>().weapon.GetComponent<Weapon>()._isLocalPlayer = false;
                 //enabled = false;
             }
             /*if (!isLocalPlayer)
@@ -68,18 +71,9 @@ namespace Player
 
         private void OnDeath()
         {
-            StartCoroutine(Respawn());
-
+            print("ded");
             /*cameraHolder.SetActive(false);
             gameObject.SetActive(false);*/
-        }
-
-        private IEnumerator Respawn()
-        {
-            yield return new WaitForSeconds(2f);
-
-            /*cameraHolder.SetActive(true);
-            gameObject.SetActive(true);*/
         }
 
         /*public void Interact(IInteractable interact) =>
@@ -104,21 +98,23 @@ namespace Player
             private void RemoveBlockServer(Block block) =>
                 block.RemoveBlock();*/
 
-        public void Shoot(Ray ray)
+        public void Shoot(Ray ray, LayerMask mask, float damage, float shootRange)
         {
-            ShootServer(ray);
+            ShootServer(ray, mask, damage, shootRange);
         }
-        
+
         [Command]
-        private void ShootServer(Ray ray)
+        private void ShootServer(Ray ray, LayerMask mask, float damage, float shootRange)
+
         {
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, 10f))
+            if (Physics.Raycast(ray, out hit, shootRange))
             {
                 Health hitHealth = hit.transform.GetComponent<Health>();
-
-                if (hitHealth != null)
-                    hitHealth.Damage(new Damage(10f));
+                if (hitHealth)
+                {
+                    hitHealth.Damage(new Damage(damage));
+                }
             }
         }
     }

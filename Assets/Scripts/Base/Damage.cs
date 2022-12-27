@@ -11,9 +11,9 @@ namespace GameBase
         public Damage(float damage)
         {
             this.damage = damage;
-            damagingTeam = null;
+            //damagingTeam = null;
         }
 
-        public PlayerInfo damagingTeam;
+        //public PlayerInfo damagingTeam;
     }
 }

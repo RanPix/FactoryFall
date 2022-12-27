@@ -12,11 +12,10 @@ public class Pistol : Weapon
     private float _nextFire = 0;
 
 
-    public override void Shoot()
+    public override Ray Shoot()
     {
         Debug.Log("piu");
         _nextFire = Time.time;
-        RayCasting();
         if(useAudio)
             PlayShootSound();
         SpawmMuzzle();
@@ -25,6 +24,7 @@ public class Pistol : Weapon
         weaponAmmo.ApdateAmmoInScreen();
         if (useAnimations == true)
             animator.Play(shootAnimationName);
+        return GetRay();
     }
     public override void Scope()
     {

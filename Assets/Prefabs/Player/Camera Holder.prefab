@@ -66,7 +66,7 @@ Camera:
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 1727
+    m_Bits: 1983
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -85,7 +85,7 @@ AudioListener:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1815510803066478703}
-  m_Enabled: 0
+  m_Enabled: 1
 --- !u!114 &1815510803066478691
 MonoBehaviour:
   m_ObjectHideFlags: 0

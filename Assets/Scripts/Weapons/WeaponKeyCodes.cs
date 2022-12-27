@@ -1,55 +1,87 @@
 using System.Collections;
 using System.Collections.Generic;
+using Mirror;
+using Player;
 using UnityEngine;
 
-public class WeaponKeyCodes : MonoBehaviour
+public class WeaponKeyCodes : NetworkBehaviour
 {
-    public Weapon weapon;
+    public Transform weaponHolder;
+    public Weapon currentWeapon;
+    private int currentWeaponIndex = -1;
+    private GamePlayer gamePlayer;
+    public PlayerControls controls { get; private set; }
     // Start is called before the first frame update
     void Start()
     {
-        
+        if(!isLocalPlayer)
+            return;
+        gamePlayer = GetComponent<GamePlayer>();
+        controls = new PlayerControls();
+        controls.Player.Enable();
+        ChangeWeapon(0);
     }
 
     // Update is called once per frame
     void Update()
     {
+        if(!isLocalPlayer)
+            return;
         KeyCodes();
+    }
+    public void ChangeWeapon(int index)
+    {
+        if(currentWeaponIndex == index)
+            return;
+
+        if(currentWeaponIndex == -1)
+            currentWeaponIndex = 0;
+
+        weaponHolder.GetChild(currentWeaponIndex).gameObject.SetActive(false);
+        weaponHolder.GetChild(index).gameObject.SetActive(true);
+       
+        currentWeapon = weaponHolder.GetChild(index).GetComponent<Weapon>();
+        currentWeaponIndex = index;
+        currentWeapon._isLocalPLayer = true;
     }
     public void KeyCodes()
     {
-        if (weapon.canShoot == true)
+        if (currentWeapon.canShoot == true)
         {
-            if (weapon.weaponAmmo.Ammo > 0)
+            if (currentWeapon.weaponAmmo.Ammo > 0)
             {
-
-                if (Time.time - weapon.nextFire > 1 / weapon.weaponScriptableObject.fireRate)
+                if (Time.time - currentWeapon.nextFire > 1 / currentWeapon.weaponScriptableObject.fireRate)
                 {
-                    if (weapon._shootType == ShootType.Auto && weapon.controls.Player.Fire.IsPressed())
+                    if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
                     {
-                        weapon.Shoot();
+                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange);
                     }
-                    else if (weapon._shootType == ShootType.Semi && weapon.controls.Player.Fire.WasPerformedThisFrame())
+                    else if (currentWeapon._shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
-                        weapon.Shoot();
+                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange);
 
                     }
-                    else if (weapon._shootType == ShootType.Auto && weapon.controls.Player.Fire.WasReleasedThisFrame())
+                    else if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
                     {
-                        weapon.FireButtonWasReleased();
+                        currentWeapon.FireButtonWasReleased();
+                    }else if (currentWeapon._shootType == ShootType.Burst && controls.Player.Fire.IsPressed())
+                    {
+
                     }
                 }
             }
         }
-        if (weapon.controls.Player.Fire.IsPressed() && weapon.weaponAmmo.Ammo <= 0)
+
+        if (controls.Player.Fire.WasPressedThisFrame() && currentWeapon.weaponAmmo.Ammo <= 0)
         {
-            weapon.audioSource.PlayOneShot(weapon.weaponScriptableObject.empty);
+            currentWeapon.audioSource.PlayOneShot(currentWeapon.weaponScriptableObject.empty);
         }
-        if (weapon.controls.Player.Reload.WasPerformedThisFrame())
+
+        if (controls.Player.Reload.WasPerformedThisFrame())
         {
-            if (weapon.weaponAmmo.ReserveAmmo > 0 && weapon.weaponAmmo.Ammo < weapon.ammo)
+            if (currentWeapon.weaponAmmo.ReserveAmmo > 0 && currentWeapon.weaponAmmo.Ammo < currentWeapon.ammo)
             {
-                StartCoroutine(weapon.ReloadCoroutine());
+                StartCoroutine(currentWeapon.ReloadCoroutine());
             }
         }
 

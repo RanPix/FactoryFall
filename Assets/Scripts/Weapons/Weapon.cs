@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using Mirror;
 using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
@@ -13,12 +12,12 @@ public enum States
 public enum ShootType
 {
     Auto,
-    Semi
+    Semi,
+    Burst
 }
 [RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(Animator))]
 
-abstract public class Weapon : NetworkBehaviour
+abstract public class Weapon : MonoBehaviour
 {
 
     [SerializeField] public WeaponScriptableObject weaponScriptableObject;
@@ -29,9 +28,7 @@ abstract public class Weapon : NetworkBehaviour
 
     [SerializeField] public ShootType _shootType;
 
-    [Space(10)]
 
-    [SerializeField] protected LayerMask playerMask;
 
     [Space(10)]
     [Header("Animation")]
@@ -39,11 +36,16 @@ abstract public class Weapon : NetworkBehaviour
     [SerializeField] protected Animator animator;
     [SerializeField] protected string shootAnimationName;
     [SerializeField] private string reloadAnimationTriggername;
+
     [Space(10)]
     [Header("Audio")]
     [SerializeField] protected bool useAudio;
-    [Space(10)]
-    [Header("Sway")]
+
+    [Space(10)] 
+    [Header("Sway")] 
+
+
+    [SerializeField] private Vector3 initialWeaponPosition;
     [SerializeField] private bool canSway;
     [SerializeField] private Vector3 initialSwayPosition;
     [SerializeField] private float SwayAmount;
@@ -80,11 +82,13 @@ abstract public class Weapon : NetworkBehaviour
     [SerializeField] private ConnectorHelper connectorHelper;
     [SerializeField] private Action OnInScopeValuseChange;
 
+    [Space(10)]
+    [Header("Layers")]
+    public LayerMask playerMask;
+    [SerializeField] private LayerMask otherWeaponLayer;
+
     public GameObject player;
     public bool canShoot;
-    [field: SerializeField] public bool _isLocalPlayer { get; set; } = false;
-    public PlayerControls controls { get; private set; }
-
 
 
     //protected float nextFire;
@@ -108,21 +112,25 @@ abstract public class Weapon : NetworkBehaviour
     public abstract float nextFire { get; }
     #endregion
     #region AbstractMethods
-    public abstract void Shoot();
+    public abstract Ray Shoot();
     public abstract void Scope();
     public abstract void FireButtonWasReleased();
     #endregion
 
+    [field: SerializeField] public bool _isLocalPLayer { get; set; }
 
     // Start is called before the first frame update
     private void Start()
     {
-        audioSource = gameObject.GetComponentInChildren<AudioSource>();
-        animator = gameObject.GetComponentInChildren<Animator>();
-        controls = new PlayerControls();
-        controls.Enable();
-        if(!_isLocalPlayer)
+        audioSource = GetComponent<AudioSource>();
+        animator = GetComponentInChildren<Animator>();
+        if (!_isLocalPLayer)
+        {
+            transform.GetChild(0).gameObject.layer = otherWeaponLayer;
             return;
+        }
+        initialWeaponPosition = transform.position;
+
         WeaponsLink.instance.weapons.Add(this);
         cam = Camera.main;
         gunCam = cam.GetComponentInChildren<Camera>();  
@@ -136,30 +144,9 @@ abstract public class Weapon : NetworkBehaviour
         weaponAmmo.AmmoText = ammoText;
 
     }
-    // Update is called once per frame
-    void Update()
+    protected Ray GetRay()
     {
-
-    }
-    [Command]
-    protected void RayCasting()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, weaponScriptableObject.weaponShootRange, playerMask))
-        {
-
-        }
-    }
-    [Command]
-    protected /*IEnumerator*/ void SpawnBullet()
-    {
-        GameObject spawnedBullet = NetworkManager.Instantiate(weaponScriptableObject.bulletPrefab);
-        spawnedBullet.transform.position = bulletSpawner.transform.position;
-        spawnedBullet.GetComponent<Bullet>().AddForceBullet(bulletSpawner.transform.forward * weaponScriptableObject.bulletSpeed);
-        NetworkServer.Spawn(spawnedBullet);
-        /*yield return new WaitForSeconds(weaponScriptableObject.bulletTimeToDestroy);*/
-        NetworkServer.Destroy(spawnedBullet);
-
+        return new Ray(cam.transform.position, cam.transform.forward);
     }
     /*public void KeyCodes()
     {
@@ -204,6 +191,7 @@ abstract public class Weapon : NetworkBehaviour
         canShoot = false;
         if (useAnimations == true)
             animator.SetTrigger(reloadAnimationTriggername);
+
         if(useAudio)
             audioSource.PlayOneShot(weaponScriptableObject.reload);
 
@@ -213,6 +201,14 @@ abstract public class Weapon : NetworkBehaviour
         weaponAmmo.ApdateAmmoInScreen();
         canShoot = true;
     }
+
+    /*public IEnumerator BurstShootCorutine(int shootCount)
+    {
+        for (int i = 0; i < shootCount; i++)
+        {
+
+        }
+    }*/
 
     private void Aiming()
     {
@@ -236,25 +232,13 @@ abstract public class Weapon : NetworkBehaviour
     }
     public void PlayShootSound()
     {
-        AudioClip clip = null;
-        if (attachment.haveSilencer == true)
-        {
-            clip = weaponScriptableObject.shootsSilencer[Random.Range(0, weaponScriptableObject.shoots.Length)];
-            audioSource.clip = clip;
-            audioSource.Play();
+        //audioSource.clip = weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)];
+        audioSource.PlayOneShot(weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)]);
 
-        }
-        else if (attachment.haveSilencer == false)
-        {
-            clip = weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)];
-            audioSource.clip = clip;
-            audioSource.Play();
-
-        }
     }
     public void SpawmMuzzle()
     {
-        if (attachment.haveSilencer == false)
+        if (attachment.hasSilencer == false)
         {
             if (weaponScriptableObject.haveMuzzle == true)
             {
@@ -270,7 +254,7 @@ abstract public class Weapon : NetworkBehaviour
 public class Attachment
 {
     [Header("Silencer")]
-    public bool haveSilencer;
+    public bool hasSilencer;
     public GameObject silencerObject;
 
     [Header("Scope`s")]

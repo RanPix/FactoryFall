@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 2270406200802855246}
   - component: {fileID: 2270406200802855257}
   - component: {fileID: 2270406200802855260}
-  - component: {fileID: 2270406200802855261}
   m_Layer: 6
   m_Name: Pistol 1
   m_TagString: Untagged
@@ -120,102 +119,6 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
---- !u!82 &2270406200802855261
-AudioSource:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2270406200802855273}
-  m_Enabled: 1
-  serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 0.154
-  m_Pitch: 1
-  Loop: 0
-  Mute: 0
-  Spatialize: 0
-  SpatializePostEffects: 0
-  Priority: 128
-  DopplerLevel: 1
-  MinDistance: 1
-  MaxDistance: 500
-  Pan2D: 0
-  rolloffMode: 0
-  BypassEffects: 0
-  BypassListenerEffects: 0
-  BypassReverbZones: 0
-  rolloffCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    - serializedVersion: 3
-      time: 1
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  panLevelCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  spreadCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 0
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
-  reverbZoneMixCustomCurve:
-    serializedVersion: 2
-    m_Curve:
-    - serializedVersion: 3
-      time: 0
-      value: 1
-      inSlope: 0
-      outSlope: 0
-      tangentMode: 0
-      weightedMode: 0
-      inWeight: 0.33333334
-      outWeight: 0.33333334
-    m_PreInfinity: 2
-    m_PostInfinity: 2
-    m_RotationOrder: 4
 --- !u!1 &4922877528255494121
 GameObject:
   m_ObjectHideFlags: 0
@@ -226,11 +129,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2921068486045732850}
   - component: {fileID: 8267180867370353098}
-  - component: {fileID: 4263618260469156668}
-  - component: {fileID: 3570465183431177477}
   - component: {fileID: 3980043795109761557}
-  - component: {fileID: 5921181912047968716}
-  - component: {fileID: 3787479528387344313}
   m_Layer: 0
   m_Name: Pistol3
   m_TagString: Untagged
@@ -246,7 +145,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4922877528255494121}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -92.193825, y: 0.39, z: 4.741566}
+  m_LocalPosition: {x: 0.395, y: -0.098, z: 0.577}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -265,8 +164,8 @@ AudioSource:
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
-  m_PlayOnAwake: 1
-  m_Volume: 1
+  m_PlayOnAwake: 0
+  m_Volume: 0.558
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -350,43 +249,6 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &4263618260469156668
-Animator:
-  serializedVersion: 4
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4922877528255494121}
-  m_Enabled: 1
-  m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 0}
-  m_CullingMode: 0
-  m_UpdateMode: 0
-  m_ApplyRootMotion: 0
-  m_LinearVelocityBlending: 0
-  m_StabilizeFeet: 0
-  m_WarningMessage: 
-  m_HasTransformHierarchy: 1
-  m_AllowConstantClipSamplingOptimization: 1
-  m_KeepAnimatorControllerStateOnDisable: 0
---- !u!114 &3570465183431177477
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4922877528255494121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 9b91ecbcc199f4492b9a91e820070131, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  sceneId: 0
-  serverOnly: 0
-  visible: 0
-  m_AssetId: 0082b758bc952e346843f07597e664fe
-  hasSpawned: 0
 --- !u!114 &3980043795109761557
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -399,20 +261,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d5938bd3de5761d49a7ffda272806c6d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   weaponScriptableObject: {fileID: 11400000, guid: 4e754d2369c961644ad470e5a712dd9a,
     type: 2}
   _state: 0
   _shootType: 1
-  playerMask:
-    serializedVersion: 2
-    m_Bits: 31
   useAnimations: 0
   animator: {fileID: 0}
   shootAnimationName: 
   reloadAnimationTriggername: 
-  useAudio: 0
+  useAudio: 1
+  initialWeaponPosition: {x: 0, y: 0, z: 0}
   canSway: 0
   initialSwayPosition: {x: 0, y: 0, z: 0}
   SwayAmount: 0
@@ -420,7 +278,7 @@ MonoBehaviour:
   swaySmoothing: 0
   canScope: 0
   attachment:
-    haveSilencer: 0
+    hasSilencer: 0
     silencerObject: {fileID: 0}
     Scopeid: 0
     ironSight: {fileID: 0}
@@ -437,66 +295,22 @@ MonoBehaviour:
   ammoObjectName: 
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
-  ammo: 1000
-  maxAmmo: 1000
-  reserveAmmo: 1000
+  ammo: 20
+  maxAmmo: 20
+  reserveAmmo: 240
   muzzlePosition: {fileID: 0}
   muzzle: []
   bulletSpawner: {fileID: 0}
   connectorHelper: {fileID: 0}
+  playerMask:
+    serializedVersion: 2
+    m_Bits: 159
+  otherWeaponLayer:
+    serializedVersion: 2
+    m_Bits: 1
+  player: {fileID: 0}
   canShoot: 0
-  <_isLocalPlayer>k__BackingField: 1
   cam: {fileID: 0}
   gunCam: {fileID: 0}
---- !u!114 &5921181912047968716
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4922877528255494121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2f74aedd71d9a4f55b3ce499326d45fb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  clientAuthority: 1
-  sendRate: 30
-  bufferTimeMultiplier: 2
-  bufferSizeLimit: 64
-  catchupNegativeThreshold: -1
-  catchupPositiveThreshold: 1
-  catchupSpeed: 0.009999999776482582
-  slowdownSpeed: 0.009999999776482582
-  driftEmaDuration: 1
-  dynamicAdjustment: 1
-  dynamicAdjustmentTolerance: 1
-  deliveryTimeEmaDuration: 2
-  onlySyncOnChange: 1
-  bufferResetMultiplier: 5
-  positionSensitivity: 0.01
-  rotationSensitivity: 0.01
-  scaleSensitivity: 0.01
-  syncPosition: 1
-  syncRotation: 1
-  syncScale: 0
-  showGizmos: 0
-  showOverlay: 0
-  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
---- !u!114 &3787479528387344313
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4922877528255494121}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: be69cf0c9a37ef24390e9e1b418357d8, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
-  localCameraHolder: {fileID: 0}
+  audioSource: {fileID: 8267180867370353098}
+  <_isLocalPLayer>k__BackingField: 0

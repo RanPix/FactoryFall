@@ -13,7 +13,7 @@ public class FlameThrower : Weapon
     private FlameThrowerTrigger FlameThrowerTrigger;
 
 
-    public override void Shoot()
+    public override Ray Shoot()
     {
         Debug.Log("piu");
         _nextFire = Time.time;
@@ -30,6 +30,7 @@ public class FlameThrower : Weapon
         weaponAmmo.ApdateAmmoInScreen();
         if (useAnimations == true)
             animator.Play(shootAnimationName);
+        return new Ray();
     }
     public void InstantiateFireTrigger()
     {
@@ -42,7 +43,7 @@ public class FlameThrower : Weapon
     }
     private new void SpawmMuzzle()
     {
-        if (attachment.haveSilencer == false)
+        if (attachment.hasSilencer == false)
         {
             if (weaponScriptableObject.haveMuzzle == true)
             {

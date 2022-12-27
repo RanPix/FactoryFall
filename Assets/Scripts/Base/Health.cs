@@ -13,13 +13,16 @@ namespace GameBase
 
         private void Start()
             => currentHealth = maxHealth;
-
         public void Damage(Damage damage)
         {
-            currentHealth -= damage.damage;   
+            currentHealth -= damage.damage;
 
+                print("nuuuuuuuuuuuuuuuuuuuuuuuuuul");
             if (currentHealth < 1)
+            {
+                print("death");
                 onDeath?.Invoke();
+            }
         }
 
         public void Regen(float amount)
