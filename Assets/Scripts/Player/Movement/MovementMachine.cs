@@ -36,6 +36,7 @@ namespace FiniteMovementStateMachine
             Debug.Log($"Im in {currentState}",this);
 
             currentState?.UpdateLogic();
+            currentState?.CheckForChangeState();
         }
 
         private void LateUpdate()

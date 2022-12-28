@@ -14,17 +14,15 @@ public class Wallrun : BaseMovementState
         data.GetWalls(fields);
 
         ChangeVelocity();
-
-        CheckForChangeState();
     }
 
-    protected override void CheckForChangeState()
+    public override void CheckForChangeState()
     {
         if(data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
-        else if (!gotWall)
+        else if (!GetGotWall())
         {
-            if(!isGrounded)
+            if(!GetIsGrounded())
                 stateMachine.ChangeState(stateMachine.midAir);
             stateMachine.ChangeState(stateMachine.walk);
         }

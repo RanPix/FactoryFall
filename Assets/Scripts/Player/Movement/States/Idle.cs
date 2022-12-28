@@ -13,16 +13,14 @@ public class Idle : BaseMovementState
         base.UpdateLogic();
 
         ChangeVelocity();
-
-        CheckForChangeState();
     }
 
-    protected override void CheckForChangeState()
+    public override void CheckForChangeState()
     {
         if (input != Vector2.zero)
             stateMachine.ChangeState(stateMachine.walk);
 
-        if (!isGrounded || data.gotJumpInput)
+        if (!GetIsGrounded() || data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
     }
 

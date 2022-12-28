@@ -11,18 +11,15 @@ public class Run : BaseMovementState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        CheckIfMovingForward();
 
         ChangeVelocity();
-
-        CheckForChangeState();
     }
 
-    protected override void CheckForChangeState()
+    public override void CheckForChangeState()
     {
-        if (!isGrounded || data.gotJumpInput)
+        if (!GetIsGrounded() || data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
-        else if (!isMovingForward || !controls.Player.Sprint.IsPressed())
+        else if (!GetIsMovingForward() || !controls.Player.Sprint.IsPressed() || input == Vector2.zero)
             stateMachine.ChangeState(stateMachine.walk);
     }
 

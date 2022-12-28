@@ -5,7 +5,7 @@ using UnityEngine.InputSystem;
 
 namespace FiniteMovementStateMachine
 {
-    public class BaseMovementState
+    public abstract class BaseMovementState
     {
         public readonly string name;
 
@@ -17,11 +17,53 @@ namespace FiniteMovementStateMachine
         protected MovementDataIntersection data;
         protected Vector2 input { get; private set; }
 
-        protected bool gotWall { get; private set; }
-        protected bool isGrounded { get; private set; }
-        protected bool isMovingForward { get; private set; }
+        private bool gotWall;
+        private bool gotWallIsUpdatedThisFrame;
+        
+        private bool isGrounded;
+        private bool isGroundedIsUpdatedThisFrame;
 
-        public BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
+        private bool isMovingForward;
+        private bool isMovingForwardIsUpdatedThisFrame;
+
+        #region Getters
+
+        protected bool GetGotWall()
+        {
+            if (gotWallIsUpdatedThisFrame)
+                return gotWall;
+
+            gotWall = CheckForWalls();
+            gotWallIsUpdatedThisFrame = true;
+
+            return gotWall;
+        }
+
+        protected bool GetIsGrounded()
+        {
+            if (isGroundedIsUpdatedThisFrame)
+                return isGrounded;
+
+            isGrounded = CheckIfGrounded();
+            isGroundedIsUpdatedThisFrame = true;
+
+            return isGrounded;
+        }
+
+        protected bool GetIsMovingForward()
+        {
+            if (isMovingForwardIsUpdatedThisFrame)
+                return isMovingForward;
+
+            isMovingForward = CheckIfMovingForward();
+            isMovingForwardIsUpdatedThisFrame = true;
+
+            return isMovingForward;
+        }
+
+        #endregion
+
+        internal BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
         {
             this.name = name;
             this.stateMachine = stateMachine;
@@ -52,8 +94,10 @@ namespace FiniteMovementStateMachine
         public virtual void UpdateLogic()
         {
             GetInput();
-            CheckIfGrounded();
-            CheckForWalls();
+
+            gotWallIsUpdatedThisFrame = false;
+            isGroundedIsUpdatedThisFrame = false;
+            isMovingForwardIsUpdatedThisFrame = false;
         }
 
         /// <summary>
@@ -74,7 +118,7 @@ namespace FiniteMovementStateMachine
         }
 
         /// <summary> Don't override with base </summary>
-        protected virtual void CheckForChangeState()
+        public virtual void CheckForChangeState()
         {
             Debug.LogWarning($"I was in {name} for a brief moment.\n  Override {MethodBase.GetCurrentMethod()?.Name} method");
             throw new NotImplementedException();
@@ -82,37 +126,39 @@ namespace FiniteMovementStateMachine
 
         #endregion
 
-        protected void GetInput()
+        #region Checks
+
+        private void GetInput()
         {
             Vector2 inputVector = controls.Player.Move.ReadValue<Vector2>();
             Vector3 orientatedInputVector = fields.orientation.forward * inputVector.y + fields.orientation.right * inputVector.x;
             input = new Vector2(orientatedInputVector.x, orientatedInputVector.z);
         }
 
-        protected void CheckIfGrounded()
-            => isGrounded = Physics.CheckSphere(fields.groundCheck.position, fields.ScriptableFields.GroundCheckRadius, fields.ScriptableFields.GroundCheckLm, QueryTriggerInteraction.Ignore);
-
-        protected bool CheckIfHaveInput()
-            => input != Vector2.zero;
+        private bool CheckIfGrounded()
+            => isGrounded = Physics.CheckSphere(fields.groundCheck.position, fields.ScriptableFields.GroundCheckRadius,
+                fields.ScriptableFields.GroundCheckLm, QueryTriggerInteraction.Ignore);
 
         private void AddJump(InputAction.CallbackContext context) // Adds jump to queue while changing states
             => data.gotJumpInput = true;
 
-        protected void CheckForWalls()
-            => gotWall = Physics.Raycast(fields.wallCheck.position, fields.orientation.right,
-                             fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
-                   QueryTriggerInteraction.Ignore)
-               ||
-               Physics.Raycast(fields.wallCheck.position, -fields.orientation.right,
-                   fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
-                   QueryTriggerInteraction.Ignore);
+        private bool CheckForWalls()
+            => Physics.Raycast(fields.wallCheck.position, fields.orientation.right,
+                           fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
+                           QueryTriggerInteraction.Ignore)
+                       ||
+                       Physics.Raycast(fields.wallCheck.position, -fields.orientation.right,
+                           fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
+                           QueryTriggerInteraction.Ignore);
 
-        protected void CheckIfMovingForward()
+        private bool CheckIfMovingForward()
         {
             float angle = Quaternion.LookRotation(data.moveVector3).eulerAngles.y - fields.orientation.eulerAngles.y;
             angle = angle < 0 ? -angle : angle; // Handmade Abs)
 
-            isMovingForward = angle is < 45.1f or > 314.9f;
+            return angle is < 45.1f or > 314.9f;
         }
+
+        #endregion
     }
 }

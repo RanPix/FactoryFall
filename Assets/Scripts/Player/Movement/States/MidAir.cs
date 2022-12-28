@@ -1,5 +1,4 @@
 using FiniteMovementStateMachine;
-using System;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -44,20 +43,18 @@ public class MidAir : BaseMovementState
 
         if(gotRedirect)
             TryRedirect();
-
-        CheckForChangeState();
     }
 
-    protected override void CheckForChangeState()
+    public override void CheckForChangeState()
     {
-        if (isGrounded && data.verticalMove < math.EPSILON)
+        if (GetIsGrounded() && data.verticalMove < math.EPSILON)
         {
-            if (CheckIfHaveInput())
+            if (input != Vector2.zero)
                 stateMachine.ChangeState(stateMachine.walk);
             else
                 stateMachine.ChangeState(stateMachine.idle);
         }
-        else if(gotWall)
+        else if(GetGotWall())
             stateMachine.ChangeState(stateMachine.wallrun);
     }
 
@@ -93,7 +90,7 @@ public class MidAir : BaseMovementState
 
     private void TryJump()
     {
-        if (isGrounded)
+        if (GetIsGrounded())
             data.verticalMove += fields.ScriptableFields.JumpHeight;
         else if (hasDoubleJumps-- > 0)
             DoubleJump();

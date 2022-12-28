@@ -11,22 +11,19 @@ public class Walk : BaseMovementState
     public override void UpdateLogic()
     {
         base.UpdateLogic();
-        CheckIfMovingForward();
 
         ChangeVelocity();
 
         data.CalculateHorizontalMagnitude();
-
-        CheckForChangeState();
     }
 
-    protected override void CheckForChangeState()
+    public override void CheckForChangeState()
     {
-        if (!isGrounded || data.gotJumpInput)
+        if (!GetIsGrounded() || data.gotJumpInput)
             stateMachine.ChangeState(stateMachine.midAir);
-        else if (!CheckIfHaveInput())
+        else if (input == Vector2.zero)
             stateMachine.ChangeState(stateMachine.idle);
-        else if (isMovingForward && controls.Player.Sprint.IsPressed())
+        else if (GetIsMovingForward() && controls.Player.Sprint.IsPressed())
             stateMachine.ChangeState(stateMachine.run);
     }
 
