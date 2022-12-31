@@ -304,7 +304,7 @@ MonoBehaviour:
   connectorHelper: {fileID: 0}
   playerMask:
     serializedVersion: 2
-    m_Bits: 159
+    m_Bits: 287
   otherWeaponLayer:
     serializedVersion: 2
     m_Bits: 1

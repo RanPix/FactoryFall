@@ -23,7 +23,10 @@ namespace Player
         [SerializeField] private GameObject healthBarPrefab;
         [SerializeField] private GameObject ammoTextPrefab;
 
-        [SerializeField] private LayerMask localPlayerLayer;
+        [SerializeField] private Camera miniMapCamera;
+        [SerializeField] private GameObject playerMark;
+
+        [SerializeField] private LayerMask mask;
 
         private Transform cam;
 
@@ -40,14 +43,29 @@ namespace Player
                 cam = cameraHolder.GetComponentInChildren<Camera>().transform;
 
                 GetComponent<SyncRotation>().reference = cam;
-                
+
+                Camera _miniMapCamera = Instantiate(miniMapCamera);
+                GameObject playerRow = GameObject.Instantiate(playerMark);
+                PlayerMark _playerMark = playerRow.GetComponent<PlayerMark>();
+                _playerMark.player = gameObject.transform;
+                _playerMark.isLocal = true;
+                _playerMark.rotationReference = gameObject.transform.GetChild(0).GetChild(0);
+                MiniMapCameraMove _miniMapCameraMove = _miniMapCamera.GetComponent<MiniMapCameraMove>();
+                _miniMapCameraMove.player = gameObject.transform;
                 health.onDeath += OnDeath;
+
 
                 GameObject healthBar = Instantiate(healthBarPrefab, GameObject.Find("Canvas").transform);
                 healthBar.GetComponent<HealthBar>().playerHealth = GetComponent<Health>();
             }
             else
             {
+                GameObject playerRow = GameObject.Instantiate(playerMark);
+                PlayerMark _playerMark = playerRow.GetComponent<PlayerMark>();
+                _playerMark.player = gameObject.transform;
+                _playerMark.isLocal = false;
+                _playerMark.rotationReference = gameObject.transform.GetChild(0).GetChild(0);
+
                 //enabled = false;
             }
             /*if (!isLocalPlayer)
@@ -56,7 +74,7 @@ namespace Player
                 cameraHolder.GetComponentInChildren<Camera>().gameObject.GetComponentInChildren<Camera>().enabled = false;
 
             }*/
-           
+
             //NetworkServer.Spawn(cameraHolder);
             //PlayerInteraction.instance.player = this;
         }
@@ -113,7 +131,8 @@ namespace Player
                 Health hitHealth = hit.transform.GetComponent<Health>();
                 if (hitHealth)
                 {
-                    hitHealth.Damage(new Damage(damage));
+                    hitHealth.gotDamage = damage;
+                    hitHealth.Damage();
                 }
             }
         }

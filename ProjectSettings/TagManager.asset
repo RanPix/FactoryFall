@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 2
   tags:
   - canvas
+  - MiniMapCamera
   layers:
   - Default
   - TransparentFX
@@ -17,8 +18,8 @@ TagManager:
   - LocalPlayer
   - Ore
   - Block
-  - 
-  - 
+  - LocalPlayerMark
+  - EnemyPlayerMark
   - 
   - 
   - 
