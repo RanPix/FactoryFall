@@ -6,7 +6,7 @@ public class Look : NetworkBehaviour
 {
     private PlayerControls controls;
 
-    [HideInInspector] public bool isMenuOpened;
+    [HideInInspector] public InventoryUI inventoryUI;
 
     [SerializeField] private Camera m_Camera;
     [SerializeField] private float sensX;
@@ -17,6 +17,7 @@ public class Look : NetworkBehaviour
     [HideInInspector] public Transform orientation;
     [HideInInspector] public bool _isLocalPlayer { get; set; } = false;
     
+
 
     private Vector2 inputVector;
     private float xRot;
@@ -47,12 +48,12 @@ public class Look : NetworkBehaviour
    
     private void UpdateCamera()
     {
-        Cursor.lockState = isMenuOpened ?
+        bool isInventoryOpened = inventoryUI.isPanelOpened;
+        Cursor.lockState = isInventoryOpened ?
             CursorLockMode.Confined : 
             CursorLockMode.Locked;
-
-        Cursor.visible = isMenuOpened;
-        if (!isMenuOpened)
+        Cursor.visible = isInventoryOpened;
+        if (!isInventoryOpened)
         {
             yRot += inputVector.x * 0.01f * sensX;
             xRot -= inputVector.y * 0.01f * sensY;

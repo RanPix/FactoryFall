@@ -206,7 +206,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4952727429218122}
-  - component: {fileID: 8110176810638278677}
+  - component: {fileID: 6982216607665633303}
   m_Layer: 0
   m_Name: M1911
   m_TagString: Untagged
@@ -231,7 +231,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!95 &8110176810638278677
+--- !u!95 &6982216607665633303
 Animator:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -241,7 +241,7 @@ Animator:
   m_GameObject: {fileID: 1694449805434718}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: aa32d4c78fffe344e882e27a9ee79e1f, type: 2}
+  m_Controller: {fileID: 0}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0

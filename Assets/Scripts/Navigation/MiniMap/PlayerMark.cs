@@ -18,12 +18,15 @@ public class PlayerMark : MonoBehaviour
         {
             activeMark = canvas.transform.GetChild(0).gameObject;
             activeMark.SetActive(true);
-
+            gameObject.layer = LayerMask.NameToLayer("LocalPlayerMark");
+            gameObject.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("LocalPlayerMark");
         }
         else
         {
             activeMark = canvas.transform.GetChild(1).gameObject;
             activeMark.SetActive(true);
+            gameObject.layer = LayerMask.NameToLayer("EnemyPlayerMark");
+            gameObject.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("EnemyPlayerMark");
 
         }
     }

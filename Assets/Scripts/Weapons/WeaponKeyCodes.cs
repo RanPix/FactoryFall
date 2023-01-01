@@ -77,7 +77,7 @@ public class WeaponKeyCodes : NetworkBehaviour
             currentWeapon.audioSource.PlayOneShot(currentWeapon.weaponScriptableObject.empty);
         }
 
-        if (controls.Player.Reload.WasPerformedThisFrame())
+        if (controls.Player.Reload.WasPerformedThisFrame() && !currentWeapon.reloading)
         {
             if (currentWeapon.weaponAmmo.ReserveAmmo > 0 && currentWeapon.weaponAmmo.Ammo < currentWeapon.ammo)
             {
