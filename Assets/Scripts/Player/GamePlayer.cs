@@ -15,13 +15,15 @@ namespace Player
         [SerializeField] private Damage damage;
 
         [SerializeField] private InventoryUI inventory;
-        [field: SerializeField]public GameObject cameraHolder { get; private set; }
+    [field: SerializeField]public GameObject cameraHolder { get; private set; }
 
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform orientation;
 
         [SerializeField] private GameObject healthBarPrefab;
         [SerializeField] private GameObject ammoTextPrefab;
+        [SerializeField] private GameObject cross;
+        [SerializeField] private GameObject menu;
 
         [SerializeField] private Camera miniMapCamera;
         [SerializeField] private GameObject playerMark;
@@ -38,10 +40,11 @@ namespace Player
                 cameraHolder = Instantiate(cameraHolder);
                 cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
                 cameraHolder.GetComponent<Look>().orientation = orientation;
-                cameraHolder.GetComponent<Look>().inventoryUI = inventory;
                 cameraHolder.GetComponent<Look>()._isLocalPlayer = true;
+
                 cam = cameraHolder.GetComponentInChildren<Camera>().transform;
 
+<<<<<<< HEAD
                 GetComponent<SyncRotation>().reference = cam;
 
                 Camera _miniMapCamera = Instantiate(miniMapCamera);
@@ -56,10 +59,25 @@ namespace Player
 
 
                 GameObject healthBar = Instantiate(healthBarPrefab, GameObject.Find("Canvas").transform);
+=======
+                NetworkServer.Spawn(cameraHolder);
+                
+                health.onDeath += OnDeath;
+
+                Transform canvas = GameObject.Find("Canvas").transform;
+
+                Instantiate(cross, canvas);
+
+                GameObject healthBar = Instantiate(healthBarPrefab, canvas);
+>>>>>>> WeaponsAndMobs
                 healthBar.GetComponent<HealthBar>().playerHealth = GetComponent<Health>();
+
+                GameObject menuOnScene = Instantiate(menu, canvas);
+                menuOnScene.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
             }
             else
             {
+<<<<<<< HEAD
                 GameObject playerRow = GameObject.Instantiate(playerMark);
                 PlayerMark _playerMark = playerRow.GetComponent<PlayerMark>();
                 _playerMark.player = gameObject.transform;
@@ -68,6 +86,10 @@ namespace Player
 
                 //enabled = false;
             }
+=======
+                cameraHolder.GetComponentInChildren<AudioListener>().enabled = false;
+            }
+>>>>>>> WeaponsAndMobs
             /*if (!isLocalPlayer)
             {
                 cameraHolder.GetComponentInChildren<Camera>().enabled = false;
@@ -81,19 +103,40 @@ namespace Player
 
         private void Update()
         {
-            if(!isLocalPlayer)
-                return;/*
             Ray ray = new Ray(cam.position, cam.forward);
-            Shoot(ray);*/
+            Shoot(ray);
         }
 
         private void OnDeath()
         {
+<<<<<<< HEAD
             print("ded");
             /*cameraHolder.SetActive(false);
             gameObject.SetActive(false);*/
         }
 
+=======
+            StartCoroutine(Respawn());
+
+            cameraHolder.SetActive(false);
+            gameObject.SetActive(false);
+        }
+
+        private IEnumerator Respawn()
+        {
+            yield return new WaitForSeconds(2f);
+
+            cameraHolder.SetActive(true);
+            gameObject.SetActive(true);
+        }
+
+        [Command]
+        public void SpawnOnServer()
+        {
+            NetworkServer.Spawn(cameraHolder);
+        }
+
+>>>>>>> WeaponsAndMobs
         /*public void Interact(IInteractable interact) =>
             InteractServer(interact);
 

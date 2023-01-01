@@ -79,10 +79,14 @@ GameObject:
   - component: {fileID: 841400163258982986}
   - component: {fileID: 2911324726990273139}
   - component: {fileID: 4804469322116124112}
+<<<<<<< HEAD
   - component: {fileID: -2901291077034960170}
   - component: {fileID: -3920510412529851583}
   - component: {fileID: 11036251873139821}
   - component: {fileID: 6120899351348563184}
+=======
+  - component: {fileID: 2775897222214642296}
+>>>>>>> WeaponsAndMobs
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -200,6 +204,7 @@ MonoBehaviour:
   healthBarPrefab: {fileID: 4203298332218061752, guid: 6d56f640da95a044795c8ca3e1c3e160,
     type: 3}
   ammoTextPrefab: {fileID: 0}
+<<<<<<< HEAD
   localPlayerLayer:
     serializedVersion: 2
     m_Bits: 256
@@ -207,6 +212,10 @@ MonoBehaviour:
     type: 3}
   playerMark: {fileID: 6201049919452161927, guid: f84e97a72b2de0044a56240227220f28,
     type: 3}
+=======
+  cross: {fileID: 6576587256434848733, guid: ecdfb8302ca630c4ab7f736dcc5ba725, type: 3}
+  menu: {fileID: 5572774209256950057, guid: d37a061eff4b9c64696edba900215302, type: 3}
+>>>>>>> WeaponsAndMobs
 --- !u!114 &2135578962297529565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -402,6 +411,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+<<<<<<< HEAD
   clientAuthority: 1
   sendRate: 30
   bufferTimeMultiplier: 2
@@ -458,6 +468,9 @@ MonoBehaviour:
   syncInterval: 0.1
   reference: {fileID: 0}
   target: {fileID: 7644531972711148823}
+=======
+  weapon: {fileID: 4922877528255494121, guid: 0082b758bc952e346843f07597e664fe, type: 3}
+>>>>>>> WeaponsAndMobs
 --- !u!1 &841400163719565600
 GameObject:
   m_ObjectHideFlags: 0

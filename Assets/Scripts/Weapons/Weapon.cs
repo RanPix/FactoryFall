@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
-using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 public enum States
 {
@@ -20,13 +19,13 @@ public enum ShootType
 abstract public class Weapon : MonoBehaviour
 {
 
-    [SerializeField] public WeaponScriptableObject weaponScriptableObject;
+    [SerializeField] protected WeaponScriptableObject weaponScriptableObject;
 
     [Space]
     [Header("Enums")]
     [SerializeField] private States _state;
 
-    [SerializeField] public ShootType _shootType;
+    [SerializeField] private ShootType _shootType;
 
 
 
@@ -68,8 +67,8 @@ abstract public class Weapon : MonoBehaviour
 
     [Space(10)]
     [Header("Ammo")]
-    [SerializeField] public WeaponAmmo weaponAmmo;
-    [SerializeField] public int ammo;
+    [SerializeField] protected WeaponAmmo weaponAmmo;
+    [SerializeField] private int ammo;
     [SerializeField] private int maxAmmo;
     [SerializeField] private int reserveAmmo;
 
@@ -82,6 +81,7 @@ abstract public class Weapon : MonoBehaviour
     [SerializeField] private ConnectorHelper connectorHelper;
     [SerializeField] private Action OnInScopeValuseChange;
 
+<<<<<<< HEAD
     [Space(10)]
     [Header("Layers")]
     public LayerMask playerMask;
@@ -89,12 +89,19 @@ abstract public class Weapon : MonoBehaviour
 
     public GameObject player;
     public bool canShoot;
+=======
+
+    public bool canShoot;
+    [HideInInspector] public bool _isLocalPlayer { get; set; } = false;
+
+>>>>>>> WeaponsAndMobs
 
 
     //protected float nextFire;
+    private PlayerControls controls;
     public Camera cam;
     public Camera gunCam;
-    public AudioSource audioSource;
+    private AudioSource audioSource;
     private TMP_Text ammoText;
 
     public bool inScope
@@ -109,13 +116,14 @@ abstract public class Weapon : MonoBehaviour
     }
     private bool _inScope;
     #region AbstractVariables
-    public abstract float nextFire { get; }
+    protected abstract float nextFire { get; }
     #endregion
     #region AbstractMethods
     public abstract Ray Shoot();
     public abstract void Scope();
-    public abstract void FireButtonWasReleased();
+    protected abstract void FireButtonWasReleased();
     #endregion
+<<<<<<< HEAD
 
     [field: SerializeField] public bool _isLocalPLayer { get; set; }
 
@@ -131,7 +139,19 @@ abstract public class Weapon : MonoBehaviour
         }
         initialWeaponPosition = transform.position;
 
+=======
+    // Start is called before the first frame update
+    private void Start()
+    {
+        if(!_isLocalPlayer)
+            return;
+        audioSource = gameObject.GetComponentInChildren<AudioSource>();
+        animator = gameObject.GetComponentInChildren<Animator>();
+        controls = new PlayerControls();
+        controls.Enable();
+>>>>>>> WeaponsAndMobs
         WeaponsLink.instance.weapons.Add(this);
+        Debug.Log("Start");
         cam = Camera.main;
         gunCam = cam.GetComponentInChildren<Camera>();  
         GameObject help = Instantiate(weaponAmmo.gameObject);
@@ -144,11 +164,44 @@ abstract public class Weapon : MonoBehaviour
         weaponAmmo.AmmoText = ammoText;
 
     }
+<<<<<<< HEAD
     protected Ray GetRay()
     {
         return new Ray(cam.transform.position, cam.transform.forward);
+=======
+    // Update is called once per frame
+    void Update()
+    { 
+        if(!_isLocalPlayer)
+        return;
+        switch (_state)
+        {
+            case States.Active:
+
+                Aiming();
+                KeyCodes();
+                break;
+        }
+
     }
-    /*public void KeyCodes()
+    protected void RayCasting()
+    {
+        RaycastHit hit;
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, weaponScriptableObject.weaponShootRange, playerMask))
+        {
+
+        }
+    }
+    protected void SpawnBullet()
+    {
+        GameObject spawnedBullet = Instantiate(weaponScriptableObject.bulletPrefab);
+        spawnedBullet.transform.position = bulletSpawner.transform.position;
+        spawnedBullet.GetComponent<Bullet>().AddForceBullet(bulletSpawner.transform.forward * weaponScriptableObject.bulletSpeed);
+        Destroy(spawnedBullet, weaponScriptableObject.bulletTimeToDestroy);
+
+>>>>>>> WeaponsAndMobs
+    }
+    private void KeyCodes()
     {
         if (canShoot == true)
         {
@@ -184,9 +237,8 @@ abstract public class Weapon : MonoBehaviour
                 StartCoroutine(ReloadCoroutine());
             }
         }
-
-    }*/
-    public IEnumerator ReloadCoroutine()
+    }
+    private IEnumerator ReloadCoroutine()
     {
         canShoot = false;
         if (useAnimations == true)
