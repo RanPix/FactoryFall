@@ -83,6 +83,7 @@ GameObject:
   - component: {fileID: -3920510412529851583}
   - component: {fileID: 11036251873139821}
   - component: {fileID: 6120899351348563184}
+  - component: {fileID: 5088136169615148319}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -205,6 +206,7 @@ MonoBehaviour:
   playerMark: {fileID: 6201049919452161927, guid: f84e97a72b2de0044a56240227220f28,
     type: 3}
   compass: {fileID: 2911739906067793003, guid: 6bb327c9eed09f342b5cd27aa66248e3, type: 3}
+  audioSource: {fileID: 0}
 --- !u!114 &2135578962297529565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -456,6 +458,24 @@ MonoBehaviour:
   syncInterval: 0.1
   reference: {fileID: 0}
   target: {fileID: 7644531972711148823}
+--- !u!114 &5088136169615148319
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841400163258982976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e50a689d029e3634887abdb0cffde267, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clips:
+  - {fileID: 8300000, guid: 654c6a2daba18614da2017a1864eb9f1, type: 3}
+  - {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
+  - {fileID: 8300000, guid: b0b5795352b75b44587bbc12a2d35c08, type: 3}
 --- !u!1 &841400163719565600
 GameObject:
   m_ObjectHideFlags: 0
@@ -833,6 +853,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3980043795109761557, guid: 0082b758bc952e346843f07597e664fe,
+        type: 3}
+      propertyPath: player
+      value: 
+      objectReference: {fileID: 841400163258982976}
     - target: {fileID: 4922877528255494121, guid: 0082b758bc952e346843f07597e664fe,
         type: 3}
       propertyPath: m_Name

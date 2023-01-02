@@ -16,8 +16,6 @@ public class Pistol : Weapon
     {
         Debug.Log("piu");
         _nextFire = Time.time;
-        if(useAudio)
-            PlayShootSound();
         SpawmMuzzle();
 
         weaponAmmo.Ammo--;

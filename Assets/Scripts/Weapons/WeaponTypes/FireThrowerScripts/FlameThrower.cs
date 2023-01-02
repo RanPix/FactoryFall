@@ -22,8 +22,6 @@ public class FlameThrower : Weapon
         {
             InstantiateFireTrigger();
         }
-        if(useAudio)
-            PlayShootSound();
         SpawmMuzzle();
 
         weaponAmmo.Ammo--;

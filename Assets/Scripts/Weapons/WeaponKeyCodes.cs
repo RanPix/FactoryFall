@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using Mirror;
 using Player;
 using UnityEngine;
-
+[RequireComponent(typeof(AudioSync))]
 public class WeaponKeyCodes : NetworkBehaviour
 {
     public Transform weaponHolder;
@@ -11,11 +11,14 @@ public class WeaponKeyCodes : NetworkBehaviour
     private int currentWeaponIndex = -1;
     private GamePlayer gamePlayer;
     public PlayerControls controls { get; private set; }
+
+    private AudioSync audioSync;
     // Start is called before the first frame update
     void Start()
     {
         if(!isLocalPlayer)
             return;
+        audioSync = GetComponent<AudioSync>();
         gamePlayer = GetComponent<GamePlayer>();
         controls = new PlayerControls();
         controls.Player.Enable();
@@ -54,18 +57,19 @@ public class WeaponKeyCodes : NetworkBehaviour
                 {
                     if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
                     {
+                        audioSync.PlaySound(0);
                         gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange);
                     }
                     else if (currentWeapon._shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
+                        audioSync.PlaySound(0);
                         gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange);
 
                     }
                     else if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
                     {
                         currentWeapon.FireButtonWasReleased();
-                    }else if (currentWeapon._shootType == ShootType.Burst && controls.Player.Fire.IsPressed())
-                    {
+                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange);
 
                     }
                 }
@@ -74,17 +78,29 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         if (controls.Player.Fire.WasPressedThisFrame() && currentWeapon.weaponAmmo.Ammo <= 0)
         {
-            currentWeapon.audioSource.PlayOneShot(currentWeapon.weaponScriptableObject.empty);
+            audioSync.PlaySound(1);
         }
 
         if (controls.Player.Reload.WasPerformedThisFrame() && !currentWeapon.reloading)
         {
             if (currentWeapon.weaponAmmo.ReserveAmmo > 0 && currentWeapon.weaponAmmo.Ammo < currentWeapon.ammo)
             {
+                audioSync.PlaySound(2);
                 StartCoroutine(currentWeapon.ReloadCoroutine());
             }
         }
 
+    }
+
+    [ClientRpc]
+    private void PlaySoundOnClients(PlaySoundType type)
+    {
+        currentWeapon.PlaySound(type);
+    }
+    [Command]
+    private void PlaySoundCommand(PlaySoundType type)
+    {
+        PlaySoundOnClients(type);
     }
 
 }

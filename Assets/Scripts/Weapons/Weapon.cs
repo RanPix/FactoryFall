@@ -15,6 +15,13 @@ public enum ShootType
     Semi,
     Burst
 }
+
+public enum PlaySoundType
+{
+    Shoot,
+    Empty, 
+    Reload
+}
 [RequireComponent(typeof(AudioSource))]
 
 abstract public class Weapon : MonoBehaviour
@@ -124,7 +131,7 @@ abstract public class Weapon : MonoBehaviour
     // Start is called before the first frame update
     private void Start()
     {
-        audioSource = GetComponent<AudioSource>();
+        audioSource = player.GetComponent<AudioSource>();
         animator = GetComponentInChildren<Animator>();
         if (!_isLocalPLayer)
         {
@@ -195,9 +202,6 @@ abstract public class Weapon : MonoBehaviour
         if (useAnimations == true)
             animator.SetTrigger(reloadAnimationTriggername);
 
-        if(useAudio)
-            audioSource.PlayOneShot(weaponScriptableObject.reload);
-
         yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
 
         weaponAmmo.AddAmmo();
@@ -206,38 +210,20 @@ abstract public class Weapon : MonoBehaviour
         reloading = false;
     }
 
-    /*public IEnumerator BurstShootCorutine(int shootCount)
+    public void PlaySound(PlaySoundType soundType)
     {
-        for (int i = 0; i < shootCount; i++)
+        switch (soundType)
         {
-
+            case PlaySoundType.Empty:
+                audioSource.PlayOneShot(weaponScriptableObject.empty);
+                break;
+            case PlaySoundType.Shoot:
+                audioSource.PlayOneShot(weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)]);
+                break;
+            case PlaySoundType.Reload:
+                audioSource.PlayOneShot(weaponScriptableObject.reload);
+                break;
         }
-    }*/
-
-    private void Aiming()
-    {
-        /*Vector3 target = normalLOcalPosition;
-
-        if (controls.Player.Scope.IsPressed())
-        {
-            initialSwayPosition = attachment.positionsInScope[attachment.Scopeid];
-            target = attachment.positionsInScope[attachment.Scopeid];
-            _inScope = true;
-        }
-        else if (_inScope == true)
-        {
-            initialSwayPosition = normalLOcalPosition;
-            _inScope = false;
-
-        }
-
-        Vector3 desiredPosition = Vector3.Lerp(transform.localPosition, target, Time.deltaTime * aimSmoothing);
-        transform.localPosition = desiredPosition;*/
-    }
-    public void PlayShootSound()
-    {
-        //audioSource.clip = weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)];
-        audioSource.PlayOneShot(weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)]);
 
     }
     public void SpawmMuzzle()

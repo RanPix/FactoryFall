@@ -28,9 +28,10 @@ namespace Player
 
 
         [SerializeField] private GameObject compass;
+        [SerializeField] private AudioSource audioSource;
+
 
         private Canvas canvas;
-
         private Transform cam;
 
         private void Start()
@@ -128,9 +129,18 @@ namespace Player
             ShootServer(ray, mask, damage, shootRange);
         }
 
+        /*public void PlayAudio(AudioClip clip)
+        {
+            PlayAudioOnClients(clip);
+        }
+
+        [ClientRpc]
+        private void PlayAudioOnClients(AudioClip clip)
+        {
+            audioSource.PlayOneShot(clip);
+        }*/
         [Command]
         private void ShootServer(Ray ray, LayerMask mask, float damage, float shootRange)
-
         {
             RaycastHit hit;
             if (Physics.Raycast(ray, out hit, shootRange))
