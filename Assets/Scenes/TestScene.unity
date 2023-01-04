@@ -1374,6 +1374,26 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1077928781452080303, guid: a1d33dd617e8a42478da3c6dbae780ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 3928687413595407962, guid: a1d33dd617e8a42478da3c6dbae780ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 5806083354571043167, guid: a1d33dd617e8a42478da3c6dbae780ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6519388201888181771, guid: a1d33dd617e8a42478da3c6dbae780ac,
+        type: 3}
+      propertyPath: m_Layer
+      value: 3
+      objectReference: {fileID: 0}
     - target: {fileID: 7086538532234886672, guid: a1d33dd617e8a42478da3c6dbae780ac,
         type: 3}
       propertyPath: m_Name

@@ -26,6 +26,5 @@ public class InventorySlotButton : MonoBehaviour
         ItemImageGameObject.GetComponent<Image>().sprite = itemTypeInfo.icon;
         int itemCount = inventory.items[slotIndex].count;
         ItemCountTextGameObject.GetComponent<TMPro.TextMeshProUGUI>().text = itemCount > 1 ? itemCount.ToString() : "";
-        
     }
 }

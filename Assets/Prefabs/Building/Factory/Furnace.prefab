@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 6407142266871892021}
   - component: {fileID: 7929104383440511061}
   - component: {fileID: -5450563692338726029}
-  m_Layer: 0
+  m_Layer: 10
   m_Name: Furnace
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -65,17 +65,15 @@ MonoBehaviour:
   syncInterval: 0.1
   blockName: 
   isDestroyable: 1
-  isSupport: 0
   defence: 10
   damageCut: 8
   health: 100
   timeToRemove: 5
   canRecieveEnergy: 0
   energy: 0
-  toSmelt: 10
-  smelted: 0
-  fuel: 5
   smeltTime: 1
+  furnaceUI: {fileID: 0}
+  recipeList: {fileID: 0}
 --- !u!114 &7929104383440511061
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -112,10 +110,25 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 6407142266871892023}
     m_Modifications:
+    - target: {fileID: 2445500640472495682, guid: e343d6abfc581724b83dc3d3fd7afde6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 4226229394942661428, guid: e343d6abfc581724b83dc3d3fd7afde6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7334411932606221090, guid: e343d6abfc581724b83dc3d3fd7afde6,
         type: 3}
       propertyPath: m_Name
       value: Body
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334411932606221090, guid: e343d6abfc581724b83dc3d3fd7afde6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 7334411932606221117, guid: e343d6abfc581724b83dc3d3fd7afde6,
         type: 3}
@@ -171,6 +184,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7334411933535215703, guid: e343d6abfc581724b83dc3d3fd7afde6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 8908345492301948602, guid: e343d6abfc581724b83dc3d3fd7afde6,
+        type: 3}
+      propertyPath: m_Layer
+      value: 10
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: e343d6abfc581724b83dc3d3fd7afde6, type: 3}
