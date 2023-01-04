@@ -44,6 +44,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         weaponHolder.GetChild(index).gameObject.SetActive(true);
        
         currentWeapon = weaponHolder.GetChild(index).GetComponent<Weapon>();
+        currentWeapon._isLocalPLayer = true;
         currentWeaponIndex = index;
         currentWeapon._isLocalPLayer = true;
     }
@@ -58,18 +59,18 @@ public class WeaponKeyCodes : NetworkBehaviour
                     if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
                     {
                         audioSync.PlaySound(0);
-                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange);
+                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetLocalNetID());
                     }
                     else if (currentWeapon._shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
                         audioSync.PlaySound(0);
-                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange);
+                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetLocalNetID());
 
                     }
                     else if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
                     {
                         currentWeapon.FireButtonWasReleased();
-                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange);
+                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.playerMask, currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetLocalNetID());
 
                     }
                 }

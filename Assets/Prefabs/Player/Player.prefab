@@ -84,6 +84,7 @@ GameObject:
   - component: {fileID: 11036251873139821}
   - component: {fileID: 6120899351348563184}
   - component: {fileID: 5088136169615148319}
+  - component: {fileID: 7359030071040500126}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -191,8 +192,16 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   health: {fileID: 2135578962297529565}
-  damage:
-    <damage>k__BackingField: 0
+  disableOnDeath:
+  - {fileID: 841400163258982991}
+  - {fileID: 2135578962297529565}
+  - {fileID: 11036251873139821}
+  - {fileID: 5088136169615148319}
+  disableGameObjectsOnDeath:
+  - {fileID: 772742556034147628}
+  - {fileID: 841400163719565600}
+  deathEffect: {fileID: 0}
+  spawnEffect: {fileID: 0}
   inventory: {fileID: 271910416093403122}
   <cameraHolder>k__BackingField: {fileID: 1815510803479595639, guid: 9cd35dd2eee6472418d7e6257d3f106c,
     type: 3}
@@ -476,6 +485,28 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 654c6a2daba18614da2017a1864eb9f1, type: 3}
   - {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
   - {fileID: 8300000, guid: b0b5795352b75b44587bbc12a2d35c08, type: 3}
+--- !u!114 &7359030071040500126
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841400163258982976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2a9449cf75294ba40b201d8442646253, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  componentsToDisable:
+  - {fileID: 841400163258982991}
+  - {fileID: 2135578962297529565}
+  - {fileID: 11036251873139821}
+  - {fileID: 6120899351348563184}
+  - {fileID: 5088136169615148319}
+  - {fileID: 627041124257517008}
+  - {fileID: 7359030071040500126}
 --- !u!1 &841400163719565600
 GameObject:
   m_ObjectHideFlags: 0

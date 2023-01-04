@@ -22,7 +22,6 @@ public enum PlaySoundType
     Empty, 
     Reload
 }
-[RequireComponent(typeof(AudioSource))]
 
 abstract public class Weapon : MonoBehaviour
 {
@@ -92,10 +91,10 @@ abstract public class Weapon : MonoBehaviour
     [Space(10)]
     [Header("Layers")]
     public LayerMask playerMask;
-    [SerializeField] private LayerMask otherWeaponLayer;
 
     public GameObject player;
     public bool canShoot;
+
 
 
     //protected float nextFire;
@@ -103,6 +102,10 @@ abstract public class Weapon : MonoBehaviour
     public Camera gunCam;
     public AudioSource audioSource;
     private TMP_Text ammoText;
+
+
+    [SerializeField] private Transform weaponView;
+
 
     public bool inScope
     {
@@ -135,7 +138,11 @@ abstract public class Weapon : MonoBehaviour
         animator = GetComponentInChildren<Animator>();
         if (!_isLocalPLayer)
         {
-            transform.GetChild(0).gameObject.layer = otherWeaponLayer;
+            weaponView.gameObject.layer = LayerMask.NameToLayer("Default");
+            for (int i = 0; i < weaponView.childCount; i++)
+            {
+                weaponView.GetChild(i).gameObject.layer = LayerMask.NameToLayer("Default");
+            }
             return;
         }
         initialWeaponPosition = transform.position;
