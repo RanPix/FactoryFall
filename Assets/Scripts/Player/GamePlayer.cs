@@ -54,7 +54,6 @@ namespace Player
             cameraHolder = Instantiate(cameraHolder);
             cameraHolder.GetComponent<MoveCamera>().cameraPosition = cameraPosition;
             cameraHolder.GetComponent<Look>().orientation = orientation;
-            cameraHolder.GetComponent<Look>().inventoryUI = inventory;
             cameraHolder.GetComponent<Look>()._isLocalPlayer = true;
             cam = cameraHolder.GetComponentInChildren<Camera>().transform;
 

@@ -6,17 +6,16 @@ public class Look : NetworkBehaviour
 {
     private PlayerControls controls;
 
-    [HideInInspector] public InventoryUI inventoryUI;
+    [HideInInspector] public bool isMenuOpened;
 
     [SerializeField] private Camera m_Camera;
     [SerializeField] private float sensX;
     [SerializeField] private float sensY;
-    
+
     private const float smoothing = 0.1f;
 
     [HideInInspector] public Transform orientation;
     [HideInInspector] public bool _isLocalPlayer { get; set; } = false;
-    
 
 
     private Vector2 inputVector;
@@ -35,7 +34,7 @@ public class Look : NetworkBehaviour
 
     private void Update()
     {
-        if(!_isLocalPlayer)
+        if (!_isLocalPlayer)
             return;
 
         GetInput();
@@ -45,28 +44,29 @@ public class Look : NetworkBehaviour
     private void GetInput()
         => inputVector = controls.Player.Look.ReadValue<Vector2>();
 
-   
+
     private void UpdateCamera()
     {
-        bool isInventoryOpened = inventoryUI.isPanelOpened;
-        Cursor.lockState = isInventoryOpened ?
-            CursorLockMode.Confined : 
+        Cursor.lockState = isMenuOpened ?
+            CursorLockMode.Confined :
             CursorLockMode.Locked;
-        Cursor.visible = isInventoryOpened;
-        if (!isInventoryOpened)
+
+        Cursor.visible = isMenuOpened;
+        if (!isMenuOpened)
         {
             yRot += inputVector.x * 0.01f * sensX;
             xRot -= inputVector.y * 0.01f * sensY;
-        }
+        }
+
         // Laggy beauty
-        //yRot = Mathf.LerpAngle(yRot, yRot + inputVector.x, smoothing);
-        //xRot = Mathf.LerpAngle(xRot, xRot - inputVector.y, smoothing);
-        
+        yRot += inputVector.x * 0.01f * sensX;
+        xRot -= inputVector.y * 0.01f * sensY;
         xRot = Mathf.Clamp(xRot, -90f, 90f);
 
         m_Camera.transform.rotation = Quaternion.Euler(xRot, yRot, 0);
         orientation.rotation = Quaternion.Euler(0, yRot, 0);
     }
+
 
     private void ControlCursor(InputAction.CallbackContext context)
     {
@@ -76,3 +76,4 @@ public class Look : NetworkBehaviour
             Cursor.lockState = CursorLockMode.Locked;
     }
 }
+
