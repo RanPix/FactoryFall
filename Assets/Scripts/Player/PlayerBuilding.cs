@@ -19,7 +19,7 @@ public class PlayerBuilding : MonoBehaviour
     [SerializeField] private float buildDistance;
     private Vector3 buildingPosition;
 
-    private Grid<GridObject> gridRef;
+    private Grid3D<GridObject> gridRef;
 
     [SerializeField] private PlacedBlockType[] buildings;
     public int buildingType { get; private set; }
@@ -240,7 +240,7 @@ public class PlayerBuilding : MonoBehaviour
             removingTimer = 0f;
             removedBlock = null;
         }
-        */
+        
     }
 
     //private void OnDrawGizmos()

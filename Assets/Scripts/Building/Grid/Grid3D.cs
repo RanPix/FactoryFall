@@ -12,11 +12,11 @@ public class Grid3D<TGritObject>
         public int z;
     }
 
-    private int width;
-    private int height;
-    private int length;
+    public int width { get;}
+    public int height { get;}
+    public int length { get; }
 
-    public float cellSize { get; private set; }
+    public float cellSize { get;}
 
     private Vector3 originPos;
 
