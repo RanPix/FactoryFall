@@ -3,10 +3,25 @@ using UnityEngine;
 
 public class Wallrun : BaseMovementState
 {
+    private float wallrunDistance;
+    private Vector3 currentWallNormal;
+    private Vector2 moveDirectionVector2;
+
     public Wallrun(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
         : base("wallrun", stateMachine, movementControl, fields) { }
 
     #region State logic
+
+    public override void Enter(MovementDataIntersection inputData)
+    {
+        base.Enter(inputData);
+
+        data.GetWalls(fields);
+
+        CalculateMoveDirection();
+
+        wallrunDistance = fields.ScriptableFields.MaxWallrunDistance;
+    }
 
     public override void UpdateLogic()
     {
@@ -18,8 +33,10 @@ public class Wallrun : BaseMovementState
 
     public override void CheckForChangeState()
     {
-        if(data.gotJumpInput)
+
+        if (data.gotJumpInput || CheckIfMovingOfWall())
             stateMachine.ChangeState(stateMachine.midAir);
+
         else if (!GetGotWall())
         {
             if(!GetIsGrounded())
@@ -28,17 +45,51 @@ public class Wallrun : BaseMovementState
         }
     }
 
+    public override MovementDataIntersection Exit()
+    {
+        data.lastWallNormal = currentWallNormal;
+
+        return base.Exit();
+    }
+
     #endregion
 
     private void ChangeVelocity()
     {
-        Vector3 normal = data.WallNormal.right == Vector3.zero ? data.WallNormal.left : -data.WallNormal.right;
-        Vector3 moveDirectionVector3 = Vector3.Cross(normal, Vector3.up);
-        Vector2 moveDirectionVector2 = new(moveDirectionVector3.x, moveDirectionVector3.z);
-
         Vector2 desiredSpeed = fields.ScriptableFields.WallrunSpeed * moveDirectionVector2 * fields.ScriptableFields.SpeedMultiplier;
 
         data.horizontalMove =
             Vector2.Lerp(data.horizontalMove, desiredSpeed, fields.ScriptableFields.InterpolationRate * Time.deltaTime);
     }
+
+    private void CalculateMoveDirection()
+    {
+        Vector3 moveDirectionVector3;
+
+        if (data.WallNormals.left != Vector3.zero && data.WallNormals.left != data.lastWallNormal)
+        {
+            currentWallNormal = data.WallNormals.left;
+            moveDirectionVector3 = Vector3.Cross(currentWallNormal, Vector3.up);
+        }
+        else
+        {
+            currentWallNormal = data.WallNormals.right;
+            moveDirectionVector3 = Vector3.Cross(-currentWallNormal, Vector3.up);
+        } 
+
+        moveDirectionVector2 = new(moveDirectionVector3.x, moveDirectionVector3.z);
+    }
+
+    private bool CheckIfMovingOfWall()
+    {
+        float angle = Quaternion.Euler(input).z - Quaternion.Euler(currentWallNormal).y;
+        angle = angle < 0 ? -angle : angle; // Handmade Abs)
+
+        Debug.Log($"input: {input} {Quaternion.Euler(input).z},\n normal: {currentWallNormal} {Quaternion.Euler(currentWallNormal).y},\n angle: {angle},\n out: {angle is < 50 or > 310}");
+
+        return angle is < 50 or > 310;
+    }
+
+    private void DeleteOldWallNormal()
+        => data.lastWallNormal = Vector3.zero;
 }

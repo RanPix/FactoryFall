@@ -23,6 +23,8 @@ MonoBehaviour:
   Gravity: 10
   MaxAirSpeed: 20
   AirSpeed: 5
+  MaxWallrunDistance: 20
+  LastWallrunNormalNullifyTime: 0.5
   Redirects: 2
   GroundCheckRadius: 0.4
   GroundCheckLm:

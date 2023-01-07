@@ -61,6 +61,8 @@ public class MidAir : BaseMovementState
     public override MovementDataIntersection Exit()
     {
         data.verticalMove = 0f;
+        data.lastWallNormal = Vector3.zero;
+
         return base.Exit();
     }
 

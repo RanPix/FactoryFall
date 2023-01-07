@@ -31,6 +31,12 @@ namespace FiniteMovementStateMachine
         public float MaxAirSpeed;
         public float AirSpeed;
 
+        [Header("Wallrun")]
+
+        public float MaxWallrunDistance;
+        public float WallRunFallOfSpeed;
+        public float LastWallrunNormalNullifyTime;
+
         [Header("Redirect")] 
         
         public int Redirects;
@@ -56,7 +62,7 @@ namespace FiniteMovementStateMachine
         public Vector2 horizontalMove;
         public float verticalMove;
 
-        public (Vector3 right, Vector3 left) WallNormal;
+        public (Vector3 right, Vector3 left) WallNormals;
         public Vector3 lastWallNormal;
 
         public bool gotJumpInput;
@@ -77,13 +83,13 @@ namespace FiniteMovementStateMachine
             RaycastHit hitInfo;
             bool foundWall = false;
 
-            WallNormal = (Vector3.zero, Vector3.zero);
+            WallNormals = (Vector3.zero, Vector3.zero);
 
             if (Physics.Raycast(fields.wallCheck.position, fields.orientation.right, out hitInfo,
                     fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
                     QueryTriggerInteraction.Ignore))
             {
-                WallNormal.right = hitInfo.normal;
+                WallNormals.right = hitInfo.normal;
                 foundWall = true;
             }
 
@@ -91,7 +97,7 @@ namespace FiniteMovementStateMachine
                     fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
                     QueryTriggerInteraction.Ignore))
             {
-                WallNormal.left = hitInfo.normal;
+                WallNormals.left = hitInfo.normal;
                 foundWall = true;
             }
 

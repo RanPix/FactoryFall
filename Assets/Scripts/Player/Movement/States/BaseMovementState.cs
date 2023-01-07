@@ -120,7 +120,7 @@ namespace FiniteMovementStateMachine
         /// <summary> Don't override with base </summary>
         public virtual void CheckForChangeState()
         {
-            Debug.LogWarning($"I was in {name} for a brief moment.\n  Override {MethodBase.GetCurrentMethod()?.Name} method");
+            Debug.LogWarning($"I was in {name} for a brief moment.\n\t   Override {MethodBase.GetCurrentMethod()?.Name} method");
             throw new NotImplementedException();
         }
 
@@ -143,20 +143,35 @@ namespace FiniteMovementStateMachine
             => data.gotJumpInput = true;
 
         private bool CheckForWalls()
-            => Physics.Raycast(fields.wallCheck.position, fields.orientation.right,
-                           fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
-                           QueryTriggerInteraction.Ignore)
-                       ||
-                       Physics.Raycast(fields.wallCheck.position, -fields.orientation.right,
+        {
+            RaycastHit hit;
+            bool foundWall;
+
+            foundWall = Physics.Raycast(fields.wallCheck.position, fields.orientation.right, out hit, // Right
+                fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
+                QueryTriggerInteraction.Ignore);
+            
+            if(foundWall)
+                foundWall = hit.normal != data.lastWallNormal;
+
+            if (foundWall)
+                return true;
+
+            foundWall = Physics.Raycast(fields.wallCheck.position, -fields.orientation.right, out hit, // Left
                            fields.ScriptableFields.WallrunRayCheckDistance, fields.ScriptableFields.WallCheckLm,
                            QueryTriggerInteraction.Ignore);
+            if (foundWall)
+                foundWall = hit.normal != data.lastWallNormal;
+
+            return foundWall;
+        }
 
         private bool CheckIfMovingForward()
         {
             float angle = Quaternion.LookRotation(data.moveVector3).eulerAngles.y - fields.orientation.eulerAngles.y;
             angle = angle < 0 ? -angle : angle; // Handmade Abs)
 
-            return angle is < 45.1f or > 314.9f;
+            return angle is < 50 or > 310;
         }
 
         #endregion
