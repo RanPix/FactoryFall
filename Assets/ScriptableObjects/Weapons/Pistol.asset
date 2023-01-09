@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   damage: 20
   fireRate: 60
-  weaponShootRange: 100
+  weaponShootRange: 1000
   reloadTime: 3
   shootAnimationName: 
   reloadAnimationTriggername: 

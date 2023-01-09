@@ -3,8 +3,5 @@ using Mirror;
 
 public class NetworkManagerFF : NetworkManager
 {
-    public override void OnClientConnect()
-    {
-
-    }
+    public static Transform GetRespawnPosition() => startPositions[startPositionIndex++ % startPositions.Count];
 }

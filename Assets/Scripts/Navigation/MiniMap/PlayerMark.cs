@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.UI;
 
 public class PlayerMark : MonoBehaviour
 {
@@ -8,25 +9,27 @@ public class PlayerMark : MonoBehaviour
     private Canvas canvas;
     public bool isLocal;
 
+
+    [SerializeField] private Color enemyColor;
+
+
     private GameObject activeMark;
     // Start is called before the first frame update
     void Start()
     {
         canvas = transform.GetComponentInChildren<Canvas>();
         canvas.worldCamera = transform.GetComponentInParent<Camera>();
+        activeMark = canvas.transform.GetChild(0).gameObject;
         if (isLocal)
         {
-            activeMark = canvas.transform.GetChild(0).gameObject;
-            activeMark.SetActive(true);
             gameObject.layer = LayerMask.NameToLayer("LocalPlayerMark");
-            gameObject.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("LocalPlayerMark");
+            activeMark.layer = LayerMask.NameToLayer("LocalPlayerMark");
         }
         else
         {
-            activeMark = canvas.transform.GetChild(1).gameObject;
-            activeMark.SetActive(true);
             gameObject.layer = LayerMask.NameToLayer("EnemyPlayerMark");
-            gameObject.transform.GetChild(0).gameObject.layer = LayerMask.NameToLayer("EnemyPlayerMark");
+            activeMark.layer = LayerMask.NameToLayer("EnemyPlayerMark");
+            activeMark.GetComponent<RawImage>().color = enemyColor;
 
         }
     }
@@ -34,7 +37,7 @@ public class PlayerMark : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
-            this.transform.SetPositionAndRotation(new Vector3(player.position.x, 40, player.position.z), new Quaternion(0, rotationReference.rotation.y, 0, rotationReference.rotation.w));
+            this.transform.SetPositionAndRotation(new Vector3(player.position.x, 287f, player.position.z), new Quaternion(0, rotationReference.rotation.y, 0, rotationReference.rotation.w));
 
     }
 }

@@ -26,7 +26,6 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-        SetSceneCameraActive(false);
     }
 
     public void SetSceneCameraActive(bool state)

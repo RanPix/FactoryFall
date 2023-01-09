@@ -200,8 +200,6 @@ MonoBehaviour:
   disableGameObjectsOnDeath:
   - {fileID: 772742556034147628}
   - {fileID: 841400163719565600}
-  deathEffect: {fileID: 0}
-  spawnEffect: {fileID: 0}
   inventory: {fileID: 271910416093403122}
   <cameraHolder>k__BackingField: {fileID: 1815510803479595639, guid: 9cd35dd2eee6472418d7e6257d3f106c,
     type: 3}
@@ -243,7 +241,7 @@ AudioSource:
   OutputAudioMixerGroup: {fileID: 0}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
-  m_Volume: 1
+  m_Volume: 0.489
   m_Pitch: 1
   Loop: 0
   Mute: 0
@@ -287,7 +285,7 @@ AudioSource:
     m_Curve:
     - serializedVersion: 3
       time: 0
-      value: 0
+      value: 1
       inSlope: 0
       outSlope: 0
       tangentMode: 0
@@ -359,7 +357,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 1
-  sendRate: 30
+  sendRate: 8
   bufferTimeMultiplier: 2
   bufferSizeLimit: 64
   catchupNegativeThreshold: -1
@@ -412,7 +410,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   clientAuthority: 1
-  sendRate: 30
+  sendRate: 8
   bufferTimeMultiplier: 2
   bufferSizeLimit: 64
   catchupNegativeThreshold: -1
@@ -428,7 +426,7 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
-  syncPosition: 1
+  syncPosition: 0
   syncRotation: 1
   syncScale: 0
   showGizmos: 0

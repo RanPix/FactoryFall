@@ -13,13 +13,13 @@ namespace Player
         private PlayerInfo playerInfo;
 
         [SerializeField] private Health health;
-
         [field: SyncVar] public bool isDead { get; private set; }
 
         [SerializeField] private Behaviour[] disableOnDeath;
         private bool[] wasEnabled;
 
         [SerializeField] private GameObject[] disableGameObjectsOnDeath;
+        [SerializeField] private CharacterController characterController;
 
         /*[SerializeField] private GameObject deathEffect;
         [SerializeField] private GameObject spawnEffect;*/
@@ -78,6 +78,10 @@ namespace Player
 
         }
 
+        public override void OnStartClient()
+        {
+
+        }
         private void Start()
         {
             canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
@@ -131,16 +135,17 @@ namespace Player
             {
                 wasEnabled = new bool[disableOnDeath.Length];
                 for (int i = 0; i < wasEnabled.Length; i++)
-                {
                     wasEnabled[i] = disableOnDeath[i].enabled;
-                }
+                
+
+                for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
+                    disableGameObjectsOnDeath[i].SetActive(true);
 
                 firstSetup = false;
             }
 
             SetDefaults();
         }
-
 
         private void Die(string _sourceID)
         {
@@ -159,13 +164,8 @@ namespace Player
             playerInfo.deaths++;
 
             Debug.Log("DIE2222222222");
-            //Disable components
-            for (int i = 0; i < disableOnDeath.Length; i++)
-                disableOnDeath[i].enabled = false;
 
-            //Disable GameObjects
-            for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
-                disableGameObjectsOnDeath[i].SetActive(false);
+            CmdDisableComponentsOnDeath();
 
             //Spawn a death effect
             /*GameObject _gfxIns = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
@@ -180,12 +180,29 @@ namespace Player
             StartCoroutine(Respawn());
         }
 
+        [Command]
+        private void CmdDisableComponentsOnDeath() 
+            => RpcDisableComponentsOnDeath();
+
+        [ClientRpc]
+        private void RpcDisableComponentsOnDeath()
+        {
+            //Disable components
+            for (int i = 0; i < disableOnDeath.Length; i++)
+                disableOnDeath[i].enabled = false;
+            GetComponent<CharacterController>().enabled = false;
+
+            //Disable GameObjects
+            for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
+                disableGameObjectsOnDeath[i].SetActive(false);
+        }
+
         private IEnumerator Respawn()
         {
             Debug.Log("Res1111111");
             yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnTime);
 
-            Transform _spawnPoint = SpawnPoints.instance.GetSpawnPoint();
+            Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition();
             transform.position = _spawnPoint.position;
             transform.rotation = _spawnPoint.rotation;
 
@@ -205,7 +222,7 @@ namespace Player
             //Enable the components
             for (int i = 0; i < disableOnDeath.Length; i++)
                 disableOnDeath[i].enabled = wasEnabled[i];
-
+            GetComponent<CharacterController>().enabled = true;
             //Enable the gameobjects
             for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
                 disableGameObjectsOnDeath[i].SetActive(true);
