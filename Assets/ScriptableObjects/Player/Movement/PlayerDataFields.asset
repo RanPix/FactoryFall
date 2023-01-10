@@ -24,6 +24,8 @@ MonoBehaviour:
   MaxAirSpeed: 20
   AirSpeed: 5
   MaxWallrunDistance: 20
+  WallrunFallOffSpeedMultiplier: 1.5
+  WallrunFallOffDirctionMultiplier: 2
   LastWallrunNormalNullifyTime: 0.5
   Redirects: 2
   GroundCheckRadius: 0.4

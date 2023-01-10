@@ -105,6 +105,8 @@ namespace FiniteMovementStateMachine
         /// </summary>
         public virtual void UpdatePhysics()
         {
+            data.CalculateHorizontalMagnitude();
+            Debug.Log(data.horizontalMagnitude);
             movementControl.Move(data.moveVector3);
         }
 
@@ -168,6 +170,9 @@ namespace FiniteMovementStateMachine
 
         private bool CheckIfMovingForward()
         {
+            if(data.moveVector3 == Vector3.zero)
+                return false;
+
             float angle = Quaternion.LookRotation(data.moveVector3).eulerAngles.y - fields.orientation.eulerAngles.y;
             angle = angle < 0 ? -angle : angle; // Handmade Abs)
 

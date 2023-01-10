@@ -4,6 +4,7 @@ using UnityEngine;
 public class Wallrun : BaseMovementState
 {
     private float wallrunDistance;
+
     private Vector3 currentWallNormal;
     private Vector2 moveDirectionVector2;
 
@@ -17,7 +18,6 @@ public class Wallrun : BaseMovementState
         base.Enter(inputData);
 
         data.GetWalls(fields);
-
         CalculateMoveDirection();
 
         wallrunDistance = fields.ScriptableFields.MaxWallrunDistance;
@@ -33,20 +33,13 @@ public class Wallrun : BaseMovementState
 
     public override void CheckForChangeState()
     {
-
-        if (data.gotJumpInput || CheckIfMovingOfWall())
+        if (data.gotJumpInput || CheckIfMovingOfWall() || !GetGotWall() || wallrunDistance < 0)
             stateMachine.ChangeState(stateMachine.midAir);
-
-        else if (!GetGotWall())
-        {
-            if(!GetIsGrounded())
-                stateMachine.ChangeState(stateMachine.midAir);
-            stateMachine.ChangeState(stateMachine.walk);
-        }
     }
 
     public override MovementDataIntersection Exit()
     {
+        ChangeVelocityToMoveOfWall();
         data.lastWallNormal = currentWallNormal;
 
         return base.Exit();
@@ -60,7 +53,16 @@ public class Wallrun : BaseMovementState
 
         data.horizontalMove =
             Vector2.Lerp(data.horizontalMove, desiredSpeed, fields.ScriptableFields.InterpolationRate * Time.deltaTime);
+
+        data.CalculateHorizontalMagnitude();
+
+        wallrunDistance -= data.horizontalMagnitude * Time.deltaTime;
     }
+
+    private void ChangeVelocityToMoveOfWall() // Called once on exit, so a bit unoptimized. 
+        => data.horizontalMove = (moveDirectionVector2 * fields.ScriptableFields.WallrunFallOffDirctionMultiplier + input).normalized *
+                                 data.horizontalMove.magnitude *
+                                 fields.ScriptableFields.WallrunFallOffSpeedMultiplier;
 
     private void CalculateMoveDirection()
     {
@@ -77,12 +79,12 @@ public class Wallrun : BaseMovementState
             moveDirectionVector3 = Vector3.Cross(-currentWallNormal, Vector3.up);
         } 
 
-        moveDirectionVector2 = new(moveDirectionVector3.x, moveDirectionVector3.z);
+        moveDirectionVector2 = new(moveDirectionVector3.x, moveDirectionVector3.z); // Is normalized
     }
 
     private bool CheckIfMovingOfWall()
     {
-        float angle = Quaternion.LookRotation(input).eulerAngles.z - Quaternion.LookRotation(currentWallNormal).eulerAngles.y;
+        float angle = Quaternion.LookRotation(currentWallNormal).eulerAngles.y - Quaternion.LookRotation(new(input.x, 0f, input.y)).eulerAngles.y;
         angle = angle < 0 ? -angle : angle; // Handmade Abs)
 
         return angle is < 50 or > 310;

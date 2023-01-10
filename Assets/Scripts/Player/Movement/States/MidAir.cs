@@ -77,12 +77,13 @@ public class MidAir : BaseMovementState
         Vector2 addition = input * fields.ScriptableFields.AirSpeed * Time.deltaTime;
         Vector2 desiredSpeed = data.horizontalMove + addition;
 
-        data.CalculateHorizontalMagnitude();
-
         if (desiredSpeed.magnitude > fields.ScriptableFields.MaxAirSpeed)
-            desiredSpeed = desiredSpeed.normalized * fields.ScriptableFields.MaxAirSpeed;
-
-        data.horizontalMove = desiredSpeed;
+        {
+            data.CalculateHorizontalMagnitude();
+            data.horizontalMove = desiredSpeed.normalized * data.horizontalMagnitude;
+        }
+        else
+            data.horizontalMove = desiredSpeed;
 
         //Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.ScriptableFields.interpolationRate * Time.deltaTime);
     }

@@ -34,7 +34,8 @@ namespace FiniteMovementStateMachine
         [Header("Wallrun")]
 
         public float MaxWallrunDistance;
-        public float WallRunFallOfSpeed;
+        public float WallrunFallOffSpeedMultiplier;
+        public float WallrunFallOffDirctionMultiplier; // Bigger number == sharper angle
         public float LastWallrunNormalNullifyTime;
 
         [Header("Redirect")] 
