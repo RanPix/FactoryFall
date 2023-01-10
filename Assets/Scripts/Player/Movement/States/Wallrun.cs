@@ -82,10 +82,8 @@ public class Wallrun : BaseMovementState
 
     private bool CheckIfMovingOfWall()
     {
-        float angle = Quaternion.Euler(input).z - Quaternion.Euler(currentWallNormal).y;
+        float angle = Quaternion.LookRotation(input).eulerAngles.z - Quaternion.LookRotation(currentWallNormal).eulerAngles.y;
         angle = angle < 0 ? -angle : angle; // Handmade Abs)
-
-        Debug.Log($"input: {input} {Quaternion.Euler(input).z},\n normal: {currentWallNormal} {Quaternion.Euler(currentWallNormal).y},\n angle: {angle},\n out: {angle is < 50 or > 310}");
 
         return angle is < 50 or > 310;
     }
