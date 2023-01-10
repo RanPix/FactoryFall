@@ -1,19 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TestingGrid : MonoBehaviour
 {
-    public Grid<GridObject> grid;
+    public Grid3D<GridObject> grid;
 
     private void Awake()
     {
-        int gridWidth = 100;
-        int gridHeight = 10;
-        int gridLength = 100;
+        int gridWidth = 25;
+        int gridHeight = 6;
+        int gridLength = 25;
 
         float cellSize = 3f;
 
-        grid = new Grid<GridObject>(gridWidth, gridHeight, gridLength, cellSize, new Vector3(-50, 0, -50), (Grid<GridObject> g, int x, int y, int z) => new GridObject(g, x, y, z));
+        grid = new Grid3D<GridObject>(gridWidth, gridHeight, gridLength, cellSize, new Vector3(-50, 0, -50), (Grid3D<GridObject> g, int x, int y, int z) => new GridObject(g, x, y, z));
     }
 }

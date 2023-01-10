@@ -27,12 +27,12 @@ public class WeaponAmmo : MonoBehaviour
         if (amountNeeded >= ReserveAmmo)
         {
             Ammo += ReserveAmmo;
-            ReserveAmmo -= amountNeeded;
+            //ReserveAmmo -= amountNeeded;
         }
         else
         {
             Ammo = ClipSize;
-            ReserveAmmo -= amountNeeded;
+            //ReserveAmmo -= amountNeeded;
         }
         ApdateAmmoInScreen();
     }

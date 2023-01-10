@@ -26,7 +26,7 @@ public class Item
         this.count = count;
         this.itemType = itemType;
     }
-    
+
     public Item PutItem(Item item)//пояснення чому не void: я хочу щоб на мишці висів 1 item типу як предмет який тримає мишка, і при визові цієї функції вміст мишки буде замінюватись на Item який повертає ця функція
     {
         if (itemType != item.itemType)
@@ -51,7 +51,7 @@ public class Item
                 return item;
             }
         }
-        return item;
+        //return item;
     }
 
     public Item SecondaryPutItem(Item item)//пояснення чому не void: я хочу щоб на мишці висів 1 item типу як предмет який тримає мишка, і при визові цієї функції вміст мишки буде замінюватись на Item який повертає ця функція
@@ -77,10 +77,31 @@ public class Item
 
         return item;
     }
-    
-    public override string ToString() => $"{count} {itemType}";
+
+    public override string ToString() => $"{count}, {itemType}";
 
     public static Item operator +(Item firstItem, Item secondItem) => new Item(firstItem.count + secondItem.count, firstItem.itemType);
+
+    public static bool operator ==(Item firstItem, Item secondItem) => firstItem.count == secondItem.count && firstItem.itemType == secondItem.itemType;
+    public static bool operator !=(Item firstItem, Item secondItem) => !(firstItem == secondItem);
+
+    public static bool operator ==(Item[] itemArray, Item item)
+    {
+        int a = 0;//amount of items of type of item type in item array
+        foreach (Item _item in itemArray)
+        {
+            if (_item.itemType == item.itemType)
+            {
+                a += _item.count;
+                if (a > item) return false;
+            }
+        }
+        return a == item.count;
+    }
+    public static bool operator !=(Item[] itemArray, Item item) => !(itemArray == item);
+
+    public static bool operator ==(Item item, Item[] itemArray) => itemArray == item;
+    public static bool operator !=(Item item, Item[] itemArray) => !(itemArray == item);
 
     public static bool operator >(Item firstItem, Item secondItem) => firstItem.count > secondItem.count;
 
@@ -90,19 +111,19 @@ public class Item
 
     public static bool operator <(int count, Item item) => count < item.count;
 
-    public static bool operator >(Item item, int count) => count > item.count;
+    public static bool operator >(Item item, int count) => item.count > count;
 
     public static bool operator <(Item item, int count) => item.count < count;
 
     public static bool operator >(Item[] itemArray, Item item)
     {
-        int a = 0;
+        int a = 0;//amount of items of type of item type in item array
         foreach (Item _item in itemArray)
         {
             if (_item.itemType == item.itemType)
             {
                 a += _item.count;
-                if (a > _item.count) return true;
+                if (a > item) return true;
             }
         }
         return false;
@@ -110,13 +131,13 @@ public class Item
 
     public static bool operator <(Item[] itemArray, Item item)
     {
-        int a = 0;
+        int a = 0;//amount of items of type of item type in item array
         foreach (Item _item in itemArray)
         {
             if (_item.itemType == item.itemType)
             {
                 a += _item.count;
-                if (!(a < item.count)) return false;
+                if (!(a < item)) return false;
             }
         }
         return true;
@@ -124,13 +145,13 @@ public class Item
 
     public static bool operator >(List<Item> itemArray, Item item)
     {
-        int a = 0;
+        int a = 0;//amount of items of type of item type in item array
         foreach (Item _item in itemArray)
         {
             if (_item.itemType == item.itemType)
             {
                 a += _item.count;
-                if (a > _item.count) return true;
+                if (a > item) return true;
             }
         }
         return false;
@@ -138,15 +159,36 @@ public class Item
 
     public static bool operator <(List<Item> itemArray, Item item)
     {
-        int a = 0;
+        int a = 0;//amount of items of type of item type in item array
         foreach (Item _item in itemArray)
         {
             if (_item.itemType == item.itemType)
             {
                 a += _item.count;
-                if (!(a < item.count)) return false;
+                if (!(a < item)) return false;
             }
         }
         return true;
+    }
+}
+
+public static class SUS_ItemExtensions//сеодно ця назва більше ніде не з'явиться
+{
+    public static bool bebraless(this Item[] itemArray, int amount)
+    {
+        int a = 0;
+        foreach (Item item in itemArray)
+            a += item.count;
+
+        return a > amount;
+    }
+
+    public static bool bebramore(this Item[] itemArray, int amount)
+    {
+        int a = 0;
+        foreach (Item item in itemArray)
+            a += item.count;
+
+        return a < amount;
     }
 }

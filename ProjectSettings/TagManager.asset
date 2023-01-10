@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - canvas
+  - MiniMapCamera
+  - PreviewCamera
+  - SpawnPoint
   layers:
   - Default
   - TransparentFX
@@ -14,12 +17,13 @@ TagManager:
   - UI
   - Weapon
   - Player
-  - 
+  - LocalPlayer
   - Ore
   - Block
-  - 
-  - 
-  - 
+  - LocalPlayerMark
+  - EnemyPlayerMark
+  - MIniMap
+  - Ghost
   - 
   - 
   - 

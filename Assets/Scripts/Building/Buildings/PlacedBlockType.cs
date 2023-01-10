@@ -34,6 +34,8 @@ public class PlacedBlockType : ScriptableObject
     [SerializeField] private int gridHeight;
     [SerializeField] private int gridLength;
 
+    [field: SerializeField] public bool isSupport { get; private set; }
+
     public string BlockName => blockName;
 
     public Transform Prefab => prefab;
@@ -53,6 +55,18 @@ public class PlacedBlockType : ScriptableObject
             case Dir.Left:      return 90;
             case Dir.Forward:   return 180;
             case Dir.Right:     return 270;
+        }
+    }
+
+    public static int GetRotationAngleStatic(Dir dir)
+    {
+        switch (dir)
+        {
+            default:
+            case Dir.Backward: return 0;
+            case Dir.Left: return 90;
+            case Dir.Forward: return 180;
+            case Dir.Right: return 270;
         }
     }
 
@@ -99,6 +113,39 @@ public class PlacedBlockType : ScriptableObject
                         {
                             positionList.Add(offset + new Vector3Int(x, y, z));
                         }
+                    }
+                }
+                break;
+        }
+
+        return positionList;
+    }
+
+    public List<Vector3Int> GetBottomGridPositionsList(Vector3Int offset, Dir dir)
+    {
+        List<Vector3Int> positionList = new List<Vector3Int>();
+
+        switch (dir)
+        {
+            default:
+            case Dir.Backward:
+            case Dir.Forward:
+                for (int x = 0; x < gridWidth; x++)
+                {
+                    for (int z = 0; z < gridLength; z++)
+                    {
+                        positionList.Add(offset + new Vector3Int(x, 0, z));
+                    }
+                }
+                break;
+
+            case Dir.Left:
+            case Dir.Right:
+                for (int x = 0; x < gridLength; x++)
+                {
+                    for (int z = 0; z < gridWidth; z++)
+                    {
+                        positionList.Add(offset + new Vector3Int(x, 0, z));
                     }
                 }
                 break;

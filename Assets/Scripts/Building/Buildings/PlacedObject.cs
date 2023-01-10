@@ -13,12 +13,16 @@ public class PlacedObject : MonoBehaviour
         placedObject.origin = origin;
         placedObject.dir = dir;
 
+        placedObject.isSupport = placedBlockType.isSupport;
+
         return placedObject;
     }
 
+    public bool isSupport { get; private set; }
+
     private PlacedBlockType placedBlockType;
-    private Vector3Int origin;
-    private PlacedBlockType.Dir dir;
+    public Vector3Int origin { get; private set; }
+    public PlacedBlockType.Dir dir { get; private set; }
 
     public List<Vector3Int> GetGridPositionList()
     {
@@ -29,6 +33,4 @@ public class PlacedObject : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
-
 }

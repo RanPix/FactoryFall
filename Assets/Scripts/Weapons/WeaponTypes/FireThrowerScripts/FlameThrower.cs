@@ -5,7 +5,7 @@ using UnityEngine;
 public class FlameThrower : Weapon
 {
     #region AbstractVariables
-    protected override float nextFire => _nextFire;
+    public override float nextFire => _nextFire;
     #endregion
     private float _nextFire = 0;
     private bool fireTriggerEnable = false;
@@ -13,7 +13,7 @@ public class FlameThrower : Weapon
     private FlameThrowerTrigger FlameThrowerTrigger;
 
 
-    public override void Shoot()
+    public override Ray Shoot()
     {
         Debug.Log("piu");
         _nextFire = Time.time;
@@ -22,14 +22,13 @@ public class FlameThrower : Weapon
         {
             InstantiateFireTrigger();
         }
-        if(useAudio)
-            PlayShootSound();
         SpawmMuzzle();
 
         weaponAmmo.Ammo--;
         weaponAmmo.ApdateAmmoInScreen();
         if (useAnimations == true)
             animator.Play(shootAnimationName);
+        return new Ray();
     }
     public void InstantiateFireTrigger()
     {
@@ -42,7 +41,7 @@ public class FlameThrower : Weapon
     }
     private new void SpawmMuzzle()
     {
-        if (attachment.haveSilencer == false)
+        if (attachment.hasSilencer == false)
         {
             if (weaponScriptableObject.haveMuzzle == true)
             {
@@ -53,7 +52,7 @@ public class FlameThrower : Weapon
             }
         }
     }
-    protected override void FireButtonWasReleased()
+    public override void FireButtonWasReleased()
     {
         fireTriggerEnable = false;
         FlameThrowerTrigger.enabled = false;

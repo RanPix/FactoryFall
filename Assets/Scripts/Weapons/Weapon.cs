@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using TMPro;
+using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
 public enum States
 {
@@ -11,25 +12,29 @@ public enum States
 public enum ShootType
 {
     Auto,
-    Semi
+    Semi,
+    Burst
 }
-[RequireComponent(typeof(AudioSource))]
-[RequireComponent(typeof(Animator))]
+
+public enum PlaySoundType
+{
+    Shoot,
+    Empty, 
+    Reload
+}
 
 abstract public class Weapon : MonoBehaviour
 {
 
-    [SerializeField] protected WeaponScriptableObject weaponScriptableObject;
+    [SerializeField] public WeaponScriptableObject weaponScriptableObject;
 
     [Space]
     [Header("Enums")]
     [SerializeField] private States _state;
 
-    [SerializeField] private ShootType _shootType;
+    [SerializeField] public ShootType _shootType;
 
-    [Space(10)]
 
-    [SerializeField] protected LayerMask playerMask;
 
     [Space(10)]
     [Header("Animation")]
@@ -37,11 +42,16 @@ abstract public class Weapon : MonoBehaviour
     [SerializeField] protected Animator animator;
     [SerializeField] protected string shootAnimationName;
     [SerializeField] private string reloadAnimationTriggername;
+
     [Space(10)]
     [Header("Audio")]
     [SerializeField] protected bool useAudio;
-    [Space(10)]
-    [Header("Sway")]
+
+    [Space(10)] 
+    [Header("Sway")] 
+
+
+    [SerializeField] private Vector3 initialWeaponPosition;
     [SerializeField] private bool canSway;
     [SerializeField] private Vector3 initialSwayPosition;
     [SerializeField] private float SwayAmount;
@@ -64,8 +74,8 @@ abstract public class Weapon : MonoBehaviour
 
     [Space(10)]
     [Header("Ammo")]
-    [SerializeField] protected WeaponAmmo weaponAmmo;
-    [SerializeField] private int ammo;
+    [SerializeField] public WeaponAmmo weaponAmmo;
+    [SerializeField] public int ammo;
     [SerializeField] private int maxAmmo;
     [SerializeField] private int reserveAmmo;
 
@@ -77,14 +87,25 @@ abstract public class Weapon : MonoBehaviour
     [SerializeField] private GameObject bulletSpawner;
     [SerializeField] private ConnectorHelper connectorHelper;
     [SerializeField] private Action OnInScopeValuseChange;
+
+    [Space(10)]
+    [Header("Layers")]
+    public LayerMask playerMask;
+
+    public GameObject player;
     public bool canShoot;
 
+
+
     //protected float nextFire;
-    private PlayerControls controls;
-    protected Camera cam;
-    private Camera gunCam;
-    private AudioSource audioSource;
+    public Camera cam;
+    public Camera gunCam;
+    public AudioSource audioSource;
     private TMP_Text ammoText;
+
+
+    [SerializeField] private Transform weaponView;
+
 
     public bool inScope
     {
@@ -97,27 +118,38 @@ abstract public class Weapon : MonoBehaviour
         }
     }
     private bool _inScope;
+    public bool reloading { get; private set; } = false;
+
     #region AbstractVariables
-    protected abstract float nextFire { get; }
+    public abstract float nextFire { get; }
     #endregion
     #region AbstractMethods
-    public abstract void Shoot();
+    public abstract Ray Shoot();
     public abstract void Scope();
-    protected abstract void FireButtonWasReleased();
+    public abstract void FireButtonWasReleased();
     #endregion
+
+    [field: SerializeField] public bool _isLocalPLayer { get; set; }
+
     // Start is called before the first frame update
-    private void Awake()
-    {
-        controls = new PlayerControls();
-        controls.Enable();
-        audioSource = gameObject.GetComponent<AudioSource>();
-        animator = gameObject.GetComponent<Animator>();
-    }
     private void Start()
     {
+        audioSource = player.GetComponent<AudioSource>();
+        animator = GetComponentInChildren<Animator>();
+        if (!_isLocalPLayer)
+        {
+            weaponView.gameObject.layer = LayerMask.NameToLayer("Default");
+            for (int i = 0; i < weaponView.childCount; i++)
+            {
+                weaponView.GetChild(i).gameObject.layer = LayerMask.NameToLayer("Default");
+            }
+            return;
+        }
+        initialWeaponPosition = transform.position;
+
         WeaponsLink.instance.weapons.Add(this);
         cam = Camera.main;
-        gunCam = cam.GetComponentInChildren<Camera>();
+        gunCam = cam.GetComponentInChildren<Camera>();  
         GameObject help = Instantiate(weaponAmmo.gameObject);
 
         weaponAmmo = help.GetComponent<WeaponAmmo>();
@@ -128,36 +160,11 @@ abstract public class Weapon : MonoBehaviour
         weaponAmmo.AmmoText = ammoText;
 
     }
-    // Update is called once per frame
-    void Update()
+    protected Ray GetRay()
     {
-        switch (_state)
-        {
-            case States.Active:
-
-                Aiming();
-                KeyCodes();
-                break;
-        }
-
+        return new Ray(cam.transform.position, cam.transform.forward);
     }
-    protected void RayCasting()
-    {
-        RaycastHit hit;
-        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, weaponScriptableObject.weaponShootRange, playerMask))
-        {
-
-        }
-    }
-    protected void SpawnBullet()
-    {
-        GameObject spawnedBullet = Instantiate(weaponScriptableObject.bulletPrefab);
-        spawnedBullet.transform.position = bulletSpawner.transform.position;
-        spawnedBullet.GetComponent<Bullet>().AddForceBullet(bulletSpawner.transform.forward * weaponScriptableObject.bulletSpeed);
-        Destroy(spawnedBullet, weaponScriptableObject.bulletTimeToDestroy);
-
-    }
-    private void KeyCodes()
+    /*public void KeyCodes()
     {
         if (canShoot == true)
         {
@@ -193,63 +200,42 @@ abstract public class Weapon : MonoBehaviour
                 StartCoroutine(ReloadCoroutine());
             }
         }
-    }
-    private IEnumerator ReloadCoroutine()
+
+    }*/
+    public IEnumerator ReloadCoroutine()
     {
         canShoot = false;
+        reloading = true;
         if (useAnimations == true)
             animator.SetTrigger(reloadAnimationTriggername);
-        if(useAudio)
-            audioSource.PlayOneShot(weaponScriptableObject.reload);
 
         yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
 
         weaponAmmo.AddAmmo();
         weaponAmmo.ApdateAmmoInScreen();
         canShoot = true;
+        reloading = false;
     }
 
-    private void Aiming()
+    public void PlaySound(PlaySoundType soundType)
     {
-        /*Vector3 target = normalLOcalPosition;
-
-        if (controls.Player.Scope.IsPressed())
+        switch (soundType)
         {
-            initialSwayPosition = attachment.positionsInScope[attachment.Scopeid];
-            target = attachment.positionsInScope[attachment.Scopeid];
-            _inScope = true;
-        }
-        else if (_inScope == true)
-        {
-            initialSwayPosition = normalLOcalPosition;
-            _inScope = false;
-
+            case PlaySoundType.Empty:
+                audioSource.PlayOneShot(weaponScriptableObject.empty);
+                break;
+            case PlaySoundType.Shoot:
+                audioSource.PlayOneShot(weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)]);
+                break;
+            case PlaySoundType.Reload:
+                audioSource.PlayOneShot(weaponScriptableObject.reload);
+                break;
         }
 
-        Vector3 desiredPosition = Vector3.Lerp(transform.localPosition, target, Time.deltaTime * aimSmoothing);
-        transform.localPosition = desiredPosition;*/
-    }
-    public void PlayShootSound()
-    {
-        AudioClip clip = null;
-        if (attachment.haveSilencer == true)
-        {
-            clip = weaponScriptableObject.shootsSilencer[Random.Range(0, weaponScriptableObject.shoots.Length)];
-            audioSource.clip = clip;
-            audioSource.Play();
-
-        }
-        else if (attachment.haveSilencer == false)
-        {
-            clip = weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)];
-            audioSource.clip = clip;
-            audioSource.Play();
-
-        }
     }
     public void SpawmMuzzle()
     {
-        if (attachment.haveSilencer == false)
+        if (attachment.hasSilencer == false)
         {
             if (weaponScriptableObject.haveMuzzle == true)
             {
@@ -265,7 +251,7 @@ abstract public class Weapon : MonoBehaviour
 public class Attachment
 {
     [Header("Silencer")]
-    public bool haveSilencer;
+    public bool hasSilencer;
     public GameObject silencerObject;
 
     [Header("Scope`s")]
