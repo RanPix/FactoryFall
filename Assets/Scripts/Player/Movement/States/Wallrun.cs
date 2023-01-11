@@ -89,7 +89,4 @@ public class Wallrun : BaseMovementState
 
         return angle is < 50 or > 310;
     }
-
-    private void DeleteOldWallNormal()
-        => data.lastWallNormal = Vector3.zero;
 }
