@@ -1,0 +1,42 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cd756bb8f7b0aab4697965cacfc77840, type: 3}
+  m_Name: PlayerScriptableDataFields
+  m_EditorClassIdentifier: 
+  SpeedMultiplier: 0
+  InterpolationRate: 0
+  WalkSpeed: 0
+  RunSpeed: 0
+  WallrunSpeed: 0
+  JumpHeight: 0
+  JumpOverlap: 0
+  DoubleJumps: 0
+  Gravity: 0
+  MaxAirSpeed: 0
+  AirSpeed: 0
+  MaxWallrunDistance: 0
+  WallrunFallOffSpeedMultiplier: 0
+  WallrunFallOffDirctionMultiplier: 0
+  LastWallrunNormalNullifyTime: 0
+  Redirects: 0
+  GroundCheckRadius: 0
+  GroundCheckLm:
+    serializedVersion: 2
+    m_Bits: 0
+  CeilingCheckRadius: 0
+  CeilingCheckLm:
+    serializedVersion: 2
+    m_Bits: 0
+  WallrunRayCheckDistance: 0
+  WallCheckLm:
+    serializedVersion: 2
+    m_Bits: 0
