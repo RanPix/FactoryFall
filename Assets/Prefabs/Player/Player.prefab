@@ -156,7 +156,10 @@ MonoBehaviour:
   disableGameObjectsOnDeath:
   - {fileID: 772742556034147628}
   - {fileID: 841400163719565600}
-  characterController: {fileID: 0}
+  characterController: {fileID: 841400163258982990}
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 1689
   inventory: {fileID: 271910416093403122}
   <cameraHolder>k__BackingField: {fileID: 1815510803479595639, guid: 9cd35dd2eee6472418d7e6257d3f106c,
     type: 3}

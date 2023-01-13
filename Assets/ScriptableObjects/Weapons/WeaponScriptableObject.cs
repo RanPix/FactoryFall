@@ -6,7 +6,7 @@ using UnityEditor;
 public class WeaponScriptableObject : ScriptableObject
 {
     [Space(10)]
-    public float damage;
+    public int damage;
     public float fireRate;
     public float weaponShootRange;
     public float reloadTime;

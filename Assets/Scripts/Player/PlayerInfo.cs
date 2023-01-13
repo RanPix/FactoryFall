@@ -1,3 +1,4 @@
+
 namespace Player.Info
 {
     public class PlayerInfo

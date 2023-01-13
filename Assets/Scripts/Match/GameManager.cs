@@ -39,9 +39,9 @@ public class GameManager : MonoBehaviour
     #region Player tracking
 
     
-    private static Dictionary<string, PlayerInfo> players = new Dictionary<string, PlayerInfo>();
+    private static Dictionary<string, GamePlayer> players = new Dictionary<string, GamePlayer>();
 
-    public static void RegisterPlayer(string _netID, PlayerInfo _player)
+    public static void RegisterPlayer(string _netID, GamePlayer _player)
     {
         Debug.Log("NetID = " + _netID);
         players.Add(_netID, _player);
@@ -52,13 +52,13 @@ public class GameManager : MonoBehaviour
         players.Remove(_playerID);
     }
 
-    public static PlayerInfo GetPlayer(string _playerID)
+    public static GamePlayer GetPlayerInfo(string _playerID)
     {
         Debug.Log("get player info = " + _playerID);
         return players[_playerID];
     }
 
-    public static PlayerInfo[] GetAllPlayers()
+    public static GamePlayer[] GetAllPlayers()
     {
         return players.Values.ToArray();
     }

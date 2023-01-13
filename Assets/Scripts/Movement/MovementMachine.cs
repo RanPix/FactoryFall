@@ -27,13 +27,9 @@ namespace FiniteMovementStateMachine
 
             currentState?.UpdateLogic();
             currentState?.CheckForChangeState();
-        }
-
-        private void LateUpdate()
-        {
-
             currentState?.UpdatePhysics();
         }
+
 
         private void InitializeStates()
         {

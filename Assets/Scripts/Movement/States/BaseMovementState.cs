@@ -106,7 +106,6 @@ namespace FiniteMovementStateMachine
         public virtual void UpdatePhysics()
         {
             data.CalculateHorizontalMagnitude();
-            Debug.Log(data.horizontalMagnitude);
             movementControl.Move(data.moveVector3);
         }
 

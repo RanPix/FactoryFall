@@ -10,8 +10,8 @@ namespace GameBase
 
         [field: SyncVar] public float currentHealth { get; private set; }
 
-        [field: SyncVar] public float gotDamage { get; set; }
-        public Action OnHealthChange;
+        //[field: SyncVar] public float gotDamage { get; set; }
+        //public Action OnHealthChange;
         public Action<string> onDeath;
 
         private void Start()
@@ -19,12 +19,12 @@ namespace GameBase
             currentHealth = maxHealth;
         }
 
-        [TargetRpc]
-        public void Damage(string playerID)
+       //[TargetRpc]
+        public void Damage(string playerID, int damage)
         {
-            currentHealth -= gotDamage;
+            currentHealth -= damage;
 
-            print($"damage: {gotDamage}");
+            print($"damage: {damage}");
 
             CheckHealth(playerID);
 
