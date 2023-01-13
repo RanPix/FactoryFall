@@ -59,10 +59,17 @@ public class Wallrun : BaseMovementState
         wallrunDistance -= data.horizontalMagnitude * Time.deltaTime;
     }
 
-    private void ChangeVelocityToMoveOfWall() // Called once on exit, so a bit unoptimized. 
-        => data.horizontalMove = (moveDirectionVector2 * fields.ScriptableFields.WallrunFallOffDirctionMultiplier + input).normalized *
-                                 data.horizontalMove.magnitude *
-                                 fields.ScriptableFields.WallrunFallOffSpeedMultiplier;
+    private void ChangeVelocityToMoveOfWall()
+    {
+        data.CalculateHorizontalMagnitude();
+
+        data.horizontalMove = (moveDirectionVector2 * fields.ScriptableFields.WallrunFallOffDirctionMultiplier + input)
+                              .normalized *
+                              data.horizontalMagnitude;
+
+        if (data.horizontalMagnitude < fields.ScriptableFields.MaxWallrunBoostSpeed) // Check for speed limit
+            data.horizontalMove *= fields.ScriptableFields.WallrunFallOffSpeedMultiplier;
+    }
 
     private void CalculateMoveDirection()
     {

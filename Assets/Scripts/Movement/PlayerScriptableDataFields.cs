@@ -23,6 +23,7 @@ namespace FiniteMovementStateMachine
         public bool JumpOverlap;
         public int DoubleJumps;
         public float Gravity;
+        public float MaxFallSpeed;
         
         [Space] 
 
@@ -34,7 +35,7 @@ namespace FiniteMovementStateMachine
         public float MaxWallrunDistance;
         public float WallrunFallOffSpeedMultiplier;
         public float WallrunFallOffDirctionMultiplier; // Bigger number == sharper angle
-        public float LastWallrunNormalNullifyTime;
+        public float MaxWallrunBoostSpeed;
 
         [Header("Redirect")] 
         

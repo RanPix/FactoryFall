@@ -79,17 +79,17 @@ public class MidAir : BaseMovementState
 
         if (desiredSpeed.magnitude > fields.ScriptableFields.MaxAirSpeed)
         {
-            data.CalculateHorizontalMagnitude();
-            data.horizontalMove = desiredSpeed.normalized * data.horizontalMagnitude;
+            data.horizontalMove = desiredSpeed.normalized * data.horizontalMove.magnitude;
         }
         else
             data.horizontalMove = desiredSpeed;
-
-        //Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.ScriptableFields.interpolationRate * Time.deltaTime);
     }
 
     private void ApplyGravity()
-        => data.verticalMove -= fields.ScriptableFields.Gravity * Time.deltaTime;
+    {
+        if(data.verticalMove > -fields.ScriptableFields.MaxFallSpeed)
+            data.verticalMove -= fields.ScriptableFields.Gravity * Time.deltaTime;
+    }
 
     private void TryJump()
     {
