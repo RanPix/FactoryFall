@@ -57,13 +57,15 @@ namespace FiniteMovementStateMachine
         public LayerMask WallCheckLm;
     }
 
-    public struct MovementDataIntersection
+    public class MovementDataIntersection
     {
         public Vector2 horizontalMove;
         public float verticalMove;
 
         public (Vector3 right, Vector3 left) WallNormals;
         public Vector3 lastWallNormal;
+
+        public Vector3 deltaMove;
 
         public bool gotJumpInput;
 

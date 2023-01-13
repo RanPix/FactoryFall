@@ -6,7 +6,7 @@ namespace FiniteMovementStateMachine
     public class MovementMachine : MonoBehaviour
     {
 
-        public BaseMovementState currentState { get; protected set; }
+        [HideInInspector] public BaseMovementState currentState { get; protected set; }
         [HideInInspector] public Idle idle { get; private set; }
         [HideInInspector] public Walk walk { get; private set; }
         [HideInInspector] public MidAir midAir { get; private set; }
@@ -18,7 +18,7 @@ namespace FiniteMovementStateMachine
             InitializeStates();
 
             currentState = GetInitialState();
-            currentState?.Enter(new MovementDataIntersection());
+            currentState?.Enter();
         }
 
         private void Update()
@@ -27,6 +27,7 @@ namespace FiniteMovementStateMachine
 
             currentState?.UpdateLogic();
             currentState?.CheckForChangeState();
+
             currentState?.UpdatePhysics();
         }
 
@@ -35,12 +36,13 @@ namespace FiniteMovementStateMachine
         {
             PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>());
             PlayerDataFields fields = GetComponent<PlayerDataFields>();
+            MovementDataIntersection data = new();
 
-            idle = new(this, movementControl, fields);
-            walk = new(this, movementControl, fields);
-            midAir = new(this, movementControl, fields);
-            run = new(this, movementControl, fields);
-            wallrun = new(this, movementControl, fields);
+            idle = new(this, movementControl, fields, data);
+            walk = new(this, movementControl, fields, data);
+            midAir = new(this, movementControl, fields, data);
+            run = new(this, movementControl, fields, data);
+            wallrun = new(this, movementControl, fields, data);
         }
 
         private BaseMovementState GetInitialState()
@@ -48,10 +50,10 @@ namespace FiniteMovementStateMachine
 
         public void ChangeState(BaseMovementState newState)
         {
-            var data = currentState.Exit();
+            currentState.Exit();
 
             currentState = newState;
-            currentState.Enter(data);
+            currentState.Enter();
         }
     }
 }

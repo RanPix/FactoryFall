@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Idle : BaseMovementState
 {
-    public Idle(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
-        : base("Idle", stateMachine, movementControl, fields) { }
+    public Idle(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
+        : base("Idle", stateMachine, movementControl, fields, data) { }
 
     #region State logic
 

@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Run : BaseMovementState
 {
-    public Run(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
-        : base("run", stateMachine, movementControl, fields) { }
+    public Run(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
+        : base("run", stateMachine, movementControl, fields, data) { }
     
     #region State logic
 
