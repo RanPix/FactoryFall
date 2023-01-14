@@ -102,6 +102,8 @@ namespace FiniteMovementStateMachine
         /// </summary>
         public virtual void UpdatePhysics()
         {
+            //Debug.Log(data.horizontalMove.magnitude);
+
             movementControl.Move(data.moveVector3);
         }
 

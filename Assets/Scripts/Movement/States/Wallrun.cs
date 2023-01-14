@@ -59,7 +59,7 @@ public class Wallrun : BaseMovementState
     {
         data.CalculateHorizontalMagnitude();
 
-        data.horizontalMove = (moveDirectionVector2 * fields.ScriptableFields.WallrunFallOffDirctionMultiplier + input)
+        data.horizontalMove = (moveDirectionVector2 * fields.ScriptableFields.WallrunFallOffDirectionMultiplier + input)
                               .normalized *
                               data.horizontalMagnitude;
 
