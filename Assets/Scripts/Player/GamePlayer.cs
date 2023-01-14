@@ -38,6 +38,7 @@ namespace Player
 
         [SerializeField] private GameObject healthBarPrefab;
         [SerializeField] private GameObject ammoTextPrefab;
+        [SerializeField] private GameObject menuPrefab;
 
         [SerializeField] private Camera miniMapCamera;
         [SerializeField] private GameObject playerMark;
@@ -91,9 +92,10 @@ namespace Player
         }
         private void Start()
         {
-            canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
             if (isLocalPlayer)
             {
+                canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
+
                 for (int i = 0; i < canvas.transform.childCount; i++)
                 {
                     if (canvas.transform.GetChild(i).name == "HitMarker")
@@ -112,8 +114,11 @@ namespace Player
                 
                 health.onDeath += Die;
 
-                GameObject healthBar = Instantiate(healthBarPrefab, GameObject.Find("Canvas").transform);
+                GameObject healthBar = Instantiate(healthBarPrefab, canvas.transform);
                 healthBar.GetComponent<HealthBar>().playerHealth = GetComponent<Health>();
+
+                GameObject menu = Instantiate(menuPrefab, canvas.transform);
+                menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
             }
             else
             {

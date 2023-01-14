@@ -17,7 +17,7 @@ public class Menu : MonoBehaviour
         controls.UI.Enable();
         controls.UI.OpenOrCloseMenu.performed += OpenOrCloseMenu;
 
-        OpenOrCloseMenu(new InputAction.CallbackContext());
+        CloseMenu();
     }
 
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
