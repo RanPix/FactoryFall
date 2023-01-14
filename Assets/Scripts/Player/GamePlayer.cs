@@ -3,6 +3,7 @@ using System.Collections;
 using Mirror;
 using GameBase;
 using Player.Info;
+using Unity.Mathematics;
 
 
 namespace Player
@@ -21,9 +22,11 @@ namespace Player
         [SerializeField] private GameObject[] disableGameObjectsOnDeath;
         [SerializeField] private CharacterController characterController;
 
+        [SerializeField] private LayerMask hitMask;
+
         /*[SerializeField] private GameObject deathEffect;
         [SerializeField] private GameObject spawnEffect;*/
-        
+
         private bool firstSetup = true;
 
         [SerializeField] private InventoryUI inventory;
@@ -152,7 +155,7 @@ namespace Player
             print($"_sourceID = {_sourceID}");
             isDead = true;
 
-            PlayerInfo sourcePlayer = GameManager.GetPlayer(_sourceID);
+            PlayerInfo sourcePlayer = GameManager.GetPlayerInfo(_sourceID).GetPlayerInfo();
 
             if (sourcePlayer != null)
             {
@@ -233,25 +236,35 @@ namespace Player
             Destroy(_gfxIns, 3f);*/
         }
 
-
-        public void Shoot(Ray ray, LayerMask mask, float damage, float shootRange, string playerID)
-        {
-            ShootServer(ray, mask, damage, shootRange, playerID);
-        }
-
-        [Command]
-        private void ShootServer(Ray ray, LayerMask mask, float damage, float shootRange, string playerID)
+        [Client]
+        public void Shoot(Ray ray, int damage, float shootRange, string playerID)
         {
             RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, shootRange))
+            if (Physics.Raycast(ray, out hit, shootRange, hitMask))
             {
                 Health hitHealth = hit.transform.GetComponent<Health>();
                 if (hitHealth)
                 {
-                    hitHealth.gotDamage = damage * GameManager.instance.matchSettings.dmgMultiplier;
-                    hitHealth.Damage(playerID);
+                    CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                 }
             }
+
+        }
+
+        [Command]
+        void CmdPlayerShot(string _playerID, int _damage, string _sourceID)
+        {
+            Debug.Log(_playerID + " has been  shot.");
+
+            GamePlayer _player = GameManager.GetPlayerInfo(_playerID);
+            _player.RpcTakeDamage(_damage, _sourceID);
+        }
+        [ClientRpc]
+        public void RpcTakeDamage(int _amount, string _sourceID)
+        {
+            if (isDead)
+                return;
+            health.Damage(_sourceID, _amount);
         }
 
         public string GetLocalNetID() => playerInfo.netID;

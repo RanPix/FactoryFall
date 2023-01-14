@@ -32,6 +32,6 @@ public class PlayerSetup : NetworkBehaviour
         string _netID = GetComponent<NetworkIdentity>().netId.ToString();
 
         player = GetComponent<GamePlayer>();
-        GameManager.RegisterPlayer(_netID, player.GetPlayerInfo());
+        GameManager.RegisterPlayer(_netID, player);
     }
 }
