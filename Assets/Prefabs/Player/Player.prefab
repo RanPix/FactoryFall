@@ -167,6 +167,8 @@ MonoBehaviour:
   healthBarPrefab: {fileID: 4203298332218061752, guid: 6d56f640da95a044795c8ca3e1c3e160,
     type: 3}
   ammoTextPrefab: {fileID: 0}
+  menuPrefab: {fileID: 4635157150927694193, guid: d37a061eff4b9c64696edba900215302,
+    type: 3}
   miniMapCamera: {fileID: 768074781409114723, guid: 7e9946ea47e7a0545810957f445f8dc0,
     type: 3}
   playerMark: {fileID: 6201049919452161927, guid: f84e97a72b2de0044a56240227220f28,
