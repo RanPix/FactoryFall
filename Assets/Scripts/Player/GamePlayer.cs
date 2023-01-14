@@ -1,9 +1,10 @@
 using UnityEngine;
 using System.Collections;
+using FiniteMovementStateMachine;
 using Mirror;
 using GameBase;
 using Player.Info;
-using Unity.Mathematics;
+using Unity.VisualScripting;
 
 
 namespace Player
@@ -45,7 +46,10 @@ namespace Player
         [SerializeField] private GameObject compass;
         [SerializeField] private AudioSource audioSource;
 
+        [SerializeField] private GameObject trail;
+        [SerializeField] private GameObject hitMarker;
 
+        [SerializeField] private Transform muzzlePosition;
 
         private GameManager gameManager;
         private Canvas canvas;
@@ -90,6 +94,15 @@ namespace Player
             canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
             if (isLocalPlayer)
             {
+                for (int i = 0; i < canvas.transform.childCount; i++)
+                {
+                    if (canvas.transform.GetChild(i).name == "HitMarker")
+                    {
+                        hitMarker = canvas.transform.GetChild(i).gameObject;
+                        break;
+                    }
+
+                }
                 Debug.Log("NetID222222" + GetComponent<NetworkIdentity>().netId.ToString());
                 playerInfo = new PlayerInfo(null, Team.None, GetComponent<NetworkIdentity>().netId.ToString(), transform.name);
                 
@@ -198,6 +211,8 @@ namespace Player
             //Disable GameObjects
             for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
                 disableGameObjectsOnDeath[i].SetActive(false);
+            Destroy(GetComponent<MovementMachine>());
+
         }
 
         private IEnumerator Respawn()
@@ -212,6 +227,7 @@ namespace Player
             yield return new WaitForSeconds(0.1f);
 
             SetupPlayer();
+            gameObject.AddComponent<MovementMachine>();
 
             Debug.Log(transform.name + " respawned.");
         }
@@ -245,14 +261,25 @@ namespace Player
                 Health hitHealth = hit.transform.GetComponent<Health>();
                 if (hitHealth)
                 {
+                    StartCoroutine(ActivateForSeconds(hitMarker, 0.5f));
                     CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                 }
             }
+            GameObject _trail = Instantiate(trail);
+            LineRenderer line = _trail.GetComponent<LineRenderer>();
+            line.SetPosition(0, muzzlePosition.position);
+            line.SetPosition(1, hit.point);
 
         }
 
+        private IEnumerator ActivateForSeconds(GameObject GO, float time)
+        {
+            GO.SetActive(true);
+            yield return new WaitForSeconds(time);
+            GO.SetActive(false);
+        }
         [Command]
-        void CmdPlayerShot(string _playerID, int _damage, string _sourceID)
+        private void CmdPlayerShot(string _playerID, int _damage, string _sourceID)
         {
             Debug.Log(_playerID + " has been  shot.");
 

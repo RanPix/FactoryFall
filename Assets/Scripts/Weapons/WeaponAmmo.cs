@@ -38,7 +38,7 @@ public class WeaponAmmo : MonoBehaviour
     }
     public void ApdateAmmoInScreen()
     {
-        AmmoText.text = Ammo + "/" + ReserveAmmo;
+        AmmoText.text = Ammo.ToString();
         if (Ammo <= 0) Ammo = 0;
         if (ReserveAmmo <= 0) ReserveAmmo = 0;
     }

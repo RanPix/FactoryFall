@@ -149,7 +149,6 @@ MonoBehaviour:
   syncInterval: 0.1
   health: {fileID: 2135578962297529565}
   disableOnDeath:
-  - {fileID: 159709272076130208}
   - {fileID: 2135578962297529565}
   - {fileID: 11036251873139821}
   - {fileID: 5088136169615148319}
@@ -174,6 +173,9 @@ MonoBehaviour:
     type: 3}
   compass: {fileID: 2911739906067793003, guid: 6bb327c9eed09f342b5cd27aa66248e3, type: 3}
   audioSource: {fileID: 0}
+  trail: {fileID: 8181262834941100726, guid: 737c6536a4c73b4459582beeb06f2a13, type: 3}
+  hitMarker: {fileID: 0}
+  muzzlePosition: {fileID: 7127550176284972045}
 --- !u!114 &2135578962297529565
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -877,6 +879,11 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3973212101375309363, guid: 0082b758bc952e346843f07597e664fe,
+        type: 3}
+      propertyPath: m_Name
+      value: Muzzle
+      objectReference: {fileID: 0}
     - target: {fileID: 3980043795109761557, guid: 0082b758bc952e346843f07597e664fe,
         type: 3}
       propertyPath: player
@@ -892,6 +899,12 @@ PrefabInstance:
 --- !u!95 &5797011517003256890 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2173455107278860012, guid: 0082b758bc952e346843f07597e664fe,
+    type: 3}
+  m_PrefabInstance: {fileID: 5646025904012311254}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &7127550176284972045 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3220236162412293851, guid: 0082b758bc952e346843f07597e664fe,
     type: 3}
   m_PrefabInstance: {fileID: 5646025904012311254}
   m_PrefabAsset: {fileID: 0}
