@@ -23,7 +23,7 @@ namespace FiniteMovementStateMachine
 
         private void Update()
         {
-            Debug.Log($"Im in {currentState}",this);
+            //Debug.Log($"Im in {currentState}",this);
 
             currentState?.UpdateLogic();
             currentState?.CheckForChangeState();

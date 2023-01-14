@@ -21,12 +21,13 @@ MonoBehaviour:
   JumpOverlap: 1
   DoubleJumps: 1
   Gravity: 20
+  MaxFallSpeed: 30
   MaxAirSpeed: 20
   AirSpeed: 15
   MaxWallrunDistance: 20
   WallrunFallOffSpeedMultiplier: 1.5
   WallrunFallOffDirctionMultiplier: 2
-  LastWallrunNormalNullifyTime: 0.5
+  MaxWallrunBoostSpeed: 25
   Redirects: 2
   GroundCheckRadius: 0.4
   GroundCheckLm:
