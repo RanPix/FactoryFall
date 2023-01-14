@@ -23,6 +23,7 @@ namespace FiniteMovementStateMachine
         public bool JumpOverlap;
         public int DoubleJumps;
         public float Gravity;
+        public float MaxFallSpeed;
         
         [Space] 
 
@@ -34,7 +35,7 @@ namespace FiniteMovementStateMachine
         public float MaxWallrunDistance;
         public float WallrunFallOffSpeedMultiplier;
         public float WallrunFallOffDirctionMultiplier; // Bigger number == sharper angle
-        public float LastWallrunNormalNullifyTime;
+        public float MaxWallrunBoostSpeed;
 
         [Header("Redirect")] 
         
@@ -56,13 +57,15 @@ namespace FiniteMovementStateMachine
         public LayerMask WallCheckLm;
     }
 
-    public struct MovementDataIntersection
+    public class MovementDataIntersection
     {
         public Vector2 horizontalMove;
         public float verticalMove;
 
         public (Vector3 right, Vector3 left) WallNormals;
         public Vector3 lastWallNormal;
+
+        public Vector3 deltaMove;
 
         public bool gotJumpInput;
 

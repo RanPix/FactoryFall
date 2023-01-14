@@ -10,18 +10,16 @@ public class MidAir : BaseMovementState
 
     private bool gotRedirect;
 
-    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
-        : base("MidAir", stateMachine, movementControl, fields)
+    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
+        : base("MidAir", stateMachine, movementControl, fields, data)
     {
         controls.Player.Redirect.performed += AddRedirect;
     }
 
     #region State logic
 
-    public override void Enter(MovementDataIntersection inputData)
+    public override void Enter()
     {
-        base.Enter(inputData);
-
         hasDoubleJumps = fields.ScriptableFields.DoubleJumps;
         hasRedirects = fields.ScriptableFields.Redirects;
 
@@ -58,12 +56,10 @@ public class MidAir : BaseMovementState
             stateMachine.ChangeState(stateMachine.wallrun);
     }
 
-    public override MovementDataIntersection Exit()
+    public override void Exit()
     {
         data.verticalMove = 0f;
         data.lastWallNormal = Vector3.zero;
-
-        return base.Exit();
     }
 
     #endregion
@@ -79,17 +75,17 @@ public class MidAir : BaseMovementState
 
         if (desiredSpeed.magnitude > fields.ScriptableFields.MaxAirSpeed)
         {
-            data.CalculateHorizontalMagnitude();
-            data.horizontalMove = desiredSpeed.normalized * data.horizontalMagnitude;
+            data.horizontalMove = desiredSpeed.normalized * data.horizontalMove.magnitude;
         }
         else
             data.horizontalMove = desiredSpeed;
-
-        //Vector2.Lerp(data.horizontalMove, desiredSpeed, stateMachine.ScriptableFields.interpolationRate * Time.deltaTime);
     }
 
     private void ApplyGravity()
-        => data.verticalMove -= fields.ScriptableFields.Gravity * Time.deltaTime;
+    {
+        if(data.verticalMove > -fields.ScriptableFields.MaxFallSpeed)
+            data.verticalMove -= fields.ScriptableFields.Gravity * Time.deltaTime;
+    }
 
     private void TryJump()
     {

@@ -8,15 +8,13 @@ public class Wallrun : BaseMovementState
     private Vector3 currentWallNormal;
     private Vector2 moveDirectionVector2;
 
-    public Wallrun(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
-        : base("wallrun", stateMachine, movementControl, fields) { }
+    public Wallrun(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
+        : base("wallrun", stateMachine, movementControl, fields, data) { }
 
     #region State logic
 
-    public override void Enter(MovementDataIntersection inputData)
+    public override void Enter()
     {
-        base.Enter(inputData);
-
         data.GetWalls(fields);
         CalculateMoveDirection();
 
@@ -37,12 +35,10 @@ public class Wallrun : BaseMovementState
             stateMachine.ChangeState(stateMachine.midAir);
     }
 
-    public override MovementDataIntersection Exit()
+    public override void Exit()
     {
         ChangeVelocityToMoveOfWall();
         data.lastWallNormal = currentWallNormal;
-
-        return base.Exit();
     }
 
     #endregion
@@ -59,10 +55,24 @@ public class Wallrun : BaseMovementState
         wallrunDistance -= data.horizontalMagnitude * Time.deltaTime;
     }
 
-    private void ChangeVelocityToMoveOfWall() // Called once on exit, so a bit unoptimized. 
-        => data.horizontalMove = (moveDirectionVector2 * fields.ScriptableFields.WallrunFallOffDirctionMultiplier + input).normalized *
-                                 data.horizontalMove.magnitude *
-                                 fields.ScriptableFields.WallrunFallOffSpeedMultiplier;
+    private void ChangeVelocityToMoveOfWall()
+    {
+        data.CalculateHorizontalMagnitude();
+
+        data.horizontalMove = (moveDirectionVector2 * fields.ScriptableFields.WallrunFallOffDirctionMultiplier + input)
+                              .normalized *
+                              data.horizontalMagnitude;
+
+        if(data.horizontalMagnitude > fields.ScriptableFields.MaxWallrunBoostSpeed)
+            return;
+
+        data.horizontalMove *= fields.ScriptableFields.WallrunFallOffSpeedMultiplier;
+
+        data.CalculateHorizontalMagnitude();
+
+        if (data.horizontalMagnitude > fields.ScriptableFields.MaxWallrunBoostSpeed) // Check for speed limit
+            data.horizontalMove = data.horizontalMove / data.horizontalMagnitude * fields.ScriptableFields.MaxWallrunBoostSpeed;
+    }
 
     private void CalculateMoveDirection()
     {

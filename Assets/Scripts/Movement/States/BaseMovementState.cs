@@ -63,12 +63,13 @@ namespace FiniteMovementStateMachine
 
         #endregion
 
-        internal BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields)
+        internal BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
         {
             this.name = name;
             this.stateMachine = stateMachine;
             this.movementControl = movementControl;
             this.fields = fields;
+            this.data = data;
 
             controls = new PlayerControls();
             controls.Player.Enable();
@@ -79,13 +80,9 @@ namespace FiniteMovementStateMachine
         #region State Logic
 
         /// <summary>
-        ///     Called once on start of state <br/>
-        ///     In case of override base should be put at the start of method
+        ///     Called once on start of state
         /// </summary>
-        public virtual void Enter(MovementDataIntersection inputData)
-        {
-            data = inputData;
-        }
+        public virtual void Enter() { }
 
         /// <summary>
         ///     Called every frame before Update Physics. Should be used only for calculation and changes between states <br/>
@@ -105,18 +102,13 @@ namespace FiniteMovementStateMachine
         /// </summary>
         public virtual void UpdatePhysics()
         {
-            data.CalculateHorizontalMagnitude();
             movementControl.Move(data.moveVector3);
         }
 
         /// <summary>
-        ///     Called on exit of state <br/>
-        ///     In case of override base should be put in the end of method
+        ///     Called on exit of state
         /// </summary>
-        public virtual MovementDataIntersection Exit()
-        {
-            return data;
-        }
+        public virtual void Exit() { }
 
         /// <summary> Don't override with base </summary>
         public virtual void CheckForChangeState()
