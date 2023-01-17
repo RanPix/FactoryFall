@@ -11,7 +11,7 @@ namespace GameBase
         [field: SyncVar] public float currentHealth { get; private set; }
 
         //[field: SyncVar] public float gotDamage { get; set; }
-        //public Action OnHealthChange;
+        public Action OnHealthChanged;
         public Action<string> onDeath;
 
         private void Start()
@@ -24,10 +24,10 @@ namespace GameBase
         {
             currentHealth -= damage;
 
-            print($"damage: {damage}");
+            OnHealthChanged?.Invoke();
+            //print($"damage: {damage}");
 
             CheckHealth(playerID);
-
         }
 
         public void CheckHealth(string playerID)

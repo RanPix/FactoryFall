@@ -52,11 +52,11 @@ public class Look : NetworkBehaviour
             CursorLockMode.Locked;
 
         Cursor.visible = isMenuOpened;
-        if (!isMenuOpened)
-        {
-            yRot += inputVector.x * 0.01f * sensX;
-            xRot -= inputVector.y * 0.01f * sensY;
-        }
+        if (isMenuOpened)
+            return;
+
+        yRot += inputVector.x * 0.01f * sensX;
+        xRot -= inputVector.y * 0.01f * sensY;
 
         // Laggy beauty
         yRot += inputVector.x * 0.01f * sensX;
