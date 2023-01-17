@@ -4,7 +4,6 @@ using FiniteMovementStateMachine;
 using Mirror;
 using GameBase;
 using Player.Info;
-using Unity.VisualScripting;
 
 
 namespace Player
@@ -47,12 +46,9 @@ namespace Player
         [SerializeField] private GameObject compass;
         [SerializeField] private AudioSource audioSource;
 
-        [SerializeField] private GameObject trail;
         [SerializeField] private GameObject hitMarker;
 
-        [SerializeField] private Transform muzzlePosition;
 
-        private GameManager gameManager;
         private Canvas canvas;
         private Transform cam;
         private bool useEffects;
@@ -86,14 +82,12 @@ namespace Player
 
         }
 
-        public override void OnStartClient()
-        {
-
-        }
         private void Start()
         {
             if (isLocalPlayer)
             {
+                gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
+
                 canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
 
                 for (int i = 0; i < canvas.transform.childCount; i++)
@@ -105,7 +99,7 @@ namespace Player
                     }
 
                 }
-                Debug.Log("NetID222222" + GetComponent<NetworkIdentity>().netId.ToString());
+                //Debug.Log("NetID222222" + GetComponent<NetworkIdentity>().netId.ToString());
                 playerInfo = new PlayerInfo(null, Team.None, GetComponent<NetworkIdentity>().netId.ToString(), transform.name);
                 
 
@@ -170,21 +164,21 @@ namespace Player
 
         private void Die(string _sourceID)
         {
-            print($"_sourceID = {_sourceID}");
+            //print($"_sourceID = {_sourceID}");
             isDead = true;
 
             PlayerInfo sourcePlayer = GameManager.GetPlayerInfo(_sourceID).GetPlayerInfo();
 
             if (sourcePlayer != null)
             {
-                Debug.Log("DIE111111111111");
+                //Debug.Log("DIE111111111111");
                 sourcePlayer.kills++;
                 GameManager.instance.OnPlayerKilledCallback.Invoke(playerInfo.netID, sourcePlayer.name);
             }
 
             playerInfo.deaths++;
 
-            Debug.Log("DIE2222222222");
+            //Debug.Log("DIE2222222222");
 
             CmdDisableComponentsOnDeath();
 
@@ -195,8 +189,6 @@ namespace Player
             //Switch cameras
             if (isLocalPlayer)
                 GameManager.instance.SetSceneCameraActive(true);
-
-            Debug.Log(transform.name + " is DEAD!");
 
             StartCoroutine(Respawn());
         }
@@ -222,7 +214,6 @@ namespace Player
 
         private IEnumerator Respawn()
         {
-            Debug.Log("Res1111111");
             yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnTime);
 
             Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition();
@@ -234,7 +225,7 @@ namespace Player
             SetupPlayer();
             gameObject.AddComponent<MovementMachine>();
 
-            Debug.Log(transform.name + " respawned.");
+            //Debug.Log(transform.name + " respawned.");
         }
 
         public void SetDefaults()
@@ -257,6 +248,14 @@ namespace Player
             Destroy(_gfxIns, 3f);*/
         }
 
+        private IEnumerator ActivateForSeconds(GameObject GO, float time)
+        {
+            GO.SetActive(true);
+            yield return new WaitForSeconds(time);
+            GO.SetActive(false);
+        }
+
+
         [Client]
         public void Shoot(Ray ray, int damage, float shootRange, string playerID)
         {
@@ -270,23 +269,14 @@ namespace Player
                     CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                 }
             }
-            GameObject _trail = Instantiate(trail);
-            LineRenderer line = _trail.GetComponent<LineRenderer>();
-            line.SetPosition(0, muzzlePosition.position);
-            line.SetPosition(1, hit.point);
+
 
         }
 
-        private IEnumerator ActivateForSeconds(GameObject GO, float time)
-        {
-            GO.SetActive(true);
-            yield return new WaitForSeconds(time);
-            GO.SetActive(false);
-        }
         [Command]
         private void CmdPlayerShot(string _playerID, int _damage, string _sourceID)
         {
-            Debug.Log(_playerID + " has been  shot.");
+            //Debug.Log(_playerID + " has been  shot.");
 
             GamePlayer _player = GameManager.GetPlayerInfo(_playerID);
             _player.RpcTakeDamage(_damage, _sourceID);

@@ -202,44 +202,44 @@ public class PlayerBuilding : MonoBehaviour
             }
         }
 
-        return;
+        //return;
 
-        if (controls.Player.RemoveBlock.IsPressed())
-        {
-            bool blockHit = Physics.Raycast(transform.position, transform.forward, out removingBlockHit, buildDistance);
+        //if (controls.Player.RemoveBlock.IsPressed())
+        //{
+        //    bool blockHit = Physics.Raycast(transform.position, transform.forward, out removingBlockHit, buildDistance);
 
-            if (removingBlockHit.transform == null)
-            {
-                removedBlock = null;
-                return;
-            }
-            else if (removingBlockHit.transform.GetComponent<Block>() == null)
-                return;
+        //    if (removingBlockHit.transform == null)
+        //    {
+        //        removedBlock = null;
+        //        return;
+        //    }
+        //    else if (removingBlockHit.transform.GetComponent<Block>() == null)
+        //        return;
 
-            if (blockHit)
-            {
-                if (removedBlock == null || removedBlock != removingBlockHit.transform.GetComponent<Block>())
-                {
-                    removedBlock = removingBlockHit.transform.GetComponent<Block>();
-                    removingTimer = 0f;
-                }
+        //    if (blockHit)
+        //    {
+        //        if (removedBlock == null || removedBlock != removingBlockHit.transform.GetComponent<Block>())
+        //        {
+        //            removedBlock = removingBlockHit.transform.GetComponent<Block>();
+        //            removingTimer = 0f;
+        //        }
 
-                removingTimer += Time.deltaTime;
+        //        removingTimer += Time.deltaTime;
 
-                if (removingTimer > removedBlock.GetRemoveTime())
-                {
-                    Destroy(removedBlock);
+        //        if (removingTimer > removedBlock.GetRemoveTime())
+        //        {
+        //            Destroy(removedBlock);
 
-                    removingTimer = 0f;
-                    removedBlock = null;
-                }
-            }
-        }
-        else if (controls.Player.RemoveBlock.WasReleasedThisFrame())
-        {
-            removingTimer = 0f;
-            removedBlock = null;
-        }
+        //            removingTimer = 0f;
+        //            removedBlock = null;
+        //        }
+        //    }
+        //}
+        //else if (controls.Player.RemoveBlock.WasReleasedThisFrame())
+        //{
+        //    removingTimer = 0f;
+        //    removedBlock = null;
+        //}
         
     }
 

@@ -12,14 +12,10 @@ public class WeaponScriptableObject : ScriptableObject
     public float reloadTime;
 
     [Space]
-    [Header("Animation")]
-    public string shootAnimationName;
-    public string reloadAnimationTriggername;
-
-    [Space]
     [Header("Audio")]
     public AudioClip empty;
     public AudioClip reload;
+
     [Space(5)]
     public AudioClip[] shoots;
 
@@ -28,58 +24,12 @@ public class WeaponScriptableObject : ScriptableObject
 
     [Space]
     [Header("Muzzle")]
-    public bool haveMuzzle;
-    public float scaleFactor;
-    public float TimeTodestroy;
+    public float muzzleFlashDeathTimer;
+    public Transform muzzleFlash;
 
     [Space]
     [Header("Physics Shoot")]
     public GameObject bulletPrefab;
     public float bulletSpeed;
     public float bulletTimeToDestroy;
-
-
-
-
-
-
-
-/*#if UNITY_EDITOR
-    [CanEditMultipleObjects]
-    [CustomEditor(typeof(WeaponScriptableObject))]
-    public class WeaponEditor : Editor
-    {
-        public override void OnInspectorGUI()
-        {
-            base.OnInspectorGUI();
-
-            WeaponScriptableObject weaponScriptableObject = (WeaponScriptableObject)target;
-            Weapon weapon = weaponScriptableObject.targetWeapon;
-            if (weapon) 
-            {
-
-                if (weapon.showRayShootVariables)
-                {
-                    weapon.showRayShootVariables = EditorGUILayout.Foldout(weapon.showRayShootVariables, "Ray shoot variables", true);
-
-                }
-                else if (weapon.showPhysicsShootVariables)
-                {
-                    weapon.showPhysicsShootVariables = EditorGUILayout.Foldout(weapon.showPhysicsShootVariables, "Physics shoot variables", true);
-                    GameObject bulletPrefab;
-                    float bulletSpeed;
-                    float bulletTimeToDestroy;
-
-                }
-                else if (weapon.showTriggerShootVariables)
-                {
-                    weapon.showTriggerShootVariables = EditorGUILayout.Foldout(weapon.showTriggerShootVariables, "Trigger shoot variables", true);
-
-                }
-            }
-        }
-    }
-#endif*/
-
-
 }

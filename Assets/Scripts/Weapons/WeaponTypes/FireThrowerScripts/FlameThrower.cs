@@ -15,9 +15,9 @@ public class FlameThrower : Weapon
 
     public override Ray Shoot()
     {
-        Debug.Log("piu");
+        //Debug.Log("piu");
         _nextFire = Time.time;
-        //RayCasting();
+
         if (!fireTriggerEnable)
         {
             InstantiateFireTrigger();
@@ -26,32 +26,18 @@ public class FlameThrower : Weapon
 
         weaponAmmo.Ammo--;
         weaponAmmo.ApdateAmmoInScreen();
-        if (useAnimations == true)
-            animator.Play(shootAnimationName);
+
+        animator.Play(shootAnimationName);
+
         return new Ray();
     }
+
     public void InstantiateFireTrigger()
     {
         fireTriggerEnable = true;
         FlameThrowerTrigger.enabled = true;
     }
-    public override void Scope()
-    {
 
-    }
-    private new void SpawmMuzzle()
-    {
-        if (attachment.hasSilencer == false)
-        {
-            if (weaponScriptableObject.haveMuzzle == true)
-            {
-                GameObject currentMuzzle = muzzle[Random.Range(0, muzzle.Length)];
-                GameObject spawnedMuzzle = Instantiate(currentMuzzle, muzzlePosition.transform.position, muzzlePosition.rotation, gameObject.transform);
-                spawnedMuzzle.transform.localScale = new Vector3(weaponScriptableObject.scaleFactor, weaponScriptableObject.scaleFactor, weaponScriptableObject.scaleFactor);
-                Destroy(spawnedMuzzle, weaponScriptableObject.TimeTodestroy);
-            }
-        }
-    }
     public override void FireButtonWasReleased()
     {
         fireTriggerEnable = false;

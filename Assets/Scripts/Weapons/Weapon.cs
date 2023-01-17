@@ -38,10 +38,10 @@ abstract public class Weapon : MonoBehaviour
 
     [Space(10)]
     [Header("Animation")]
-    [SerializeField] protected bool useAnimations;
     [SerializeField] protected Animator animator;
+
     [SerializeField] protected string shootAnimationName;
-    [SerializeField] private string reloadAnimationTriggername;
+    [SerializeField] protected string reloadAnimationName;
 
     [Space(10)]
     [Header("Audio")]
@@ -49,44 +49,42 @@ abstract public class Weapon : MonoBehaviour
 
     [Space(10)] 
     [Header("Sway")] 
-
-
-    [SerializeField] private Vector3 initialWeaponPosition;
     [SerializeField] private bool canSway;
+    [SerializeField] private Vector3 initialWeaponPosition;
     [SerializeField] private Vector3 initialSwayPosition;
+
     [SerializeField] private float SwayAmount;
     [SerializeField] private float MaxSwayAmount;
     [SerializeField] private float swaySmoothing;
 
-    [Space(10)]
-    [Header("Aiming")]
-    [SerializeField] private bool canScope;
-    [SerializeField] protected Attachment attachment;
-    [SerializeField] private float normalFOV;
-    [SerializeField] private float scopedFOV;
-    [SerializeField] private float normalSens;
-    [SerializeField] private float scopedSens;
-    [SerializeField] private float FOVSmoothing;
-    [SerializeField] private Vector3 normalLOcalPosition;
-    [SerializeField] private Vector3 aimingLOcalPosition;
-    [SerializeField] private float aimSmoothing;
-    [SerializeField] private string ammoObjectName;
+    //[Space(10)]
+    //[Header("Aiming")]
+    //[SerializeField] private bool canScope;
+    //[SerializeField] protected Attachment attachment;
+    //[SerializeField] private float normalFOV;
+    //[SerializeField] private float scopedFOV;
+    //[SerializeField] private float normalSens;
+    //[SerializeField] private float scopedSens;
+    //[SerializeField] private float FOVSmoothing;
+    //[SerializeField] private Vector3 normalLOcalPosition;
+    //[SerializeField] private Vector3 aimingLOcalPosition;
+    //[SerializeField] private float aimSmoothing;
+    //[SerializeField] private string ammoObjectName;
 
     [Space(10)]
     [Header("Ammo")]
     [SerializeField] public WeaponAmmo weaponAmmo;
     [SerializeField] public int ammo;
     [SerializeField] private int maxAmmo;
+
+    [SerializeField] private bool hasInfiniteAmmo;
     [SerializeField] private int reserveAmmo;
 
     [Space(10)]
-    [Header("Muzzle")]
-    [SerializeField] protected Transform muzzlePosition;
-    [SerializeField] protected GameObject[] muzzle;
-    [Space(10)]
-    [SerializeField] private GameObject bulletSpawner;
-    [SerializeField] private ConnectorHelper connectorHelper;
-    [SerializeField] private Action OnInScopeValuseChange;
+    [Header("Effects")]
+    [SerializeField] private Transform muzzlePosition;
+    [SerializeField] private Transform trail;
+
 
     [Space(10)]
     [Header("Layers")]
@@ -96,8 +94,6 @@ abstract public class Weapon : MonoBehaviour
     public bool canShoot;
 
 
-
-    //protected float nextFire;
     public Camera cam;
     public Camera gunCam;
     public AudioSource audioSource;
@@ -106,36 +102,28 @@ abstract public class Weapon : MonoBehaviour
 
     [SerializeField] private Transform weaponView;
 
-
-    public bool inScope
-    {
-        get => _inScope;
-        private set
-        {
-            _inScope = value;
-            OnInScopeValuseChange?.Invoke();
-
-        }
-    }
-    private bool _inScope;
     public bool reloading { get; private set; } = false;
 
-    #region AbstractVariables
+#region AbstractVariables
+
     public abstract float nextFire { get; }
-    #endregion
-    #region AbstractMethods
+
+#endregion
+
+
+
+#region AbstractMethods
+
     public abstract Ray Shoot();
-    public abstract void Scope();
     public abstract void FireButtonWasReleased();
-    #endregion
+
+#endregion
 
     [field: SerializeField] public bool _isLocalPLayer { get; set; }
 
     // Start is called before the first frame update
     private void Start()
     {
-        audioSource = player.GetComponent<AudioSource>();
-        animator = GetComponentInChildren<Animator>();
         if (!_isLocalPLayer)
         {
             weaponView.gameObject.layer = LayerMask.NameToLayer("Default");
@@ -147,67 +135,33 @@ abstract public class Weapon : MonoBehaviour
         }
         initialWeaponPosition = transform.position;
 
-        WeaponsLink.instance.weapons.Add(this);
         cam = Camera.main;
         gunCam = cam.GetComponentInChildren<Camera>();  
         GameObject help = Instantiate(weaponAmmo.gameObject);
 
+
         weaponAmmo = help.GetComponent<WeaponAmmo>();
-        canShoot = true;
+
         weaponAmmo.Ammo = ammo;
         weaponAmmo.ClipSize = maxAmmo;
         weaponAmmo.ReserveAmmo = reserveAmmo;
+
         weaponAmmo.AmmoText = ammoText;
 
+        canShoot = true;
     }
+
     protected Ray GetRay()
     {
         return new Ray(cam.transform.position, cam.transform.forward);
     }
-    /*public void KeyCodes()
-    {
-        if (canShoot == true)
-        {
-            if (weaponAmmo.Ammo > 0)
-            {
-                        
-                if (Time.time - nextFire > 1 / weaponScriptableObject.fireRate)
-                {
-                    if (_shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
-                    {
-                        Shoot();
-                    }
-                    else if (_shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
-                    {
-                        Shoot();
 
-                    }
-                    else if (_shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
-                    {
-                        FireButtonWasReleased();
-                    }
-                }
-            }
-        }
-        if (controls.Player.Fire.IsPressed() && weaponAmmo.Ammo <= 0)
-        {
-            audioSource.PlayOneShot(weaponScriptableObject.empty);
-        }
-        if (controls.Player.Reload.WasPerformedThisFrame())
-        {
-            if (weaponAmmo.ReserveAmmo > 0 && weaponAmmo.Ammo < ammo)
-            {
-                StartCoroutine(ReloadCoroutine());
-            }
-        }
-
-    }*/
     public IEnumerator ReloadCoroutine()
     {
         canShoot = false;
         reloading = true;
-        if (useAnimations == true)
-            animator.SetTrigger(reloadAnimationTriggername);
+
+        animator.Play(reloadAnimationName);
 
         yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
 
@@ -224,42 +178,49 @@ abstract public class Weapon : MonoBehaviour
             case PlaySoundType.Empty:
                 audioSource.PlayOneShot(weaponScriptableObject.empty);
                 break;
+
             case PlaySoundType.Shoot:
                 audioSource.PlayOneShot(weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)]);
                 break;
+
             case PlaySoundType.Reload:
                 audioSource.PlayOneShot(weaponScriptableObject.reload);
                 break;
         }
 
     }
-    public void SpawmMuzzle()
+    protected void SpawmMuzzle()
     {
-        if (attachment.hasSilencer == false)
+        if (weaponScriptableObject.muzzleFlash is not null)
         {
-            if (weaponScriptableObject.haveMuzzle == true)
-            {
-                GameObject currentMuzzle = muzzle[Random.Range(0, muzzle.Length)];
-                GameObject spawnedMuzzle = Instantiate(currentMuzzle, muzzlePosition.position, muzzlePosition.rotation);
-                spawnedMuzzle.transform.localScale = new Vector3(weaponScriptableObject.scaleFactor, weaponScriptableObject.scaleFactor, weaponScriptableObject.scaleFactor);
-                Destroy(spawnedMuzzle, weaponScriptableObject.TimeTodestroy);
-            }
+            Transform spawnedMuzzle = Instantiate(weaponScriptableObject.muzzleFlash, muzzlePosition.position, muzzlePosition.rotation, muzzlePosition);
+
+            Destroy(spawnedMuzzle.gameObject, weaponScriptableObject.muzzleFlashDeathTimer);
         }
     }
-}
-[System.Serializable]
-public class Attachment
-{
-    [Header("Silencer")]
-    public bool hasSilencer;
-    public GameObject silencerObject;
 
-    [Header("Scope`s")]
-    public int Scopeid;
-    public GameObject ironSight;
-
-    [Space(10)]
-    public AttachmentInfo[] scopes;
-    public Vector3[] positionsInScope;
+    protected void SpawnTrail(Vector3 hitPoint)
+    {
+        Transform _trail = Instantiate(trail);
+        LineRenderer line = _trail.GetComponent<LineRenderer>();
+        line.SetPosition(0, muzzlePosition.position);
+        line.SetPosition(1, hitPoint);
+    }
 }
+
+//[System.Serializable]
+//public class Attachment
+//{
+//    [Header("Silencer")]
+//    public bool hasSilencer;
+//    public GameObject silencerObject;
+
+//    [Header("Scope`s")]
+//    public int Scopeid;
+//    public GameObject ironSight;
+
+//    [Space(10)]
+//    public AttachmentInfo[] scopes;
+//    public Vector3[] positionsInScope;
+//}
 

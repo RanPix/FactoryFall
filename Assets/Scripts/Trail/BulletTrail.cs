@@ -15,7 +15,7 @@ public class BulletTrail : MonoBehaviour
 
         line.DOColor( new Color2(color,color), new Color2(transparent, transparent), timeToDestroy);
         //StartCoroutine(ChangeWidth());
-        Destroy(gameObject, timeToDestroy);
+        Destroy(gameObject, timeToDestroy + 0.1f);
     }
 
     private IEnumerator ChangeWidth()
@@ -25,8 +25,7 @@ public class BulletTrail : MonoBehaviour
             width += Time.deltaTime;
             line.startWidth = width;
             line.endWidth = width;
-            yield return new WaitForSeconds(0.1f);
-
+            yield return null;
         }
     }
 

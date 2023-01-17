@@ -1,8 +1,4 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using TMPro;
-using System;
 
 public class Pistol : Weapon
 {
@@ -11,23 +7,24 @@ public class Pistol : Weapon
     #endregion
     private float _nextFire = 0;
 
-
+    
     public override Ray Shoot()
     {
-        Debug.Log("piu");
+        //Debug.Log("piu");
         _nextFire = Time.time;
         SpawmMuzzle();
 
         weaponAmmo.Ammo--;
         weaponAmmo.ApdateAmmoInScreen();
-        if (useAnimations == true)
-            animator.Play(shootAnimationName);
+
+        animator.Play(shootAnimationName);
+
+        //SpawnTrail();
+
         return GetRay();
     }
-    public override void Scope()
-    {
 
-    }
+
     public override void FireButtonWasReleased()
     {
     }
