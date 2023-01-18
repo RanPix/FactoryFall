@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4922883201173967554}
   - component: {fileID: 3923297494801789512}
   - component: {fileID: 2402403376517067059}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Case Ejector
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 8196987780455358352}
   - component: {fileID: 3710866152805982160}
   - component: {fileID: 3383790551726511900}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Base
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -182,7 +182,7 @@ GameObject:
   - component: {fileID: 2630257155741227886}
   - component: {fileID: 5063822912858520463}
   - component: {fileID: 6235385074676587225}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Magazine Release
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -265,7 +265,7 @@ GameObject:
   - component: {fileID: 7613576073911662443}
   - component: {fileID: 3582138939451612861}
   - component: {fileID: 8494054422993960576}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Trigger
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -337,6 +337,37 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
+--- !u!1 &6394885056171068499
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 5225345035007705297}
+  m_Layer: 0
+  m_Name: Muzzle
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &5225345035007705297
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6394885056171068499}
+  m_LocalRotation: {x: 0, y: 1, z: 0, w: 0}
+  m_LocalPosition: {x: 0, y: 0.0453, z: -0.6802}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8550018688244765856}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
 --- !u!1 &6586894172459588845
 GameObject:
   m_ObjectHideFlags: 0
@@ -348,7 +379,7 @@ GameObject:
   - component: {fileID: 3746548094399620317}
   - component: {fileID: 7760327457111597148}
   - component: {fileID: 4483828579194505938}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Magazine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -432,7 +463,7 @@ GameObject:
   - component: {fileID: 7340561500862392061}
   - component: {fileID: 783476363957211874}
   - component: {fileID: 9012654386385326905}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Loader
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -535,6 +566,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8155312829579049598}
+  - {fileID: 5225345035007705297}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -650,46 +682,27 @@ MonoBehaviour:
     type: 2}
   _state: 0
   _shootType: 1
-  useAnimations: 0
-  animator: {fileID: 0}
-  shootAnimationName: 
-  reloadAnimationTriggername: 
+  animator: {fileID: 8956487290267136204}
+  shootAnimationName: Shoot
+  reloadAnimationName: Reload
   useAudio: 0
-  initialWeaponPosition: {x: 0, y: 0, z: 0}
   canSway: 0
+  initialWeaponPosition: {x: 0, y: 0, z: 0}
   initialSwayPosition: {x: 0, y: 0, z: 0}
   SwayAmount: 0
   MaxSwayAmount: 0
   swaySmoothing: 0
-  canScope: 0
-  attachment:
-    hasSilencer: 0
-    silencerObject: {fileID: 0}
-    Scopeid: 0
-    ironSight: {fileID: 0}
-    scopes: []
-    positionsInScope: []
-  normalFOV: 0
-  scopedFOV: 0
-  normalSens: 0
-  scopedSens: 0
-  FOVSmoothing: 0
-  normalLOcalPosition: {x: 0, y: 0, z: 0}
-  aimingLOcalPosition: {x: 0, y: 0, z: 0}
-  aimSmoothing: 0
-  ammoObjectName: 
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
-  ammo: 1000
-  maxAmmo: 1000
+  ammo: 25
+  maxAmmo: 25
+  hasInfiniteAmmo: 1
   reserveAmmo: 1000
-  muzzlePosition: {fileID: 0}
-  muzzle: []
-  bulletSpawner: {fileID: 0}
-  connectorHelper: {fileID: 0}
-  playerMask:
+  muzzlePosition: {fileID: 5225345035007705297}
+  trail: {fileID: 0}
+  hitMask:
     serializedVersion: 2
-    m_Bits: 159
+    m_Bits: 153
   player: {fileID: 0}
   canShoot: 0
   cam: {fileID: 0}
@@ -707,7 +720,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8155312829579049598}
   - component: {fileID: 8956487290267136204}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: AUG
   m_TagString: Untagged
   m_Icon: {fileID: 0}

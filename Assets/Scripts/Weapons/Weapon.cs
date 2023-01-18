@@ -4,6 +4,8 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.InputSystem;
 using Random = UnityEngine.Random;
+using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
+
 public enum States
 {
     Active,
@@ -40,8 +42,8 @@ abstract public class Weapon : MonoBehaviour
     [Header("Animation")]
     [SerializeField] protected Animator animator;
 
-    [SerializeField] protected string shootAnimationName;
-    [SerializeField] protected string reloadAnimationName;
+    [SerializeField] protected string shootAnimationName = "Shoot";
+    [SerializeField] protected string reloadAnimationName = "Reload";
 
     [Space(10)]
     [Header("Audio")]
@@ -88,7 +90,7 @@ abstract public class Weapon : MonoBehaviour
 
     [Space(10)]
     [Header("Layers")]
-    public LayerMask playerMask;
+    public LayerMask hitMask;
 
     public GameObject player;
     public bool canShoot;
@@ -180,7 +182,7 @@ abstract public class Weapon : MonoBehaviour
                 break;
 
             case PlaySoundType.Shoot:
-                audioSource.PlayOneShot(weaponScriptableObject.shoots[Random.Range(0, weaponScriptableObject.shoots.Length)]);
+                audioSource.PlayOneShot(weaponScriptableObject.shotSounds[Random.Range(0, weaponScriptableObject.shotSounds.Length)]);
                 break;
 
             case PlaySoundType.Reload:
@@ -195,7 +197,7 @@ abstract public class Weapon : MonoBehaviour
         {
             Transform spawnedMuzzle = Instantiate(weaponScriptableObject.muzzleFlash, muzzlePosition.position, muzzlePosition.rotation, muzzlePosition);
 
-            Destroy(spawnedMuzzle.gameObject, weaponScriptableObject.muzzleFlashDeathTimer);
+            Destroy(spawnedMuzzle.gameObject, weaponScriptableObject.muzzleFlashLifetime);
         }
     }
 

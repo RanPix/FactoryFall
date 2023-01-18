@@ -1,7 +1,5 @@
 using UnityEngine;
-#if UNITY_EDITOR
-using UnityEditor;
-#endif
+
 [CreateAssetMenu(fileName ="WeaponInfo", menuName = "Weapon/New Weapon")]
 public class WeaponScriptableObject : ScriptableObject
 {
@@ -17,14 +15,11 @@ public class WeaponScriptableObject : ScriptableObject
     public AudioClip reload;
 
     [Space(5)]
-    public AudioClip[] shoots;
-
-    [Space(5)]
-    public AudioClip[] shootsSilencer;    
+    public AudioClip[] shotSounds;
 
     [Space]
     [Header("Muzzle")]
-    public float muzzleFlashDeathTimer;
+    public float muzzleFlashLifetime;
     public Transform muzzleFlash;
 
     [Space]

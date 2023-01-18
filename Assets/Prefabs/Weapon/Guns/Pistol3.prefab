@@ -85,22 +85,23 @@ MonoBehaviour:
   shootAnimationName: Shoot
   reloadAnimationName: Reload
   useAudio: 1
-  initialWeaponPosition: {x: 0, y: 0, z: 0}
   canSway: 0
+  initialWeaponPosition: {x: 0, y: 0, z: 0}
   initialSwayPosition: {x: 0, y: 0, z: 0}
   SwayAmount: 0
   MaxSwayAmount: 0
   swaySmoothing: 0
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
-  ammo: 20
-  maxAmmo: 20
+  ammo: 12
+  maxAmmo: 12
   hasInfiniteAmmo: 1
   reserveAmmo: 240
   muzzlePosition: {fileID: 3220236162412293851}
-  playerMask:
+  trail: {fileID: 0}
+  hitMask:
     serializedVersion: 2
-    m_Bits: 287
+    m_Bits: 153
   player: {fileID: 0}
   canShoot: 0
   cam: {fileID: 0}
