@@ -193,21 +193,16 @@ abstract public class Weapon : MonoBehaviour
     }
     protected void SpawmMuzzle()
     {
+        print("Muzzle111111111");
         if (weaponScriptableObject.muzzleFlash is not null)
         {
+            print("Muzzl2222222222");
             Transform spawnedMuzzle = Instantiate(weaponScriptableObject.muzzleFlash, muzzlePosition.position, muzzlePosition.rotation, muzzlePosition);
 
             Destroy(spawnedMuzzle.gameObject, weaponScriptableObject.muzzleFlashLifetime);
         }
     }
 
-    protected void SpawnTrail(Vector3 hitPoint)
-    {
-        Transform _trail = Instantiate(trail);
-        LineRenderer line = _trail.GetComponent<LineRenderer>();
-        line.SetPosition(0, muzzlePosition.position);
-        line.SetPosition(1, hitPoint);
-    }
 }
 
 //[System.Serializable]

@@ -175,9 +175,9 @@ MonoBehaviour:
     type: 3}
   compass: {fileID: 2911739906067793003, guid: 6bb327c9eed09f342b5cd27aa66248e3, type: 3}
   audioSource: {fileID: 0}
-  trail: {fileID: 8181262834941100726, guid: 737c6536a4c73b4459582beeb06f2a13, type: 3}
-  hitMarker: {fileID: 0}
   muzzlePosition: {fileID: 7127550176284972045}
+  trail: {fileID: 2633746653808325309, guid: 737c6536a4c73b4459582beeb06f2a13, type: 3}
+  hitMarker: {fileID: 0}
 --- !u!114 &2135578962297529565
 MonoBehaviour:
   m_ObjectHideFlags: 0
