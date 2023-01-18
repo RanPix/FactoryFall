@@ -1,6 +1,7 @@
 using Mirror;
 using Player;
 using UnityEngine;
+
 [RequireComponent(typeof(AudioSync))]
 public class WeaponKeyCodes : NetworkBehaviour
 {

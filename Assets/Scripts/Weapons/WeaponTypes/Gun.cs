@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class Pistol : Weapon
+public class Gun : Weapon
 {
     #region AbstractVariables
     public override float nextFire => _nextFire;
