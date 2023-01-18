@@ -34,7 +34,7 @@ public class Menu : MonoBehaviour
         isOpened = false;
         look.isMenuOpened = isOpened;
         Cursor.visible = isOpened;
-        Cursor.lockState = isOpened ? CursorLockMode.None : CursorLockMode.Locked;
+        Cursor.lockState = CursorLockMode.None;
         panel.SetActive(isOpened);
     }
 }
