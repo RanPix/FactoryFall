@@ -46,12 +46,16 @@ namespace Player
         [SerializeField] private GameObject compass;
         [SerializeField] private AudioSource audioSource;
 
-        [SerializeField] private GameObject hitMarker;
+
+
+        [SerializeField] private Transform muzzlePosition;
+
+        [SerializeField] private Transform trail;
 
 
         private Canvas canvas;
         private Transform cam;
-        private bool useEffects;
+        private GameObject hitMarker;
 
         private void SetupCameraHolder()
         {
@@ -259,8 +263,8 @@ namespace Player
         [Client]
         public void Shoot(Ray ray, int damage, float shootRange, string playerID)
         {
-            RaycastHit hit;
-            if (Physics.Raycast(ray, out hit, shootRange, hitMask))
+            bool isHitted = Physics.Raycast(ray, out RaycastHit hit, shootRange, hitMask);
+            if (isHitted)
             {
                 Health hitHealth = hit.transform.GetComponent<Health>();
                 if (hitHealth)
@@ -269,6 +273,11 @@ namespace Player
                     CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                 }
             }
+            Transform _trail = Instantiate(trail);
+            LineRenderer line = _trail.GetComponent<LineRenderer>();
+            line.SetPosition(0, muzzlePosition.position);
+            Vector3 trailFinish = isHitted?hit.point:ray.origin+ray.direction*shootRange;
+            line.SetPosition(1, trailFinish);
 
 
         }
