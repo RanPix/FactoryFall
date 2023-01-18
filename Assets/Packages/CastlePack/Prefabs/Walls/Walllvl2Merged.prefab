@@ -11,7 +11,9 @@ GameObject:
   - component: {fileID: 218265734595279527}
   - component: {fileID: 7700494731771119065}
   - component: {fileID: 8810128122405046425}
-  - component: {fileID: 649490453066913286}
+  - component: {fileID: 6112460313107073226}
+  - component: {fileID: 155391484385015316}
+  - component: {fileID: 1830721871865962984}
   m_Layer: 0
   m_Name: WoodenStake
   m_TagString: Untagged
@@ -29,6 +31,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 127168600888969356}
   m_RootOrder: 2
@@ -52,6 +55,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -82,8 +86,8 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &649490453066913286
-MeshCollider:
+--- !u!65 &6112460313107073226
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -92,10 +96,35 @@ MeshCollider:
   m_Material: {fileID: 0}
   m_IsTrigger: 0
   m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 5243323970080077135, guid: 68af98b2859bac74ba4573e6ea5f0658, type: 3}
+  serializedVersion: 2
+  m_Size: {x: 0.99974495, y: 0.4753091, z: 0.41130638}
+  m_Center: {x: 0.00012763342, y: 0.23765455, z: 0.0031130952}
+--- !u!65 &155391484385015316
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121901564006430479}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.99974495, y: 0.1594607, z: 0.09636148}
+  m_Center: {x: 0.00012763342, y: 0.53787374, z: 0.15967834}
+--- !u!65 &1830721871865962984
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 121901564006430479}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 0
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 0.99974495, y: 0.16131897, z: 0.12384854}
+  m_Center: {x: 0.00012763342, y: 0.53880256, z: -0.14062513}
 --- !u!1 &758886806667285046
 GameObject:
   m_ObjectHideFlags: 0
@@ -121,7 +150,8 @@ Transform:
   m_GameObject: {fileID: 758886806667285046}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 15, y: 20, z: 15}
+  m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6775374792818569492}
   - {fileID: 6643115570648588256}
@@ -140,7 +170,6 @@ GameObject:
   - component: {fileID: 6775374792818569492}
   - component: {fileID: 5695159461727820321}
   - component: {fileID: 824519374862133109}
-  - component: {fileID: 2649027561177737056}
   m_Layer: 0
   m_Name: Planks
   m_TagString: Untagged
@@ -158,6 +187,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 127168600888969356}
   m_RootOrder: 0
@@ -181,6 +211,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -211,20 +242,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2649027561177737056
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 777423408576102710}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: -5273049311075676327, guid: 68af98b2859bac74ba4573e6ea5f0658, type: 3}
 --- !u!1 &1461104548944872421
 GameObject:
   m_ObjectHideFlags: 0
@@ -236,7 +253,6 @@ GameObject:
   - component: {fileID: 6643115570648588256}
   - component: {fileID: 3071558517112813304}
   - component: {fileID: 8777523536392505566}
-  - component: {fileID: 2643839479343030241}
   m_Layer: 0
   m_Name: Platform
   m_TagString: Untagged
@@ -254,6 +270,7 @@ Transform:
   m_LocalRotation: {x: 0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: -0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 127168600888969356}
   m_RootOrder: 1
@@ -277,6 +294,7 @@ MeshRenderer:
   m_CastShadows: 1
   m_ReceiveShadows: 1
   m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
   m_MotionVectors: 1
   m_LightProbeUsage: 1
   m_ReflectionProbeUsage: 1
@@ -307,17 +325,3 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2643839479343030241
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1461104548944872421}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 4
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 1149973307703454695, guid: 68af98b2859bac74ba4573e6ea5f0658, type: 3}
