@@ -88,9 +88,9 @@ MonoBehaviour:
   canSway: 0
   initialWeaponPosition: {x: 0, y: 0, z: 0}
   initialSwayPosition: {x: 0, y: 0, z: 0}
-  SwayAmount: 0
-  MaxSwayAmount: 0
-  swaySmoothing: 0
+  swayMultiplier: 2
+  maxSwayDistance: 0.5
+  swaySmoothing: 0.2
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
   ammo: 12

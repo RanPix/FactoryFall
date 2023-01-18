@@ -22,7 +22,7 @@ public class FlameThrower : Weapon
         {
             InstantiateFireTrigger();
         }
-        SpawmMuzzle();
+        SpawnMuzzle();
 
         weaponAmmo.Ammo--;
         weaponAmmo.ApdateAmmoInScreen();

@@ -1,10 +1,8 @@
-using System;
 using System.Collections;
 using UnityEngine;
-using TMPro;
 using UnityEngine.InputSystem;
+using TMPro;
 using Random = UnityEngine.Random;
-using static UnityEngine.InputSystem.LowLevel.InputStateHistory;
 
 public enum States
 {
@@ -55,9 +53,12 @@ abstract public class Weapon : MonoBehaviour
     [SerializeField] private Vector3 initialWeaponPosition;
     [SerializeField] private Vector3 initialSwayPosition;
 
-    [SerializeField] private float SwayAmount;
-    [SerializeField] private float MaxSwayAmount;
+    [SerializeField] private float swayMultiplier;
+    [SerializeField] private float maxSwayDistance;
     [SerializeField] private float swaySmoothing;
+
+    private PlayerControls controls;
+    private Vector2 lookVector;
 
     //[Space(10)]
     //[Header("Aiming")]
@@ -101,7 +102,6 @@ abstract public class Weapon : MonoBehaviour
     public AudioSource audioSource;
     private TMP_Text ammoText;
 
-
     [SerializeField] private Transform weaponView;
 
     public bool reloading { get; private set; } = false;
@@ -123,7 +123,7 @@ abstract public class Weapon : MonoBehaviour
 
     [field: SerializeField] public bool _isLocalPLayer { get; set; }
 
-    // Start is called before the first frame update
+
     private void Start()
     {
         if (!_isLocalPLayer)
@@ -135,6 +135,11 @@ abstract public class Weapon : MonoBehaviour
             }
             return;
         }
+
+        controls = new PlayerControls();
+        controls.Player.Enable();
+        controls.Player.Look.performed += ReadLookVector;
+
         initialWeaponPosition = transform.position;
 
         cam = Camera.main;
@@ -151,6 +156,11 @@ abstract public class Weapon : MonoBehaviour
         weaponAmmo.AmmoText = ammoText;
 
         canShoot = true;
+    }
+
+    private void Update()
+    {
+        Sway();
     }
 
     protected Ray GetRay()
@@ -173,6 +183,17 @@ abstract public class Weapon : MonoBehaviour
         reloading = false;
     }
 
+
+    private void ReadLookVector(InputAction.CallbackContext context) => lookVector = context.ReadValue<Vector2>();
+
+    private void Sway()
+    {
+        transform.localPosition = Vector3.Lerp(transform.localPosition, lookVector * swayMultiplier, swaySmoothing * Time.deltaTime);
+
+
+
+    }
+
     public void PlaySound(PlaySoundType soundType)
     {
         switch (soundType)
@@ -191,7 +212,7 @@ abstract public class Weapon : MonoBehaviour
         }
 
     }
-    protected void SpawmMuzzle()
+    protected void SpawnMuzzle()
     {
         if (weaponScriptableObject.muzzleFlash is not null)
         {

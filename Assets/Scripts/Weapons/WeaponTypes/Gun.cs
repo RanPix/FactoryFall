@@ -12,7 +12,7 @@ public class Gun : Weapon
     {
         //Debug.Log("piu");
         _nextFire = Time.time;
-        SpawmMuzzle();
+        SpawnMuzzle();
 
         weaponAmmo.Ammo--;
         weaponAmmo.ApdateAmmoInScreen();
