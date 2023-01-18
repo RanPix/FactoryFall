@@ -158,10 +158,10 @@ abstract public class Weapon : MonoBehaviour
         canShoot = true;
     }
 
-    private void Update()
-    {
-        Sway();
-    }
+    //private void Update()
+    //{
+    //    Sway();
+    //}
 
     protected Ray GetRay()
     {
@@ -214,10 +214,8 @@ abstract public class Weapon : MonoBehaviour
     }
     protected void SpawnMuzzle()
     {
-        print("Muzzle111111111");
         if (weaponScriptableObject.muzzleFlash is not null)
         {
-            print("Muzzl2222222222");
             Transform spawnedMuzzle = Instantiate(weaponScriptableObject.muzzleFlash, muzzlePosition.position, muzzlePosition.rotation, muzzlePosition);
 
             Destroy(spawnedMuzzle.gameObject, weaponScriptableObject.muzzleFlashLifetime);
