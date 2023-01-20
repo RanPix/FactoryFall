@@ -65,7 +65,7 @@ namespace FiniteMovementStateMachine
         public (Vector3 right, Vector3 left) WallNormals;
         public Vector3 lastWallNormal;
 
-        public Vector3 deltaMove;
+        public Vector3 previousPosition;
 
         public bool gotJumpInput;
 

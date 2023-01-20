@@ -1,3 +1,4 @@
+using GameBase;
 using UnityEngine;
 
 namespace FiniteMovementStateMachine
@@ -13,9 +14,13 @@ namespace FiniteMovementStateMachine
         [HideInInspector] public Run run { get; private set; }
         [HideInInspector] public Wallrun wallrun { get; private set; }
 
+        private MovementDataIntersection data;
+
         protected void Start()
         {
             InitializeStates();
+
+            gameObject.GetComponent<Health>().onDeath += InvokeSpeedReset;
 
             currentState = GetInitialState();
             currentState?.Enter();
@@ -36,7 +41,7 @@ namespace FiniteMovementStateMachine
         {
             PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>());
             PlayerDataFields fields = GetComponent<PlayerDataFields>();
-            MovementDataIntersection data = new();
+            data = new();
 
             idle = new(this, movementControl, fields, data);
             walk = new(this, movementControl, fields, data);
@@ -55,5 +60,11 @@ namespace FiniteMovementStateMachine
             currentState = newState;
             currentState.Enter();
         }
+
+        private void InvokeSpeedReset(string s)
+            => Invoke(nameof(SpeedReset), 0.1f);
+
+        private void SpeedReset() // Unoptimazed? Ye, but I dont care rn
+            => data = new();
     }
 }

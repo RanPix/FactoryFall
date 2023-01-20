@@ -26,7 +26,7 @@ MonoBehaviour:
   AirSpeed: 15
   MaxWallrunDistance: 20
   WallrunFallOffSpeedMultiplier: 1.5
-  WallrunFallOffDirctionMultiplier: 2
+  WallrunFallOffDirectionMultiplier: 2
   MaxWallrunBoostSpeed: 25
   Redirects: 2
   GroundCheckRadius: 0.4

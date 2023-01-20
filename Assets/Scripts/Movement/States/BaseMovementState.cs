@@ -26,6 +26,7 @@ namespace FiniteMovementStateMachine
         private bool isMovingForward;
         private bool isMovingForwardIsUpdatedThisFrame;
 
+        protected bool isCurrentState { get; private set; } = false;
         #region Getters
 
         protected bool GetGotWall()
@@ -80,9 +81,13 @@ namespace FiniteMovementStateMachine
         #region State Logic
 
         /// <summary>
-        ///     Called once on start of state
+        ///     Called once on start of state <br/>
+        ///     In case of override base should be put at the start of method
         /// </summary>
-        public virtual void Enter() { }
+        public virtual void Enter()
+        {
+            isCurrentState = true;
+        }
 
         /// <summary>
         ///     Called every frame before Update Physics. Should be used only for calculation and changes between states <br/>
@@ -108,9 +113,13 @@ namespace FiniteMovementStateMachine
         }
 
         /// <summary>
-        ///     Called on exit of state
+        ///     Called on exit of state<br/>
+        ///     In case of override base should be put at the end of method
         /// </summary>
-        public virtual void Exit() { }
+        public virtual void Exit()
+        {
+            isCurrentState = false;
+        }
 
         /// <summary> Don't override with base </summary>
         public virtual void CheckForChangeState()
@@ -134,9 +143,12 @@ namespace FiniteMovementStateMachine
             => isGrounded = Physics.CheckSphere(fields.groundCheck.position, fields.ScriptableFields.GroundCheckRadius,
                 fields.ScriptableFields.GroundCheckLm, QueryTriggerInteraction.Ignore);
 
-        private void AddJump(InputAction.CallbackContext context) // Adds jump to queue while changing states
-            => data.gotJumpInput = true;
-
+        protected virtual void AddJump(InputAction.CallbackContext context) // Adds jump to queue while changing states
+        {
+            if(isCurrentState)
+                data.gotJumpInput = true;
+        }
+        
         private bool CheckForWalls()
         {
             RaycastHit hit;
