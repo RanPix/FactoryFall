@@ -8,7 +8,7 @@ public class MidAir : BaseMovementState
     private int hasDoubleJumps;
     private int hasRedirects;
 
-    private bool gotRedirect;
+    private bool gotRedirectInput;
 
     public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
         : base("MidAir", stateMachine, movementControl, fields, data)
@@ -20,10 +20,12 @@ public class MidAir : BaseMovementState
 
     public override void Enter()
     {
+        base.Enter();
+
         hasDoubleJumps = fields.ScriptableFields.DoubleJumps;
         hasRedirects = fields.ScriptableFields.Redirects;
 
-        gotRedirect = false;
+        gotRedirectInput = false;
     }
 
     public override void UpdateLogic()
@@ -37,9 +39,9 @@ public class MidAir : BaseMovementState
         ApplyGravity();
 
         if(data.gotJumpInput)
-            TryJump();
+            Jump();
 
-        if(gotRedirect)
+        if(gotRedirectInput)
             TryRedirect();
     }
 
@@ -60,6 +62,8 @@ public class MidAir : BaseMovementState
     {
         data.verticalMove = 0f;
         data.lastWallNormal = Vector3.zero;
+
+        base.Exit();
     }
 
     #endregion
@@ -87,33 +91,37 @@ public class MidAir : BaseMovementState
             data.verticalMove -= fields.ScriptableFields.Gravity * Time.deltaTime;
     }
 
-    private void TryJump()
+    private void Jump()
     {
-        if (GetIsGrounded())
-            data.verticalMove += fields.ScriptableFields.JumpHeight;
-        else if (hasDoubleJumps-- > 0)
-            DoubleJump();
-
-        data.gotJumpInput = false;
-    }
-
-    private void DoubleJump()
-    {
-        if (fields.ScriptableFields.JumpOverlap)
+        if (fields.ScriptableFields.JumpOverlap) // Jump overlap fix check
             data.verticalMove =
                 data.verticalMove < fields.ScriptableFields.JumpHeight ?
                     fields.ScriptableFields.JumpHeight : 
                     data.verticalMove + fields.ScriptableFields.JumpHeight;
         else
             data.verticalMove += fields.ScriptableFields.JumpHeight;
+
+        data.gotJumpInput = false;
     }
 
     private void AddRedirect(InputAction.CallbackContext context)
-        => gotRedirect = true;
+    {
+        if(isCurrentState)
+            gotRedirectInput = true;
+    }
+
+    protected override void AddJump(InputAction.CallbackContext context)
+    {
+        if(!isCurrentState)
+            return;
+
+        if (hasDoubleJumps-- > 0)
+            base.AddJump(context);
+    }
 
     private void TryRedirect()
     {
-        gotRedirect = false;
+        gotRedirectInput = false;
 
         if (!CheckForCharges()) 
             return;

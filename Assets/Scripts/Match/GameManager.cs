@@ -43,7 +43,6 @@ public class GameManager : MonoBehaviour
 
     public static void RegisterPlayer(string _netID, GamePlayer _player)
     {
-        Debug.Log("NetID = " + _netID);
         players.Add(_netID, _player);
     }
 

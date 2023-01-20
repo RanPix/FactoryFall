@@ -15,6 +15,8 @@ public class Wallrun : BaseMovementState
 
     public override void Enter()
     {
+        base.Enter();
+
         data.GetWalls(fields);
         CalculateMoveDirection();
 
@@ -39,6 +41,8 @@ public class Wallrun : BaseMovementState
     {
         ChangeVelocityToMoveOfWall();
         data.lastWallNormal = currentWallNormal;
+
+        base.Exit();
     }
 
     #endregion
