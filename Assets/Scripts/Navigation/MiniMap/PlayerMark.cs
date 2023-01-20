@@ -37,6 +37,7 @@ public class PlayerMark : MonoBehaviour
     // Update is called once per frame
     void LateUpdate()
     {
+        if(player)
             this.transform.SetPositionAndRotation(new Vector3(player.position.x, 287f, player.position.z), new Quaternion(0, rotationReference.rotation.y, 0, rotationReference.rotation.w));
 
     }

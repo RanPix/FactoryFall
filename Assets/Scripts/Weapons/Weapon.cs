@@ -1,4 +1,6 @@
 using System.Collections;
+using GameBase;
+using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
@@ -26,8 +28,8 @@ public enum PlaySoundType
 abstract public class Weapon : MonoBehaviour
 {
 
-    [SerializeField] public WeaponScriptableObject weaponScriptableObject;
-
+    public WeaponScriptableObject weaponScriptableObject;
+    [SerializeField] private GamePlayer gamePlayer;
     [Space]
     [Header("Enums")]
     [SerializeField] private States _state;
@@ -86,7 +88,6 @@ abstract public class Weapon : MonoBehaviour
     [Space(10)]
     [Header("Effects")]
     [SerializeField] private Transform muzzlePosition;
-    [SerializeField] private Transform trail;
 
 
     [Space(10)]
@@ -136,6 +137,7 @@ abstract public class Weapon : MonoBehaviour
             return;
         }
 
+        gamePlayer.GetComponent<Health>().onDeath += OnDeath;
         controls = new PlayerControls();
         controls.Player.Enable();
         controls.Player.Look.performed += ReadLookVector;
@@ -154,8 +156,8 @@ abstract public class Weapon : MonoBehaviour
         weaponAmmo.ReserveAmmo = reserveAmmo;
 
         weaponAmmo.AmmoText = ammoText;
-
         canShoot = true;
+
     }
 
     //private void Update()
@@ -178,7 +180,7 @@ abstract public class Weapon : MonoBehaviour
         yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
 
         weaponAmmo.AddAmmo();
-        weaponAmmo.ApdateAmmoInScreen();
+        weaponAmmo.UpdateAmmoInScreen();
         canShoot = true;
         reloading = false;
     }
@@ -203,7 +205,7 @@ abstract public class Weapon : MonoBehaviour
                 break;
 
             case PlaySoundType.Shoot:
-                audioSource.PlayOneShot(weaponScriptableObject.shotSounds[Random.Range(0, weaponScriptableObject.shotSounds.Length)]);
+                audioSource.PlayOneShot(weaponScriptableObject.shotSounds[Random.Range(0, weaponScriptableObject.shotSounds.Length-1)]);
                 break;
 
             case PlaySoundType.Reload:
@@ -212,6 +214,7 @@ abstract public class Weapon : MonoBehaviour
         }
 
     }
+
     protected void SpawnMuzzle()
     {
         if (weaponScriptableObject.muzzleFlash is not null)
@@ -220,6 +223,12 @@ abstract public class Weapon : MonoBehaviour
 
             Destroy(spawnedMuzzle.gameObject, weaponScriptableObject.muzzleFlashLifetime);
         }
+    }
+
+    public void OnDeath(string str)
+    {
+        weaponAmmo.Ammo = weaponAmmo.ClipSize;
+        weaponAmmo.UpdateAmmoInScreen();
     }
 
 }

@@ -4,6 +4,7 @@ using FiniteMovementStateMachine;
 using Mirror;
 using GameBase;
 using Player.Info;
+using TMPro;
 
 
 namespace Player
@@ -14,6 +15,9 @@ namespace Player
         private PlayerInfo playerInfo;
 
         [SerializeField] private Health health;
+
+        [SerializeField] private GameObject nameGO;
+
         [field: SyncVar] public bool isDead { get; private set; }
 
         [SerializeField] private Behaviour[] disableOnDeath;
@@ -46,7 +50,7 @@ namespace Player
         [SerializeField] private GameObject compass;
         [SerializeField] private AudioSource audioSource;
 
-
+        [SerializeField] private WeaponKeyCodes weaponKeyCodes;
 
         [SerializeField] private Transform muzzlePosition;
 
@@ -88,10 +92,11 @@ namespace Player
 
         private void Start()
         {
+            playerInfo = new PlayerInfo(null, Team.None, GetComponent<NetworkIdentity>().netId.ToString(), transform.name);
             if (isLocalPlayer)
             {
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
-
+                gameObject.tag = "LocalPlayer";
                 canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
 
                 for (int i = 0; i < canvas.transform.childCount; i++)
@@ -104,7 +109,6 @@ namespace Player
 
                 }
                 //Debug.Log("NetID222222" + GetComponent<NetworkIdentity>().netId.ToString());
-                playerInfo = new PlayerInfo(null, Team.None, GetComponent<NetworkIdentity>().netId.ToString(), transform.name);
                 
 
                 SetupCameraHolder();
@@ -125,8 +129,14 @@ namespace Player
                 _playerMark.player = gameObject.transform;
                 _playerMark.isLocal = false;
                 _playerMark.rotationReference = gameObject.transform.GetChild(0).GetChild(0);
-
+                
+                nameGO.SetActive(true);
+                nameGO.GetComponentInChildren<TMP_Text>().text = playerInfo.name;
+                this.enabled = false;
             }
+
+
+
 
         }
 
@@ -177,7 +187,7 @@ namespace Player
             {
                 //Debug.Log("DIE111111111111");
                 sourcePlayer.kills++;
-                GameManager.instance.OnPlayerKilledCallback.Invoke(playerInfo.netID, sourcePlayer.name);
+                GameManager.instance.OnPlayerKilledCallback?.Invoke(playerInfo.netID, sourcePlayer.name);
             }
 
             playerInfo.deaths++;
@@ -204,15 +214,17 @@ namespace Player
         [ClientRpc]
         private void RpcDisableComponentsOnDeath()
         {
+
             //Disable components
             for (int i = 0; i < disableOnDeath.Length; i++)
                 disableOnDeath[i].enabled = false;
             GetComponent<CharacterController>().enabled = false;
 
+
             //Disable GameObjects
             for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
                 disableGameObjectsOnDeath[i].SetActive(false);
-            Destroy(GetComponent<MovementMachine>());
+            //Destroy(GetComponent<MovementMachine>());
 
         }
 
@@ -227,7 +239,7 @@ namespace Player
             yield return new WaitForSeconds(0.1f);
 
             SetupPlayer();
-            gameObject.AddComponent<MovementMachine>();
+            //gameObject.AddComponent<MovementMachine>();
 
             //Debug.Log(transform.name + " respawned.");
         }
@@ -273,12 +285,18 @@ namespace Player
                     CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                 }
             }
+
+            SpawnTrail(isHitted, ray, hit, shootRange); 
+
+        }
+
+        public void SpawnTrail(bool isHitted, Ray ray, RaycastHit hit, float shootRange)
+        {
             Transform _trail = Instantiate(trail);
             LineRenderer line = _trail.GetComponent<LineRenderer>();
             line.SetPosition(0, muzzlePosition.position);
-            Vector3 trailFinish = isHitted?hit.point:ray.origin+ray.direction*shootRange;
+            Vector3 trailFinish = isHitted ? hit.point : ray.origin + ray.direction * shootRange;
             line.SetPosition(1, trailFinish);
-
 
         }
 

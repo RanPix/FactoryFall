@@ -15,7 +15,7 @@ public class Gun : Weapon
         SpawnMuzzle();
 
         weaponAmmo.Ammo--;
-        weaponAmmo.ApdateAmmoInScreen();
+        weaponAmmo.UpdateAmmoInScreen();
 
         animator.Play(shootAnimationName);
 

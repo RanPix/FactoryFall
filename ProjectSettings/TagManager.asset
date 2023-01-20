@@ -8,6 +8,7 @@ TagManager:
   - MiniMapCamera
   - PreviewCamera
   - SpawnPoint
+  - LocalPlayer
   layers:
   - Default
   - TransparentFX
@@ -24,10 +25,7 @@ TagManager:
   - EnemyPlayerMark
   - MIniMap
   - Ghost
-  - 
-  - 
-  - 
-  - 
+  - Name
   - 
   - 
   - 

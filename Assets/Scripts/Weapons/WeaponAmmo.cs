@@ -34,9 +34,9 @@ public class WeaponAmmo : MonoBehaviour
             Ammo = ClipSize;
             //ReserveAmmo -= amountNeeded;
         }
-        ApdateAmmoInScreen();
+        UpdateAmmoInScreen();
     }
-    public void ApdateAmmoInScreen()
+    public void UpdateAmmoInScreen()
     {
         AmmoText.text = Ammo.ToString();
         if (Ammo <= 0) Ammo = 0;

@@ -21,6 +21,8 @@ namespace Player.Info
             //throw new System.NotImplementedException();
         }
 
+        public string GetName() => name;
+
         public void ReadInfo()
         {
             //reading a json file with this info at the start of a game 

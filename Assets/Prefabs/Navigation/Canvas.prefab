@@ -470,6 +470,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: HitMarker
       objectReference: {fileID: 0}
+    - target: {fileID: 5485296589273805217, guid: 37340685948ba8342aaa83cc4a9feac0,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 37340685948ba8342aaa83cc4a9feac0, type: 3}
 --- !u!224 &5327069965522646606 stripped

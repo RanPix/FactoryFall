@@ -5,10 +5,10 @@ using UnityEngine;
 [RequireComponent(typeof(AudioSync))]
 public class WeaponKeyCodes : NetworkBehaviour
 {
+    [SerializeField] private GamePlayer gamePlayer;
     public Transform weaponHolder;
     public Weapon currentWeapon;
     private int currentWeaponIndex = -1;
-    private GamePlayer gamePlayer;
     public PlayerControls controls { get; private set; }
 
     private AudioSync audioSync;
@@ -18,7 +18,6 @@ public class WeaponKeyCodes : NetworkBehaviour
         if(!isLocalPlayer)
             return;
         audioSync = GetComponent<AudioSync>();
-        gamePlayer = GetComponent<GamePlayer>();
         controls = new PlayerControls();
         controls.Player.Enable();
         ChangeWeapon(0);
@@ -69,6 +68,7 @@ public class WeaponKeyCodes : NetworkBehaviour
                     else if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
                     {
                         currentWeapon.FireButtonWasReleased();
+                        currentWeapon.Shoot();
                         gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetLocalNetID());
 
                     }

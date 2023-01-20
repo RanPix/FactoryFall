@@ -79,6 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponScriptableObject: {fileID: 11400000, guid: 4e754d2369c961644ad470e5a712dd9a,
     type: 2}
+  gamePlayer: {fileID: 0}
   _state: 0
   _shootType: 1
   animator: {fileID: 2173455107278860012}
@@ -98,7 +99,6 @@ MonoBehaviour:
   hasInfiniteAmmo: 1
   reserveAmmo: 240
   muzzlePosition: {fileID: 3220236162412293851}
-  trail: {fileID: 0}
   hitMask:
     serializedVersion: 2
     m_Bits: 153

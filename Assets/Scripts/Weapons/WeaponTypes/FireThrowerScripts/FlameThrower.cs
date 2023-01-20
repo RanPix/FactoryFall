@@ -25,7 +25,7 @@ public class FlameThrower : Weapon
         SpawnMuzzle();
 
         weaponAmmo.Ammo--;
-        weaponAmmo.ApdateAmmoInScreen();
+        weaponAmmo.UpdateAmmoInScreen();
 
         animator.Play(shootAnimationName);
 
