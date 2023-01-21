@@ -45,6 +45,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   matchSettings:
-    respawnTime: 2
+    respawnTime: 1.5
     dmgMultiplier: 1
   sceneCamera: {fileID: 0}

@@ -181,13 +181,13 @@ namespace Player
             //print($"_sourceID = {_sourceID}");
             isDead = true;
 
-            PlayerInfo sourcePlayer = GameManager.GetPlayerInfo(_sourceID).GetPlayerInfo();
+            PlayerInfo sourcePlayer = GameManager.GetPlayer(_sourceID).GetPlayerInfo();
 
             if (sourcePlayer != null)
             {
                 //Debug.Log("DIE111111111111");
                 sourcePlayer.kills++;
-                GameManager.instance.OnPlayerKilledCallback?.Invoke(playerInfo.netID, sourcePlayer.name);
+                CmdDie(_sourceID);
             }
 
             playerInfo.deaths++;
@@ -203,8 +203,22 @@ namespace Player
             //Switch cameras
             if (isLocalPlayer)
                 GameManager.instance.SetSceneCameraActive(true);
+            
 
             StartCoroutine(Respawn());
+        }
+
+        [Command]
+        private void CmdDie(string _sourceID)
+        {
+
+            RpcDie(_sourceID);
+        }
+
+        [ClientRpc]
+        private void RpcDie(string _sourceID)
+        {
+            GameManager.instance.OnPlayerKilledCallback?.Invoke(playerInfo.netID, GameManager.GetPlayer(_sourceID).GetPlayerInfo().name);
         }
 
         [Command]
@@ -305,7 +319,7 @@ namespace Player
         {
             //Debug.Log(_playerID + " has been  shot.");
 
-            GamePlayer _player = GameManager.GetPlayerInfo(_playerID);
+            GamePlayer _player = GameManager.GetPlayer(_playerID);
             _player.RpcTakeDamage(_damage, _sourceID);
         }
         [ClientRpc]

@@ -25,11 +25,14 @@ public enum PlaySoundType
     Reload
 }
 
+
 abstract public class Weapon : MonoBehaviour
 {
 
     public WeaponScriptableObject weaponScriptableObject;
+
     [SerializeField] private GamePlayer gamePlayer;
+
     [Space]
     [Header("Enums")]
     [SerializeField] private States _state;
@@ -209,6 +212,7 @@ abstract public class Weapon : MonoBehaviour
                 break;
 
             case PlaySoundType.Reload:
+                print("reload");
                 audioSource.PlayOneShot(weaponScriptableObject.reload);
                 break;
         }
