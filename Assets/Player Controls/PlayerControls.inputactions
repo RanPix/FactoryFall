@@ -141,9 +141,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "New action",
+                    "name": "ArmPunch",
                     "type": "Button",
-                    "id": "47118639-761b-4861-bb1f-eae1170a9f3f",
+                    "id": "ffd72fbc-9950-47db-a309-409f22b35496",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -516,12 +516,12 @@
                 },
                 {
                     "name": "",
-                    "id": "2583d8ce-ccc3-4530-bf57-55009936144d",
-                    "path": "",
+                    "id": "0ea8ab48-f5af-4806-ac11-a81327b09640",
+                    "path": "<Keyboard>/v",
                     "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "New action",
+                    "action": "ArmPunch",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

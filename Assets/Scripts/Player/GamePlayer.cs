@@ -6,7 +6,6 @@ using GameBase;
 using Player.Info;
 using TMPro;
 
-
 namespace Player
 {
     [RequireComponent(typeof(PlayerSetup))]
@@ -272,6 +271,16 @@ namespace Player
         }
 
 
+        public void SpawnTrail(bool isHitted, Ray ray, RaycastHit hit, float shootRange)
+        {
+            Transform _trail = Instantiate(trail);
+            LineRenderer line = _trail.GetComponent<LineRenderer>();
+            line.SetPosition(0, muzzlePosition.position);
+            Vector3 trailFinish = isHitted ? hit.point : ray.origin + ray.direction * shootRange;
+            line.SetPosition(1, trailFinish);
+
+        }
+
         [Client]
         public void Shoot(Ray ray, int damage, float shootRange, string playerID)
         {
@@ -290,15 +299,21 @@ namespace Player
 
         }
 
-        public void SpawnTrail(bool isHitted, Ray ray, RaycastHit hit, float shootRange)
+        [Client]
+        public void Punch(Ray ray, int damage, float punchDistance, float punchRadius, LayerMask hitLM, string playerID)
         {
-            Transform _trail = Instantiate(trail);
-            LineRenderer line = _trail.GetComponent<LineRenderer>();
-            line.SetPosition(0, muzzlePosition.position);
-            Vector3 trailFinish = isHitted ? hit.point : ray.origin + ray.direction * shootRange;
-            line.SetPosition(1, trailFinish);
-
+            bool isHitted = Physics.SphereCast(ray, punchRadius, out RaycastHit hit, punchDistance, hitLM);
+            if (isHitted)
+            {
+                Health hitHealth = hit.transform.GetComponent<Health>();
+                if (hitHealth)
+                {
+                    StartCoroutine(ActivateForSeconds(hitMarker, 0.5f));
+                    CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                }
+            }
         }
+
 
         [Command]
         private void CmdPlayerShot(string _playerID, int _damage, string _sourceID)
@@ -308,6 +323,7 @@ namespace Player
             GamePlayer _player = GameManager.GetPlayerInfo(_playerID);
             _player.RpcTakeDamage(_damage, _sourceID);
         }
+
         [ClientRpc]
         public void RpcTakeDamage(int _amount, string _sourceID)
         {

@@ -163,9 +163,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""initialStateCheck"": false
                 },
                 {
-                    ""name"": ""New action"",
+                    ""name"": ""ArmPunch"",
                     ""type"": ""Button"",
-                    ""id"": ""47118639-761b-4861-bb1f-eae1170a9f3f"",
+                    ""id"": ""ffd72fbc-9950-47db-a309-409f22b35496"",
                     ""expectedControlType"": ""Button"",
                     ""processors"": """",
                     ""interactions"": """",
@@ -538,12 +538,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 },
                 {
                     ""name"": """",
-                    ""id"": ""2583d8ce-ccc3-4530-bf57-55009936144d"",
-                    ""path"": """",
+                    ""id"": ""0ea8ab48-f5af-4806-ac11-a81327b09640"",
+                    ""path"": ""<Keyboard>/v"",
                     ""interactions"": """",
                     ""processors"": """",
                     ""groups"": """",
-                    ""action"": ""New action"",
+                    ""action"": ""ArmPunch"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1186,7 +1186,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_RotateBlock = m_Player.FindAction("RotateBlock", throwIfNotFound: true);
         m_Player_PlaceBlock = m_Player.FindAction("PlaceBlock", throwIfNotFound: true);
         m_Player_RemoveBlock = m_Player.FindAction("RemoveBlock", throwIfNotFound: true);
-        m_Player_Newaction = m_Player.FindAction("New action", throwIfNotFound: true);
+        m_Player_ArmPunch = m_Player.FindAction("ArmPunch", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1275,7 +1275,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_RotateBlock;
     private readonly InputAction m_Player_PlaceBlock;
     private readonly InputAction m_Player_RemoveBlock;
-    private readonly InputAction m_Player_Newaction;
+    private readonly InputAction m_Player_ArmPunch;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1295,7 +1295,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @RotateBlock => m_Wrapper.m_Player_RotateBlock;
         public InputAction @PlaceBlock => m_Wrapper.m_Player_PlaceBlock;
         public InputAction @RemoveBlock => m_Wrapper.m_Player_RemoveBlock;
-        public InputAction @Newaction => m_Wrapper.m_Player_Newaction;
+        public InputAction @ArmPunch => m_Wrapper.m_Player_ArmPunch;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1350,9 +1350,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @RemoveBlock.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveBlock;
                 @RemoveBlock.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveBlock;
                 @RemoveBlock.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnRemoveBlock;
-                @Newaction.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNewaction;
-                @Newaction.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNewaction;
-                @Newaction.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnNewaction;
+                @ArmPunch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnArmPunch;
+                @ArmPunch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnArmPunch;
+                @ArmPunch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnArmPunch;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1402,9 +1402,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @RemoveBlock.started += instance.OnRemoveBlock;
                 @RemoveBlock.performed += instance.OnRemoveBlock;
                 @RemoveBlock.canceled += instance.OnRemoveBlock;
-                @Newaction.started += instance.OnNewaction;
-                @Newaction.performed += instance.OnNewaction;
-                @Newaction.canceled += instance.OnNewaction;
+                @ArmPunch.started += instance.OnArmPunch;
+                @ArmPunch.performed += instance.OnArmPunch;
+                @ArmPunch.canceled += instance.OnArmPunch;
             }
         }
     }
@@ -1592,7 +1592,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnRotateBlock(InputAction.CallbackContext context);
         void OnPlaceBlock(InputAction.CallbackContext context);
         void OnRemoveBlock(InputAction.CallbackContext context);
-        void OnNewaction(InputAction.CallbackContext context);
+        void OnArmPunch(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {
