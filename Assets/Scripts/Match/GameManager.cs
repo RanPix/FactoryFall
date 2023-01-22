@@ -51,9 +51,8 @@ public class GameManager : MonoBehaviour
         players.Remove(_playerID);
     }
 
-    public static GamePlayer GetPlayerInfo(string _playerID)
+    public static GamePlayer GetPlayer(string _playerID)
     {
-        Debug.Log("get player info = " + _playerID);
         return players[_playerID];
     }
 

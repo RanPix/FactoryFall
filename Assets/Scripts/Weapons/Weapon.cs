@@ -25,11 +25,14 @@ public enum PlaySoundType
     Reload
 }
 
+
 abstract public class Weapon : MonoBehaviour
 {
 
     public WeaponScriptableObject weaponScriptableObject;
+
     [SerializeField] private GamePlayer gamePlayer;
+
     [Space]
     [Header("Enums")]
     [SerializeField] private States _state;
@@ -81,9 +84,11 @@ abstract public class Weapon : MonoBehaviour
     [SerializeField] public WeaponAmmo weaponAmmo;
     [SerializeField] public int ammo;
     [SerializeField] private int maxAmmo;
+    [SerializeField] public int numberOfBulletsPerShot;
+    [SerializeField] public float timeBetweenSpawnBullets;
 
-    [SerializeField] private bool hasInfiniteAmmo;
-    [SerializeField] private int reserveAmmo;
+    [SerializeField] protected bool hasInfiniteAmmo;
+    [SerializeField] protected int reserveAmmo;
 
     [Space(10)]
     [Header("Effects")]
@@ -196,6 +201,7 @@ abstract public class Weapon : MonoBehaviour
 
     }
 
+
     public void PlaySound(PlaySoundType soundType)
     {
         switch (soundType)
@@ -209,6 +215,7 @@ abstract public class Weapon : MonoBehaviour
                 break;
 
             case PlaySoundType.Reload:
+                print("reload");
                 audioSource.PlayOneShot(weaponScriptableObject.reload);
                 break;
         }

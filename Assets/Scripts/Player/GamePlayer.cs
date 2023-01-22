@@ -55,6 +55,7 @@ namespace Player
 
         [SerializeField] private Transform trail;
 
+        private int spawnedBulletCount = 0;
 
         private Canvas canvas;
         private Transform cam;
@@ -107,8 +108,6 @@ namespace Player
                     }
 
                 }
-                //Debug.Log("NetID222222" + GetComponent<NetworkIdentity>().netId.ToString());
-                
 
                 SetupCameraHolder();
                 SetupMiniMap();
@@ -139,165 +138,25 @@ namespace Player
 
         }
 
-        public void SetupPlayer()
-        {
-            if (isLocalPlayer)
+        #region Weapon
+            [Client]
+            public void Shoot(Ray ray, int damage, float shootRange, string playerID)
             {
-                //Switch cameras
-                GameManager.instance.SetSceneCameraActive(false);
-            }
-
-            CmdBroadCastNewPlayerSetup();
-        }
-
-        [Command]
-        private void CmdBroadCastNewPlayerSetup()
-        {
-            RpcSetupPlayerOnAllClients();
-        }
-
-        [ClientRpc]
-        private void RpcSetupPlayerOnAllClients()
-        {
-            if (firstSetup)
-            {
-                wasEnabled = new bool[disableOnDeath.Length];
-                for (int i = 0; i < wasEnabled.Length; i++)
-                    wasEnabled[i] = disableOnDeath[i].enabled;
-                
-
-                for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
-                    disableGameObjectsOnDeath[i].SetActive(true);
-
-                firstSetup = false;
-            }
-
-            SetDefaults();
-        }
-
-        private void Die(string _sourceID)
-        {
-            //print($"_sourceID = {_sourceID}");
-            isDead = true;
-
-            PlayerInfo sourcePlayer = GameManager.GetPlayerInfo(_sourceID).GetPlayerInfo();
-
-            if (sourcePlayer != null)
-            {
-                //Debug.Log("DIE111111111111");
-                sourcePlayer.kills++;
-                GameManager.instance.OnPlayerKilledCallback?.Invoke(playerInfo.netID, sourcePlayer.name);
-            }
-
-            playerInfo.deaths++;
-
-            //Debug.Log("DIE2222222222");
-
-            CmdDisableComponentsOnDeath();
-
-            //Spawn a death effect
-            /*GameObject _gfxIns = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
-            Destroy(_gfxIns, 3f);*/
-
-            //Switch cameras
-            if (isLocalPlayer)
-                GameManager.instance.SetSceneCameraActive(true);
-
-            StartCoroutine(Respawn());
-        }
-
-        [Command]
-        private void CmdDisableComponentsOnDeath() 
-            => RpcDisableComponentsOnDeath();
-
-        [ClientRpc]
-        private void RpcDisableComponentsOnDeath()
-        {
-
-            //Disable components
-            for (int i = 0; i < disableOnDeath.Length; i++)
-                disableOnDeath[i].enabled = false;
-            GetComponent<CharacterController>().enabled = false;
-
-
-            //Disable GameObjects
-            for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
-                disableGameObjectsOnDeath[i].SetActive(false);
-            //Destroy(GetComponent<MovementMachine>());
-
-        }
-
-        private IEnumerator Respawn()
-        {
-            yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnTime);
-
-            Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition();
-            transform.position = _spawnPoint.position;
-            transform.rotation = _spawnPoint.rotation;
-
-            yield return new WaitForSeconds(0.1f);
-
-            SetupPlayer();
-            //gameObject.AddComponent<MovementMachine>();
-
-            //Debug.Log(transform.name + " respawned.");
-        }
-
-        public void SetDefaults()
-        {
-            isDead = false;
-
-            health.SetHealth(health.maxHealth);
-
-            //Enable the components
-            for (int i = 0; i < disableOnDeath.Length; i++)
-                disableOnDeath[i].enabled = wasEnabled[i];
-            GetComponent<CharacterController>().enabled = true;
-            //Enable the gameobjects
-            for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
-                disableGameObjectsOnDeath[i].SetActive(true);
-
-
-            //Create spawn effect
-            /*GameObject _gfxIns = Instantiate(spawnEffect, transform.position, Quaternion.identity);
-            Destroy(_gfxIns, 3f);*/
-        }
-
-        private IEnumerator ActivateForSeconds(GameObject GO, float time)
-        {
-            GO.SetActive(true);
-            yield return new WaitForSeconds(time);
-            GO.SetActive(false);
-        }
-
-
-        public void SpawnTrail(bool isHitted, Ray ray, RaycastHit hit, float shootRange)
-        {
-            Transform _trail = Instantiate(trail);
-            LineRenderer line = _trail.GetComponent<LineRenderer>();
-            line.SetPosition(0, muzzlePosition.position);
-            Vector3 trailFinish = isHitted ? hit.point : ray.origin + ray.direction * shootRange;
-            line.SetPosition(1, trailFinish);
-
-        }
-
-        [Client]
-        public void Shoot(Ray ray, int damage, float shootRange, string playerID)
-        {
-            bool isHitted = Physics.Raycast(ray, out RaycastHit hit, shootRange, hitMask);
-            if (isHitted)
-            {
-                Health hitHealth = hit.transform.GetComponent<Health>();
-                if (hitHealth)
+                spawnedBulletCount++;
+                bool isHitted = Physics.Raycast(ray, out RaycastHit hit, shootRange, hitMask);
+                if (isHitted)
                 {
-                    StartCoroutine(ActivateForSeconds(hitMarker, 0.5f));
-                    CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                    Health hitHealth = hit.transform.GetComponent<Health>();
+                    if (hitHealth)
+                    {
+                        StartCoroutine(ActivateForSeconds(hitMarker, 0.5f));
+                        CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                    }
                 }
+
+                SpawnTrail(isHitted, ray, hit, shootRange);
+                
             }
-
-            SpawnTrail(isHitted, ray, hit, shootRange); 
-
-        }
 
         [Client]
         public void Punch(Ray ray, int damage, float punchDistance, float punchRadius, LayerMask hitLM, string playerID)
@@ -314,23 +173,174 @@ namespace Player
             }
         }
 
+        public void SpawnTrail(bool isHitted, Ray ray, RaycastHit hit, float shootRange)
+            {
+                Transform _trail = Instantiate(trail);
+                LineRenderer line = _trail.GetComponent<LineRenderer>();
+                line.SetPosition(0, muzzlePosition.position);
+                Vector3 trailFinish = isHitted ? hit.point : ray.origin + ray.direction * shootRange;
+                line.SetPosition(1, trailFinish);
 
-        [Command]
-        private void CmdPlayerShot(string _playerID, int _damage, string _sourceID)
+            }
+
+            [Command]
+            private void CmdPlayerShot(string _playerID, int _damage, string _sourceID)
+            {
+
+                GamePlayer _player = GameManager.GetPlayer(_playerID);
+                _player.RpcTakeDamage(_damage, _sourceID);
+            }
+            [ClientRpc]
+            public void RpcTakeDamage(int _amount, string _sourceID)
+            {
+                if (isDead)
+                    return;
+                health.Damage(_sourceID, _amount);
+            }
+
+        #endregion
+        #region Death/Spawn/Respawn
+            private void Die(string _sourceID)
+            {
+                //print($"_sourceID = {_sourceID}");
+                isDead = true;
+
+                PlayerInfo sourcePlayer = GameManager.GetPlayer(_sourceID).GetPlayerInfo();
+
+                if (sourcePlayer != null)
+                {
+                    //Debug.Log("DIE111111111111");
+                    sourcePlayer.kills++;
+                    CmdDie(_sourceID);
+                }
+
+                playerInfo.deaths++;
+
+                //Debug.Log("DIE2222222222");
+
+                CmdDisableComponentsOnDeath();
+
+                //Spawn a death effect
+                /*GameObject _gfxIns = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
+                Destroy(_gfxIns, 3f);*/
+
+                //Switch cameras
+                if (isLocalPlayer)
+                    GameManager.instance.SetSceneCameraActive(true);
+
+
+                StartCoroutine(Respawn());
+            }
+
+            [Command]
+            private void CmdDie(string _sourceID)
+            {
+
+                RpcDie(_sourceID);
+            }
+
+            [ClientRpc]
+            private void RpcDie(string _sourceID)
+            {
+                GameManager.instance.OnPlayerKilledCallback?.Invoke(playerInfo.netID, GameManager.GetPlayer(_sourceID).GetPlayerInfo().name);
+            }
+
+            [Command]
+            private void CmdDisableComponentsOnDeath()
+                => RpcDisableComponentsOnDeath();
+
+            [ClientRpc]
+            private void RpcDisableComponentsOnDeath()
+            {
+
+                //Disable components
+                for (int i = 0; i < disableOnDeath.Length; i++)
+                    disableOnDeath[i].enabled = false;
+                GetComponent<CharacterController>().enabled = false;
+
+
+                //Disable GameObjects
+                for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
+                    disableGameObjectsOnDeath[i].SetActive(false);
+
+            }
+
+            private IEnumerator Respawn()
+            {
+                yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnTime);
+
+                Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition();
+                transform.position = _spawnPoint.position;
+                transform.rotation = _spawnPoint.rotation;
+
+                yield return new WaitForSeconds(0.1f);
+
+                SetupPlayer();
+            }
+        #endregion
+        #region Setup
+            public void SetupPlayer()
+            {
+                if (isLocalPlayer)
+                {
+                    //Switch cameras
+                    GameManager.instance.SetSceneCameraActive(false);
+                }
+
+                CmdBroadCastNewPlayerSetup();
+            }
+
+            [Command]
+            private void CmdBroadCastNewPlayerSetup()
+            {
+                RpcSetupPlayerOnAllClients();
+            }
+
+            [ClientRpc]
+            private void RpcSetupPlayerOnAllClients()
+            {
+                if (firstSetup)
+                {
+                    wasEnabled = new bool[disableOnDeath.Length];
+                    for (int i = 0; i < wasEnabled.Length; i++)
+                        wasEnabled[i] = disableOnDeath[i].enabled;
+
+
+                    for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
+                        disableGameObjectsOnDeath[i].SetActive(true);
+
+                    firstSetup = false;
+                }
+
+                SetDefaults();
+            }
+
+
+            public void SetDefaults()
+            {
+                isDead = false;
+
+                health.SetHealth(health.maxHealth);
+
+                //Enable the components
+                for (int i = 0; i < disableOnDeath.Length; i++)
+                    disableOnDeath[i].enabled = wasEnabled[i];
+                GetComponent<CharacterController>().enabled = true;
+                //Enable the gameobjects
+                for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
+                    disableGameObjectsOnDeath[i].SetActive(true);
+
+
+            }
+        #endregion
+
+        private IEnumerator ActivateForSeconds(GameObject GO, float time)
         {
-            //Debug.Log(_playerID + " has been  shot.");
-
-            GamePlayer _player = GameManager.GetPlayerInfo(_playerID);
-            _player.RpcTakeDamage(_damage, _sourceID);
+            GO.SetActive(true);
+            yield return new WaitForSeconds(time);
+            GO.SetActive(false);
         }
 
-        [ClientRpc]
-        public void RpcTakeDamage(int _amount, string _sourceID)
-        {
-            if (isDead)
-                return;
-            health.Damage(_sourceID, _amount);
-        }
 
         public string GetLocalNetID() => playerInfo.netID;
         public PlayerInfo GetPlayerInfo() => playerInfo;

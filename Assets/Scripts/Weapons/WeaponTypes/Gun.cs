@@ -6,7 +6,7 @@ public class Gun : Weapon
     public override float nextFire => _nextFire;
     #endregion
     private float _nextFire = 0;
-
+    private int spawnedBulletsCount = 0;
     
     public override Ray Shoot()
     {
@@ -20,7 +20,7 @@ public class Gun : Weapon
         animator.Play(shootAnimationName);
 
         //SpawnTrail();
-
+        spawnedBulletsCount++;
         return GetRay();
     }
 

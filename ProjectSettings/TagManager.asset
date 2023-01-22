@@ -25,9 +25,9 @@ TagManager:
   - EnemyPlayerMark
   - MIniMap
   - Ghost
-  - Name
-  - 
-  - 
+  - Nickname
+  - Muzzle
+  - FriendlyPlayerMark
   - 
   - 
   - 

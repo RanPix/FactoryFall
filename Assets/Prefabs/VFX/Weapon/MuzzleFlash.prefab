@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3447146207809876172}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 8188919476744220104}
   - component: {fileID: 3555888878467499449}
   - component: {fileID: 230842472521089026}
-  m_Layer: 0
+  m_Layer: 16
   m_Name: vfxg_MuzzleFlash
   m_TagString: Untagged
   m_Icon: {fileID: 0}
