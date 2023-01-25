@@ -1,8 +1,9 @@
-using Mirror;
+using GameBase;
+using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Look : NetworkBehaviour
+public class Look : MonoBehaviour
 {
     private PlayerControls controls;
 
@@ -21,6 +22,12 @@ public class Look : NetworkBehaviour
     private Vector2 inputVector;
     private float xRot;
     private float yRot;
+
+    private bool lookEnabled = true;
+
+    private Transform spectatePlayer;
+
+
 
     private void Start()
     {
@@ -47,6 +54,16 @@ public class Look : NetworkBehaviour
 
     private void UpdateCamera()
     {
+        if (!lookEnabled)
+        {
+            if (spectatePlayer != null) 
+            {
+                m_Camera.transform.LookAt(spectatePlayer.position + new Vector3(0, 1f));
+            }
+
+            return;
+        }
+
         Cursor.lockState = isMenuOpened ?
             CursorLockMode.Confined :
             CursorLockMode.Locked;
@@ -54,9 +71,6 @@ public class Look : NetworkBehaviour
         Cursor.visible = isMenuOpened;
         if (isMenuOpened)
             return;
-
-        yRot += inputVector.x * 0.01f * sensX;
-        xRot -= inputVector.y * 0.01f * sensY;
 
         // Laggy beauty
         yRot += inputVector.x * 0.01f * sensX;
@@ -66,6 +80,21 @@ public class Look : NetworkBehaviour
         m_Camera.transform.rotation = Quaternion.Euler(xRot, yRot, 0);
         orientation.rotation = Quaternion.Euler(0, yRot, 0);
     }
+
+
+    public void SetupEvents(GamePlayer player)
+    {
+        player.OnDeath += DisableLook;
+        player.OnRespawn += EnableLook;
+
+    }
+
+    private void DisableLook(string netID, string name, int hp)
+    {
+        spectatePlayer = GameManager.GetPlayer(netID)?.transform;
+        lookEnabled = false;
+    }
+    private void EnableLook() => lookEnabled = true;    
 
 
     private void ControlCursor(InputAction.CallbackContext context)

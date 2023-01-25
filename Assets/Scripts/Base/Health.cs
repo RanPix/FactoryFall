@@ -32,11 +32,11 @@ namespace GameBase
 
         public void CheckHealth(string playerID)
         {
-            print($"health: {currentHealth}");
+            //print($"health: {currentHealth}");
 
             if (currentHealth < 1)
             {
-                print("death");
+                //print("death");
                 onDeath?.Invoke(playerID);
 
             }

@@ -197,12 +197,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb234c1a2fd5cca43afad2c85ed82e0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  syncMode: 0
-  syncInterval: 0.1
   isMenuOpened: 0
   m_Camera: {fileID: 1815510803066478689}
-  sensX: 3
-  sensY: 3
+  sensX: 6
+  sensY: 6
   orientation: {fileID: 0}
 --- !u!1 &7766143502835840579
 GameObject:
