@@ -417,7 +417,7 @@ MonoBehaviour:
   gamePlayer: {fileID: 627041124257517008}
   weaponHolder: {fileID: 7644531972711148823}
   currentWeapon: {fileID: 0}
-  arm: {fileID: 9114264077599006847}
+  arm: {fileID: 5081923345695306208, guid: b1db0f11aee261949970a4bd9071be51, type: 3}
 --- !u!114 &6120899351348563184
 MonoBehaviour:
   m_ObjectHideFlags: 0
