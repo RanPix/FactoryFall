@@ -15,7 +15,6 @@ public class Menu : MonoBehaviour
 
     void Awake()
     {
-        print("Awakeeeeeeeeeeeeeeeeeeeee");
         if(Instance==null)
             Instance = this;
     }

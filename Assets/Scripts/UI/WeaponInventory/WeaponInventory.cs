@@ -6,10 +6,8 @@ using UnityEngine;
 public class WeaponInventory : MonoBehaviour
 {
     public static WeaponInventory instance;
-    [SerializeField] public GameObject[] weapons = new GameObject[2];
     [SerializeField] private GameObject[] weaponBlurIcons;
     [SerializeField] private int activeWeaponIndex;
-    public Action<int> OnWeaponchange;
     void Awake()
     {
         if(instance == null)
@@ -19,14 +17,15 @@ public class WeaponInventory : MonoBehaviour
             Debug.LogError("MORE THAN ONE INSTANCE OF WEAPON INVENTORY");
         }
 
-        OnWeaponchange += ChangeBlurIcon;
     }
 
 
-    public void ChangeBlurIcon(int indexToChange)
+    public void ChangeBlurIcon(int indexToChange, int currentIndex)
     {
-        weaponBlurIcons[activeWeaponIndex].SetActive(true);
-        weaponBlurIcons[indexToChange].SetActive(true);
+        print($"bluuur     index - {indexToChange}");
+        print($"bluuur     current index - {currentIndex}");
+        weaponBlurIcons[currentIndex].SetActive(true);
+        weaponBlurIcons[indexToChange].SetActive(false);
     }
     
 }

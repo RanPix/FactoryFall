@@ -29,9 +29,8 @@ public class PlayerSetup : NetworkBehaviour
     {
         base.OnStartClient();
 
-        string _netID = GetComponent<NetworkIdentity>().netId.ToString();
-
         player = GetComponent<GamePlayer>();
-        GameManager.RegisterPlayer(_netID, player);
+
+        GameManager.RegisterPlayer(GetComponent<NetworkIdentity>().netId.ToString(), player);
     }
 }

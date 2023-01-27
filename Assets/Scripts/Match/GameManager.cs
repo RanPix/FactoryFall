@@ -3,10 +3,9 @@ using System.Linq;
 using System;
 using Mirror;
 using Player;
-using Player.Info;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class GameManager : NetworkBehaviour
 {
     [SerializeField] public static GameManager instance;
 
@@ -14,7 +13,7 @@ public class GameManager : MonoBehaviour
 
     [SerializeField] private GameObject sceneCamera;
 
-    public Action<string, string> OnPlayerKilledCallback;
+    public Action<string, string, int> OnPlayerKilledCallback;
 
     void Awake()
     {
@@ -69,7 +68,7 @@ public class GameManager : MonoBehaviour
         GUILayout.BeginVertical();
 
         foreach (string playerID in players.Keys)
-            GUILayout.Label($"{playerID} - {players[playerID]}");
+            GUILayout.Label($"{playerID} - {players[playerID].name}");
 
         GUILayout.EndVertical();
         GUILayout.EndArea();

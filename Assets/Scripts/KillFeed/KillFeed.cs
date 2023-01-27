@@ -2,8 +2,7 @@ using UnityEngine;
 
 public class KillFeed : MonoBehaviour
 {
-	[SerializeField]
-    GameObject killfeedItemPrefab;
+	[SerializeField] GameObject killfeedItemPrefab;
 
     // Use this for initialization
     void Start()
@@ -11,9 +10,9 @@ public class KillFeed : MonoBehaviour
         GameManager.instance.OnPlayerKilledCallback += OnKill;
     }
 
-    public void OnKill(string player, string source)
+    public void OnKill(string player, string source, int hp)
     {
-        print($"{source} killed {player}");
+        //print($"{source} killed {player}");
         GameObject _killFeedItem = Instantiate(killfeedItemPrefab, this.transform);
         _killFeedItem.GetComponent<KillfeedItem>().Setup(player, source);
 

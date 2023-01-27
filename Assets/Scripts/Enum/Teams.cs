@@ -1,7 +1,7 @@
 public enum Team
 {
-    None,
+    //None,
     Blue,
     Red,
-    Mob
+    //Mob
 }

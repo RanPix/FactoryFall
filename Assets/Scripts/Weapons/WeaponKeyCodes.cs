@@ -29,13 +29,13 @@ public class WeaponKeyCodes : NetworkBehaviour
             return;
         canvas = GameObject.FindGameObjectWithTag("canvas");
         canvas.GetComponentInChildren<ChosingWeapon>().OnAñtivateWeapons += SetSelectedWeaponsIndexes;
-        WeaponInventory.instance.OnWeaponchange += ChangeWeapon;
         arm._isLocalPLayer = true;
         audioSync = GetComponent<AudioSync>();
         controls = new PlayerControls(); 
         //WeaponInventory.instance.OnWeaponchange.Invoke(0);
         controls.Player.Enable();
-        controls.Player.WeaponInventory.performed += ChangeWeapon2;
+        controls.Player.WeaponInventory.performed += GetWeaponIndex;
+
     }
 
     void Update()
@@ -47,7 +47,7 @@ public class WeaponKeyCodes : NetworkBehaviour
     }
 
 
-    public void ChangeWeapon(int index)
+    public void ChangeWeapon(int index, int currentIndex)
     {
         if(index < 0 || index >= weapons.Length)
             return;
@@ -68,6 +68,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         weapons[currentWeaponIndex].SetActive(false);
         weapons[index].SetActive(true);
        
+        WeaponInventory.instance.ChangeBlurIcon(index, currentIndex);
         currentWeapon = weapons[index].GetComponent<Weapon>();
         currentWeaponIndex = index;
         currentWeapon._isLocalPLayer = true;
@@ -75,9 +76,10 @@ public class WeaponKeyCodes : NetworkBehaviour
         ChangeAnotherValuesAfterChangeWeapon();
     }
 
-    public void ChangeWeapon2(InputAction.CallbackContext context)
+    public void GetWeaponIndex(InputAction.CallbackContext context)
     {
-        ChangeWeapon((int)context.ReadValue<float>());
+        int index = (int)context.ReadValue<float>();
+        ChangeWeapon(index, index==0?1:0);
     }
 
     public void ChangeAnotherValuesAfterChangeWeapon()

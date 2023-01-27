@@ -30,8 +30,6 @@ public class CursorManager : MonoBehaviour
 
     private void TryLock(bool canLock)
     {
-        print($"canLOck - {canLock} ");
-        print($"smbWantToLockCursor - {smbWantToLockCursor} ");
         if (canLock && smbWantToLockCursor)
         {
             SetCursorLockState(CursorLockMode.Locked);

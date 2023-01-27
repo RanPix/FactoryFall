@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GameBase;
 using Player;
 using UnityEngine;
@@ -109,7 +110,6 @@ abstract public class Weapon : MonoBehaviour
     public AudioSource audioSource;
     [SerializeField]private TMP_Text ammoText;
     private GameObject canvas;
-
     [SerializeField] private Transform weaponView;
 
     public bool reloading { get; private set; } = false;
@@ -145,9 +145,9 @@ abstract public class Weapon : MonoBehaviour
             return;
         }
 
-        for (int i = 0; i < transform.parent.childCount-1; i++)
+        for (int i = 0; i < transform.parent.childCount; i++)
         {
-            if (transform.GetChild(i).gameObject == gameObject)
+            if (transform.parent.GetChild(i).gameObject == gameObject)
             {
                 weaponIndex = i;
                 break;
@@ -158,7 +158,6 @@ abstract public class Weapon : MonoBehaviour
         {
             if (canvas.transform.GetChild(i).tag == "WeaponAmmoText")
             {
-                print("Ammo text was found");
                 ammoText = canvas.transform.GetChild(0).GetComponent<TMP_Text>();
                 break;
             }

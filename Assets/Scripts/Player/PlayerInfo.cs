@@ -1,4 +1,3 @@
-
 namespace Player.Info
 {
     public class PlayerInfo
@@ -13,7 +12,6 @@ namespace Player.Info
 
         public PlayerInfo(string infoPath, Team team, string netID, string name /*for testing*/)
         {
-            ReadInfo();
             this.team = team;
             this.netID = netID;
             this.name = name + netID; // for testing
@@ -21,14 +19,12 @@ namespace Player.Info
             //throw new System.NotImplementedException();
         }
 
-        public string GetName() => name;
-
         public void ReadInfo()
         {
             //reading a json file with this info at the start of a game 
             //players name and etc
             //tbd
-            //throw new System.NotImplementedException();
+            throw new System.NotImplementedException();
         }
     }
 }
