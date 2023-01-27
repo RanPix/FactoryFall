@@ -20,7 +20,7 @@ MonoBehaviour:
   reload: {fileID: 8300000, guid: 16ed38669058a6147bcf4408aeb56382, type: 3}
   shotSounds:
   - {fileID: 8300000, guid: 0e9b4317a23a4f64f9ed11c4f3c46003, type: 3}
-  muzzleFlashLifetime: 0.11
+  muzzleFlashLifetime: 1
   muzzleFlash: {fileID: 3447146207809876172, guid: 6ba13c9ba26a9cc4ba008229ab50b5ba,
     type: 3}
   bulletPrefab: {fileID: 0}

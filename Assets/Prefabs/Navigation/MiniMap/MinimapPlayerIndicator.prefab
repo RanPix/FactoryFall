@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 3492596634361552183}
   - component: {fileID: 3730740247708863302}
   - component: {fileID: 6694677779561941687}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Enemy Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 4378024484840377663}
   - component: {fileID: 5884344457171504595}
   - component: {fileID: 4880913225933830021}
-  m_Layer: 11
+  m_Layer: 0
   m_Name: local Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -211,7 +211,7 @@ GameObject:
   - component: {fileID: 5648550554668871044}
   - component: {fileID: 7823698351435219017}
   - component: {fileID: 4097657879787075379}
-  m_Layer: 17
+  m_Layer: 0
   m_Name: Friendly Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}

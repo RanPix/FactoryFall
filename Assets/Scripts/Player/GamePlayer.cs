@@ -51,13 +51,13 @@ namespace Player
 
         [SerializeField] private WeaponKeyCodes weaponKeyCodes;
 
-        [SerializeField] private Transform muzzlePosition;
+        public Transform muzzlePosition;
 
         [SerializeField] private Transform trail;
 
         private int spawnedBulletCount = 0;
 
-        private Canvas canvas;
+        public Canvas canvas { get; private set; }
         private Transform cam;
         private GameObject hitMarker;
 
@@ -96,9 +96,8 @@ namespace Player
             if (isLocalPlayer)
             {
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
-                gameObject.tag = "LocalPlayer";
                 canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
-
+                gameObject.tag = "LocalPlayer";
                 for (int i = 0; i < canvas.transform.childCount; i++)
                 {
                     if (canvas.transform.GetChild(i).name == "HitMarker")
@@ -119,6 +118,7 @@ namespace Player
 
                 GameObject menu = Instantiate(menuPrefab, canvas.transform);
                 menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
+                canvas.transform.GetChild(0).gameObject.SetActive(true);
             }
             else
             {
@@ -333,7 +333,6 @@ namespace Player
 
             }
         #endregion
-
         private IEnumerator ActivateForSeconds(GameObject GO, float time)
         {
             GO.SetActive(true);

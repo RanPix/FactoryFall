@@ -6,7 +6,7 @@ public class Look : NetworkBehaviour
 {
     private PlayerControls controls;
 
-    [HideInInspector] public bool isMenuOpened;
+    [HideInInspector] public bool canRotateCamera;
 
     [SerializeField] private Camera m_Camera;
     [SerializeField] private float sensX;
@@ -28,8 +28,6 @@ public class Look : NetworkBehaviour
         controls.Player.Enable();
 
         controls.Player.FreeCursor.performed += ControlCursor;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     private void Update()
@@ -47,12 +45,7 @@ public class Look : NetworkBehaviour
 
     private void UpdateCamera()
     {
-        Cursor.lockState = isMenuOpened ?
-            CursorLockMode.Confined :
-            CursorLockMode.Locked;
-
-        Cursor.visible = isMenuOpened;
-        if (isMenuOpened)
+        if (!canRotateCamera)
             return;
 
         yRot += inputVector.x * 0.01f * sensX;
@@ -71,9 +64,9 @@ public class Look : NetworkBehaviour
     private void ControlCursor(InputAction.CallbackContext context)
     {
         if (Cursor.lockState == CursorLockMode.Locked)
-            Cursor.lockState = CursorLockMode.None;
+            CursorManager.SetCursorLockState(CursorLockMode.None);
         else if (Cursor.lockState == CursorLockMode.None)
-            Cursor.lockState = CursorLockMode.Locked;
+            CursorManager.SetCursorLockState(CursorLockMode.Locked);
     }
 }
 

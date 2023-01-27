@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 3198972175744093385}
   m_Layer: 5
   m_Name: WeaponAmmoText
-  m_TagString: Untagged
+  m_TagString: WeaponAmmoText
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -35,7 +35,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
-  m_AnchoredPosition: {x: 170, y: 200}
+  m_AnchoredPosition: {x: -914, y: -235.9}
   m_SizeDelta: {x: 280, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3198972175744093384

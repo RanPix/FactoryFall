@@ -10,16 +10,13 @@ public class WeaponAmmo : MonoBehaviour
     public int ClipSize;
     public int Ammo;
     public int ReserveAmmo;
-    private GameObject help;
 
     private void Awake()
     {
         canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
-        help = Instantiate(AmmoText.gameObject, canvas.transform);
     }
     private void Start()
     {
-        AmmoText = help.GetComponent<TMP_Text>();
     }
     public void AddAmmo()
     {

@@ -170,6 +170,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""WeaponInventory"",
+                    ""type"": ""Button"",
+                    ""id"": ""0fd9a9b9-b1e2-4f42-86bf-c400f1fe352b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -544,6 +553,28 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""groups"": """",
                     ""action"": ""ArmPunch"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""6091b0e8-d2dd-4a28-8424-599d823462eb"",
+                    ""path"": ""<Keyboard>/1"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=0)"",
+                    ""groups"": """",
+                    ""action"": ""WeaponInventory"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""d4ff3b9d-e78a-4dfa-9169-36f4e84b6a98"",
+                    ""path"": ""<Keyboard>/2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""WeaponInventory"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
                 }
@@ -1187,6 +1218,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_Player_PlaceBlock = m_Player.FindAction("PlaceBlock", throwIfNotFound: true);
         m_Player_RemoveBlock = m_Player.FindAction("RemoveBlock", throwIfNotFound: true);
         m_Player_ArmPunch = m_Player.FindAction("ArmPunch", throwIfNotFound: true);
+        m_Player_WeaponInventory = m_Player.FindAction("WeaponInventory", throwIfNotFound: true);
         // UI
         m_UI = asset.FindActionMap("UI", throwIfNotFound: true);
         m_UI_Navigate = m_UI.FindAction("Navigate", throwIfNotFound: true);
@@ -1276,6 +1308,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_PlaceBlock;
     private readonly InputAction m_Player_RemoveBlock;
     private readonly InputAction m_Player_ArmPunch;
+    private readonly InputAction m_Player_WeaponInventory;
     public struct PlayerActions
     {
         private @PlayerControls m_Wrapper;
@@ -1296,6 +1329,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @PlaceBlock => m_Wrapper.m_Player_PlaceBlock;
         public InputAction @RemoveBlock => m_Wrapper.m_Player_RemoveBlock;
         public InputAction @ArmPunch => m_Wrapper.m_Player_ArmPunch;
+        public InputAction @WeaponInventory => m_Wrapper.m_Player_WeaponInventory;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1353,6 +1387,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @ArmPunch.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnArmPunch;
                 @ArmPunch.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnArmPunch;
                 @ArmPunch.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnArmPunch;
+                @WeaponInventory.started -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponInventory;
+                @WeaponInventory.performed -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponInventory;
+                @WeaponInventory.canceled -= m_Wrapper.m_PlayerActionsCallbackInterface.OnWeaponInventory;
             }
             m_Wrapper.m_PlayerActionsCallbackInterface = instance;
             if (instance != null)
@@ -1405,6 +1442,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @ArmPunch.started += instance.OnArmPunch;
                 @ArmPunch.performed += instance.OnArmPunch;
                 @ArmPunch.canceled += instance.OnArmPunch;
+                @WeaponInventory.started += instance.OnWeaponInventory;
+                @WeaponInventory.performed += instance.OnWeaponInventory;
+                @WeaponInventory.canceled += instance.OnWeaponInventory;
             }
         }
     }
@@ -1593,6 +1633,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnPlaceBlock(InputAction.CallbackContext context);
         void OnRemoveBlock(InputAction.CallbackContext context);
         void OnArmPunch(InputAction.CallbackContext context);
+        void OnWeaponInventory(InputAction.CallbackContext context);
     }
     public interface IUIActions
     {

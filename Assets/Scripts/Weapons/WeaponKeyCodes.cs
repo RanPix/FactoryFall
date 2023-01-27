@@ -1,59 +1,97 @@
-using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using Mirror;
 using Player;
+using Unity.Mathematics;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using Weapons;
 
 [RequireComponent(typeof(AudioSync))]
 public class WeaponKeyCodes : NetworkBehaviour
 {
     [SerializeField] private GamePlayer gamePlayer;
-    public Transform weaponHolder;
-    public Weapon currentWeapon;
     [SerializeField] private Arm arm;
 
-    private int currentWeaponIndex = -1;
+    public Transform weaponHolder;
+    public Weapon currentWeapon;
+    public int currentWeaponIndex = -1;
+    public GameObject[] weapons;
+    public List<int> activatedWeaponsIndexes = new List<int>();
     public PlayerControls controls { get; private set; }
 
     private AudioSync audioSync;
+    private GameObject canvas;
 
     void Start()
     {
-        if(!isLocalPlayer)
+        if (!isLocalPlayer)
             return;
-
+        canvas = GameObject.FindGameObjectWithTag("canvas");
+        canvas.GetComponentInChildren<ChosingWeapon>().OnAñtivateWeapons += SetSelectedWeaponsIndexes;
+        WeaponInventory.instance.OnWeaponchange += ChangeWeapon;
         arm._isLocalPLayer = true;
-
         audioSync = GetComponent<AudioSync>();
-        controls = new PlayerControls();
+        controls = new PlayerControls(); 
+        //WeaponInventory.instance.OnWeaponchange.Invoke(0);
         controls.Player.Enable();
-        ChangeWeapon(0);
+        controls.Player.WeaponInventory.performed += ChangeWeapon2;
     }
 
     void Update()
     {
-        if(!isLocalPlayer)
+        if(!isLocalPlayer || !currentWeapon)
             return;
 
         KeyCodes();
     }
 
 
-
     public void ChangeWeapon(int index)
     {
-        if(currentWeaponIndex == index)
+        if(index < 0 || index >= weapons.Length)
             return;
+        if (currentWeaponIndex == -1)
+        {
+            currentWeaponIndex = activatedWeaponsIndexes.Min();
+        }
 
-        if(currentWeaponIndex == -1)
-            currentWeaponIndex = 0;
+        if (index==0)
+        {
+            index = activatedWeaponsIndexes.Min();
+        }
+        else
+        {
+            index = activatedWeaponsIndexes.Max();
+        }
 
-        weaponHolder.GetChild(currentWeaponIndex).gameObject.SetActive(false);
-        weaponHolder.GetChild(index).gameObject.SetActive(true);
+        weapons[currentWeaponIndex].SetActive(false);
+        weapons[index].SetActive(true);
        
-        currentWeapon = weaponHolder.GetChild(index).GetComponent<Weapon>();
+        currentWeapon = weapons[index].GetComponent<Weapon>();
         currentWeaponIndex = index;
         currentWeapon._isLocalPLayer = true;
+        //currentWeapon.UpdateAmmo();
+        ChangeAnotherValuesAfterChangeWeapon();
+    }
+
+    public void ChangeWeapon2(InputAction.CallbackContext context)
+    {
+        ChangeWeapon((int)context.ReadValue<float>());
+    }
+
+    public void ChangeAnotherValuesAfterChangeWeapon()
+    {
+        GetComponent<NetworkTransformChild>().target = currentWeapon.transform;
+        GetComponent<NetworkAnimator>().animator = currentWeapon.GetComponentInChildren<Animator>();
+        GetComponent<NetworkAnimator>().SetValues();
+        GetComponent<GamePlayer>().muzzlePosition = currentWeapon.muzzlePosition;
+    }
+
+    public void SetSelectedWeaponsIndexes(int first, int second)
+    {
+        activatedWeaponsIndexes.Add(first);
+        activatedWeaponsIndexes.Add(second);
     }
 
 
