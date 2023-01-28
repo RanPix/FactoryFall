@@ -109,7 +109,6 @@ abstract public class Weapon : MonoBehaviour
     public Camera gunCam;
     public AudioSource audioSource;
     [SerializeField]private TMP_Text ammoText;
-    private GameObject canvas;
     [SerializeField] private Transform weaponView;
 
     public bool reloading { get; private set; } = false;
@@ -134,7 +133,6 @@ abstract public class Weapon : MonoBehaviour
 
     private void Start()
     {
-        canvas = gamePlayer.canvas.transform.GetChild(0).gameObject;
         if (!_isLocalPLayer)
         {
             weaponView.gameObject.layer = LayerMask.NameToLayer("Default");
@@ -154,14 +152,8 @@ abstract public class Weapon : MonoBehaviour
             }
         }
 
-        for (int i = 0; i < canvas.transform.childCount; i++)
-        {
-            if (canvas.transform.GetChild(i).tag == "WeaponAmmoText")
-            {
-                ammoText = canvas.transform.GetChild(0).GetComponent<TMP_Text>();
-                break;
-            }
-        }
+        ammoText = CanvasInstance.instance.weaponAmmoText.GetComponent<TMP_Text>();
+
         gamePlayer.GetComponent<Health>().onDeath += OnDeath;
         controls = new PlayerControls();
         controls.Player.Enable();

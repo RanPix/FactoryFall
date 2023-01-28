@@ -22,8 +22,6 @@ public class WeaponInventory : MonoBehaviour
 
     public void ChangeBlurIcon(int indexToChange, int currentIndex)
     {
-        print($"bluuur     index - {indexToChange}");
-        print($"bluuur     current index - {currentIndex}");
         weaponBlurIcons[currentIndex].SetActive(true);
         weaponBlurIcons[indexToChange].SetActive(false);
     }

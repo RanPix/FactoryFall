@@ -21,14 +21,12 @@ public class WeaponKeyCodes : NetworkBehaviour
     public PlayerControls controls { get; private set; }
 
     private AudioSync audioSync;
-    private GameObject canvas;
 
     void Start()
     {
         if (!isLocalPlayer)
             return;
-        canvas = GameObject.FindGameObjectWithTag("canvas");
-        canvas.GetComponentInChildren<ChosingWeapon>().OnAñtivateWeapons += SetSelectedWeaponsIndexes;
+        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnAñtivateWeapons += SetSelectedWeaponsIndexes;
         arm._isLocalPLayer = true;
         audioSync = GetComponent<AudioSync>();
         controls = new PlayerControls(); 

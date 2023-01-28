@@ -6,14 +6,12 @@ using TMPro;
 public class WeaponAmmo : MonoBehaviour
 {
     public TMP_Text AmmoText;
-    public Canvas canvas;
     public int ClipSize;
     public int Ammo;
     public int ReserveAmmo;
 
     private void Awake()
     {
-        canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
     }
     private void Start()
     {
