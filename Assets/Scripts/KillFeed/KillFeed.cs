@@ -10,11 +10,11 @@ public class KillFeed : MonoBehaviour
         GameManager.instance.OnPlayerKilledCallback += OnKill;
     }
 
-    public void OnKill(string player, string source, int hp)
+    public void OnKill(string killedPlayer, Team killedTeam, string killerPlayer, Team killerTeam)
     {
         //print($"{source} killed {player}");
         GameObject _killFeedItem = Instantiate(killfeedItemPrefab, this.transform);
-        _killFeedItem.GetComponent<KillfeedItem>().Setup(player, source);
+        _killFeedItem.GetComponent<KillfeedItem>().Setup(killedPlayer, killedTeam, killerPlayer, killerTeam);
 
         Destroy(_killFeedItem, 4f);
     }
