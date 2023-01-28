@@ -2,7 +2,6 @@ using UnityEngine;
 using System.Collections;
 using Mirror;
 using GameBase;
-using Player.Info;
 using System;
 using UI.Indicators;
 
@@ -11,7 +10,12 @@ namespace Player
     [RequireComponent(typeof(PlayerSetup))]
     public class GamePlayer : NetworkBehaviour
     {
-        private PlayerInfo playerInfo;
+        //player information
+        [field: SyncVar] public string nickname { get; private set; }
+        [field: SyncVar] public Team team { get; private set; }
+
+        [field: SyncVar] public int kills { get; private set; }
+        [field: SyncVar] public int deaths { get; private set; }
 
         [SerializeField] private Health health;
 
@@ -107,12 +111,22 @@ namespace Player
 
         }
 
+        [Command]
+        private void InitializePlayerInfo(string name, Team team)
+        {
+            nickname = name;
+            this.team = team;
+        }
+
         private void Start()
         {
-            playerInfo = new PlayerInfo(null, Team.Blue, GetComponent<NetworkIdentity>().netId.ToString(), gameObject.name);
-            
             if (isLocalPlayer)
             {
+                InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
+
+                //nickname = PlayerInfoTransfer.instance.nickname;
+                //team = PlayerInfoTransfer.instance.team;
+
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
                 gameObject.tag = "LocalPlayer";
                 canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
@@ -141,6 +155,7 @@ namespace Player
                 menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
 
                 Instantiate(killerPlayerInfoPrefab, canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
+
             }
             else
             {
@@ -249,20 +264,17 @@ namespace Player
             //print($"_sourceID = {_sourceID}");
             isDead = true;
 
-            PlayerInfo sourcePlayer = GameManager.GetPlayer(_sourceID).GetPlayerInfo();
+            GamePlayer sourcePlayer = GameManager.GetPlayer(_sourceID);
 
             if (sourcePlayer != null)
             {
-                //Debug.Log("DIE111111111111");
-                GamePlayer player = GameManager.GetPlayer(_sourceID);
+                OnDeath?.Invoke(_sourceID, sourcePlayer.nickname, (int)sourcePlayer.gameObject.GetComponent<Health>().currentHealth);
 
-                OnDeath?.Invoke(_sourceID, player.GetPlayerInfo().name, (int)player.gameObject.GetComponent<Health>().currentHealth);
-
-                sourcePlayer.kills++;
+                //sourcePlayer.GetPlayerInfo().kills++;
                 CmdDie(_sourceID);
             }
 
-            playerInfo.deaths++;
+            deaths++;
 
             //Debug.Log("DIE2222222222");
 
@@ -292,7 +304,7 @@ namespace Player
         {
             GamePlayer player = GameManager.GetPlayer(_sourceID);
 
-            GameManager.instance.OnPlayerKilledCallback?.Invoke(playerInfo.netID, player.GetPlayerInfo().name, (int)player.gameObject.GetComponent<Health>().currentHealth);
+            GameManager.instance.OnPlayerKilledCallback?.Invoke(nickname, player.nickname, (int)player.gameObject.GetComponent<Health>().currentHealth);
         }
 
         [Command]
@@ -407,7 +419,6 @@ namespace Player
         }
 
 
-        public string GetLocalNetID() => playerInfo.netID;
-        public PlayerInfo GetPlayerInfo() => playerInfo;
+        public string GetNetID() => GetComponent<NetworkIdentity>().netId.ToString();
     }
 }

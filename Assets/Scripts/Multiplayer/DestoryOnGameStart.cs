@@ -1,16 +1,11 @@
-using Mirror;
+using UnityEngine;
 
-public class DestoryOnGameStart : NetworkBehaviour
+public class DestoryOnGameStart : MonoBehaviour
 {
-    public override void OnStartLocalPlayer()
+    private void Start()
     {
-        base.OnStartLocalPlayer();
-        Destroy(gameObject);
+        GameManager.instance.OnClientStart += DestroySelf;
     }
 
-    public override void OnStartServer()
-    {
-        base.OnStartServer();
-        Destroy(gameObject);
-    }
+    private void DestroySelf() => Destroy(gameObject);
 }

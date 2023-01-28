@@ -1,5 +1,4 @@
 using UnityEngine;
-using Player.Info;
 
 namespace GameBase
 {

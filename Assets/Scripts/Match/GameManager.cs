@@ -7,13 +7,17 @@ using UnityEngine;
 
 public class GameManager : NetworkBehaviour
 {
-    [SerializeField] public static GameManager instance;
+    public static GameManager instance;
 
     public MatchSettings matchSettings;
 
     [SerializeField] private GameObject sceneCamera;
 
     public Action<string, string, int> OnPlayerKilledCallback;
+
+    public Action OnClientStart;
+
+
 
     void Awake()
     {
@@ -34,6 +38,8 @@ public class GameManager : NetworkBehaviour
 
         sceneCamera.SetActive(state);
     }
+
+
 
     #region Player tracking
 
@@ -57,8 +63,16 @@ public class GameManager : NetworkBehaviour
 
     public static GamePlayer[] GetAllPlayers()
     {
+        
         return players.Values.ToArray();
     }
+
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+        OnClientStart?.Invoke();
+    }
+
 
     void OnGUI()
     {
@@ -68,7 +82,9 @@ public class GameManager : NetworkBehaviour
         GUILayout.BeginVertical();
 
         foreach (string playerID in players.Keys)
-            GUILayout.Label($"{playerID} - {players[playerID].name}");
+        {
+            GUILayout.Label($"{playerID} {players[playerID].team} - {players[playerID].nickname}, kills: {players[playerID].kills}, deaths: {players[playerID].deaths}");
+        }
 
         GUILayout.EndVertical();
         GUILayout.EndArea();

@@ -9,6 +9,7 @@ TagManager:
   - PreviewCamera
   - SpawnPoint
   - LocalPlayer
+  - ServerManager
   layers:
   - Default
   - TransparentFX
