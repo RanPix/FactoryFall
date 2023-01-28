@@ -9,7 +9,7 @@ TagManager:
   - PreviewCamera
   - SpawnPoint
   - LocalPlayer
-  - ServerManager
+  - WeaponAmmoText
   layers:
   - Default
   - TransparentFX

@@ -123,12 +123,12 @@
         </member>
         <member name="M:DG.Tweening.Core.Easing.EaseManager.Evaluate(DG.Tweening.Tween,System.Single,System.Single,System.Single,System.Single)">
             <summary>
-            Returns a value between 0 and 1 (inclusive) based on the elapsed time and ease selected
+            Returns a value between 0 and 1 (inclusive) based on the elapsed time and ease wasSelected
             </summary>
         </member>
         <member name="M:DG.Tweening.Core.Easing.EaseManager.Evaluate(DG.Tweening.Ease,DG.Tweening.EaseFunction,System.Single,System.Single,System.Single,System.Single)">
             <summary>
-            Returns a value between 0 and 1 (inclusive) based on the elapsed time and ease selected
+            Returns a value between 0 and 1 (inclusive) based on the elapsed time and ease wasSelected
             </summary>
         </member>
         <member name="T:DG.Tweening.Core.Easing.EaseCurve">

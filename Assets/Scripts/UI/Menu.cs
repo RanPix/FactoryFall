@@ -6,11 +6,18 @@ using UnityEngine.InputSystem;
 
 public class Menu : MonoBehaviour
 {
+    public static Menu Instance { get; private set; }
     public Look look;
     private PlayerControls controls;
+    public bool canOpenMenu = true;
     private bool isOpened = false;
     [SerializeField] private GameObject panel;
 
+    void Awake()
+    {
+        if(Instance==null)
+            Instance = this;
+    }
     void Start()
     {
         controls = new PlayerControls();
@@ -22,19 +29,19 @@ public class Menu : MonoBehaviour
 
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
     {
+        CursorManager.canLock = isOpened ? false : true;
         isOpened = !isOpened;
-        look.isMenuOpened = isOpened;
-        Cursor.visible = isOpened;
-        Cursor.lockState = isOpened? CursorLockMode.None : CursorLockMode.Locked;
+        look.canRotateCamera = !isOpened;
+        CursorManager.SetCursorLockState(isOpened ? CursorLockMode.None : CursorLockMode.Locked);
         panel.SetActive(isOpened);
     }
 
     public void CloseMenu()
     {
+        CursorManager.canLock = true;
         isOpened = false;
-        look.isMenuOpened = isOpened;
-        Cursor.visible = isOpened;
-        Cursor.lockState = CursorLockMode.None;
+        look.canRotateCamera = !isOpened;
+        CursorManager.SetCursorLockState(CursorLockMode.None);
         panel.SetActive(isOpened);
     }
 }

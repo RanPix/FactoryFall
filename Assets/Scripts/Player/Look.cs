@@ -7,7 +7,7 @@ public class Look : MonoBehaviour
 {
     private PlayerControls controls;
 
-    [HideInInspector] public bool isMenuOpened;
+    [HideInInspector] public bool canRotateCamera;
 
     [SerializeField] private Camera m_Camera;
     [SerializeField] private float sensX;
@@ -35,8 +35,6 @@ public class Look : MonoBehaviour
         controls.Player.Enable();
 
         controls.Player.FreeCursor.performed += ControlCursor;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     private void Update()
@@ -54,22 +52,7 @@ public class Look : MonoBehaviour
 
     private void UpdateCamera()
     {
-        if (!lookEnabled)
-        {
-            if (spectatePlayer != null) 
-            {
-                m_Camera.transform.LookAt(spectatePlayer.position + new Vector3(0, 1f));
-            }
-
-            return;
-        }
-
-        Cursor.lockState = isMenuOpened ?
-            CursorLockMode.Confined :
-            CursorLockMode.Locked;
-
-        Cursor.visible = isMenuOpened;
-        if (isMenuOpened)
+        if (!canRotateCamera)
             return;
 
         // Laggy beauty
@@ -100,9 +83,9 @@ public class Look : MonoBehaviour
     private void ControlCursor(InputAction.CallbackContext context)
     {
         if (Cursor.lockState == CursorLockMode.Locked)
-            Cursor.lockState = CursorLockMode.None;
+            CursorManager.SetCursorLockState(CursorLockMode.None);
         else if (Cursor.lockState == CursorLockMode.None)
-            Cursor.lockState = CursorLockMode.Locked;
+            CursorManager.SetCursorLockState(CursorLockMode.Locked);
     }
 }
 

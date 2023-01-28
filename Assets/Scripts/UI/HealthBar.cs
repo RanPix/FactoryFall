@@ -8,7 +8,7 @@ namespace GameBase
     {
         [SerializeField] public Health playerHealth;
         [SerializeField] private RectTransform healthOnBar;//green thing in healthbar
-
+        [SerializeField] private float IDKHowToCallIt;
         [SerializeField] private RectTransform rectTransform;
         [SerializeField] private TMP_Text HPText;
 
@@ -17,8 +17,9 @@ namespace GameBase
 
         private void Start()
         {
-            //playerHealth.GetComponent<GamePlayer>().OnRespawn += OnHealthChanged; decomment when merged to fix bug
+            playerHealth.GetComponent<GamePlayer>().OnRespawn += OnHealthChanged; 
             playerHealth.OnHealthChanged += OnHealthChanged;
+            IDKHowToCallIt = 1 / playerHealth.maxHealth;
         }
 
         private void Update()

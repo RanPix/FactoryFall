@@ -1,4 +1,5 @@
 using System.Collections;
+using System.Collections.Generic;
 using GameBase;
 using Player;
 using UnityEngine;
@@ -90,9 +91,9 @@ abstract public class Weapon : MonoBehaviour
     [SerializeField] protected bool hasInfiniteAmmo;
     [SerializeField] protected int reserveAmmo;
 
-    [Space(10)]
+    [Space(10)] 
     [Header("Effects")]
-    [SerializeField] private Transform muzzlePosition;
+    public Transform muzzlePosition;
 
 
     [Space(10)]
@@ -101,13 +102,13 @@ abstract public class Weapon : MonoBehaviour
 
     public GameObject player;
     public bool canShoot;
+    public int weaponIndex;
 
 
     public Camera cam;
     public Camera gunCam;
     public AudioSource audioSource;
-    private TMP_Text ammoText;
-
+    [SerializeField]private TMP_Text ammoText;
     [SerializeField] private Transform weaponView;
 
     public bool reloading { get; private set; } = false;
@@ -142,6 +143,17 @@ abstract public class Weapon : MonoBehaviour
             return;
         }
 
+        for (int i = 0; i < transform.parent.childCount; i++)
+        {
+            if (transform.parent.GetChild(i).gameObject == gameObject)
+            {
+                weaponIndex = i;
+                break;
+            }
+        }
+
+        ammoText = CanvasInstance.instance.weaponAmmoText.GetComponent<TMP_Text>();
+
         gamePlayer.GetComponent<Health>().onDeath += OnDeath;
         controls = new PlayerControls();
         controls.Player.Enable();
@@ -150,25 +162,39 @@ abstract public class Weapon : MonoBehaviour
         initialWeaponPosition = transform.position;
 
         cam = Camera.main;
-        gunCam = cam.GetComponentInChildren<Camera>();  
+        gunCam = cam.GetComponentInChildren<Camera>();
+
+
         GameObject help = Instantiate(weaponAmmo.gameObject);
 
 
         weaponAmmo = help.GetComponent<WeaponAmmo>();
+        /*weaponAmmo.Ammo = ammo;
+        weaponAmmo.ClipSize = maxAmmo;
+        weaponAmmo.ReserveAmmo = reserveAmmo;
 
+        weaponAmmo.AmmoText = ammoText;*/ // :skull:
+        UpdateAmmo();
+
+
+        canShoot = true;
+
+    }
+
+    public void UpdateAmmo()
+    {
         weaponAmmo.Ammo = ammo;
         weaponAmmo.ClipSize = maxAmmo;
         weaponAmmo.ReserveAmmo = reserveAmmo;
 
         weaponAmmo.AmmoText = ammoText;
-        canShoot = true;
-
+        weaponAmmo.UpdateAmmoInScreen();
     }
 
-    //private void Update()
-    //{
-    //    Sway();
-    //}
+    /*void OnEnable()
+    {
+        UpdateAmmo();
+    }*/
 
     protected Ray GetRay()
     {
@@ -215,7 +241,6 @@ abstract public class Weapon : MonoBehaviour
                 break;
 
             case PlaySoundType.Reload:
-                print("reload");
                 audioSource.PlayOneShot(weaponScriptableObject.reload);
                 break;
         }

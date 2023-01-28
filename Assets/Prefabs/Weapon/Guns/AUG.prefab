@@ -551,7 +551,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &8550018688244765856
 Transform:
   m_ObjectHideFlags: 0
@@ -600,6 +600,8 @@ MonoBehaviour:
     type: 3}
   ammo: 25
   maxAmmo: 25
+  numberOfBulletsPerShot: 0
+  timeBetweenSpawnBullets: 0
   hasInfiniteAmmo: 1
   reserveAmmo: 1000
   muzzlePosition: {fileID: 5225345035007705297}

@@ -3,6 +3,7 @@ using System.Collections;
 using Mirror;
 using GameBase;
 using System;
+using TMPro;
 using UI.Indicators;
 
 namespace Player
@@ -11,11 +12,13 @@ namespace Player
     public class GamePlayer : NetworkBehaviour
     {
         //player information
-        [field: SyncVar] public string nickname { get; private set; }
+        [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; }
         [field: SyncVar] public Team team { get; private set; }
 
         [field: SyncVar] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
+
+
 
         [SerializeField] private Health health;
 
@@ -57,7 +60,7 @@ namespace Player
 
         [SerializeField] private WeaponKeyCodes weaponKeyCodes;
 
-        [SerializeField] private Transform muzzlePosition;
+        public Transform muzzlePosition;
 
         [SerializeField] private Transform trail;
 
@@ -65,9 +68,7 @@ namespace Player
 
         private int spawnedBulletCount = 0;
 
-        private Canvas canvas;
         private Transform cam;
-        private GameObject hitMarker;
 
 
         public Action<string, int> OnGotHit;
@@ -98,15 +99,22 @@ namespace Player
             Camera _miniMapCamera = Instantiate(miniMapCamera);
             GameObject playerRow = GameObject.Instantiate(playerMark);
             PlayerMark _playerMark = playerRow.GetComponent<PlayerMark>();
-
+            if (isLocalPlayer)
+            {
+                _playerMark.localMark.SetActive(true);
+            }
+            else
+            {
+                _playerMark.enemyMark.SetActive(true);
+                
+            }
             _playerMark.player = gameObject.transform;
-            _playerMark.isLocal = true;
             _playerMark.rotationReference = gameObject.transform.GetChild(0).GetChild(0);
 
             MiniMapCameraMove _miniMapCameraMove = _miniMapCamera.GetComponent<MiniMapCameraMove>();
             _miniMapCameraMove.player = gameObject.transform;
 
-            GameObject _compass = GameObject.Instantiate(compass, canvas.transform);
+            GameObject _compass = GameObject.Instantiate(compass, CanvasInstance.instance.canvas.transform);
             _compass.GetComponent<Compass>().reference = gameObject.transform.GetChild(0).GetChild(0);
 
         }
@@ -114,8 +122,8 @@ namespace Player
         [Command]
         private void InitializePlayerInfo(string name, Team team)
         {
-            nickname = name;
             this.team = team;
+            nickname = name;
         }
 
         private void Start()
@@ -124,23 +132,10 @@ namespace Player
             {
                 InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
 
-                //nickname = PlayerInfoTransfer.instance.nickname;
-                //team = PlayerInfoTransfer.instance.team;
-
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
                 gameObject.tag = "LocalPlayer";
-                canvas = GameObject.FindGameObjectWithTag("canvas").GetComponent<Canvas>();
 
-                for (int i = 0; i < canvas.transform.childCount; i++)
-                {
-                    if (canvas.transform.GetChild(i).name == "HitMarker")
-                    {
-                        hitMarker = canvas.transform.GetChild(i).gameObject;
-                        break;
-                    }
-                }
-
-                Transform hitIndicator = Instantiate(hitIndicatorPrefab, canvas.transform);
+                Transform hitIndicator = Instantiate(hitIndicatorPrefab, CanvasInstance.instance.canvas.transform);
                 hitIndicator.GetComponent<HitIndicatorTrigger>().Setup(this, orientation);
 
                 SetupCameraHolder();
@@ -148,34 +143,48 @@ namespace Player
 
                 health.onDeath += Die;
 
-                GameObject healthBar = Instantiate(healthBarPrefab, canvas.transform);
+                GameObject healthBar = Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
                 healthBar.GetComponent<HealthBar>().playerHealth = GetComponent<Health>();
 
-                GameObject menu = Instantiate(menuPrefab, canvas.transform);
+                GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
                 menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
+                CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
 
-                Instantiate(killerPlayerInfoPrefab, canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
-
+                Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
             }
             else
             {
                 GameObject playerRow = GameObject.Instantiate(playerMark);
                 PlayerMark _playerMark = playerRow.GetComponent<PlayerMark>();
+                _playerMark.enemyMark.SetActive(true);
                 _playerMark.player = gameObject.transform;
-                _playerMark.isLocal = false;
                 _playerMark.rotationReference = gameObject.transform.GetChild(0).GetChild(0);
 
-                //nameGO.SetActive(true);
-                //nameGO.GetComponentInChildren<TMP_Text>().text = GameManager.GetPlayer(GetComponent<NetworkIdentity>().netId.ToString()).playerInfo.name;
+                
                 this.enabled = false;
             }
         }
 
+        private void SetNickname(string oldName, string newName)
+        {
+            base.OnStartClient();
 
-        
-        
+            if (isLocalPlayer)
+                return;
 
-#region Weapon
+            nameGO.SetActive(true);
+            TMP_Text text = nameGO.GetComponentInChildren<TMP_Text>();
+            text.text = newName;
+
+            if (team is Team.Blue)
+                text.color = new Color(0f, 0.4f, 1f);
+            else if (team is Team.Red)
+                text.color = Color.red;
+        }
+
+
+
+        #region Weapon
 
 
         [Client]
@@ -188,7 +197,7 @@ namespace Player
                 Health hitHealth = hit.transform.GetComponent<Health>();
                 if (hitHealth)
                 {
-                    StartCoroutine(ActivateForSeconds(hitMarker, 0.15f));
+                    StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.15f));
                     CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                 }
             }
@@ -205,7 +214,7 @@ namespace Player
                 Health hitHealth = hit.transform.GetComponent<Health>();
                 if (hitHealth)
                 {
-                    StartCoroutine(ActivateForSeconds(hitMarker, 0.5f));
+                    StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
                     CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                 }
             }

@@ -87,6 +87,12 @@ namespace Mirror
             layerWeight = new float[animator.layerCount];
         }
 
+        public void SetValues()
+        {
+            animationHash = new int[animator.layerCount];
+            transitionHash = new int[animator.layerCount];
+            layerWeight = new float[animator.layerCount];
+        }
         void FixedUpdate()
         {
             if (!SendMessagesAllowed)
