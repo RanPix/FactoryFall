@@ -14,9 +14,8 @@ public class UpdatingNicknameTransform : MonoBehaviour
         if (localPlayer)
         {
             transform.LookAt(localPlayer);
-            //print("RotationSNINJIDSNVJINDVNDHJVN");
         }
         else
-            GameObject.FindGameObjectWithTag("LocalPlayer")?.GetComponent<Transform>();
+            localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer")?.GetComponent<Transform>();
     }
 }

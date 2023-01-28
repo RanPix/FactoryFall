@@ -3,21 +3,25 @@ using UnityEngine.UI;
 
 public class PlayerMark : MonoBehaviour
 {
+
     public Transform rotationReference;
     public Transform player;
+
+    public GameObject localMark;
+    public GameObject enemyMark;
+    public GameObject friendlyMark;
 
     private Canvas canvas;
     public bool isLocal;
 
 
-    [SerializeField] private Color enemyColor;
 
 
     private GameObject activeMark;
     // Start is called before the first frame update
     void Start()
     {
-        canvas = transform.GetComponentInChildren<Canvas>();
+        /*canvas = transform.GetComponentInChildren<Canvas>();
         canvas.worldCamera = transform.GetComponentInParent<Camera>();
         activeMark = canvas.transform.GetChild(0).gameObject;
         if (isLocal)
@@ -31,7 +35,7 @@ public class PlayerMark : MonoBehaviour
             activeMark.layer = LayerMask.NameToLayer("EnemyPlayerMark");
             activeMark.GetComponent<RawImage>().color = enemyColor;
 
-        }
+        }*/
     }
 
     // Update is called once per frame

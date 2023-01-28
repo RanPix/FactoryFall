@@ -4,6 +4,7 @@ using Mirror;
 using GameBase;
 using Player.Info;
 using System;
+using TMPro;
 using UI.Indicators;
 
 namespace Player
@@ -94,9 +95,16 @@ namespace Player
             Camera _miniMapCamera = Instantiate(miniMapCamera);
             GameObject playerRow = GameObject.Instantiate(playerMark);
             PlayerMark _playerMark = playerRow.GetComponent<PlayerMark>();
-
+            if (isLocalPlayer)
+            {
+                _playerMark.localMark.SetActive(true);
+            }
+            else
+            {
+                _playerMark.enemyMark.SetActive(true);
+                
+            }
             _playerMark.player = gameObject.transform;
-            _playerMark.isLocal = true;
             _playerMark.rotationReference = gameObject.transform.GetChild(0).GetChild(0);
 
             MiniMapCameraMove _miniMapCameraMove = _miniMapCamera.GetComponent<MiniMapCameraMove>();
@@ -146,12 +154,12 @@ namespace Player
             {
                 GameObject playerRow = GameObject.Instantiate(playerMark);
                 PlayerMark _playerMark = playerRow.GetComponent<PlayerMark>();
+                _playerMark.enemyMark.SetActive(true);
                 _playerMark.player = gameObject.transform;
-                _playerMark.isLocal = false;
                 _playerMark.rotationReference = gameObject.transform.GetChild(0).GetChild(0);
 
-                //nameGO.SetActive(true);
-                //nameGO.GetComponentInChildren<TMP_Text>().text = GameManager.GetPlayer(GetComponent<NetworkIdentity>().netId.ToString()).playerInfo.name;
+                nameGO.SetActive(true);
+                nameGO.GetComponentInChildren<TMP_Text>().text = GameManager.GetPlayer(GetComponent<NetworkIdentity>().netId.ToString()).playerInfo.name;
                 this.enabled = false;
             }
         }
