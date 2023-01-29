@@ -176,10 +176,7 @@ namespace Player
             TMP_Text text = nameGO.GetComponentInChildren<TMP_Text>();
             text.text = newName;
 
-            if (team is Team.Blue)
-                text.color = new Color(0f, 0.4f, 1f);
-            else if (team is Team.Red)
-                text.color = Color.red;
+            text.color = TeamToColor.GetTeamColor(team);
         }
 
 
@@ -313,7 +310,7 @@ namespace Player
         {
             GamePlayer player = GameManager.GetPlayer(_sourceID);
 
-            GameManager.instance.OnPlayerKilledCallback?.Invoke(nickname, player.nickname, (int)player.gameObject.GetComponent<Health>().currentHealth);
+            GameManager.instance.OnPlayerKilledCallback?.Invoke(nickname, team, player.nickname, player.team);
         }
 
         [Command]

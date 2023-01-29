@@ -13,7 +13,7 @@ public class GameManager : NetworkBehaviour
 
     [SerializeField] private GameObject sceneCamera;
 
-    public Action<string, string, int> OnPlayerKilledCallback;
+    public Action<string, Team, string, Team> OnPlayerKilledCallback;
 
     public Action OnClientStart;
 

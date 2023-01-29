@@ -527,6 +527,16 @@ PrefabInstance:
       propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
+    - target: {fileID: 6297546967778282131, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -867
+      objectReference: {fileID: 0}
+    - target: {fileID: 6297546967778282131, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 219
+      objectReference: {fileID: 0}
     - target: {fileID: 6412610099673693831, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
         type: 3}
       propertyPath: m_IsActive
@@ -547,6 +557,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 8078250862433003413}
+    - target: {fileID: 7938106322442267991, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+        type: 3}
+      propertyPath: m_Name
+      value: KillFeed
+      objectReference: {fileID: 0}
+    - target: {fileID: 7938106322442267991, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8574758338212676698, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
         type: 3}
       propertyPath: sceneId

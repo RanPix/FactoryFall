@@ -1,22 +1,17 @@
 using UnityEngine;
 using TMPro;
+using Unity.VisualScripting;
 
 public class KillfeedItem : MonoBehaviour
 {
 	[SerializeField] private TMP_Text text;
-
+    private Color killedPlayersColor;
+    private Color killerPlayersColor;
     public void Setup(string killedPlayer, Team killedTeam, string killerPlayer, Team killerTeam)
     {
-        if (killedTeam is Team.Blue)
-            text.color = new Color(0f, 0.4f, 1f);
-        else if (killedTeam is Team.Red)
-            text.color = Color.red;
+        killedPlayersColor.GetTeamColor(killedTeam);
+        killerPlayersColor.GetTeamColor(killerTeam);
 
-        if (killerTeam is Team.Blue)
-            text.color = new Color(0f, 0.4f, 1f);
-        else if (killerTeam is Team.Red)
-            text.color = Color.red;
-
-        text.text = $"<color=>{killedPlayer}  killed  {killerPlayer}";
+        text.text = $"<color=#{killedPlayersColor.ToHexString()}>{killedPlayer}</color>  killed  <color=#{killerPlayersColor.ToHexString()}>{killerPlayer}</color>";
     }
 }
