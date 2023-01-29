@@ -65,9 +65,9 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 15929
+    m_Bits: 13849
   m_RenderingPath: -1
-  m_TargetTexture: {fileID: 8400000, guid: e644a5812eb2fc04a83f7356a9e74a9c, type: 2}
+  m_TargetTexture: {fileID: 8400000, guid: 6b65a1b823e79714caec7a28665b0323, type: 2}
   m_TargetDisplay: 0
   m_TargetEye: 3
   m_HDR: 1
@@ -122,10 +122,3 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 77a08d0e05a5e774297ef0fdcde23199, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  player: {fileID: 0}
-  <maskWithEnemyPlayer>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 6185
-  <maskWithOutEnemyPlayer>k__BackingField:
-    serializedVersion: 2
-    m_Bits: 0

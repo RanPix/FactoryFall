@@ -13,7 +13,7 @@ namespace Player
     {
         //player information
         [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; }
-        [field: SyncVar] public Team team { get; private set; }
+        [field: SyncVar(hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
 
         [field: SyncVar] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
@@ -97,22 +97,9 @@ namespace Player
         private void SetupMiniMap()
         {
             Camera _miniMapCamera = Instantiate(miniMapCamera);
-            GameObject playerRow = GameObject.Instantiate(playerMark);
-            PlayerMark _playerMark = playerRow.GetComponent<PlayerMark>();
-            if (isLocalPlayer)
-            {
-                _playerMark.localMark.SetActive(true);
-            }
-            else
-            {
-                _playerMark.enemyMark.SetActive(true);
-                
-            }
-            _playerMark.player = gameObject.transform;
-            _playerMark.rotationReference = gameObject.transform.GetChild(0).GetChild(0);
 
             MiniMapCameraMove _miniMapCameraMove = _miniMapCamera.GetComponent<MiniMapCameraMove>();
-            _miniMapCameraMove.player = gameObject.transform;
+            _miniMapCameraMove.Setup(gameObject.transform);
 
             GameObject _compass = GameObject.Instantiate(compass, CanvasInstance.instance.canvas.transform);
             _compass.GetComponent<Compass>().reference = gameObject.transform.GetChild(0).GetChild(0);
@@ -120,9 +107,9 @@ namespace Player
         }
 
         [Command]
-        private void InitializePlayerInfo(string name, Team team)
+        private void InitializePlayerInfo(string name, Team newTeam)
         {
-            this.team = team;
+            team = newTeam;
             nickname = name;
         }
 
@@ -130,10 +117,10 @@ namespace Player
         {
             if (isLocalPlayer)
             {
-                InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
-
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
                 gameObject.tag = "LocalPlayer";
+
+                InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
 
                 Transform hitIndicator = Instantiate(hitIndicatorPrefab, CanvasInstance.instance.canvas.transform);
                 hitIndicator.GetComponent<HitIndicatorTrigger>().Setup(this, orientation);
@@ -152,17 +139,38 @@ namespace Player
 
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
             }
-            else
-            {
-                GameObject playerRow = GameObject.Instantiate(playerMark);
-                PlayerMark _playerMark = playerRow.GetComponent<PlayerMark>();
-                _playerMark.enemyMark.SetActive(true);
-                _playerMark.player = gameObject.transform;
-                _playerMark.rotationReference = gameObject.transform.GetChild(0).GetChild(0);
+        }
 
-                
-                this.enabled = false;
-            }
+        public void SetTeam(Team oldTeam, Team newTeam)
+        {
+            GameObject playerRow = Instantiate(playerMark);
+            playerRow.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
+
+            if (isLocalPlayer)
+                return;
+
+            GameObject localPlayerInstance = GameObject.FindGameObjectWithTag("LocalPlayer");
+            Team localPlayerTeam = Team.Null;
+
+            if (localPlayerInstance != null)
+                localPlayerTeam = localPlayerInstance.GetComponent<GamePlayer>().team;
+
+            else
+                localPlayerTeam = PlayerInfoTransfer.instance.team;
+
+             
+            string playerTag = "";
+
+            if (newTeam == Team.Blue && localPlayerTeam == Team.Blue)
+                playerTag = "FriendlyPlayer";
+
+            else if (newTeam == Team.Red && localPlayerTeam == Team.Red)
+                playerTag = "FriendlyPlayer";
+
+            else
+                playerTag = "EnemyPlayer";
+
+            gameObject.tag = playerTag;
         }
 
         private void SetNickname(string oldName, string newName)
@@ -191,11 +199,14 @@ namespace Player
             bool isHitted = Physics.Raycast(ray, out RaycastHit hit, shootRange, hitMask);
             if (isHitted)
             {
-                Health hitHealth = hit.transform.GetComponent<Health>();
-                if (hitHealth)
+                if (hit.transform.tag != "FriendlyPlayer")
                 {
-                    StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.15f));
-                    CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                    Health hitHealth = hit.transform.GetComponent<Health>();
+                    if (hitHealth)
+                    {
+                        StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.15f));
+                        CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                    }
                 }
             }
 

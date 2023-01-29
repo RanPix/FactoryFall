@@ -4,7 +4,6 @@ public class KillFeed : MonoBehaviour
 {
 	[SerializeField] GameObject killfeedItemPrefab;
 
-    // Use this for initialization
     void Start()
     {
         GameManager.instance.OnPlayerKilledCallback += OnKill;

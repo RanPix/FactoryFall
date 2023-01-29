@@ -10,6 +10,8 @@ TagManager:
   - SpawnPoint
   - LocalPlayer
   - WeaponAmmoText
+  - FriendlyPlayer
+  - EnemyPlayer
   layers:
   - Default
   - TransparentFX
@@ -22,13 +24,13 @@ TagManager:
   - LocalPlayer
   - Ore
   - Block
-  - LocalPlayerMark
-  - EnemyPlayerMark
+  - 
+  - Mark
   - MIniMap
   - Ghost
   - Nickname
   - Muzzle
-  - FriendlyPlayerMark
+  - 
   - 
   - 
   - 
