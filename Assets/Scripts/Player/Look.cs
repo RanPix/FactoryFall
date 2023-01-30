@@ -72,7 +72,7 @@ public class Look : MonoBehaviour
 
     }
 
-    private void DisableLook(string netID, string name, int hp)
+    private void DisableLook(string netID, Team team, string name, int hp)
     {
         spectatePlayer = GameManager.GetPlayer(netID)?.transform;
         lookEnabled = false;

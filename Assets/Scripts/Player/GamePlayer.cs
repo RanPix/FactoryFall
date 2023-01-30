@@ -5,6 +5,7 @@ using GameBase;
 using System;
 using TMPro;
 using UI.Indicators;
+using Unity.VisualScripting;
 
 namespace Player
 {
@@ -73,7 +74,7 @@ namespace Player
 
         public Action<string, int> OnGotHit;
 
-        public Action<string, string, int> OnDeath;
+        public Action<string, Team, string, int> OnDeath;
         public Action OnRespawn;
 
         public Action<string, string> OnKill;
@@ -111,6 +112,11 @@ namespace Player
         {
             team = newTeam;
             nickname = name;
+        }
+
+        private void Awake()
+        {
+            //Application.wantsToQuit += DisconnectPlayer;
         }
 
         private void Start()
@@ -175,18 +181,39 @@ namespace Player
 
         private void SetNickname(string oldName, string newName)
         {
-            base.OnStartClient();
-
             if (isLocalPlayer)
                 return;
 
             nameGO.SetActive(true);
             TMP_Text text = nameGO.GetComponentInChildren<TMP_Text>();
+
+            StartCoroutine(WaitForSyncTeam(text));
             text.text = newName;
+        }
+
+        private IEnumerator WaitForSyncTeam(TMP_Text text)
+        {
+            yield return new WaitUntil(() => team != Team.Null);
 
             text.color = TeamToColor.GetTeamColor(team);
         }
 
+
+        [Command]
+        private void CmdDisconnectPlayer(string netID)
+        {
+            RpcDisconnectPlayer(netID);
+        }
+
+        [ClientRpc]
+        private void RpcDisconnectPlayer(string netID)
+        {
+            //if (isLocalPlayer)
+            //    Application.Quit();
+            print(isLocalPlayer);
+
+            GameManager.UnRegisterPlayer(netID);
+        }
 
 
         #region Weapon
@@ -285,7 +312,7 @@ namespace Player
 
             if (sourcePlayer != null)
             {
-                OnDeath?.Invoke(_sourceID, sourcePlayer.nickname, (int)sourcePlayer.gameObject.GetComponent<Health>().currentHealth);
+                OnDeath?.Invoke(_sourceID, sourcePlayer.team, sourcePlayer.nickname, (int)sourcePlayer.gameObject.GetComponent<Health>().currentHealth);
 
                 //sourcePlayer.GetPlayerInfo().kills++;
                 CmdDie(_sourceID);
