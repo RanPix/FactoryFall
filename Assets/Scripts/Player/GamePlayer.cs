@@ -5,7 +5,6 @@ using GameBase;
 using System;
 using TMPro;
 using UI.Indicators;
-using Unity.VisualScripting;
 
 namespace Player
 {

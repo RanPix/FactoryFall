@@ -15,7 +15,7 @@ public class ChosingWeapon : MonoBehaviour
         CursorManager.SetCursorLockState(CursorLockMode.None);
         CursorManager.canLock = false;
         Menu.Instance.canOpenMenu = false;
-        Menu.Instance.look.canRotateCamera = false;
+        Menu.Instance.look.canLook = false;
 
     }
 
@@ -64,7 +64,7 @@ public class ChosingWeapon : MonoBehaviour
         }
 
         CursorManager.canLock = true;
-        Menu.Instance.look.canRotateCamera = true;
+        Menu.Instance.look.canLook = true;
         Menu.Instance.canOpenMenu = true;
         CursorManager.SetCursorLockState(CursorLockMode.Locked);
         OnAñtivateWeapons?.Invoke(firstIndex, secondIndex);

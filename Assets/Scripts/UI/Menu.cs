@@ -31,7 +31,7 @@ public class Menu : MonoBehaviour
     {
         CursorManager.canLock = isOpened ? false : true;
         isOpened = !isOpened;
-        look.canRotateCamera = !isOpened;
+        look.canLook = !isOpened;
         CursorManager.SetCursorLockState(isOpened ? CursorLockMode.None : CursorLockMode.Locked);
         panel.SetActive(isOpened);
     }
@@ -40,7 +40,7 @@ public class Menu : MonoBehaviour
     {
         CursorManager.canLock = true;
         isOpened = false;
-        look.canRotateCamera = !isOpened;
+        look.canLook = !isOpened;
         CursorManager.SetCursorLockState(CursorLockMode.None);
         panel.SetActive(isOpened);
     }
