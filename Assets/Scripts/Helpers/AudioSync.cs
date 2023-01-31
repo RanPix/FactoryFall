@@ -8,7 +8,6 @@ public class AudioSync : NetworkBehaviour
     private AudioSource source;
 
     public AudioClip[] clips;
-
     void Start()
     {
         source = this.GetComponent<AudioSource>();

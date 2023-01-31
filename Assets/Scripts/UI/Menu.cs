@@ -11,6 +11,7 @@ public class Menu : MonoBehaviour
     private PlayerControls controls;
     public bool canOpenMenu = true;
     private bool isOpened = false;
+    private bool wasOpened = false;
     [SerializeField] private GameObject panel;
 
     void Awake()
@@ -24,24 +25,24 @@ public class Menu : MonoBehaviour
         controls.UI.Enable();
         controls.UI.OpenOrCloseMenu.performed += OpenOrCloseMenu;
 
-        CloseMenu();
+        OpenOrCloseMenu(false);
     }
 
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
     {
-        CursorManager.canLock = isOpened ? false : true;
+        CursorManager.disablesToLockCount = isOpened ? CursorManager.disablesToLockCount+1 : wasOpened ? CursorManager.disablesToLockCount-1: CursorManager.disablesToLockCount;
         isOpened = !isOpened;
+        wasOpened = isOpened?true:false;
         look.canRotateCamera = !isOpened;
         CursorManager.SetCursorLockState(isOpened ? CursorLockMode.None : CursorLockMode.Locked);
         panel.SetActive(isOpened);
     }
-
-    public void CloseMenu()
+    public void OpenOrCloseMenu(bool openMenu)
     {
-        CursorManager.canLock = true;
-        isOpened = false;
-        look.canRotateCamera = !isOpened;
-        CursorManager.SetCursorLockState(CursorLockMode.None);
-        panel.SetActive(isOpened);
+        CursorManager.disablesToLockCount = openMenu ? CursorManager.disablesToLockCount+1 : wasOpened ? CursorManager.disablesToLockCount-1: CursorManager.disablesToLockCount;
+        isOpened = openMenu;
+        look.canRotateCamera = !openMenu;
+        CursorManager.SetCursorLockState(openMenu ? CursorLockMode.None : CursorLockMode.Locked);
+        panel.SetActive(openMenu);
     }
 }

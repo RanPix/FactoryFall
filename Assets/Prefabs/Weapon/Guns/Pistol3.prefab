@@ -54,12 +54,7 @@ MonoBehaviour:
   shootAnimationName: Shoot
   reloadAnimationName: Reload
   useAudio: 1
-  canSway: 0
-  initialWeaponPosition: {x: 0, y: 0, z: 0}
-  initialSwayPosition: {x: 0, y: 0, z: 0}
-  swayMultiplier: 2
-  maxSwayDistance: 0.5
-  swaySmoothing: 0.2
+  initialWeaponPosition: {x: 0.55, y: -0.18, z: 0.72}
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
   ammo: 12
@@ -74,10 +69,12 @@ MonoBehaviour:
     m_Bits: 153
   player: {fileID: 0}
   canShoot: 0
+  wasChanged: 0
   weaponIndex: 0
   cam: {fileID: 0}
   gunCam: {fileID: 0}
   audioSource: {fileID: 0}
+  ammoText: {fileID: 0}
   weaponView: {fileID: 9141566657429978863}
   <_isLocalPLayer>k__BackingField: 0
 --- !u!1001 &9136810670852101883

@@ -13,7 +13,7 @@ public class ChosingWeapon : MonoBehaviour
     void Start()
     {
         CursorManager.SetCursorLockState(CursorLockMode.None);
-        CursorManager.canLock = false;
+        CursorManager.disablesToLockCount++;
         Menu.Instance.canOpenMenu = false;
         Menu.Instance.look.canRotateCamera = false;
 
@@ -62,8 +62,8 @@ public class ChosingWeapon : MonoBehaviour
                 secondIndex = i;
             }
         }
-
-        CursorManager.canLock = true;
+        GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>().weaponsWasSelected = true;
+        CursorManager.disablesToLockCount--;
         Menu.Instance.look.canRotateCamera = true;
         Menu.Instance.canOpenMenu = true;
         CursorManager.SetCursorLockState(CursorLockMode.Locked);

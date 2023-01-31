@@ -1,39 +1,35 @@
 using System;
+using System.Collections.Generic;
 using UnityEngine;
 
 public class CursorManager : MonoBehaviour
 {
-    public static CursorManager Instance { get; private set; }
-
-    private static bool _canLock = true;
-    public static bool canLock
+    public static List<Behaviour> scriptsWhichNeedUnlockedCursor = new List<Behaviour>();
+    [Min(0)]private static int _disablesToLockCount = 0;
+    [field: Min(0)]public static int disablesToLockCount
     {
-        get => _canLock;
+        get => _disablesToLockCount;
         set
         {
-            _canLock = value;
-            OnCanLockChange?.Invoke(value);
+            _disablesToLockCount = value;
+            OnCanLockChange?.Invoke(value==0?true:false);
         }
     }
 
     public static Action<bool> OnCanLockChange;
 
 
-    private static bool smbWantToLockCursor = false;
 
     void Awake()
     {
-        if(Instance == null)
-            Instance = this;
         OnCanLockChange += TryLock;
     }
 
     private void TryLock(bool canLock)
     {
-        if (canLock && smbWantToLockCursor)
+        if (canLock)
         {
             SetCursorLockState(CursorLockMode.Locked);
-            smbWantToLockCursor = false;
         }
 
     }
@@ -42,11 +38,8 @@ public class CursorManager : MonoBehaviour
         switch (lockMode)
         {
             case CursorLockMode.Locked:
-                if (!canLock)
-                {
-                    smbWantToLockCursor = true;
+                if (scriptsWhichNeedUnlockedCursor.Count > 0)
                     return;
-                }
                 Cursor.lockState = lockMode;
                 Cursor.visible = false;
                 break;
