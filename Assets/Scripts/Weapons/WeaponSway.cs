@@ -13,6 +13,8 @@ public class WeaponSway : MonoBehaviour
     [SerializeField] private PlayerOverride[] playerOverrides;
     [HideInInspector] public float currentSpeed;
 
+    public bool canSway = true;
+
     private float currentTimeX;
     private float currentTimeY;
 
@@ -23,7 +25,7 @@ public class WeaponSway : MonoBehaviour
 
     void Update()
     {
-        if(!weapon)
+        if(!weapon||!canSway)
             return;
         foreach (PlayerOverride player in playerOverrides)
         {
@@ -53,7 +55,7 @@ public class WeaponSway : MonoBehaviour
 
     void FixedUpdate()
     {
-        if(!weapon)
+        if(!weapon||!canSway)
             return;
         Vector3 target = new Vector3(xPos + normalWeaponPosition.x, yPos + normalWeaponPosition.y, normalWeaponPosition.z);
         Vector3 desiredPos = Vector3.SmoothDamp(weapon.localPosition, target, ref smoothV, 0.1f);

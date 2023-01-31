@@ -9,7 +9,7 @@ public class Look : MonoBehaviour
 
     [HideInInspector] public bool canRotateCamera;
 
-    [SerializeField] private Camera m_Camera;
+    [SerializeField] private Camera cam;
     [SerializeField] private float sensX;
     [SerializeField] private float sensY;
 
@@ -52,6 +52,13 @@ public class Look : MonoBehaviour
 
     private void UpdateCamera()
     {
+        if (!lookEnabled)
+        {
+            cam.transform.LookAt(spectatePlayer.position + new Vector3(0, 0.5f));
+
+            return;
+        }
+
         if (!canRotateCamera)
             return;
 
@@ -60,7 +67,7 @@ public class Look : MonoBehaviour
         xRot -= inputVector.y * 0.01f * sensY;
         xRot = Mathf.Clamp(xRot, -90f, 90f);
 
-        m_Camera.transform.rotation = Quaternion.Euler(xRot, yRot, 0);
+        cam.transform.rotation = Quaternion.Euler(xRot, yRot, 0);
         orientation.rotation = Quaternion.Euler(0, yRot, 0);
     }
 
@@ -72,7 +79,7 @@ public class Look : MonoBehaviour
 
     }
 
-    private void DisableLook(string netID, string name, int hp)
+    private void DisableLook(string netID, Team team, string name, int hp)
     {
         spectatePlayer = GameManager.GetPlayer(netID)?.transform;
         lookEnabled = false;

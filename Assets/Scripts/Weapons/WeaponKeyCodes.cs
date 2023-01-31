@@ -33,7 +33,7 @@ public class WeaponKeyCodes : NetworkBehaviour
     {
         if (!isLocalPlayer)
             return;
-        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnAñtivateWeapons += SetSelectedWeaponsIndexes;
+        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
         arm._isLocalPLayer = true;
         audioSync = GetComponent<AudioSync>();
         audioSource = GetComponent<AudioSource>();

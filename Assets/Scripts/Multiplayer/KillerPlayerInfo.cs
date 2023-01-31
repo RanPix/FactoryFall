@@ -1,5 +1,4 @@
 using Player;
-using System.Collections;
 using TMPro;
 using UnityEngine;
 
@@ -17,10 +16,13 @@ public class KillerPlayerInfo : MonoBehaviour
         player.OnRespawn += HideKillerInfo;
     }
 
-    private void ShowKillerInfo(string netID, string name, int hp)
+    private void ShowKillerInfo(string netID, Team team, string name, int hp)
     {
         this.netID.text = $"ID: {netID}";
-        this.nickname.text = name;
+
+        nickname.color = TeamToColor.GetTeamColor(team);
+        nickname.text = name;
+
         this.hp.text = hp.ToString();
 
 

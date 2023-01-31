@@ -127,6 +127,7 @@ MonoBehaviour:
       m_PostInfinity: 0
       m_RotationOrder: 0
   currentSpeed: 0
+  canSway: 1
 --- !u!1 &841400163098873429
 GameObject:
   m_ObjectHideFlags: 0
@@ -253,6 +254,7 @@ MonoBehaviour:
   disableGameObjectsOnDeath:
   - {fileID: 772742556034147628}
   - {fileID: 841400163719565600}
+  - {fileID: 2792687197704943180}
   characterController: {fileID: 841400163258982990}
   hitMask:
     serializedVersion: 2

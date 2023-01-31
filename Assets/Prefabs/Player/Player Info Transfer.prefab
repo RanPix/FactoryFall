@@ -44,5 +44,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 905a3363c3c09fd44ab4f2d391ab0149, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  <nickname>k__BackingField: 
+  <nickname>k__BackingField: Name
   <team>k__BackingField: 1

@@ -9,7 +9,7 @@ public class ChosingWeapon : MonoBehaviour
     private int selectedWeaponsCount;
     private int maxWeaponsCount;
     public bool canSelectAnotherWeapon = true;
-    public Action<int, int> OnAñtivateWeapons;
+    public Action<int, int> OnActivateWeapons;
     void Start()
     {
         CursorManager.SetCursorLockState(CursorLockMode.None);
@@ -67,7 +67,7 @@ public class ChosingWeapon : MonoBehaviour
         Menu.Instance.look.canRotateCamera = true;
         Menu.Instance.canOpenMenu = true;
         CursorManager.SetCursorLockState(CursorLockMode.Locked);
-        OnAñtivateWeapons?.Invoke(firstIndex, secondIndex);
+        OnActivateWeapons?.Invoke(firstIndex, secondIndex);
 
     }
     

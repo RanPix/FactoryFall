@@ -1,13 +1,10 @@
 using UnityEngine;
-using UnityEngine.UI;
 
 public class PlayerMark : MonoBehaviour
 {
-
     private Transform player;
     private Transform rotationReference;
 
-    private Team team;
     [SerializeField] private GameObject localMark;
     [SerializeField] private GameObject blueTeam;
     [SerializeField] private GameObject redTeam;
