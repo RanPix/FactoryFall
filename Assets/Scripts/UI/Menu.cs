@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Player;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
@@ -11,6 +12,7 @@ public class Menu : MonoBehaviour
     private PlayerControls controls;
     public bool canOpenMenu = true;
     private bool isOpened = false;
+    private bool wasOpened = false;
     [SerializeField] private GameObject panel;
 
     void Awake()
@@ -24,24 +26,33 @@ public class Menu : MonoBehaviour
         controls.UI.Enable();
         controls.UI.OpenOrCloseMenu.performed += OpenOrCloseMenu;
 
-        CloseMenu();
+        OpenOrCloseMenu(false);
     }
 
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
     {
-        CursorManager.canLock = isOpened ? false : true;
+        WeaponKeyCodes _localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>();
+        CursorManager.disablesToLockCount = isOpened ? CursorManager.disablesToLockCount+1 : wasOpened ? CursorManager.disablesToLockCount-1: CursorManager.disablesToLockCount;
+        _localPlayer.weaponHolder.GetComponent<WeaponSway>().canSway = isOpened;
+        if(_localPlayer.currentWeapon)
+            _localPlayer.currentWeapon.canShoot = isOpened;
         isOpened = !isOpened;
-        look.canLook = !isOpened;
+        wasOpened = isOpened?true:false;
+        look.canRotateCamera = !isOpened;
         CursorManager.SetCursorLockState(isOpened ? CursorLockMode.None : CursorLockMode.Locked);
         panel.SetActive(isOpened);
     }
-
-    public void CloseMenu()
+    public void OpenOrCloseMenu(bool openMenu)
     {
-        CursorManager.canLock = true;
-        isOpened = false;
-        look.canLook = !isOpened;
-        CursorManager.SetCursorLockState(CursorLockMode.None);
-        panel.SetActive(isOpened);
+        WeaponKeyCodes _localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>();
+        CursorManager.disablesToLockCount = openMenu ? CursorManager.disablesToLockCount+1 : wasOpened ? CursorManager.disablesToLockCount-1: CursorManager.disablesToLockCount;
+        _localPlayer.weaponHolder.GetComponent<WeaponSway>().canSway = !openMenu;
+        if(_localPlayer.currentWeapon)
+            _localPlayer.currentWeapon.canShoot = !openMenu;
+
+        isOpened = openMenu;
+        look.canRotateCamera = !openMenu;
+        CursorManager.SetCursorLockState(openMenu ? CursorLockMode.None : CursorLockMode.Locked);
+        panel.SetActive(openMenu);
     }
 }

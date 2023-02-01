@@ -12,22 +12,31 @@ public class WeaponKeyCodes : NetworkBehaviour
     [SerializeField] private GamePlayer gamePlayer;
     [SerializeField] private Arm arm;
 
+    [Space]
+    [Header("Weapon")]
+    public bool weaponsWasSelected = false;
     public Transform weaponHolder;
     public Weapon currentWeapon;
     public int currentWeaponIndex = -1;
     public GameObject[] weapons;
     public List<int> activatedWeaponsIndexes = new List<int>();
-    public PlayerControls controls { get; private set; }
 
+    [Space] 
+    [Header("Audio")] 
+    [SerializeField] private AudioClip changeWeaponClip;
+
+    private PlayerControls controls;
     private AudioSync audioSync;
+    private AudioSource audioSource;
 
     void Start()
     {
         if (!isLocalPlayer)
             return;
-        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnAñtivateWeapons += SetSelectedWeaponsIndexes;
+        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
         arm._isLocalPLayer = true;
         audioSync = GetComponent<AudioSync>();
+        audioSource = GetComponent<AudioSource>();
         controls = new PlayerControls(); 
         //WeaponInventory.instance.OnWeaponchange.Invoke(0);
         controls.Player.Enable();
@@ -37,9 +46,8 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     void Update()
     {
-        if(!isLocalPlayer || !currentWeapon)
+        if(!isLocalPlayer || !currentWeapon|| !weaponsWasSelected)
             return;
-
         KeyCodes();
     }
 
@@ -62,29 +70,44 @@ public class WeaponKeyCodes : NetworkBehaviour
             index = activatedWeaponsIndexes.Max();
         }
 
+        if (currentWeapon)
+        {
+            currentWeapon.wasChanged = true;
+
+        }
         weapons[currentWeaponIndex].SetActive(false);
-        weapons[index].SetActive(true);
        
+        weapons[index].SetActive(true);
         WeaponInventory.instance.ChangeBlurIcon(index, currentIndex);
+
         currentWeapon = weapons[index].GetComponent<Weapon>();
+        currentWeapon.wasChanged = false;
         currentWeaponIndex = index;
         currentWeapon._isLocalPLayer = true;
-        //currentWeapon.UpdateAmmo();
         ChangeAnotherValuesAfterChangeWeapon();
+        //currentWeapon.UpdateAmmo();
     }
 
     public void GetWeaponIndex(InputAction.CallbackContext context)
     {
         int index = (int)context.ReadValue<float>();
+        if(!weaponsWasSelected)
+            return;
         ChangeWeapon(index, index==0?1:0);
     }
 
     public void ChangeAnotherValuesAfterChangeWeapon()
     {
+        WeaponSway _sway = weaponHolder.GetComponent<WeaponSway>();
+        _sway.weapon = currentWeapon.transform;
+        _sway.normalWeaponPosition = currentWeapon.initialWeaponPosition;
         GetComponent<NetworkTransformChild>().target = currentWeapon.transform;
         GetComponent<NetworkAnimator>().animator = currentWeapon.GetComponentInChildren<Animator>();
         GetComponent<NetworkAnimator>().SetValues();
         GetComponent<GamePlayer>().muzzlePosition = currentWeapon.muzzlePosition;
+        audioSource.Stop();
+
+        //audioSource.PlayOneShot(changeWeaponClip);
     }
 
     public void SetSelectedWeaponsIndexes(int first, int second)

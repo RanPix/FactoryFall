@@ -5,6 +5,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using TMPro;
+using Unity.VisualScripting;
 using Random = UnityEngine.Random;
 
 public enum States
@@ -37,7 +38,6 @@ abstract public class Weapon : MonoBehaviour
     [Space]
     [Header("Enums")]
     [SerializeField] private States _state;
-
     [SerializeField] public ShootType _shootType;
 
 
@@ -55,30 +55,10 @@ abstract public class Weapon : MonoBehaviour
 
     [Space(10)] 
     [Header("Sway")] 
-    [SerializeField] private bool canSway;
-    [SerializeField] private Vector3 initialWeaponPosition;
-    [SerializeField] private Vector3 initialSwayPosition;
-
-    [SerializeField] private float swayMultiplier;
-    [SerializeField] private float maxSwayDistance;
-    [SerializeField] private float swaySmoothing;
+    public Vector3 initialWeaponPosition;
 
     private PlayerControls controls;
     private Vector2 lookVector;
-
-    //[Space(10)]
-    //[Header("Aiming")]
-    //[SerializeField] private bool canScope;
-    //[SerializeField] protected Attachment attachment;
-    //[SerializeField] private float normalFOV;
-    //[SerializeField] private float scopedFOV;
-    //[SerializeField] private float normalSens;
-    //[SerializeField] private float scopedSens;
-    //[SerializeField] private float FOVSmoothing;
-    //[SerializeField] private Vector3 normalLOcalPosition;
-    //[SerializeField] private Vector3 aimingLOcalPosition;
-    //[SerializeField] private float aimSmoothing;
-    //[SerializeField] private string ammoObjectName;
 
     [Space(10)]
     [Header("Ammo")]
@@ -102,6 +82,7 @@ abstract public class Weapon : MonoBehaviour
 
     public GameObject player;
     public bool canShoot;
+    public bool wasChanged = false;
     public int weaponIndex;
 
 
@@ -209,23 +190,17 @@ abstract public class Weapon : MonoBehaviour
         animator.Play(reloadAnimationName);
 
         yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
-
-        weaponAmmo.AddAmmo();
-        weaponAmmo.UpdateAmmoInScreen();
+        if (!wasChanged)
+        {
+            weaponAmmo.AddAmmo();
+            weaponAmmo.UpdateAmmoInScreen();
+        }
         canShoot = true;
         reloading = false;
     }
 
-
     private void ReadLookVector(InputAction.CallbackContext context) => lookVector = context.ReadValue<Vector2>();
 
-    private void Sway()
-    {
-        transform.localPosition = Vector3.Lerp(transform.localPosition, lookVector * swayMultiplier, swaySmoothing * Time.deltaTime);
-
-
-
-    }
 
 
     public void PlaySound(PlaySoundType soundType)

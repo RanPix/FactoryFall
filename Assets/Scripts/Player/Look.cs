@@ -7,7 +7,7 @@ public class Look : MonoBehaviour
 {
     private PlayerControls controls;
 
-    [HideInInspector] public bool canLook;
+    [HideInInspector] public bool canRotateCamera;
 
     [SerializeField] private Camera cam;
     [SerializeField] private float sensX;
@@ -59,7 +59,7 @@ public class Look : MonoBehaviour
             return;
         }
 
-        if (!canLook)
+        if (!canRotateCamera)
             return;
 
         // Laggy beauty

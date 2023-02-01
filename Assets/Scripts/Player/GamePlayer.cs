@@ -192,7 +192,6 @@ namespace Player
         {
             if (isLocalPlayer)
                 return;
-
             nameGO.SetActive(true);
             TMP_Text text = nameGO.GetComponentInChildren<TMP_Text>();
 

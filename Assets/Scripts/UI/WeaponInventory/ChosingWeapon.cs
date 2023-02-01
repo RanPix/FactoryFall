@@ -9,13 +9,13 @@ public class ChosingWeapon : MonoBehaviour
     private int selectedWeaponsCount;
     private int maxWeaponsCount;
     public bool canSelectAnotherWeapon = true;
-    public Action<int, int> OnAñtivateWeapons;
+    public Action<int, int> OnActivateWeapons;
     void Start()
     {
         CursorManager.SetCursorLockState(CursorLockMode.None);
-        CursorManager.canLock = false;
+        CursorManager.disablesToLockCount++;
         Menu.Instance.canOpenMenu = false;
-        Menu.Instance.look.canLook = false;
+        Menu.Instance.look.canRotateCamera = false;
 
     }
 
@@ -62,12 +62,12 @@ public class ChosingWeapon : MonoBehaviour
                 secondIndex = i;
             }
         }
-
-        CursorManager.canLock = true;
-        Menu.Instance.look.canLook = true;
+        GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>().weaponsWasSelected = true;
+        CursorManager.disablesToLockCount--;
+        Menu.Instance.look.canRotateCamera = true;
         Menu.Instance.canOpenMenu = true;
         CursorManager.SetCursorLockState(CursorLockMode.Locked);
-        OnAñtivateWeapons?.Invoke(firstIndex, secondIndex);
+        OnActivateWeapons?.Invoke(firstIndex, secondIndex);
 
     }
     
