@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class CanvasInstance : MonoBehaviour
@@ -13,6 +11,7 @@ public class CanvasInstance : MonoBehaviour
     public GameObject killFeed;
     public GameObject weaponAmmoText;
     public GameObject weaponsToChose;
+    public GameObject scoreBoard;
 
     void Awake()
     {

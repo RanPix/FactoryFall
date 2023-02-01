@@ -12,6 +12,9 @@ TagManager:
   - WeaponAmmoText
   - FriendlyPlayer
   - EnemyPlayer
+  - NoneTeamSpawnPoint
+  - BlueTeamSpawnPoint
+  - RedTeamSpawnPoint
   layers:
   - Default
   - TransparentFX

@@ -4,17 +4,22 @@ public class KillFeed : MonoBehaviour
 {
 	[SerializeField] GameObject killfeedItemPrefab;
 
-    void Start()
+    private void Start()
     {
         GameManager.instance.OnPlayerKilledCallback += OnKill;
     }
 
-    public void OnKill(string killedPlayer, Team killedTeam, string killerPlayer, Team killerTeam)
+    private void OnKill(string killedPlayer, Team killedTeam, string killerPlayer, Team killerTeam)
     {
         //print($"{source} killed {player}");
         GameObject _killFeedItem = Instantiate(killfeedItemPrefab, this.transform);
         _killFeedItem.GetComponent<KillfeedItem>().Setup(killedPlayer, killedTeam, killerPlayer, killerTeam);
 
         Destroy(_killFeedItem, 4f);
+    }
+
+    private void OnScore(string player, Team team)
+    {
+        print($"{player} from {team} scored!");
     }
 }

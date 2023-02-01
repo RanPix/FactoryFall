@@ -54,7 +54,7 @@ public class Look : MonoBehaviour
     {
         if (!lookEnabled)
         {
-            cam.transform.LookAt(spectatePlayer.position + new Vector3(0, 0.5f));
+            cam.transform.LookAt(spectatePlayer.position + new Vector3(0, 1f));
 
             return;
         }

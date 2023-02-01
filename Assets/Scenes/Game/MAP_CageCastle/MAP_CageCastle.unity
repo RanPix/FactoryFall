@@ -123,6 +123,12 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &330164786 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8289261856902804479, guid: 0ded737292a34884eb1998889c515aca,
+    type: 3}
+  m_PrefabInstance: {fileID: 607718935}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &490066505
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -145,6 +151,21 @@ PrefabInstance:
       propertyPath: sceneCamera
       value: 
       objectReference: {fileID: 1902430470}
+    - target: {fileID: 8579581942591301954, guid: dfb9e53b63584f74891f73b288708e9f,
+        type: 3}
+      propertyPath: dmSpawnPoints
+      value: 
+      objectReference: {fileID: 1897428150}
+    - target: {fileID: 8579581942591301954, guid: dfb9e53b63584f74891f73b288708e9f,
+        type: 3}
+      propertyPath: redTeamSpawnPoints
+      value: 
+      objectReference: {fileID: 1162147740}
+    - target: {fileID: 8579581942591301954, guid: dfb9e53b63584f74891f73b288708e9f,
+        type: 3}
+      propertyPath: blueTeamSpawnPoints
+      value: 
+      objectReference: {fileID: 330164786}
     - target: {fileID: 8579581942591301955, guid: dfb9e53b63584f74891f73b288708e9f,
         type: 3}
       propertyPath: m_RootOrder
@@ -244,6 +265,26 @@ PrefabInstance:
       propertyPath: offlineScene
       value: Assets/Scenes/TestScene.unity
       objectReference: {fileID: 0}
+    - target: {fileID: 8781597035671628378, guid: 05936fcebd85a6d43bc326ac3b1bdc9e,
+        type: 3}
+      propertyPath: dmSpawnPoints
+      value: 
+      objectReference: {fileID: 607718938}
+    - target: {fileID: 8781597035671628378, guid: 05936fcebd85a6d43bc326ac3b1bdc9e,
+        type: 3}
+      propertyPath: redTeamSpawnPoints
+      value: 
+      objectReference: {fileID: 607718937}
+    - target: {fileID: 8781597035671628378, guid: 05936fcebd85a6d43bc326ac3b1bdc9e,
+        type: 3}
+      propertyPath: blueTeamSpawnPoints
+      value: 
+      objectReference: {fileID: 607718936}
+    - target: {fileID: 8781597035671628378, guid: 05936fcebd85a6d43bc326ac3b1bdc9e,
+        type: 3}
+      propertyPath: greenTeamSpawnPoints
+      value: 
+      objectReference: {fileID: 607718936}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 05936fcebd85a6d43bc326ac3b1bdc9e, type: 3}
 --- !u!1001 &607718935
@@ -315,6 +356,24 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0ded737292a34884eb1998889c515aca, type: 3}
+--- !u!4 &607718936 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3075515240773829957, guid: 0ded737292a34884eb1998889c515aca,
+    type: 3}
+  m_PrefabInstance: {fileID: 607718935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &607718937 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 869988941024352838, guid: 0ded737292a34884eb1998889c515aca,
+    type: 3}
+  m_PrefabInstance: {fileID: 607718935}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &607718938 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 5243105817501426625, guid: 0ded737292a34884eb1998889c515aca,
+    type: 3}
+  m_PrefabInstance: {fileID: 607718935}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &610504309
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -552,6 +611,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 0}
+    - target: {fileID: 7562411792672376925, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+        type: 3}
+      propertyPath: sceneId
+      value: 2606594055
+      objectReference: {fileID: 0}
     - target: {fileID: 7763790491362295762, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
@@ -567,10 +631,20 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 7986904409308171672, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0.0018310547
+      objectReference: {fileID: 0}
     - target: {fileID: 8574758338212676698, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
         type: 3}
       propertyPath: sceneId
       value: 91392615
+      objectReference: {fileID: 0}
+    - target: {fileID: 8831655692646624483, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.5
       objectReference: {fileID: 0}
     - target: {fileID: 9006152094561960682, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
         type: 3}
@@ -583,6 +657,12 @@ PrefabInstance:
     - {fileID: 3972706877264765391, guid: 7a5f6061b52eb144ebb8c62255a9e6f3, type: 3}
     - {fileID: 2015860674120899556, guid: 7a5f6061b52eb144ebb8c62255a9e6f3, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7a5f6061b52eb144ebb8c62255a9e6f3, type: 3}
+--- !u!1 &1162147740 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 9048383834907914047, guid: 0ded737292a34884eb1998889c515aca,
+    type: 3}
+  m_PrefabInstance: {fileID: 607718935}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1438028028
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -657,6 +737,12 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8c6f3dd11e999a04196d145f2661552e, type: 3}
+--- !u!1 &1897428150 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 616376338422619773, guid: 0ded737292a34884eb1998889c515aca,
+    type: 3}
+  m_PrefabInstance: {fileID: 607718935}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1902430469
 PrefabInstance:
   m_ObjectHideFlags: 0

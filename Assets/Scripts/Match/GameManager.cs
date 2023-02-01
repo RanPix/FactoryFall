@@ -13,13 +13,13 @@ public class GameManager : NetworkBehaviour
 
     [SerializeField] private GameObject sceneCamera;
 
+
+
     public Action<string, Team, string, Team> OnPlayerKilledCallback;
 
     public Action OnClientStart;
 
-
-
-    void Awake()
+    private void Awake()
     {
         if (instance != null)
         {
@@ -29,6 +29,8 @@ public class GameManager : NetworkBehaviour
         {
             instance = this;
         }
+
+        //ChangeTeamSpawnPositions(PlayerInfoTransfer.instance.team);
     }
 
     public void SetSceneCameraActive(bool state)
@@ -49,6 +51,9 @@ public class GameManager : NetworkBehaviour
     public static void RegisterPlayer(string _netID, GamePlayer _player)
     {
         players.Add(_netID, _player);
+
+        
+        //if (NetworkManager.singleton)
     }
 
     public static void UnRegisterPlayer(string _playerID)
@@ -89,6 +94,5 @@ public class GameManager : NetworkBehaviour
         GUILayout.EndVertical();
         GUILayout.EndArea();
     }
-
     #endregion
 }

@@ -14,7 +14,7 @@ namespace Player
             if (instance == null)
                 instance = this;
             else
-                Debug.LogError("MORE THAN ONE INSTANCE OF PLAYER INFO TRANSFER");
+                Debug.LogWarning("MORE THAN ONE INSTANCE OF PLAYER INFO TRANSFER");
 
             DontDestroyOnLoad(gameObject);
         }

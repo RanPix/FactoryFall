@@ -12,8 +12,8 @@ namespace Player
     public class GamePlayer : NetworkBehaviour
     {
         //player information
-        [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; }
         [field: SyncVar(hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
+        [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; }
 
         [field: SyncVar] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
@@ -53,7 +53,7 @@ namespace Player
         [SerializeField] private GameObject playerMark;
 
 
-        [SerializeField] private GameObject compass;
+        //[SerializeField] private GameObject compass;
         [SerializeField] private Transform killerPlayerInfoPrefab;
  
         [SerializeField] private AudioSource audioSource;
@@ -65,6 +65,8 @@ namespace Player
         [SerializeField] private Transform trail;
 
         [SerializeField] private Transform hitIndicatorPrefab;
+
+        private Scoreboard scoreboard;
 
         private int spawnedBulletCount = 0;
 
@@ -101,8 +103,8 @@ namespace Player
             MiniMapCameraMove _miniMapCameraMove = _miniMapCamera.GetComponent<MiniMapCameraMove>();
             _miniMapCameraMove.Setup(gameObject.transform);
 
-            GameObject _compass = GameObject.Instantiate(compass, CanvasInstance.instance.canvas.transform);
-            _compass.GetComponent<Compass>().reference = gameObject.transform.GetChild(0).GetChild(0);
+            //GameObject _compass = GameObject.Instantiate(compass, CanvasInstance.instance.canvas.transform);
+            //_compass.GetComponent<Compass>().reference = gameObject.transform.GetChild(0).GetChild(0);
 
         }
 
@@ -144,6 +146,8 @@ namespace Player
 
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
             }
+
+            scoreboard = CanvasInstance.instance.scoreBoard.GetComponent<Scoreboard>();
         }
 
         public void SetTeam(Team oldTeam, Team newTeam)
@@ -152,7 +156,13 @@ namespace Player
             playerRow.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
 
             if (isLocalPlayer)
+            {
+                Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition(team);
+                transform.position = _spawnPoint.position;
+                transform.rotation = _spawnPoint.rotation;
+
                 return;
+            }
 
             GameObject localPlayerInstance = GameObject.FindGameObjectWithTag("LocalPlayer");
             Team localPlayerTeam = Team.Null;
@@ -186,7 +196,8 @@ namespace Player
             nameGO.SetActive(true);
             TMP_Text text = nameGO.GetComponentInChildren<TMP_Text>();
 
-            StartCoroutine(WaitForSyncTeam(text));
+            //StartCoroutine(WaitForSyncTeam(text));
+            text.color = TeamToColor.GetTeamColor(team);
             text.text = newName;
         }
 
@@ -312,13 +323,12 @@ namespace Player
             if (sourcePlayer != null)
             {
                 OnDeath?.Invoke(_sourceID, sourcePlayer.team, sourcePlayer.nickname, (int)sourcePlayer.gameObject.GetComponent<Health>().currentHealth);
+                //sourcePlayer.CmdAddKill();
 
-                //sourcePlayer.GetPlayerInfo().kills++;
                 CmdDie(_sourceID);
             }
 
-            deaths++;
-
+            
             //Debug.Log("DIE2222222222");
 
             CmdDisableComponentsOnDeath();
@@ -338,6 +348,11 @@ namespace Player
         [Command]
         private void CmdDie(string _sourceID)
         {
+            GamePlayer player = GameManager.GetPlayer(_sourceID);
+            player.kills++;
+            scoreboard.AddScore(player.team, 1, player.nickname);
+
+            deaths++;
 
             RpcDie(_sourceID);
         }
@@ -374,7 +389,7 @@ namespace Player
         {
             yield return new WaitForSeconds(GameManager.instance.matchSettings.respawnTime);
 
-            Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition();
+            Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition(team);
             transform.position = _spawnPoint.position;
             transform.rotation = _spawnPoint.rotation;
 

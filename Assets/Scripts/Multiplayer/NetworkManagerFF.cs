@@ -1,7 +1,31 @@
 using UnityEngine;
 using Mirror;
+using System.Collections.Generic;
 
 public class NetworkManagerFF : NetworkManager
 {
-    public static Transform GetRespawnPosition() => startPositions[startPositionIndex++ % startPositions.Count];
+    private static Team playersCurrentTeam = Team.Null;
+    private static List<Transform> spawnPositions = new List<Transform>();
+
+    public static Transform GetRespawnPosition(Team team)
+    {
+        if (team != playersCurrentTeam)
+        {
+            playersCurrentTeam = team;
+            spawnPositions.Clear();
+
+            foreach (Transform point in startPositions)
+            {
+                if (point.tag == $"{team}TeamSpawnPoint")
+                {
+                    spawnPositions.Add(point);
+                }
+            }
+        }
+
+
+        return spawnPositions[Random.Range(0, spawnPositions.Count - 1)];
+    }
+
+    
 }

@@ -11,9 +11,9 @@ GameObject:
   - component: {fileID: 1865527210843043508}
   - component: {fileID: 1865142216}
   m_Layer: 0
-  m_Name: SpawnPoint
-  m_TagString: NoneTeamSpawnPoint
-  m_Icon: {fileID: 4162164826716764455, guid: 0000000000000000d000000000000000, type: 0}
+  m_Name: BlueTeamSpawnPoint
+  m_TagString: BlueTeamSpawnPoint
+  m_Icon: {fileID: -5397416234189338067, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
