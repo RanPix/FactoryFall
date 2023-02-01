@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class WeaponSway : MonoBehaviour
 {
@@ -23,10 +24,26 @@ public class WeaponSway : MonoBehaviour
 
     private Vector3 smoothV;
 
-    void Update()
+    Vector2 mouseSwayInput;
+
+    private PlayerControls controls;
+
+    private void Awake()
     {
-        if(!weapon||!canSway)
+        controls = new PlayerControls();
+        controls.Player.Enable();
+
+        controls.Player.Look.performed += GetMouseInput;
+    }
+
+    private void GetMouseInput(InputAction.CallbackContext context)
+        => mouseSwayInput = context.ReadValue<Vector2>();
+
+    private void Update()
+    {
+        if(!weapon || !canSway)
             return;
+
         foreach (PlayerOverride player in playerOverrides)
         {
             /*
@@ -43,8 +60,8 @@ public class WeaponSway : MonoBehaviour
             yPos = player.bobY.Evaluate(currentTimeY) * player.intensityY;
         }
 
-        float xSway = -Input.GetAxis("Mouse X") * swayIntensityX;
-        float ySway = -Input.GetAxis("Mouse Y") * swayIntensityY;
+        float xSway = -mouseSwayInput.x * swayIntensityX;
+        float ySway = -mouseSwayInput.y * swayIntensityY;
 
         xSway = Mathf.Clamp(xSway, minSway, maxSway);
         ySway = Mathf.Clamp(ySway, minSway, maxSway);
@@ -53,10 +70,11 @@ public class WeaponSway : MonoBehaviour
         yPos += ySway;
     }
 
-    void FixedUpdate()
+    private void LateUpdate()
     {
-        if(!weapon||!canSway)
+        if(!weapon || !canSway)
             return;
+
         Vector3 target = new Vector3(xPos + normalWeaponPosition.x, yPos + normalWeaponPosition.y, normalWeaponPosition.z);
         Vector3 desiredPos = Vector3.SmoothDamp(weapon.localPosition, target, ref smoothV, 0.1f);
         weapon.localPosition = desiredPos;

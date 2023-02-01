@@ -140,8 +140,6 @@ abstract public class Weapon : MonoBehaviour
         controls.Player.Enable();
         controls.Player.Look.performed += ReadLookVector;
 
-        initialWeaponPosition = transform.position;
-
         cam = Camera.main;
         gunCam = cam.GetComponentInChildren<Camera>();
 

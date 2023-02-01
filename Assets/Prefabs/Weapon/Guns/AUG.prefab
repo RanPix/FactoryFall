@@ -590,7 +590,7 @@ MonoBehaviour:
   shootAnimationName: Shoot
   reloadAnimationName: Reload
   useAudio: 0
-  initialWeaponPosition: {x: 0.589, y: -0.322, z: 0.999}
+  initialWeaponPosition: {x: 0.463, y: -0.322, z: 0.995}
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
   ammo: 25

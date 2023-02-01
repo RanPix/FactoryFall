@@ -23,9 +23,17 @@ public class NetworkManagerFF : NetworkManager
             }
         }
 
-
         return spawnPositions[Random.Range(0, spawnPositions.Count - 1)];
     }
 
+    public override void OnServerDisconnect(NetworkConnectionToClient conn, bool destroyPlayerForConnection = true)
+    {
+        base.OnServerDisconnect(conn, false);
+
+        GameManager.instance.CmdRemovePlayerFromAllClientsLists(conn.identity.netId.ToString());
+
+        NetworkServer.DestroyPlayerForConnection(conn);
+    }
     
 }
+

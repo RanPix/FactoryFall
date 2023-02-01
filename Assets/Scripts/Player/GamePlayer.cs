@@ -30,6 +30,7 @@ namespace Player
         private bool[] wasEnabled;
 
         [SerializeField] private GameObject[] disableGameObjectsOnDeath;
+
         [SerializeField] private CharacterController characterController;
 
         [SerializeField] private LayerMask hitMask;
@@ -192,36 +193,13 @@ namespace Player
         {
             if (isLocalPlayer)
                 return;
+
             nameGO.SetActive(true);
             TMP_Text text = nameGO.GetComponentInChildren<TMP_Text>();
 
             //StartCoroutine(WaitForSyncTeam(text));
             text.color = TeamToColor.GetTeamColor(team);
             text.text = newName;
-        }
-
-        private IEnumerator WaitForSyncTeam(TMP_Text text)
-        {
-            yield return new WaitUntil(() => team != Team.Null);
-
-            text.color = TeamToColor.GetTeamColor(team);
-        }
-
-
-        [Command]
-        private void CmdDisconnectPlayer(string netID)
-        {
-            RpcDisconnectPlayer(netID);
-        }
-
-        [ClientRpc]
-        private void RpcDisconnectPlayer(string netID)
-        {
-            //if (isLocalPlayer)
-            //    Application.Quit();
-            print(isLocalPlayer);
-
-            GameManager.UnRegisterPlayer(netID);
         }
 
 
@@ -382,6 +360,9 @@ namespace Player
             for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
                 disableGameObjectsOnDeath[i].SetActive(false);
 
+            if (!isLocalPlayer)
+                nameGO.SetActive(false);
+
         }
 
         private IEnumerator Respawn()
@@ -456,7 +437,8 @@ namespace Player
             for (int i = 0; i < disableGameObjectsOnDeath.Length; i++)
                 disableGameObjectsOnDeath[i].SetActive(true);
 
-
+            if (!isLocalPlayer)
+                nameGO.SetActive(true);
         }
 
 

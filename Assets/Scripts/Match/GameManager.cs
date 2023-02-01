@@ -61,6 +61,18 @@ public class GameManager : NetworkBehaviour
         players.Remove(_playerID);
     }
 
+    [Server]
+    public void CmdRemovePlayerFromAllClientsLists(string netID)
+    {
+        RpcRemovePlayerFromAllClientsLists(netID);
+    }
+
+    [ClientRpc]
+    private void RpcRemovePlayerFromAllClientsLists(string netID)
+    {
+        UnRegisterPlayer(netID);
+    }
+
     public static GamePlayer GetPlayer(string _playerID)
     {
         return players[_playerID];
@@ -77,7 +89,6 @@ public class GameManager : NetworkBehaviour
         base.OnStartClient();
         OnClientStart?.Invoke();
     }
-
 
     void OnGUI()
     {

@@ -1208,12 +1208,13 @@ namespace Mirror
 
         /// <summary>Called on the server when a client disconnects.</summary>
         // Called by NetworkServer.OnTransportDisconnect!
-        public virtual void OnServerDisconnect(NetworkConnectionToClient conn)
+        public virtual void OnServerDisconnect(NetworkConnectionToClient conn, bool destroyPlayerForConnection = true)
         {
             // by default, this function destroys the connection's player.
             // can be overwritten for cases like delayed logouts in MMOs to
             // avoid players escaping from PvP situations by logging out.
-            NetworkServer.DestroyPlayerForConnection(conn);
+            if (destroyPlayerForConnection)
+                NetworkServer.DestroyPlayerForConnection(conn);
             //Debug.Log("OnServerDisconnect: Client disconnected.");
         }
 

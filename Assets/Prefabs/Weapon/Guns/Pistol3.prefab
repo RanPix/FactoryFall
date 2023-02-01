@@ -54,7 +54,7 @@ MonoBehaviour:
   shootAnimationName: Shoot
   reloadAnimationName: Reload
   useAudio: 1
-  initialWeaponPosition: {x: 0.55, y: -0.18, z: 0.72}
+  initialWeaponPosition: {x: 0.452, y: -0.18, z: 0.868}
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
   ammo: 12
