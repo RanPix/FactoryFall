@@ -219,7 +219,7 @@ namespace Player
                     if (hitHealth)
                     {
                         StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.15f));
-                        CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                        CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                     }
                 }
             }
@@ -237,7 +237,14 @@ namespace Player
                 if (hitHealth)
                 {
                     StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
-                    CmdPlayerShot(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                    CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                }
+                else if (hit.transform.tag == "Ore")
+                {
+                    StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
+                    print(hit.transform.name);
+                    OreHit(weaponKeyCodes.arm.damageToOre, hit.transform.GetComponent<Ore>());
+
                 }
             }
         }
@@ -260,15 +267,20 @@ namespace Player
             Vector3 trailFinish = isHitted ? point : origin + direction * shootRange;
             line.SetPosition(1, trailFinish);
         }
-
-
+        [Command]
+        private void OreHit(int damage, Ore ore)
+        {
+            print("ore hit 1");
+            ore.CmdGetDamage(damage);
+        }
 
         [Command]
-        private void CmdPlayerShot(string _playerID, int _damage, string _sourceID)
+        private void CmdPlayerHit(string _playerID, int _damage, string _sourceID)
         {
 
             GamePlayer _player = GameManager.GetPlayer(_playerID);
             _player.RpcTakeDamage(_damage, _sourceID);
+
         }
 
         [ClientRpc]

@@ -25,7 +25,7 @@ namespace GameBase
             currentHealth -= damage;
 
             OnHealthChanged?.Invoke();
-            //print($"damage: {damage}");
+            //print($"damageToPlayer: {damageToPlayer}");
 
             CheckHealth(playerID);
         }

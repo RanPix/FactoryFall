@@ -217,12 +217,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   animator: {fileID: 8047471554800550902}
   weaponView: {fileID: 2936342118873093079}
-  <damage>k__BackingField: 50
+  <damageToPlayer>k__BackingField: 35
+  <damageToOre>k__BackingField: 1
   <punchRadius>k__BackingField: 0.3
   <punchDistance>k__BackingField: 3
   <hitLM>k__BackingField:
     serializedVersion: 2
-    m_Bits: 128
+    m_Bits: 640
   <reloadTime>k__BackingField: 1.2
 --- !u!1 &2936342119885667614
 GameObject:

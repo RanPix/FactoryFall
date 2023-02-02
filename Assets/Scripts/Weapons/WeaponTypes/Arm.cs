@@ -12,7 +12,8 @@ namespace Weapons
 
         [field: Header("Stats")]
 
-        [field: SerializeField] public int damage { get; private set; }
+        [field: SerializeField] public int damageToPlayer { get; private set; }
+        [field: SerializeField] public int damageToOre { get; private set; }
 
         [field: Space]
 
@@ -26,8 +27,6 @@ namespace Weapons
         public float reloadTimer { get; private set; }
 
         
-        private Camera cam;
-
         public bool _isLocalPLayer { get; set; }
 
         private void Start()
@@ -38,7 +37,6 @@ namespace Weapons
                 return;
             }
 
-            cam = Camera.main;
         }
 
         private void SetLayerRecursive(GameObject targetGameObject, LayerMask layer)
@@ -60,7 +58,7 @@ namespace Weapons
 
             animator.SetTrigger("Punch");
 
-            return new Ray(cam.transform.position, cam.transform.forward);
+            return new Ray(Camera.main.transform.position, Camera.main.transform.forward);
         }
         
     }

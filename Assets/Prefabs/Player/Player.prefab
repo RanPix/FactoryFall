@@ -275,7 +275,7 @@ MonoBehaviour:
   killerPlayerInfoPrefab: {fileID: 1956560174642625219, guid: b9b57a8d59b569641bd132dd2df4deb3,
     type: 3}
   audioSource: {fileID: 0}
-  weaponKeyCodes: {fileID: 0}
+  weaponKeyCodes: {fileID: 11036251873139821}
   muzzlePosition: {fileID: 857324440644313224}
   trail: {fileID: 2633746653808325309, guid: 737c6536a4c73b4459582beeb06f2a13, type: 3}
   hitIndicatorPrefab: {fileID: 6889825533650677275, guid: c794250e05854824e921ffca842cb8e3,
@@ -514,7 +514,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   gamePlayer: {fileID: 627041124257517008}
-  arm: {fileID: 7839290727025629521}
+  <arm>k__BackingField: {fileID: 7839290727025629521}
   weaponsWasSelected: 0
   weaponHolder: {fileID: 7644531972711148823}
   currentWeapon: {fileID: 0}
@@ -1036,7 +1036,7 @@ PrefabInstance:
     - target: {fileID: 2936342119856056392, guid: b1db0f11aee261949970a4bd9071be51,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 2936342119856056393, guid: b1db0f11aee261949970a4bd9071be51,
         type: 3}
@@ -1128,7 +1128,7 @@ PrefabInstance:
     - target: {fileID: 818817036421687420, guid: f65a2aee6ac45d94090607b90c8d2935,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 818817036421687421, guid: f65a2aee6ac45d94090607b90c8d2935,
         type: 3}

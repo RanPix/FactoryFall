@@ -21,7 +21,7 @@ public class Golem : Mob
         _nextFire = Time.time;
         PlaySound(shootAudioClip,true);
         mobAnimator.Play(AttackAnimationsNames[Random.Range(0,AttackAnimationsNames.Length)]);
-        //_targetGObj.GetComponent<HP>().hp -= damage;
+        //_targetGObj.GetComponent<HP>().hp -= damageToPlayer;
     }
 
     public override void Movement()

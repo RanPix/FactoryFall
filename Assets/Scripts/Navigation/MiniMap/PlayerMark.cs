@@ -20,7 +20,7 @@ public class PlayerMark : MonoBehaviour
 
         player = targetPlayer;
         rotationReference = targetRotationReference;
-        print(targetRotationReference!=null);
+
 
         if (isLocal)
         {

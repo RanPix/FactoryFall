@@ -10,7 +10,7 @@ using Weapons;
 public class WeaponKeyCodes : NetworkBehaviour
 {
     [SerializeField] private GamePlayer gamePlayer;
-    [SerializeField] private Arm arm;
+    [field: SerializeField] public Arm arm { get; private set; }
 
     [Space]
     [Header("Weapon")]
@@ -63,11 +63,9 @@ public class WeaponKeyCodes : NetworkBehaviour
             index = activatedWeaponsIndexes.Max();
         }
 
-        print("wth");
         if (index < 0 || index >= weapons.Length || index == currentWeaponIndex)
             return;
 
-        print("wtf");
         if (currentWeaponIndex == -1)
         {
             currentWeaponIndex = activatedWeaponsIndexes.Min();
@@ -145,7 +143,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         {
             if (arm.reloadTimer > arm.reloadTime)
             {
-                gamePlayer.Punch(arm.Punch(), arm.damage, arm.punchDistance, arm.punchRadius, arm.hitLM, gamePlayer.GetNetID());
+                gamePlayer.Punch(arm.Punch(), arm.damageToPlayer, arm.punchDistance, arm.punchRadius, arm.hitLM, gamePlayer.GetNetID());
             }
 
         }
