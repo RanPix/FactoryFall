@@ -184,6 +184,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerHealth: {fileID: 0}
   healthOnBar: {fileID: 5200431926940837156}
+  IDKHowToCallIt: 0
   rectTransform: {fileID: 3492123704618041427}
   HPText: {fileID: 1733178812045858621}
 --- !u!1 &4294758952746068244
