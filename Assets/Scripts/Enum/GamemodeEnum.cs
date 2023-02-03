@@ -1,6 +1,6 @@
 public enum Gamemode
 {
-    DM,
-    TDM,
-    BTR,
+    DM,  // Death Match
+    TDM, // Team Death Match
+    BTR, // Bring The Resource
 }

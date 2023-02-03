@@ -7,6 +7,7 @@ public class NetworkManagerFF : NetworkManager
     private static Team playersCurrentTeam = Team.Null;
     private static List<Transform> spawnPositions = new List<Transform>();
 
+
     public static Transform GetRespawnPosition(Team team)
     {
         if (team != playersCurrentTeam)
@@ -26,14 +27,11 @@ public class NetworkManagerFF : NetworkManager
         return spawnPositions[Random.Range(0, spawnPositions.Count - 1)];
     }
 
-    public override void OnServerDisconnect(NetworkConnectionToClient conn, bool destroyPlayerForConnection = true)
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        base.OnServerDisconnect(conn, false);
-
         GameManager.instance.CmdRemovePlayerFromAllClientsLists(conn.identity.netId.ToString());
 
-        NetworkServer.DestroyPlayerForConnection(conn);
+        base.OnServerDisconnect(conn);
     }
-    
 }
 

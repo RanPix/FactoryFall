@@ -282,6 +282,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Scoreboard
       objectReference: {fileID: 0}
+    - target: {fileID: 5288381687751709945, guid: 282aeb64307e44b43829932e7a575319,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7568370671446239314, guid: 282aeb64307e44b43829932e7a575319,
         type: 3}
       propertyPath: m_AssetId

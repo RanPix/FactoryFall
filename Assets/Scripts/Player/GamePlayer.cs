@@ -17,6 +17,7 @@ namespace Player
 
         [field: SyncVar] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
+        [field: SyncVar] public int score { get; private set; }
 
 
 
@@ -116,11 +117,6 @@ namespace Player
             nickname = name;
         }
 
-        private void Awake()
-        {
-            //Application.wantsToQuit += DisconnectPlayer;
-        }
-
         private void Start()
         {
             if (isLocalPlayer)
@@ -209,8 +205,14 @@ namespace Player
         [Client]
         public void Shoot(Ray ray, int damage, float shootRange, string playerID)
         {
-            spawnedBulletCount++;
             bool isHitted = Physics.Raycast(ray, out RaycastHit hit, shootRange, hitMask);
+
+            if (GameManager.instance.gameEnded)
+            {
+                CmdSpawnTrail(isHitted, ray.origin, ray.direction, hit.point, shootRange);
+                return;
+            }
+
             if (isHitted)
             {
                 if (hit.transform.tag != "FriendlyPlayer")
@@ -230,6 +232,9 @@ namespace Player
         [Client]
         public void Punch(Ray ray, int damage, float punchDistance, float punchRadius, LayerMask hitLM, string playerID)
         {
+            if (GameManager.instance.gameEnded)
+                return;
+
             bool isHitted = Physics.SphereCast(ray, punchRadius, out RaycastHit hit, punchDistance, hitLM);
             if (isHitted)
             {
@@ -442,7 +447,9 @@ namespace Player
         }
 
 
-#endregion
+        #endregion
+
+        
 
         private IEnumerator ActivateForSeconds(GameObject GO, float time)
         {

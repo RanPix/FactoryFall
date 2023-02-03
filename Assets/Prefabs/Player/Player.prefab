@@ -47,10 +47,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 83932ab2f5a64294f9e0d428fa6a9fd1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  swayIntensityX: 0.002
-  swayIntensityY: 0.002
-  maxSway: 0.3
-  minSway: -0.3
+  swayIntensityX: 0.003
+  swayIntensityY: 0.003
+  maxSway: 0.2
+  minSway: -0.2
   normalWeaponPosition: {x: 0, y: 0, z: 0}
   weapon: {fileID: 0}
   playerOverrides:
