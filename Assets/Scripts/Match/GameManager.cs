@@ -4,6 +4,8 @@ using System;
 using Mirror;
 using Player;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class GameManager : NetworkBehaviour
 {
@@ -13,6 +15,7 @@ public class GameManager : NetworkBehaviour
 
     [SerializeField] private GameObject sceneCamera;
 
+    [field: SyncVar] public bool gameEnded { get; private set; }
 
 
     public Action<string, Team, string, Team> OnPlayerKilledCallback;
@@ -53,7 +56,7 @@ public class GameManager : NetworkBehaviour
         players.Add(_netID, _player);
 
         
-        //if (NetworkManager.singleton)
+        
     }
 
     public static void UnRegisterPlayer(string _playerID)
@@ -106,4 +109,35 @@ public class GameManager : NetworkBehaviour
         GUILayout.EndArea();
     }
     #endregion
+
+    [Server]
+    public void EndGame()
+    {
+        gameEnded = true;
+        
+        StartCoroutine(WaitForDisconnectPlayer());
+    }
+
+    [Server]
+    private IEnumerator WaitForDisconnectPlayer()
+    {
+        yield return new WaitForSeconds(5f);
+
+        NetworkServer.Shutdown();
+    }
+
+    public override void OnStopClient()
+    {
+        base.OnStopClient();
+
+        SceneManager.LoadScene("Main Menu");
+    }
+
+    public override void OnStopServer()
+    {
+        base.OnStopServer();
+
+        if (isClient)
+            SceneManager.LoadScene("Main Menu");
+    }
 }

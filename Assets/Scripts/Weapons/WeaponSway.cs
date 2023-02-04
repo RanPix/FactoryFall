@@ -1,5 +1,4 @@
 using UnityEngine;
-using UnityEngine.InputSystem;
 
 public class WeaponSway : MonoBehaviour
 {
@@ -32,12 +31,7 @@ public class WeaponSway : MonoBehaviour
     {
         controls = new PlayerControls();
         controls.Player.Enable();
-
-        controls.Player.Look.performed += GetMouseInput;
     }
-
-    private void GetMouseInput(InputAction.CallbackContext context)
-        => mouseSwayInput = context.ReadValue<Vector2>();
 
     private void Update()
     {
@@ -59,7 +53,9 @@ public class WeaponSway : MonoBehaviour
             xPos = player.bobX.Evaluate(currentTimeX) * player.intensityX;
             yPos = player.bobY.Evaluate(currentTimeY) * player.intensityY;
         }
+
         mouseSwayInput = controls.Player.Look.ReadValue<Vector2>();
+
         float xSway = -mouseSwayInput.x * swayIntensityX;
         float ySway = -mouseSwayInput.y * swayIntensityY;
 
@@ -96,13 +92,4 @@ public class WeaponSway : MonoBehaviour
         public float intensityY;
         public AnimationCurve bobY;
     }
-
-
-
-
-
-
-
-
-
 }

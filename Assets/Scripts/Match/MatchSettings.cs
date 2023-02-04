@@ -8,7 +8,7 @@ public class MatchSettings
 
     public bool hasTimer { get; private set; } = false; 
     public float matchTime { get; private set; }
-    public int winningGoal { get; private set; } = 10;
+    public int winningGoal { get; private set; } = 2;
 
 
     [Min(0.1f)] public float respawnTime; // If 0 is needed, check MovementMachine SpeedReset timer

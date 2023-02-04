@@ -51,7 +51,7 @@ namespace Mirror
         // behaviour.
         // => public so that custom NetworkManagers can hook into it
         public static Action<NetworkConnectionToClient> OnConnectedEvent;
-        public static Action<NetworkConnectionToClient, bool> OnDisconnectedEvent;
+        public static Action<NetworkConnectionToClient> OnDisconnectedEvent;
         public static Action<NetworkConnectionToClient, TransportError, string> OnErrorEvent;
 
         // initialization / shutdown ///////////////////////////////////////////
@@ -580,7 +580,7 @@ namespace Mirror
                 // where players shouldn't be able to escape combat instantly.
                 if (OnDisconnectedEvent != null)
                 {
-                    OnDisconnectedEvent.Invoke(conn, true);
+                    OnDisconnectedEvent.Invoke(conn);
                 }
                 // if nobody hooked into it, then simply call DestroyPlayerForConnection
                 else
