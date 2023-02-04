@@ -182,11 +182,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 126d70a6b8f819e40879d605835791d5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerHealth: {fileID: 0}
-  healthOnBar: {fileID: 5200431926940837156}
-  IDKHowToCallIt: 0
-  rectTransform: {fileID: 3492123704618041427}
+  healthBar: {fileID: 3762554990126700019}
   HPText: {fileID: 1733178812045858621}
+  smoothness: 20
 --- !u!1 &4294758952746068244
 GameObject:
   m_ObjectHideFlags: 0
@@ -389,10 +387,10 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_Sprite: {fileID: 21300000, guid: 70200b7f2d7bd3b4b8bd4e8463f06ab5, type: 3}
-  m_Type: 0
+  m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 1
-  m_FillMethod: 4
+  m_FillMethod: 0
   m_FillAmount: 1
   m_FillClockwise: 1
   m_FillOrigin: 0

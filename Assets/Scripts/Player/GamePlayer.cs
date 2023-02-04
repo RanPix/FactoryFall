@@ -134,8 +134,7 @@ namespace Player
 
                 health.onDeath += Die;
 
-                GameObject healthBar = Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
-                healthBar.GetComponent<HealthBar>().playerHealth = GetComponent<Health>();
+                Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
 
                 GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
                 menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
@@ -444,7 +443,7 @@ namespace Player
         {
             isDead = false;
 
-            health.SetHealth(health.maxHealth);
+            health.Reset();
 
             //Enable the components
             for (int i = 0; i < disableOnDeath.Length; i++)
