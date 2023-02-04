@@ -228,25 +228,33 @@ namespace Player
         }
 
         [Client]
-        public void Punch(Ray ray, int damage, float punchDistance, float punchRadius, LayerMask hitLM, string playerID)
+        public void Punch(Ray ray, int damageToPlayer, int damageToOre, float punchDistance, float punchRadius, LayerMask hitLM, string playerID)
         {
             bool isHitted = Physics.SphereCast(ray, punchRadius, out RaycastHit hit, punchDistance, hitLM);
             if (isHitted)
             {
+                if(hit.transform.tag == "FriendlyPlayer")
+                    return;
                 Health hitHealth = hit.transform.GetComponent<Health>();
                 if (hitHealth)
                 {
                     StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
-                    CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                    CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damageToPlayer, playerID);
                 }
                 else if (hit.transform.tag == "Ore")
                 {
                     StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
-                    print(hit.transform.name);
-                    OreHit(weaponKeyCodes.arm.damageToOre, hit.transform.GetComponent<Ore>());
 
+                    Ore _ore = hit.transform.GetComponent<Ore>();
+                    CmdOreHit(damageToOre, GetNetID(), _ore);
                 }
             }
+        }
+
+        [Command]
+        private void CmdOreHit(int damageToOre, string netID, Ore ore)
+        {
+            ore.RpcCheckHP(damageToOre, netID);
         }
 
         [Command]
@@ -267,17 +275,11 @@ namespace Player
             Vector3 trailFinish = isHitted ? point : origin + direction * shootRange;
             line.SetPosition(1, trailFinish);
         }
-        [Command]
-        private void OreHit(int damage, Ore ore)
-        {
-            print("ore hit 1");
-            ore.CmdGetDamage(damage);
-        }
+        
 
         [Command]
         private void CmdPlayerHit(string _playerID, int _damage, string _sourceID)
         {
-
             GamePlayer _player = GameManager.GetPlayer(_playerID);
             _player.RpcTakeDamage(_damage, _sourceID);
 

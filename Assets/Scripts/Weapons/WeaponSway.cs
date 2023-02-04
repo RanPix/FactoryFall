@@ -59,7 +59,7 @@ public class WeaponSway : MonoBehaviour
             xPos = player.bobX.Evaluate(currentTimeX) * player.intensityX;
             yPos = player.bobY.Evaluate(currentTimeY) * player.intensityY;
         }
-
+        mouseSwayInput = controls.Player.Look.ReadValue<Vector2>();
         float xSway = -mouseSwayInput.x * swayIntensityX;
         float ySway = -mouseSwayInput.y * swayIntensityY;
 
