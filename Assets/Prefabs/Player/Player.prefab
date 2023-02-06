@@ -294,7 +294,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  <maxHealth>k__BackingField: 100
+  healthValues: {fileID: 11400000, guid: b8891dd2c00bac34ab72ace043950bca, type: 2}
 --- !u!82 &841400163258982986
 AudioSource:
   m_ObjectHideFlags: 0

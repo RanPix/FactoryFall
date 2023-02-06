@@ -1,38 +1,51 @@
 using UnityEngine;
 using TMPro;
-using Player;
+using Mirror;
+using UnityEngine.UI;
 
 namespace GameBase
 {
     public class HealthBar : MonoBehaviour
     {
-        [SerializeField] public Health playerHealth;
-        [SerializeField] private RectTransform healthOnBar;//green thing in healthbar
-        [SerializeField] private float IDKHowToCallIt;
-        [SerializeField] private RectTransform rectTransform;
+        [SerializeField] private Image healthBar;
         [SerializeField] private TMP_Text HPText;
+        [SerializeField] private float smoothness;
 
-        private float smoothness = 0.2f;
-        private float width;
+        private float healthPercent;
+        private float difference = 0;
+
+        private Health localPlayerHealth;
 
         private void Start()
         {
-            playerHealth.GetComponent<GamePlayer>().OnRespawn += OnHealthChanged; 
-            playerHealth.OnHealthChanged += OnHealthChanged; 
-            IDKHowToCallIt = 1 / playerHealth.maxHealth;
+
+            localPlayerHealth = NetworkClient.localPlayer.gameObject.GetComponent<Health>();
+            localPlayerHealth.OnHealthChanged += OnHealthChanged;
+
+            healthPercent = localPlayerHealth.currentHealth;
+
+
+            OnHealthChanged();
         }
 
         private void Update()
         {
-            float x = Mathf.Lerp(transform.position.x - width  + (width * playerHealth.currentHealth / playerHealth.maxHealth), healthOnBar.position.x, smoothness);
-            healthOnBar.transform.position = new Vector3(x, healthOnBar.position.y, 0);
+            bool reached = healthPercent < healthBar.fillAmount;
+
+            if (difference < 0 ? !reached : reached)
+                HealthLerp();
         }
 
         private void OnHealthChanged()
         {
-            width = rectTransform.rect.width;
+            healthPercent = localPlayerHealth.currentHealth / localPlayerHealth.GetMaxHealth();
 
-            HPText.text = $"{playerHealth.currentHealth}/{playerHealth.maxHealth}";
+            difference = healthBar.fillAmount - healthPercent;
+
+            HPText.text = $"{localPlayerHealth.currentHealth}/{localPlayerHealth.GetMaxHealth()}";
         }
+
+        private float HealthLerp()
+            => healthBar.fillAmount -= difference * smoothness * Time.deltaTime;
     }
 }
