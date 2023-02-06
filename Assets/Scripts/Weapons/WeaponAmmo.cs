@@ -7,6 +7,7 @@ public class WeaponAmmo : MonoBehaviour
 {
     public TMP_Text AmmoText;
     public int ClipSize;
+
     public int Ammo = 0;
     public int ReserveAmmo;
 
@@ -18,17 +19,7 @@ public class WeaponAmmo : MonoBehaviour
     }
     public void AddAmmo()
     {
-        int amountNeeded = ClipSize - Ammo;
-        if (amountNeeded >= ReserveAmmo)
-        {
-            Ammo += ReserveAmmo;
-            //ReserveAmmo -= amountNeeded;
-        }
-        else
-        {
-            Ammo = ClipSize;
-            //ReserveAmmo -= amountNeeded;
-        }
+        Ammo = ClipSize;
         UpdateAmmoInScreen();
     }
     public void UpdateAmmoInScreen()

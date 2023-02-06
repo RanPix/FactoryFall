@@ -3,6 +3,7 @@ using System.Collections;
 using Mirror;
 using GameBase;
 using System;
+using System.Collections.Generic;
 using TMPro;
 using UI.Indicators;
 
@@ -11,76 +12,102 @@ namespace Player
     [RequireComponent(typeof(PlayerSetup))]
     public class GamePlayer : NetworkBehaviour
     {
-        //player information
+#region SynkVars
         [field: SyncVar(hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
         [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; }
 
         [field: SyncVar] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
         [field: SyncVar] public int score { get; private set; }
+#endregion
 
 
-
+        [Header("Health")]
         [SerializeField] private Health health;
+        [SerializeField] private GameObject healthBarPrefab;
 
+
+        [Space]
+
+        [Header("Weapon")]
+        [SerializeField] private GameObject ammoTextPrefab;
+        [SerializeField] private Transform trail;
+        [SerializeField] private Transform hitIndicatorPrefab;
+        [SerializeField] private WeaponKeyCodes weaponKeyCodes;
+
+        public Transform muzzlePosition;
+
+        private int spawnedBulletCount = 0;
+
+
+        [Space]
+
+        [Header("UI")]
         [SerializeField] private GameObject nameGO;
+        [SerializeField] private InventoryUI inventory;
+        [SerializeField] private GameObject menuPrefab;
 
+
+        [Space]
+
+        [Header("Cameras")]
+        [SerializeField] private Transform cameraPosition;
+        [SerializeField] private Transform orientation;
+
+        [SerializeField] private Camera miniMapCamera;
+        [SerializeField] private GameObject playerMark;
+        [field: SerializeField] public GameObject cameraHolder { get; private set; }
+
+
+        [Space]
+
+        [Header("Death")]
+        [SerializeField] private Behaviour[] disableOnDeath;
+        [SerializeField] private GameObject[] disableGameObjectsOnDeath;
         [field: SyncVar] public bool isDead { get; private set; }
 
-        [SerializeField] private Behaviour[] disableOnDeath;
-        private bool[] wasEnabled;
+        //[SerializeField] private GameObject deathEffect;
+        //[SerializeField] private GameObject spawnEffect;
 
-        [SerializeField] private GameObject[] disableGameObjectsOnDeath;
+
+        [Space]
+
+        [Header("Audio")]
+        private AudioSync audioSync;
+
+
+
+        [Space]
+
+
+        private bool[] wasEnabled;
 
         [SerializeField] private CharacterController characterController;
 
         [SerializeField] private LayerMask hitMask;
 
-        /*[SerializeField] private GameObject deathEffect;
-        [SerializeField] private GameObject spawnEffect;*/
-
         private bool firstSetup = true;
 
-        [SerializeField] private InventoryUI inventory;
-        [field: SerializeField] public GameObject cameraHolder { get; private set; }
-
-        [SerializeField] private Transform cameraPosition;
-        [SerializeField] private Transform orientation;
-
-        [SerializeField] private GameObject healthBarPrefab;
-        [SerializeField] private GameObject ammoTextPrefab;
-        [SerializeField] private GameObject menuPrefab;
-
-        [SerializeField] private Camera miniMapCamera;
-        [SerializeField] private GameObject playerMark;
-
-
         //[SerializeField] private GameObject compass;
+
         [SerializeField] private Transform killerPlayerInfoPrefab;
  
         [SerializeField] private AudioSource audioSource;
 
-        [SerializeField] private WeaponKeyCodes weaponKeyCodes;
 
-        public Transform muzzlePosition;
-
-        [SerializeField] private Transform trail;
-
-        [SerializeField] private Transform hitIndicatorPrefab;
 
         private Scoreboard scoreboard;
 
-        private int spawnedBulletCount = 0;
-
         private Transform cam;
 
-
+#region Actions
         public Action<string, int> OnGotHit;
 
         public Action<string, Team, string, int> OnDeath;
         public Action OnRespawn;
 
         public Action<string, string> OnKill;
+#endregion
 
 
         private void SetupCameraHolder()
@@ -119,6 +146,7 @@ namespace Player
 
         private void Start()
         {
+            audioSync = GetComponent<AudioSync>();
             if (isLocalPlayer)
             {
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
@@ -202,31 +230,48 @@ namespace Player
         #region Weapon
 
 
-        [Client]
-        public void Shoot(Ray ray, int damage, float shootRange, string playerID)
+        
+        public IEnumerator Shoot(Ray[] rays, int damage, float shootRange, string playerID, float timeBetweenShots)
         {
-            bool isHitted = Physics.Raycast(ray, out RaycastHit hit, shootRange, hitMask);
+            weaponKeyCodes.currentWeapon.canShoot = false;
 
-            if (GameManager.instance.gameEnded)
-            {
-                CmdSpawnTrail(isHitted, ray.origin, ray.direction, hit.point, shootRange);
-                return;
-            }
+            if(rays.Length<1 || rays.Length!=weaponKeyCodes.currentWeapon.numberOfBulletsPerShot)
+                Debug.LogError("The number of patterns must be equal to the number of bullets per shot");
 
-            if (isHitted)
+            for (int i = 0; i < rays.Length; i++)
             {
-                if (hit.transform.tag != "FriendlyPlayer")
+                
+                audioSync.PlaySound(0);
+                if (!weaponKeyCodes.currentWeapon.useOneAmmoPerShot)
                 {
-                    Health hitHealth = hit.transform.GetComponent<Health>();
-                    if (hitHealth)
+                    weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
+                    weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
+                    weaponKeyCodes.currentWeapon.weaponAmmo.UpdateAmmoInScreen();
+                }
+                bool isHitted = Physics.Raycast(rays[i], out RaycastHit hit, shootRange, hitMask);
+
+
+                if (isHitted && !GameManager.instance.gameEnded)
+                {
+                    if (hit.transform.tag != "FriendlyPlayer")
                     {
-                        StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.15f));
-                        CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                        Health hitHealth = hit.transform.GetComponent<Health>();
+                        if (hitHealth)
+                        {
+                            StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.15f));
+                            CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
+                        }
                     }
                 }
-            }
 
-            CmdSpawnTrail(isHitted, ray.origin, ray.direction, hit.point, shootRange);
+                CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
+                if(i+1<rays.Length)
+                    yield return new WaitForSeconds(timeBetweenShots);
+                else if(rays.Length>1&&timeBetweenShots>0)
+                    yield return new WaitForSeconds(0.07f);
+
+            }
+            weaponKeyCodes.currentWeapon.canShoot = true;
         }
 
         [Client]

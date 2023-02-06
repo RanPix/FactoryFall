@@ -18,7 +18,7 @@ namespace GameBase
         private void Start()
         {
             playerHealth.GetComponent<GamePlayer>().OnRespawn += OnHealthChanged; 
-            playerHealth.OnHealthChanged += OnHealthChanged;
+            playerHealth.OnHealthChanged += OnHealthChanged; 
             IDKHowToCallIt = 1 / playerHealth.maxHealth;
         }
 

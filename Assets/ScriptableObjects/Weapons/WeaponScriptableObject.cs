@@ -5,7 +5,6 @@ public class WeaponScriptableObject : ScriptableObject
 {
     [Space(10)]
     public int damage;
-    public float fireRate;
     public float weaponShootRange;
     public float reloadTime;
 

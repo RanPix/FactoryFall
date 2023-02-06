@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2921068486045732850}
-  - component: {fileID: 3980043795109761557}
+  - component: {fileID: 1345134747312864453}
   m_Layer: 0
   m_Name: Pistol3
   m_TagString: Untagged
@@ -33,7 +33,7 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &3980043795109761557
+--- !u!114 &1345134747312864453
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 4922877528255494121}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5938bd3de5761d49a7ffda272806c6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 950e656aae5d55243baeec94e11e237c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponScriptableObject: {fileID: 11400000, guid: 4e754d2369c961644ad470e5a712dd9a,
@@ -57,11 +57,13 @@ MonoBehaviour:
   initialWeaponPosition: {x: 0.452, y: -0.18, z: 0.868}
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
-  ammo: 12
-  maxAmmo: 12
-  numberOfBulletsPerShot: 0
+  <maxAmmo>k__BackingField: 12
+  numberOfBulletsPerShot: 1
   timeBetweenSpawnBullets: 0
-  hasInfiniteAmmo: 1
+  patern:
+  - {x: 0, y: 0, z: 0}
+  <timeBetweenShots>k__BackingField: 0.16
+  <hasInfiniteAmmo>k__BackingField: 0
   reserveAmmo: 240
   muzzlePosition: {fileID: 722410891077129652}
   hitMask:
@@ -76,6 +78,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ammoText: {fileID: 0}
   weaponView: {fileID: 9141566657429978863}
+  <useOneAmmoPerShot>k__BackingField: 1
   <_isLocalPLayer>k__BackingField: 0
 --- !u!1001 &9136810670852101883
 PrefabInstance:

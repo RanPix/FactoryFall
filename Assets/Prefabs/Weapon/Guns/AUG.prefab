@@ -544,7 +544,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8550018688244765856}
-  - component: {fileID: 9034337578045398693}
+  - component: {fileID: 4552758417225890039}
   m_Layer: 0
   m_Name: AUG
   m_TagString: Untagged
@@ -568,8 +568,8 @@ Transform:
   - {fileID: 5225345035007705297}
   m_Father: {fileID: 0}
   m_RootOrder: 0
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &9034337578045398693
+  m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
+--- !u!114 &4552758417225890039
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -578,7 +578,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 8550018688244765857}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d5938bd3de5761d49a7ffda272806c6d, type: 3}
+  m_Script: {fileID: 11500000, guid: 950e656aae5d55243baeec94e11e237c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   weaponScriptableObject: {fileID: 11400000, guid: e4f0c0f32f9e1bd478e3d550fe693c0a,
@@ -589,16 +589,19 @@ MonoBehaviour:
   animator: {fileID: 8956487290267136204}
   shootAnimationName: Shoot
   reloadAnimationName: Reload
-  useAudio: 0
+  useAudio: 1
   initialWeaponPosition: {x: 0.463, y: -0.322, z: 0.995}
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
-  ammo: 25
-  maxAmmo: 25
-  numberOfBulletsPerShot: 0
-  timeBetweenSpawnBullets: 0
-  hasInfiniteAmmo: 1
-  reserveAmmo: 1000
+  <maxAmmo>k__BackingField: 25
+  numberOfBulletsPerShot: 2
+  timeBetweenSpawnBullets: 0.18
+  patern:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  <timeBetweenShots>k__BackingField: 0.8
+  <hasInfiniteAmmo>k__BackingField: 0
+  reserveAmmo: 0
   muzzlePosition: {fileID: 5225345035007705297}
   hitMask:
     serializedVersion: 2
@@ -612,6 +615,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ammoText: {fileID: 0}
   weaponView: {fileID: 8155312829579049598}
+  <useOneAmmoPerShot>k__BackingField: 0
   <_isLocalPLayer>k__BackingField: 0
 --- !u!1 &8819927564547973316
 GameObject:

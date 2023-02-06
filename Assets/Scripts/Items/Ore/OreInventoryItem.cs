@@ -10,6 +10,7 @@ public class OreInventoryItem : MonoBehaviour
 
     [field: Min(1)][field: SerializeField] public int maxCount { get; private set; }
 
+
     [field: Min(0), SerializeField]
     public int currentCount
     {
