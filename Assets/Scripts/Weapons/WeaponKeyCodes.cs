@@ -143,7 +143,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         {
             if (arm.reloadTimer > arm.reloadTime)
             {
-                gamePlayer.Punch(arm.Punch(), arm.damageToPlayer, arm.punchDistance, arm.punchRadius, arm.hitLM, gamePlayer.GetNetID());
+                gamePlayer.Punch(arm.Punch(), arm.damageToPlayer, arm.damageToOre, arm.punchDistance, arm.punchRadius, arm.hitLM, gamePlayer.GetNetID());
             }
 
         }
