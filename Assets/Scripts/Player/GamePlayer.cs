@@ -5,6 +5,8 @@ using GameBase;
 using System;
 using TMPro;
 using UI.Indicators;
+using System.Runtime.CompilerServices;
+using UnityEditor.Experimental.GraphView;
 
 namespace Player
 {
@@ -318,11 +320,13 @@ namespace Player
                 OnDeath?.Invoke(_sourceID, sourcePlayer.team, sourcePlayer.nickname, (int)sourcePlayer.gameObject.GetComponent<Health>().currentHealth);
                 //sourcePlayer.CmdAddKill();
 
+                print($"die {_sourceID} {GetNetID()}");
+
+
+                CmdPlayerKilled(GetNetID(), nickname, sourcePlayer.netIdentity);
+
                 CmdDie(_sourceID);
             }
-
-            
-            //Debug.Log("DIE2222222222");
 
             CmdDisableComponentsOnDeath();
 
@@ -339,11 +343,51 @@ namespace Player
         }
 
         [Command]
+        private void CmdPlayerKilled(string killedNetID, string killedNickname, NetworkIdentity connToClient)
+        {
+            TargetPlayerKilled(connToClient.connectionToClient, killedNetID, killedNickname);
+        }
+
+        [TargetRpc]
+        private void TargetPlayerKilled(NetworkConnection conn, string killedNetID, string killedNickname)
+        {
+            //print("on kill target RPC");
+            NetworkClient.localPlayer.GetComponent<GamePlayer>().PlayerKilled(killedNetID, killedNickname);
+        }
+
+        [Client]
+        private void PlayerKilled(string killedNetID, string killedNickname)
+        {
+            //print($"trpc {killedNetID} {GetNetID()}, {killedNickname} {nickname}");
+
+            if (killedNetID != GetNetID())
+            {
+                UpdateKillsCount(1);
+                OnKill?.Invoke(killedNetID, nickname);
+            }
+            else
+            {
+                UpdateKillsCount(-1);
+                OnKill?.Invoke(killedNetID, nickname);
+            }
+        }
+
+        [Command]
+        private void UpdateKillsCount(int kill)
+        {
+            kills += kill;
+
+            scoreboard.AddScore(team, kill, nickname);
+        }
+
+
+
+        [Command]
         private void CmdDie(string _sourceID)
         {
-            GamePlayer player = GameManager.GetPlayer(_sourceID);
-            player.kills++;
-            scoreboard.AddScore(player.team, 1, player.nickname);
+            //GamePlayer player = GameManager.GetPlayer(_sourceID);
+            //player.kills++;
+            //scoreboard.AddScore(player.team, 1, player.nickname);
 
             deaths++;
 
@@ -476,6 +520,6 @@ namespace Player
         }
 
 
-        public string GetNetID() => GetComponent<NetworkIdentity>().netId.ToString();
+        public string GetNetID() => netId.ToString();
     }
 }
