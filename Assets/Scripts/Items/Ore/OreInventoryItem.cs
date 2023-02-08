@@ -35,7 +35,7 @@ public class OreInventoryItem : MonoBehaviour
     {
         OreGiveAwayArea.instance.OnAreaEnter += ResetCount;
     }
-    private void ResetCount() => currentCount = 0;
+    private void ResetCount(int count) => currentCount = 0;
     private void UpdateCountText()
     {
         text.text = $"{currentCount}/{maxCount}";

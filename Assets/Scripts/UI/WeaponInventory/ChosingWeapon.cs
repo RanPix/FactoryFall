@@ -45,19 +45,19 @@ public class ChosingWeapon : MonoBehaviour
     private void ActivateSelectedWeapons()
     {
         int firstIndex = 0;
-        int secondIndex = 1;
+        int secondIndex = 0;
         for (int i = 0; i < 2; i++)
         {
-            weaponsInventoryItems[i].gameObject.SetActive(true);
+            weaponsInventoryItems[i].SetActive(true);
         }
 
-        Transform parent = weaponsInventoryItems[0].transform.parent;
-        for (int i = 0; i < parent.childCount; i++)
+        
+        for (int i = 0; i < CanvasInstance.instance.weaponInventory.transform.childCount; i++)
         {
-            if (weaponsInventoryItems[0] == parent.GetChild(i))
+            if (weaponsInventoryItems[0] == CanvasInstance.instance.weaponInventory.transform.GetChild(i).gameObject)
             {
                 firstIndex = i;
-            }else if (weaponsInventoryItems[1] == parent.GetChild(i))
+            }else if (weaponsInventoryItems[1] == CanvasInstance.instance.weaponInventory.transform.GetChild(i).gameObject)
             {
                 secondIndex = i;
             }

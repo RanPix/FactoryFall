@@ -238,13 +238,14 @@ namespace Player
 
             if(rays.Length<1 || rays.Length!=weaponKeyCodes.currentWeapon.numberOfBulletsPerShot)
                 Debug.LogError("The number of patterns must be equal to the number of bullets per shot");
-
             for (int i = 0; i < rays.Length; i++)
             {
                 
-                audioSync.PlaySound(0);
+                if(weaponKeyCodes.currentWeapon.timeBetweenSpawnBullets != 0 || i == 0)
+                    audioSync.PlaySound(0);
                 if (!weaponKeyCodes.currentWeapon.useOneAmmoPerShot)
                 {
+                    weaponKeyCodes.currentWeapon.animator.StopPlayback();
                     weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
                     weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
                     weaponKeyCodes.currentWeapon.weaponAmmo.UpdateAmmoInScreen();

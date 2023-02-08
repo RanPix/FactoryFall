@@ -76,7 +76,7 @@ public class Weapon : MonoBehaviour
     [field: SerializeField]public int maxAmmo { get; private set; }
     public int numberOfBulletsPerShot;
     public float timeBetweenSpawnBullets;
-    [SerializeField] private Vector3[] patern;
+    [SerializeField] private Vector2[] patern;
 
     [field: SerializeField] public float timeBetweenShots { get; private set; }
     public float shootTimer { get; private set; }
@@ -199,12 +199,12 @@ public void UpdateAmmo()
         UpdateAmmo();
     }*/
 
-    private Ray[] GetRay(Vector3[] pattern)
+    private Ray[] GetRay(Vector2[] pattern)
     {
         Ray[] rays = new Ray[pattern.Length];
         for (int i = 0; i < pattern.Length; i++)
         {
-            rays[i] = (new Ray(cam.transform.position, new Vector3(cam.transform.forward.x+pattern[i].x, cam.transform.forward.y + pattern[i].y, cam.transform.forward.z + pattern[i].z)));
+            rays[i] = (new Ray(cam.transform.position, new Vector3(cam.transform.forward.x+pattern[i].x, cam.transform.forward.y + pattern[i].y, cam.transform.forward.z)));
         }
         return rays;
     }

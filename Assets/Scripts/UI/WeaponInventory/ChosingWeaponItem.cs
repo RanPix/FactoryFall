@@ -5,7 +5,6 @@ public class ChosingWeaponItem : MonoBehaviour
 {
     [SerializeField] private GameObject weaponInventoryItem;
     [SerializeField] private GameObject blur;
-    [SerializeField] private ChosingWeapon chosingWeapon;
     public bool wasSelected = false;
 
     public void OnCursorEnter()
@@ -22,15 +21,15 @@ public class ChosingWeaponItem : MonoBehaviour
 
     public void OnCursorClick()
     {
-        if (chosingWeapon.canSelectAnotherWeapon || wasSelected)
+        if (CanvasInstance.instance.weaponsToChose.canSelectAnotherWeapon || wasSelected)
         {
             wasSelected = wasSelected ? false:true;
             if(wasSelected)
-                chosingWeapon.weaponsInventoryItems.Add(weaponInventoryItem);
+                CanvasInstance.instance.weaponsToChose.weaponsInventoryItems.Add(weaponInventoryItem);
             else
-                chosingWeapon.weaponsInventoryItems.Remove(weaponInventoryItem);
+                CanvasInstance.instance.weaponsToChose.weaponsInventoryItems.Remove(weaponInventoryItem);
 
         }
-        chosingWeapon.OnWeaponClick(wasSelected);
+        CanvasInstance.instance.weaponsToChose.OnWeaponClick(wasSelected);
     }
 }
