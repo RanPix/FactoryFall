@@ -28,7 +28,7 @@ TagManager:
   - LocalPlayer
   - Ore
   - Block
-  - 
+  - EnemyOre
   - Mark
   - MIniMap
   - Ghost

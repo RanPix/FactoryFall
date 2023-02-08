@@ -1,11 +1,11 @@
-using System.Collections;
 using Mirror;
+using Player;
 using UnityEngine;
 
 public class Ore : NetworkBehaviour
 {
+    [field: SerializeField] public Team team { get; private set; }
     [SerializeField] private GameObject view;
-
 
     [Space]
     [Header("Health")]
@@ -15,24 +15,33 @@ public class Ore : NetworkBehaviour
 
     [Space]
     [Header("Respawn")]
-    [SerializeField] private float timeToRespawn;
-    [SerializeField] private GameObject deathEffect;
-    [SerializeField] private GameObject spawnEffect;
+    [SerializeField] private GameObject hitEffect;
+    [SerializeField] private GameObject gatherEffect;
 
 
-    void Start()
+    private void Start()
     {
         currentHealth = maxHealth;
+
+        
     }
 
-    
+    public override void OnStartClient()
+    {
+        base.OnStartClient();
+
+        if (PlayerInfoTransfer.instance.team != team)
+        {
+            gameObject.layer = LayerMask.NameToLayer("EnemyOre");
+        }
+    }
 
     [ClientRpc]
     public void RpcCheckHP(float damage, string netID)
     {
         currentHealth -= damage;
-        print("Current health - " + currentHealth);
-        print("");
+        //print("Current health - " + currentHealth);
+        //print("");
 
         if (currentHealth < 1)
         {
@@ -40,25 +49,31 @@ public class Ore : NetworkBehaviour
             {
                 OreInventoryItem _item = CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().item;
 
-                if (_item.currentCount<_item.maxCount)
+                if (_item.currentCount < _item.maxCount)
                     CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().item.currentCount++;
             }
-            StartCoroutine(Respawn());
+            currentHealth = maxHealth;
         }
     }
 
-    private IEnumerator Respawn()
+    [Command]
+    private void CmdSpawnHitEffect()
+        => RpcSpawnHitEffect();
+
+    [ClientRpc]
+    private void RpcSpawnHitEffect()
     {
-        //GameObject _deathEffect = NetworkManager.Instantiate(deathEffect, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        //NetworkServer.Spawn(_deathEffect);
-        view.SetActive(false);
-
-        yield return new WaitForSeconds(timeToRespawn);
-
-        currentHealth = maxHealth;
-        view.SetActive(true);
-        //GameObject _spawnEffect = NetworkManager.Instantiate(spawnEffect, new Vector3(0, 0, 0), Quaternion.identity, transform);
-        //NetworkServer.Spawn(_spawnEffect);
+        Destroy(Instantiate(hitEffect, transform.position, Quaternion.identity), 1f);
     }
 
+
+    [Command]
+    private void CmdSpawnGatherEffect()
+        => RpcSpawnGatherEffect();
+
+    [ClientRpc]
+    private void RpcSpawnGatherEffect()
+    {
+        Destroy(Instantiate(gatherEffect, transform.position, Quaternion.identity), 1f);
+    }
 }

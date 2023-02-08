@@ -223,7 +223,7 @@ MonoBehaviour:
   <punchDistance>k__BackingField: 3
   <hitLM>k__BackingField:
     serializedVersion: 2
-    m_Bits: 640
+    m_Bits: 2176
   <reloadTime>k__BackingField: 1.2
 --- !u!1 &2936342119885667614
 GameObject:

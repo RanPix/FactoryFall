@@ -81,12 +81,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  <team>k__BackingField: 0
   view: {fileID: 872219952784693536}
   maxHealth: 3
   <currentHealth>k__BackingField: 0
-  timeToRespawn: 1
-  deathEffect: {fileID: 0}
-  spawnEffect: {fileID: 0}
+  hitEffect: {fileID: 0}
+  gatherEffect: {fileID: 0}
 --- !u!114 &872219952885612890
 MonoBehaviour:
   m_ObjectHideFlags: 0

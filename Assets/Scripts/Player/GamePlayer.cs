@@ -3,24 +3,21 @@ using System.Collections;
 using Mirror;
 using GameBase;
 using System;
-using System.Collections.Generic;
 using TMPro;
 using UI.Indicators;
-using System.Runtime.CompilerServices;
-using UnityEditor.Experimental.GraphView;
 
 namespace Player
 {
     [RequireComponent(typeof(PlayerSetup))]
     public class GamePlayer : NetworkBehaviour
     {
-#region SynkVars
-        [field: SyncVar(hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
+#region SyncVar
+        [field: SyncVar (hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
         [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; }
 
-        [field: SyncVar] public int kills { get; private set; }
+        [field: SyncVar (hook = nameof(UpdateKillsCount))] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
-        [field: SyncVar] public int score { get; private set; }
+        [field: SyncVar (hook = nameof(UpdateKillsCount))] public int score { get; private set; }
 #endregion
 
 
@@ -99,6 +96,7 @@ namespace Player
 
 
         private Scoreboard scoreboard;
+        private OreInventoryItem oreInventory;
 
         private Transform cam;
 
@@ -151,6 +149,8 @@ namespace Player
             audioSync = GetComponent<AudioSync>();
             if (isLocalPlayer)
             {
+                nameGO.SetActive(false);
+
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
                 gameObject.tag = "LocalPlayer";
 
@@ -171,12 +171,20 @@ namespace Player
                 CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
 
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
+
+                oreInventory = CanvasInstance.instance.oreInventory.GetComponent<OreInventoryItem>();
+                OreGiveAwayArea.instance.OnAreaEnter += UpdateScore;
             }
 
             scoreboard = CanvasInstance.instance.scoreBoard.GetComponent<Scoreboard>();
+
+            if (isLocalPlayer)
+            {
+                scoreboard.ChangeLocalPlayerScore(0);
+            }
         }
 
-        public void SetTeam(Team oldTeam, Team newTeam)
+        private void SetTeam(Team oldTeam, Team newTeam)
         {
             GameObject playerRow = Instantiate(playerMark);
             playerRow.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
@@ -236,12 +244,14 @@ namespace Player
         {
             weaponKeyCodes.currentWeapon.canShoot = false;
 
-            if(rays.Length<1 || rays.Length!=weaponKeyCodes.currentWeapon.numberOfBulletsPerShot)
+            if(rays.Length < 1 || rays.Length != weaponKeyCodes.currentWeapon.numberOfBulletsPerShot)
                 Debug.LogError("The number of patterns must be equal to the number of bullets per shot");
 
             for (int i = 0; i < rays.Length; i++)
             {
-                
+                if (weaponKeyCodes.currentWeapon.weaponAmmo.Ammo < 1)
+                    break;
+
                 audioSync.PlaySound(0);
                 if (!weaponKeyCodes.currentWeapon.useOneAmmoPerShot)
                 {
@@ -266,10 +276,9 @@ namespace Player
                 }
 
                 CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
-                if(i+1<rays.Length)
+
+                if(i + 1 < rays.Length)
                     yield return new WaitForSeconds(timeBetweenShots);
-                else if(rays.Length>1&&timeBetweenShots>0)
-                    yield return new WaitForSeconds(0.07f);
 
             }
             weaponKeyCodes.currentWeapon.canShoot = true;
@@ -286,7 +295,9 @@ namespace Player
             {
                 if(hit.transform.tag == "FriendlyPlayer")
                     return;
+
                 Health hitHealth = hit.transform.GetComponent<Health>();
+
                 if (hitHealth)
                 {
                     StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
@@ -409,22 +420,14 @@ namespace Player
 
             if (killedNetID != GetNetID())
             {
-                UpdateKillsCount(1);
+                CmdUpdateKillsCount(1);
                 OnKill?.Invoke(killedNetID, nickname);
             }
             else
             {
-                UpdateKillsCount(-1);
+                CmdUpdateKillsCount(-1);
                 OnKill?.Invoke(killedNetID, nickname);
             }
-        }
-
-        [Command]
-        private void UpdateKillsCount(int kill)
-        {
-            kills += kill;
-
-            scoreboard.AddScore(team, kill, nickname);
         }
 
 
@@ -432,10 +435,6 @@ namespace Player
         [Command]
         private void CmdDie(string _sourceID)
         {
-            //GamePlayer player = GameManager.GetPlayer(_sourceID);
-            //player.kills++;
-            //scoreboard.AddScore(player.team, 1, player.nickname);
-
             deaths++;
 
             RpcDie(_sourceID);
@@ -551,7 +550,57 @@ namespace Player
 
         #endregion
 
-        
+
+        #region Score
+
+        private void UpdateScore(int amount)
+        {
+            CmdUpdateScore(amount);
+        }
+
+        [Command]
+        private void CmdUpdateScore(int amount)
+        {
+            score += amount;
+
+            if (GameManager.instance.matchSettings.scoreBased)
+                scoreboard.AddScore(team, amount, nickname);
+        }
+
+        [Command]
+        private void CmdUpdateKillsCount(int kill)
+        {
+            kills += kill;
+
+            if (!GameManager.instance.matchSettings.scoreBased)
+                scoreboard.AddScore(team, kill, nickname);
+        }
+
+        [Client]
+        private void UpdateKillsCount(int oldAmount, int newAmount)
+        {
+            if (!isLocalPlayer)
+                return;
+
+            if (GameManager.instance.matchSettings.scoreBased)
+                return;
+
+            scoreboard.ChangeLocalPlayerScore(newAmount);
+        }
+
+        [Client]
+        private void UpdateScoreCount(int oldAmount, int newAmount)
+        {
+            if (!isLocalPlayer)
+                return;
+
+            if (!GameManager.instance.matchSettings.scoreBased)
+                return;
+
+            scoreboard.ChangeLocalPlayerScore(newAmount);
+        }
+
+        #endregion
 
         private IEnumerator ActivateForSeconds(GameObject GO, float time)
         {

@@ -33,6 +33,8 @@ public class GameManager : NetworkBehaviour
             instance = this;
         }
 
+        matchSettings.Setup();
+
         //ChangeTeamSpawnPositions(PlayerInfoTransfer.instance.team);
     }
 

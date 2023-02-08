@@ -1,12 +1,10 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
 public class OreInventoryItem : MonoBehaviour
 {
-    [SerializeField] private TMP_Text text;
+    [SerializeField] private TMP_Text oreAmountText;
 
     [field: Min(1)][field: SerializeField] public int maxCount { get; private set; }
 
@@ -21,12 +19,16 @@ public class OreInventoryItem : MonoBehaviour
             OnCurrentCountchange?.Invoke();
         }
     }
-    [SerializeField] private int  _currentCount;
+    [SerializeField] private int _currentCount;
 
     public Action OnCurrentCountchange;
-    // Start is called before the first frame update
-    void Awake()
+
+
+    private void Awake()
     {
+        if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
+            gameObject.SetActive(false);
+
         UpdateCountText();
         OnCurrentCountchange += UpdateCountText;
     }
@@ -35,9 +37,12 @@ public class OreInventoryItem : MonoBehaviour
     {
         OreGiveAwayArea.instance.OnAreaEnter += ResetCount;
     }
-    private void ResetCount() => currentCount = 0;
+
+
+    private void ResetCount(int amount) 
+        => currentCount = 0;
     private void UpdateCountText()
     {
-        text.text = $"{currentCount}/{maxCount}";
+        oreAmountText.text = $"{currentCount}/{maxCount}";
     }
 }

@@ -586,20 +586,21 @@ MonoBehaviour:
   gamePlayer: {fileID: 0}
   _state: 0
   _shootType: 0
-  animator: {fileID: 8956487290267136204}
-  shootAnimationName: Shoot
-  reloadAnimationName: Reload
+  <animator>k__BackingField: {fileID: 0}
+  <shootAnimationName>k__BackingField: Shoot
+  <reloadAnimationName>k__BackingField: Reload
   useAudio: 1
   initialWeaponPosition: {x: 0.463, y: -0.322, z: 0.995}
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
+  <useOneAmmoPerShot>k__BackingField: 0
   <maxAmmo>k__BackingField: 25
   numberOfBulletsPerShot: 2
-  timeBetweenSpawnBullets: 0.18
+  timeBetweenSpawnBullets: 0.08
   patern:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
-  <timeBetweenShots>k__BackingField: 0.8
+  <timeBetweenShots>k__BackingField: 0.25
   <hasInfiniteAmmo>k__BackingField: 0
   reserveAmmo: 0
   muzzlePosition: {fileID: 5225345035007705297}
@@ -615,7 +616,6 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ammoText: {fileID: 0}
   weaponView: {fileID: 8155312829579049598}
-  <useOneAmmoPerShot>k__BackingField: 0
   <_isLocalPLayer>k__BackingField: 0
 --- !u!1 &8819927564547973316
 GameObject:

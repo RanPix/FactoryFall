@@ -1,13 +1,15 @@
+using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 [System.Serializable]
 public class MatchSettings
 {
-    public Gamemode gm { get; private set; }
+    public Gamemode gm { get; private set; } = Gamemode.BTR;
     public bool teamsMatch { get; private set; } = true; // WILL BE REMOVED WITH DM MODE SUPPORT
+    public bool scoreBased { get; private set; }
 
-    public bool hasTimer { get; private set; } = false; 
-    public float matchTime { get; private set; }
+    public bool hasTimer { get; private set; } = true;
+    public int matchTime { get; private set; } = 300;
     public int winningGoal { get; private set; } = 2;
 
 
@@ -21,6 +23,8 @@ public class MatchSettings
     {
         if (!firstSetup)
             return;
+
+        scoreBased = gm == Gamemode.BTR ? true : false;
 
         firstSetup = false;
     }
