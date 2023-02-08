@@ -27,57 +27,73 @@ public enum PlaySoundType
     Reload
 }
 
-
-abstract public class Weapon : MonoBehaviour
+public class Weapon : MonoBehaviour
 {
 
     public WeaponScriptableObject weaponScriptableObject;
 
     [SerializeField] private GamePlayer gamePlayer;
 
-    [Space]
-    [Header("Enums")]
+    [Space] 
+
+    [Header("Enums")] 
     [SerializeField] private States _state;
+
     [SerializeField] public ShootType _shootType;
 
 
 
-    [Space(10)]
-    [Header("Animation")]
-    [SerializeField] protected Animator animator;
+    [field:Space(10)] 
 
-    [SerializeField] protected string shootAnimationName = "Shoot";
-    [SerializeField] protected string reloadAnimationName = "Reload";
+    [field: Header("Animation")] 
 
-    [Space(10)]
-    [Header("Audio")]
-    [SerializeField] protected bool useAudio;
+    [field: SerializeField] public Animator animator { get; private set; }
+    [field: SerializeField] public string shootAnimationName { get; private set; } = "Shoot";
+    [field: SerializeField] public string reloadAnimationName { get; private set; } = "Reload";
+
+
 
     [Space(10)] 
+
+    [Header("Audio")] 
+    [SerializeField] protected bool useAudio;
+
+
+    [Space(10)] 
+
     [Header("Sway")] 
     public Vector3 initialWeaponPosition;
 
     private PlayerControls controls;
     private Vector2 lookVector;
 
-    [Space(10)]
-    [Header("Ammo")]
-    [SerializeField] public WeaponAmmo weaponAmmo;
-    [SerializeField] public int ammo;
-    [SerializeField] private int maxAmmo;
-    [SerializeField] public int numberOfBulletsPerShot;
-    [SerializeField] public float timeBetweenSpawnBullets;
-
-    [SerializeField] protected bool hasInfiniteAmmo;
-    [SerializeField] protected int reserveAmmo;
 
     [Space(10)] 
-    [Header("Effects")]
+
+    [Header("Ammo")] 
+    public WeaponAmmo weaponAmmo;
+    [field: SerializeField] public bool useOneAmmoPerShot { get; private set; }
+    [field: SerializeField]public int maxAmmo { get; private set; }
+    public int numberOfBulletsPerShot;
+    public float timeBetweenSpawnBullets;
+    [SerializeField] private Vector3[] patern;
+
+    [field: SerializeField] public float timeBetweenShots { get; private set; }
+    public float shootTimer { get; private set; }
+
+    [field: SerializeField] public bool hasInfiniteAmmo { get; private set; }
+    [SerializeField] protected int reserveAmmo;
+
+
+    [Space(10)] 
+
+    [Header("Effects")] 
     public Transform muzzlePosition;
 
 
     [Space(10)]
-    [Header("Layers")]
+    
+    [Header("Layers")] 
     public LayerMask hitMask;
 
     public GameObject player;
@@ -89,25 +105,13 @@ abstract public class Weapon : MonoBehaviour
     public Camera cam;
     public Camera gunCam;
     public AudioSource audioSource;
-    [SerializeField]private TMP_Text ammoText;
+    [SerializeField] private TMP_Text ammoText;
     [SerializeField] private Transform weaponView;
 
     public bool reloading { get; private set; } = false;
-
-#region AbstractVariables
-
-    public abstract float nextFire { get; }
-
-#endregion
+    public float nextFire { get; private set; }
 
 
-
-#region AbstractMethods
-
-    public abstract Ray Shoot();
-    public abstract void FireButtonWasReleased();
-
-#endregion
 
     [field: SerializeField] public bool _isLocalPLayer { get; set; }
 
@@ -121,6 +125,7 @@ abstract public class Weapon : MonoBehaviour
             {
                 weaponView.GetChild(i).gameObject.layer = LayerMask.NameToLayer("Default");
             }
+
             return;
         }
 
@@ -148,11 +153,7 @@ abstract public class Weapon : MonoBehaviour
 
 
         weaponAmmo = help.GetComponent<WeaponAmmo>();
-        /*weaponAmmo.Ammo = ammo;
-        weaponAmmo.ClipSize = maxAmmo;
-        weaponAmmo.ReserveAmmo = reserveAmmo;
 
-        weaponAmmo.AmmoText = ammoText;*/ // :skull:
         UpdateAmmo();
 
 
@@ -160,9 +161,32 @@ abstract public class Weapon : MonoBehaviour
 
     }
 
-    public void UpdateAmmo()
+    private void Update()
     {
-        weaponAmmo.Ammo = ammo;
+        shootTimer+=Time.deltaTime;
+    }
+
+    public Ray[] Shoot()
+    {
+        shootTimer = 0;
+        nextFire = Time.time;
+        SpawnMuzzle();
+        if (useOneAmmoPerShot)
+        {
+            animator.Play(shootAnimationName);
+            weaponAmmo.Ammo--;
+            weaponAmmo.UpdateAmmoInScreen();
+        }
+
+
+        return GetRay(patern);
+    }
+
+
+
+public void UpdateAmmo()
+    {
+        weaponAmmo.Ammo = maxAmmo;
         weaponAmmo.ClipSize = maxAmmo;
         weaponAmmo.ReserveAmmo = reserveAmmo;
 
@@ -175,9 +199,14 @@ abstract public class Weapon : MonoBehaviour
         UpdateAmmo();
     }*/
 
-    protected Ray GetRay()
+    private Ray[] GetRay(Vector3[] pattern)
     {
-        return new Ray(cam.transform.position, cam.transform.forward);
+        Ray[] rays = new Ray[pattern.Length];
+        for (int i = 0; i < pattern.Length; i++)
+        {
+            rays[i] = (new Ray(cam.transform.position, new Vector3(cam.transform.forward.x+pattern[i].x, cam.transform.forward.y + pattern[i].y, cam.transform.forward.z + pattern[i].z)));
+        }
+        return rays;
     }
 
     public IEnumerator ReloadCoroutine()
@@ -233,7 +262,6 @@ abstract public class Weapon : MonoBehaviour
     public void OnDeath(string str)
     {
         weaponAmmo.Ammo = weaponAmmo.ClipSize;
-        weaponAmmo.UpdateAmmoInScreen();
     }
 
 }

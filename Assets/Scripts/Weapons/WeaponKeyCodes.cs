@@ -152,24 +152,17 @@ public class WeaponKeyCodes : NetworkBehaviour
         {
             if (currentWeapon.weaponAmmo.Ammo > 0)
             {
-                if (Time.time - currentWeapon.nextFire > 1 / currentWeapon.weaponScriptableObject.fireRate)
+                if (currentWeapon.shootTimer > currentWeapon.timeBetweenShots)
                 {
                     if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
                     {
-                        audioSync.PlaySound(0);
-                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetNetID());
+                        //audioSync.PlaySound(0);
+                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetNetID(), currentWeapon.timeBetweenSpawnBullets));
                     }
                     else if (currentWeapon._shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
-                        audioSync.PlaySound(0);
-                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetNetID());
-
-                    }
-                    else if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.WasReleasedThisFrame())
-                    {
-                        currentWeapon.FireButtonWasReleased();
-                        currentWeapon.Shoot();
-                        gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetNetID());
+                        //audioSync.PlaySound(0);
+                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetNetID(), currentWeapon.timeBetweenSpawnBullets));
 
                     }
                 }
@@ -183,10 +176,11 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         if (controls.Player.Reload.WasPerformedThisFrame() && !currentWeapon.reloading)
         {
-            if (currentWeapon.weaponAmmo.ReserveAmmo > 0 && currentWeapon.weaponAmmo.Ammo < currentWeapon.ammo)
+            if (currentWeapon.weaponAmmo.Ammo < currentWeapon.maxAmmo)
             {
                 audioSync.PlaySound(2);
                 StartCoroutine(currentWeapon.ReloadCoroutine());
+                
             }
         }
 
