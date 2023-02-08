@@ -1,4 +1,3 @@
-using Unity.VisualScripting.FullSerializer;
 using UnityEngine;
 
 [System.Serializable]
@@ -9,7 +8,7 @@ public class MatchSettings
     public bool scoreBased { get; private set; }
 
     public bool hasTimer { get; private set; } = true;
-    public int matchTime { get; private set; } = 300;
+    public int matchTime { get; private set; } = 2;
     public int winningGoal { get; private set; } = 2;
 
 

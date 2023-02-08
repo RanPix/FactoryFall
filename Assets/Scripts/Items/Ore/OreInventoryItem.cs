@@ -26,9 +26,6 @@ public class OreInventoryItem : MonoBehaviour
 
     private void Awake()
     {
-        if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
-            gameObject.SetActive(false);
-
         UpdateCountText();
         OnCurrentCountchange += UpdateCountText;
     }

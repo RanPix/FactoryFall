@@ -79,10 +79,10 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         weapons[currentWeaponIndex].SetActive(false);
         CmdChangeWeapon(currentWeaponIndex, index);
+        WeaponInventory.instance.ChangeBlurIcon(index, currentWeaponIndex);
         currentWeaponIndex = index;
 
         weapons[currentWeaponIndex].SetActive(true);
-        WeaponInventory.instance.ChangeBlurIcon(index, currentIndex);
 
         currentWeapon = weapons[index].GetComponent<Weapon>();
         currentWeapon.wasChanged = false;

@@ -120,9 +120,10 @@ MonoBehaviour:
   weaponInventory: {fileID: 9126710919168617054}
   killFeed: {fileID: 6983424474380398455}
   weaponAmmoText: {fileID: 5303379131190977335}
-  weaponsToChose: {fileID: 3891729257502743044}
+  weaponsToChose: {fileID: 124319955728619228}
   scoreBoard: {fileID: 2305924157438886315}
   oreInventory: {fileID: 1174185649412777499}
+  menu: {fileID: 0}
 --- !u!1 &3498648492648633625
 GameObject:
   m_ObjectHideFlags: 0
@@ -958,15 +959,21 @@ PrefabInstance:
       objectReference: {fileID: 9161733295986539250}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dcd08c437cf191d449db2ef295eb9ea8, type: 3}
---- !u!224 &549105058638053717 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 6374715837995431733, guid: dcd08c437cf191d449db2ef295eb9ea8,
+--- !u!114 &124319955728619228 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 6796202544525320380, guid: dcd08c437cf191d449db2ef295eb9ea8,
     type: 3}
   m_PrefabInstance: {fileID: 6911154486970676832}
   m_PrefabAsset: {fileID: 0}
---- !u!1 &3891729257502743044 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 7632309718799215716, guid: dcd08c437cf191d449db2ef295eb9ea8,
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d0d0119d057feb4d9a24a5f29a1afe2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!224 &549105058638053717 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 6374715837995431733, guid: dcd08c437cf191d449db2ef295eb9ea8,
     type: 3}
   m_PrefabInstance: {fileID: 6911154486970676832}
   m_PrefabAsset: {fileID: 0}

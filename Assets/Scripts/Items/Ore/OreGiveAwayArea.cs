@@ -17,7 +17,7 @@ public class OreGiveAwayArea : MonoBehaviour
     {
         if (collider.tag == "LocalPlayer")
         {
-            OnAreaEnter?.Invoke(CanvasInstance.instance.oreInventory.item.currentCount /* встав сюдт кількість руди у гравця під час  заходження в область*/);
+            OnAreaEnter?.Invoke(CanvasInstance.instance.oreInventory.item.currentCount /* пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅ  пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ*/);
         }
     }
 

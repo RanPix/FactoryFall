@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using System.Collections;
 using TMPro;
 
 public class WeaponAmmo : MonoBehaviour
@@ -11,12 +9,6 @@ public class WeaponAmmo : MonoBehaviour
     public int Ammo = 0;
     public int ReserveAmmo;
 
-    private void Awake()
-    {
-    }
-    private void Start()
-    {
-    }
     public void AddAmmo()
     {
         Ammo = ClipSize;

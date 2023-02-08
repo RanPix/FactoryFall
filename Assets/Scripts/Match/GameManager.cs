@@ -132,7 +132,8 @@ public class GameManager : NetworkBehaviour
     {
         base.OnStopClient();
 
-        SceneManager.LoadScene("Main Menu");
+        //SceneManager.UnloadSceneAsync();
+        SceneManager.LoadScene("Main menu");
     }
 
     public override void OnStopServer()
@@ -140,6 +141,9 @@ public class GameManager : NetworkBehaviour
         base.OnStopServer();
 
         if (isClient)
-            SceneManager.LoadScene("Main Menu");
+        {
+            //SceneManager.UnloadSceneAsync();
+            SceneManager.LoadScene("Main menu");
+        }
     }
 }

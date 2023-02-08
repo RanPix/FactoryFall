@@ -32,13 +32,16 @@ public class Menu : MonoBehaviour
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
     {
         WeaponKeyCodes _localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>();
-        CursorManager.disablesToLockCount = isOpened ? CursorManager.disablesToLockCount+1 : wasOpened ? CursorManager.disablesToLockCount-1: CursorManager.disablesToLockCount;
+        CursorManager.disablesToLockCount = isOpened ? CursorManager.disablesToLockCount + 1 : wasOpened ? CursorManager.disablesToLockCount-1: CursorManager.disablesToLockCount;
         _localPlayer.weaponHolder.GetComponent<WeaponSway>().canSway = isOpened;
+
         if(_localPlayer.currentWeapon)
             _localPlayer.currentWeapon.canShoot = isOpened;
+
         isOpened = !isOpened;
-        wasOpened = isOpened?true:false;
+        wasOpened = isOpened ? true : false;
         look.canRotateCamera = !isOpened;
+
         CursorManager.SetCursorLockState(isOpened ? CursorLockMode.None : CursorLockMode.Locked);
         panel.SetActive(isOpened);
     }
