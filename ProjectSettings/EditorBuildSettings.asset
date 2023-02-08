@@ -18,6 +18,9 @@ EditorBuildSettings:
     path: 
     guid: 00000000000000000000000000000000
   - enabled: 1
+    path: Assets/Scenes/Game/Connect To Server.unity
+    guid: 73cecf205d1b0704cba08ae7b4f113a1
+  - enabled: 1
     path: Assets/Scenes/Game/Main Menu.unity
     guid: e54e5e56abfdd2e438634737eb0ff888
   - enabled: 1

@@ -6,7 +6,7 @@ using Player.Info;
 using System;
 using UI.Indicators;
 
-namespace Player
+namespace Player//https://www.youtube.com/watch?v=dQw4w9WgXcQ
 {
     [RequireComponent(typeof(PlayerSetup))]
     public class GamePlayer : NetworkBehaviour
