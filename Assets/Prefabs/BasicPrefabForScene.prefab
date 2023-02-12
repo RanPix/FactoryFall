@@ -729,7 +729,7 @@ PrefabInstance:
     - target: {fileID: 3498648492648633625, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3516001351876073472, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
         type: 3}
@@ -1056,6 +1056,11 @@ PrefabInstance:
       propertyPath: sceneId
       value: 91392615
       objectReference: {fileID: 0}
+    - target: {fileID: 8629991880261891590, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+        type: 3}
+      propertyPath: m_Texture
+      value: 
+      objectReference: {fileID: 2800000, guid: 8f79cbb8669701d4e88aa78e4b48b367, type: 3}
     - target: {fileID: 8763814654977501534, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
         type: 3}
       propertyPath: m_IsActive

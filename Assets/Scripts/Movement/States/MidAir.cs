@@ -1,3 +1,4 @@
+using System;
 using FiniteMovementStateMachine;
 using Unity.Mathematics;
 using UnityEngine;
@@ -5,8 +6,30 @@ using UnityEngine.InputSystem;
 
 public class MidAir : BaseMovementState
 {
-    private int hasDoubleJumps;
-    private int hasRedirects;
+    public int hasDoubleJumps
+    {
+        get => _hasDoubleJumps;
+        private set
+        {
+            _hasDoubleJumps = value;
+            OnDoubleJumpsCountChange?.Invoke(value);
+        }
+    }
+    private int _hasDoubleJumps;
+    public Action<int> OnDoubleJumpsCountChange;
+
+    public int hasRedirects
+    {
+        get => _hasRedirects;
+        private set
+        {
+            _hasRedirects = value;
+            OnRedirectsCountChange?.Invoke(value);
+        }
+    }
+    private int _hasRedirects;
+    public Action<int> OnRedirectsCountChange;
+
 
     private bool gotRedirectInput;
 
