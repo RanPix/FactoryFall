@@ -147,6 +147,7 @@ namespace Player
         private void Start()
         {
             audioSync = GetComponent<AudioSync>();
+            InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
             if (isLocalPlayer)
             {
                 nameGO.SetActive(false);
@@ -154,7 +155,6 @@ namespace Player
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
                 gameObject.tag = "LocalPlayer";
 
-                InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
 
                 Transform hitIndicator = Instantiate(hitIndicatorPrefab, CanvasInstance.instance.canvas.transform);
                 hitIndicator.GetComponent<HitIndicatorTrigger>().Setup(this, orientation);

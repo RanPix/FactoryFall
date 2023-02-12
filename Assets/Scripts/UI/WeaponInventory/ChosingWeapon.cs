@@ -16,6 +16,7 @@ public class ChosingWeapon : MonoBehaviour
         CursorManager.disablesToLockCount++;
         Menu.Instance.canOpenMenu = false;
         Menu.Instance.look.canRotateCamera = false;
+        CanvasInstance.instance.tabBar.canOpen = false;
 
     }
 
@@ -66,7 +67,10 @@ public class ChosingWeapon : MonoBehaviour
         CursorManager.disablesToLockCount--;
         Menu.Instance.look.canRotateCamera = true;
         Menu.Instance.canOpenMenu = true;
+        CanvasInstance.instance.tabBar.canOpen = true;
+
         CursorManager.SetCursorLockState(CursorLockMode.Locked);
+        
         OnActivateWeapons?.Invoke(firstIndex, secondIndex);
 
     }

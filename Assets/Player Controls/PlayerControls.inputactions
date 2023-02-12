@@ -669,6 +669,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "OpenTabBar",
+                    "type": "Button",
+                    "id": "d6aea26d-d5b3-4aba-9bbc-d42fb292410d",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1109,6 +1118,17 @@
                     "processors": "",
                     "groups": "",
                     "action": "OpenOrCloseMenu",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c0b9176e-0c5c-43b5-b85a-3162a488a60c",
+                    "path": "<Keyboard>/tab",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Keyboard&Mouse",
+                    "action": "OpenTabBar",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

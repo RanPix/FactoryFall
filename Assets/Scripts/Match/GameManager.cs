@@ -56,7 +56,6 @@ public class GameManager : NetworkBehaviour
     public static void RegisterPlayer(string _netID, GamePlayer _player)
     {
         players.Add(_netID, _player);
-
         
         
     }

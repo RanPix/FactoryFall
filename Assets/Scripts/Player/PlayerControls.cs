@@ -691,6 +691,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""OpenTabBar"",
+                    ""type"": ""Button"",
+                    ""id"": ""d6aea26d-d5b3-4aba-9bbc-d42fb292410d"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1133,6 +1142,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""OpenOrCloseMenu"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c0b9176e-0c5c-43b5-b85a-3162a488a60c"",
+                    ""path"": ""<Keyboard>/tab"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""OpenTabBar"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1233,6 +1253,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_UI_TrackedDeviceOrientation = m_UI.FindAction("TrackedDeviceOrientation", throwIfNotFound: true);
         m_UI_OpenOrCloseInventory = m_UI.FindAction("OpenOrCloseInventory", throwIfNotFound: true);
         m_UI_OpenOrCloseMenu = m_UI.FindAction("OpenOrCloseMenu", throwIfNotFound: true);
+        m_UI_OpenTabBar = m_UI.FindAction("OpenTabBar", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1465,6 +1486,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_TrackedDeviceOrientation;
     private readonly InputAction m_UI_OpenOrCloseInventory;
     private readonly InputAction m_UI_OpenOrCloseMenu;
+    private readonly InputAction m_UI_OpenTabBar;
     public struct UIActions
     {
         private @PlayerControls m_Wrapper;
@@ -1481,6 +1503,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @TrackedDeviceOrientation => m_Wrapper.m_UI_TrackedDeviceOrientation;
         public InputAction @OpenOrCloseInventory => m_Wrapper.m_UI_OpenOrCloseInventory;
         public InputAction @OpenOrCloseMenu => m_Wrapper.m_UI_OpenOrCloseMenu;
+        public InputAction @OpenTabBar => m_Wrapper.m_UI_OpenTabBar;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1526,6 +1549,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @OpenOrCloseMenu.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseMenu;
                 @OpenOrCloseMenu.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseMenu;
                 @OpenOrCloseMenu.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenOrCloseMenu;
+                @OpenTabBar.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenTabBar;
+                @OpenTabBar.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenTabBar;
+                @OpenTabBar.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenTabBar;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1566,6 +1592,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @OpenOrCloseMenu.started += instance.OnOpenOrCloseMenu;
                 @OpenOrCloseMenu.performed += instance.OnOpenOrCloseMenu;
                 @OpenOrCloseMenu.canceled += instance.OnOpenOrCloseMenu;
+                @OpenTabBar.started += instance.OnOpenTabBar;
+                @OpenTabBar.performed += instance.OnOpenTabBar;
+                @OpenTabBar.canceled += instance.OnOpenTabBar;
             }
         }
     }
@@ -1649,5 +1678,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnTrackedDeviceOrientation(InputAction.CallbackContext context);
         void OnOpenOrCloseInventory(InputAction.CallbackContext context);
         void OnOpenOrCloseMenu(InputAction.CallbackContext context);
+        void OnOpenTabBar(InputAction.CallbackContext context);
     }
 }

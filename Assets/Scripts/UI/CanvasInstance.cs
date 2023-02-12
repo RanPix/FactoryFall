@@ -13,6 +13,7 @@ public class CanvasInstance : MonoBehaviour
     public ChosingWeapon weaponsToChose;
     public GameObject scoreBoard;
     public OreInventory oreInventory;
+    public TabBar tabBar;
 
     void Awake()
     {
