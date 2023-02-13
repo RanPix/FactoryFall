@@ -152,17 +152,17 @@ public class WeaponKeyCodes : NetworkBehaviour
         {
             if (currentWeapon.weaponAmmo.Ammo > 0)
             {
-                if (currentWeapon.shootTimer > currentWeapon.timeBetweenShots)
+                if (currentWeapon.shootTimer > currentWeapon.weaponScriptableObject.timeBetweenShots)
                 {
                     if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
                     {
                         //audioSync.PlaySound(0);
-                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetNetID(), currentWeapon.timeBetweenSpawnBullets));
+                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
                     }
                     else if (currentWeapon._shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
                         //audioSync.PlaySound(0);
-                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.weaponShootRange, gamePlayer.GetNetID(), currentWeapon.timeBetweenSpawnBullets));
+                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
 
                     }
                 }
@@ -176,7 +176,7 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         if (controls.Player.Reload.WasPerformedThisFrame() && !currentWeapon.reloading)
         {
-            if (currentWeapon.weaponAmmo.Ammo < currentWeapon.maxAmmo)
+            if (currentWeapon.weaponAmmo.Ammo < currentWeapon.weaponScriptableObject.maxAmmo)
             {
                 audioSync.PlaySound(2);
                 StartCoroutine(currentWeapon.ReloadCoroutine());

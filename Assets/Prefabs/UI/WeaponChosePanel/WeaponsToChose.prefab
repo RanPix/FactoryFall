@@ -37,10 +37,10 @@ RectTransform:
   m_Father: {fileID: 6374715837995431733}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -60, y: 0}
-  m_SizeDelta: {x: 249.1887, y: 186.1851}
+  m_AnchorMin: {x: 0.5, y: 1}
+  m_AnchorMax: {x: 0.5, y: 1}
+  m_AnchoredPosition: {x: 0.7799988, y: -53}
+  m_SizeDelta: {x: 249.1887, y: 186.18512}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &8488001621242549157
 CanvasRenderer:
@@ -64,7 +64,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponInventoryItem: {fileID: 0}
   blur: {fileID: 6834435273491282588}
-  chosingWeapon: {fileID: 6796202544525320380}
+  weaponScriptableObject: {fileID: 0}
   wasSelected: 0
 --- !u!114 &5642120210910847638
 MonoBehaviour:
@@ -204,9 +204,9 @@ RectTransform:
   m_Father: {fileID: 6374715837995431733}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -497.20294, y: 4.9330063}
+  m_AnchorMin: {x: 0, y: 0.5}
+  m_AnchorMax: {x: 0, y: 0.5}
+  m_AnchoredPosition: {x: 35.79706, y: 4.9330063}
   m_SizeDelta: {x: 133.8392, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2394675697020133171
@@ -231,7 +231,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponInventoryItem: {fileID: 0}
   blur: {fileID: 9028993325362357687}
-  chosingWeapon: {fileID: 6796202544525320380}
+  weaponScriptableObject: {fileID: 11400000, guid: 4e754d2369c961644ad470e5a712dd9a,
+    type: 2}
   wasSelected: 0
 --- !u!114 &1427923692075747752
 MonoBehaviour:
@@ -398,7 +399,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponInventoryItem: {fileID: 0}
   blur: {fileID: 4366078313127209896}
-  chosingWeapon: {fileID: 6796202544525320380}
+  weaponScriptableObject: {fileID: 11400000, guid: e4f0c0f32f9e1bd478e3d550fe693c0a,
+    type: 2}
   wasSelected: 0
 --- !u!114 &1207008427657173308
 MonoBehaviour:
@@ -690,9 +692,9 @@ RectTransform:
   m_Father: {fileID: 6374715837995431733}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 1, y: 0.5}
-  m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -264.86, y: -212}
+  m_AnchorMin: {x: 0.5, y: 0}
+  m_AnchorMax: {x: 0.5, y: 0}
+  m_AnchoredPosition: {x: 1.1400146, y: 42}
   m_SizeDelta: {x: 252.5453, y: 188.6931}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &2535702141679907962
@@ -717,7 +719,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weaponInventoryItem: {fileID: 0}
   blur: {fileID: 4919143917302243533}
-  chosingWeapon: {fileID: 6796202544525320380}
+  weaponScriptableObject: {fileID: 11400000, guid: 0d6004114e8934340a2f1df05b2e2975,
+    type: 2}
   wasSelected: 0
 --- !u!114 &8606085378860122922
 MonoBehaviour:

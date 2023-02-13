@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4788287858394792855}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: MuzzlePosition
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -41,7 +41,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8393629584849183368}
   - component: {fileID: 7660344413018927836}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: ShotGun
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -89,18 +89,6 @@ MonoBehaviour:
   initialWeaponPosition: {x: 0.491, y: -0.24, z: 1.018}
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
-  <useOneAmmoPerShot>k__BackingField: 1
-  <maxAmmo>k__BackingField: 8
-  numberOfBulletsPerShot: 6
-  timeBetweenSpawnBullets: 0
-  patern:
-  - {x: 0, y: 0}
-  - {x: 0.1, y: 0}
-  - {x: 0.02, y: 0.2}
-  - {x: -0.1, y: -0.04}
-  - {x: -0.05, y: 0.09}
-  - {x: 0.03, y: -0.05}
-  <timeBetweenShots>k__BackingField: 0.7
   <hasInfiniteAmmo>k__BackingField: 1
   reserveAmmo: 0
   muzzlePosition: {fileID: 4788287858394792855}
@@ -127,6 +115,18 @@ PrefabInstance:
     - target: {fileID: 1236257789494122, guid: 8b0b86b42def11849a8eba21f4a6a684, type: 3}
       propertyPath: m_Name
       value: ShotGunModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 1236257789494122, guid: 8b0b86b42def11849a8eba21f4a6a684, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1326079549577358, guid: 8b0b86b42def11849a8eba21f4a6a684, type: 3}
+      propertyPath: m_Layer
+      value: 6
+      objectReference: {fileID: 0}
+    - target: {fileID: 1584542541181842, guid: 8b0b86b42def11849a8eba21f4a6a684, type: 3}
+      propertyPath: m_Layer
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4243371153570508, guid: 8b0b86b42def11849a8eba21f4a6a684, type: 3}
       propertyPath: m_RootOrder

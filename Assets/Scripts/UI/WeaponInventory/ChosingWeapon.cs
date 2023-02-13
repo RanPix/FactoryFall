@@ -1,6 +1,5 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 
 public class ChosingWeapon : MonoBehaviour
@@ -10,6 +9,8 @@ public class ChosingWeapon : MonoBehaviour
     private int maxWeaponsCount;
     public bool canSelectAnotherWeapon = true;
     public Action<int, int> OnActivateWeapons;
+
+    public Action<string, string, float, float, float, int> OnActivate;
     void Start()
     {
         CursorManager.SetCursorLockState(CursorLockMode.None);
@@ -68,6 +69,7 @@ public class ChosingWeapon : MonoBehaviour
         Menu.Instance.look.canRotateCamera = true;
         Menu.Instance.canOpenMenu = true;
         CanvasInstance.instance.tabBar.canOpen = true;
+        CanvasInstance.instance.selectedWeaponInfo.TurnOff();
 
         CursorManager.SetCursorLockState(CursorLockMode.Locked);
         

@@ -5,11 +5,16 @@ public class ChosingWeaponItem : MonoBehaviour
 {
     [SerializeField] private GameObject weaponInventoryItem;
     [SerializeField] private GameObject blur;
+
+    [SerializeField] private WeaponScriptableObject weaponScriptableObject;
+
+
     public bool wasSelected = false;
 
     public void OnCursorEnter()
     {
         blur.SetActive(false);
+        transform.GetComponentInParent<ChosingWeapon>().OnActivate?.Invoke(weaponScriptableObject.type, weaponScriptableObject.name, weaponScriptableObject.damage, weaponScriptableObject.timeBetweenShots, weaponScriptableObject.shootRange, weaponScriptableObject.numberOfBulletsPerShot);
     }
 
     public void OnCursorExit()
@@ -23,11 +28,17 @@ public class ChosingWeaponItem : MonoBehaviour
     {
         if (CanvasInstance.instance.weaponsToChose.canSelectAnotherWeapon || wasSelected)
         {
-            wasSelected = wasSelected ? false:true;
-            if(wasSelected)
+            wasSelected = !wasSelected;
+            if (wasSelected)
+            {
                 CanvasInstance.instance.weaponsToChose.weaponsInventoryItems.Add(weaponInventoryItem);
+                transform.GetComponentInParent<ChosingWeapon>().OnActivate?.Invoke(weaponScriptableObject.type, weaponScriptableObject.name, weaponScriptableObject.damage, weaponScriptableObject.timeBetweenShots, weaponScriptableObject.shootRange, weaponScriptableObject.numberOfBulletsPerShot);
+
+            }
             else
+            {
                 CanvasInstance.instance.weaponsToChose.weaponsInventoryItems.Remove(weaponInventoryItem);
+            }
 
         }
         CanvasInstance.instance.weaponsToChose.OnWeaponClick(wasSelected);

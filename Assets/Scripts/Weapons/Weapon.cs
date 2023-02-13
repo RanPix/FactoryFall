@@ -70,15 +70,9 @@ public class Weapon : MonoBehaviour
 
     [Space(10)] 
 
-    [Header("Ammo")] 
+    [Header("Ammo")]
     public WeaponAmmo weaponAmmo;
-    [field: SerializeField] public bool useOneAmmoPerShot { get; private set; }
-    [field: SerializeField]public int maxAmmo { get; private set; }
-    public int numberOfBulletsPerShot;
-    public float timeBetweenSpawnBullets;
-    [SerializeField] private Vector2[] patern;
 
-    [field: SerializeField] public float timeBetweenShots { get; private set; }
     public float shootTimer { get; private set; }
 
     [field: SerializeField] public bool hasInfiniteAmmo { get; private set; }
@@ -149,10 +143,9 @@ public class Weapon : MonoBehaviour
         gunCam = cam.GetComponentInChildren<Camera>();
 
 
-        GameObject help = Instantiate(weaponAmmo.gameObject);
 
 
-        weaponAmmo = help.GetComponent<WeaponAmmo>();
+        weaponAmmo = Instantiate(weaponAmmo.gameObject).GetComponent<WeaponAmmo>();
 
         UpdateAmmo();
 
@@ -171,7 +164,7 @@ public class Weapon : MonoBehaviour
         shootTimer = 0;
         nextFire = Time.time;
         SpawnMuzzle();
-        if (useOneAmmoPerShot)
+        if (weaponScriptableObject.useOneAmmoPerShot)
         {
             animator.Play(shootAnimationName);
             weaponAmmo.Ammo--;
@@ -179,15 +172,15 @@ public class Weapon : MonoBehaviour
         }
 
 
-        return GetRay(patern);
+        return GetRay(weaponScriptableObject.patern);
     }
 
 
 
 public void UpdateAmmo()
     {
-        weaponAmmo.Ammo = maxAmmo;
-        weaponAmmo.ClipSize = maxAmmo;
+        weaponAmmo.Ammo = weaponScriptableObject.maxAmmo;
+        weaponAmmo.ClipSize = weaponScriptableObject.maxAmmo;
         weaponAmmo.ReserveAmmo = reserveAmmo;
 
         weaponAmmo.AmmoText = ammoText;

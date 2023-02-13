@@ -14,6 +14,7 @@ public class CanvasInstance : MonoBehaviour
     public GameObject scoreBoard;
     public OreInventory oreInventory;
     public TabBar tabBar;
+    public WeaponInfo selectedWeaponInfo;
 
     void Awake()
     {
