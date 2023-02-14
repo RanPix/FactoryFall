@@ -10,6 +10,7 @@ public static class TeamToColor
         else if (team is Team.Red)
             col = Color.red;
 
+        col = Color.white;
     }
     public static Color GetTeamColor(Team team)
     {

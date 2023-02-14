@@ -15,18 +15,23 @@ public class Menu : MonoBehaviour
     private bool wasOpened = false;
     [SerializeField] private GameObject panel;
 
-    void Awake()
+    private void Awake()
     {
         if(Instance==null)
             Instance = this;
     }
-    void Start()
+    private void Start()
     {
         controls = new PlayerControls();
         controls.UI.Enable();
         controls.UI.OpenOrCloseMenu.performed += OpenOrCloseMenu;
 
         OpenOrCloseMenu(false);
+    }
+
+    private void OnDestroy()
+    {
+        controls.UI.OpenOrCloseMenu.performed -= OpenOrCloseMenu;
     }
 
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
@@ -43,7 +48,9 @@ public class Menu : MonoBehaviour
         look.canRotateCamera = !isOpened;
 
         CursorManager.SetCursorLockState(isOpened ? CursorLockMode.None : CursorLockMode.Locked);
-        panel.SetActive(isOpened);
+
+        if (panel != null)
+            panel.SetActive(isOpened);
     }
     public void OpenOrCloseMenu(bool openMenu)
     {

@@ -18,7 +18,9 @@ namespace Player
         [field: SyncVar (hook = nameof(UpdateKillsCount))] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
         [field: SyncVar (hook = nameof(UpdateScoreCount))] public int score { get; private set; }
-#endregion
+        #endregion
+
+        private bool teamFirstSetUp = true;
 
 
         [Header("Health")]
@@ -55,6 +57,8 @@ namespace Player
 
         [SerializeField] private Camera miniMapCamera;
         [SerializeField] private GameObject playerMark;
+        [SerializeField] private GameObject playerMarkInstance;
+
         [field: SerializeField] public GameObject cameraHolder { get; private set; }
 
 
@@ -144,11 +148,18 @@ namespace Player
             nickname = name;
         }
 
+        private void Awake()
+        {
+            GameManager.instance.OnMatchSettingsSettedup += CheckTeam;
+        }
+
+
         private void Start()
         {
             audioSync = GetComponent<AudioSync>();
             if (isLocalPlayer)
             {
+                
                 nameGO.SetActive(false);
 
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
@@ -186,8 +197,14 @@ namespace Player
 
         private void SetTeam(Team oldTeam, Team newTeam)
         {
-            GameObject playerRow = Instantiate(playerMark);
-            playerRow.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
+            if (!teamFirstSetUp)
+            {
+                Destroy(playerMarkInstance);
+            }
+
+
+            playerMarkInstance = Instantiate(playerMark);
+            playerMarkInstance.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
 
             if (isLocalPlayer)
             {
@@ -221,6 +238,23 @@ namespace Player
 
             gameObject.tag = playerTag;
         }
+
+        private void CheckTeam(bool teamsMatch)
+        {
+            print($"{teamsMatch} bro");
+
+            if (!teamsMatch)
+                CmdUpdateTeam(Team.None);
+
+            else if (teamsMatch && team == Team.None)
+                CmdUpdateTeam(GameManager.GetBalancedTeam());
+        }
+
+        [Command]
+        private void CmdUpdateTeam(Team team) => this.team = team;
+
+
+
 
         private void SetNickname(string oldName, string newName)
         {
@@ -383,7 +417,7 @@ namespace Player
                 OnDeath?.Invoke(_sourceID, sourcePlayer.team, sourcePlayer.nickname, (int)sourcePlayer.gameObject.GetComponent<Health>().currentHealth);
                 //sourcePlayer.CmdAddKill();
 
-                print($"die {_sourceID} {GetNetID()}");
+                //print($"die {_sourceID} {GetNetID()}");
 
 
                 CmdPlayerKilled(GetNetID(), nickname, sourcePlayer.netIdentity);
@@ -591,6 +625,9 @@ namespace Player
                 return;
 
             scoreboard.ChangeLocalPlayerScore(newAmount);
+
+            if (!GameManager.instance.matchSettings.teamsMatch)
+                scoreboard.CheckPlayersScoreGetsGoal(newAmount);
         }
 
         [Client]
@@ -603,6 +640,9 @@ namespace Player
                 return;
 
             scoreboard.ChangeLocalPlayerScore(newAmount);
+
+            if (!GameManager.instance.matchSettings.teamsMatch)
+                scoreboard.CheckPlayersScoreGetsGoal(newAmount);
         }
 
         #endregion
@@ -620,6 +660,11 @@ namespace Player
             //GO.transform.localScale = startScale;
         }
 
+        private void OnDestroy()
+        {
+            GameManager.instance.OnMatchSettingsSettedup -= CheckTeam;
+            Destroy(playerMarkInstance);
+        }
 
         public string GetNetID() => netId.ToString();
     }

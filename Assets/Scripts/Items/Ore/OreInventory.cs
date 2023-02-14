@@ -6,8 +6,23 @@ public class OreInventory : MonoBehaviour
 
     private void Awake()
     {
-        if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
-            gameObject.SetActive(false);
+        GameManager.instance.OnMatchSettingsSettedup += Setup;
 
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.instance.OnMatchSettingsSettedup -= Setup;
+    }
+
+    private void Setup(bool teamsMatch)
+    {
+        print(GameManager.instance.matchSettings.gm);
+
+        if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
+        {
+            print("HOW");
+            gameObject.SetActive(false);
+        }
     }
 }

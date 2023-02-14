@@ -25,18 +25,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1139098943544161730}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3247850490028736362}
-  m_Father: {fileID: 498118201697382091}
+  m_Father: {fileID: 8193363447899152750}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0.5}
   m_AnchorMax: {x: 0, y: 0.5}
-  m_AnchoredPosition: {x: 92.211426, y: -0.069336}
+  m_AnchoredPosition: {x: -147.73364, y: -0.069336}
   m_SizeDelta: {x: 184.4161, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &3983910799607482329
@@ -378,8 +378,7 @@ RectTransform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 7216821609856449156}
-  - {fileID: 2547614803216501266}
+  - {fileID: 8193363447899152750}
   - {fileID: 6495067319396559698}
   - {fileID: 8010913411865996695}
   - {fileID: 4347418970392816012}
@@ -434,6 +433,7 @@ MonoBehaviour:
   playerScoreText: {fileID: 5366910567018790984}
   blueTeamScoreText: {fileID: 8778002145362333466}
   redTeamScoreText: {fileID: 3430702542782296592}
+  teamScoresContainers: {fileID: 8193363447899152750}
   winnersPanel: {fileID: 5288381687751709945}
   winnerText: {fileID: 6170365288611342722}
   best3FromLeaderBoard: {fileID: 5431755258460252419}
@@ -1003,18 +1003,18 @@ RectTransform:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5183911820102048430}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 8935043248153195244}
-  m_Father: {fileID: 498118201697382091}
+  m_Father: {fileID: 8193363447899152750}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 1, y: 0.5}
   m_AnchorMax: {x: 1, y: 0.5}
-  m_AnchoredPosition: {x: -92.20807, y: -0.069336}
+  m_AnchoredPosition: {x: 147.73694, y: -0.069336}
   m_SizeDelta: {x: 184.41614, y: 60}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7758078113274489365
@@ -1087,7 +1087,7 @@ RectTransform:
   m_Children:
   - {fileID: 4696296185296121476}
   m_Father: {fileID: 498118201697382091}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 1}
   m_AnchorMax: {x: 0.5, y: 1}
@@ -1163,7 +1163,7 @@ RectTransform:
   - {fileID: 3389624903278973708}
   - {fileID: 9187440038798880544}
   m_Father: {fileID: 498118201697382091}
-  m_RootOrder: 4
+  m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1202,7 +1202,7 @@ RectTransform:
   m_Children:
   - {fileID: 8472777852572459098}
   m_Father: {fileID: 498118201697382091}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
@@ -1247,3 +1247,41 @@ MonoBehaviour:
   m_FillOrigin: 0
   m_UseSpriteMesh: 0
   m_PixelsPerUnitMultiplier: 1
+--- !u!1 &5660389502208428578
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 8193363447899152750}
+  m_Layer: 5
+  m_Name: TeamScoresContainer
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!224 &8193363447899152750
+RectTransform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5660389502208428578}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 7216821609856449156}
+  - {fileID: 2547614803216501266}
+  m_Father: {fileID: 498118201697382091}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_AnchorMin: {x: 0.5, y: 0.5}
+  m_AnchorMax: {x: 0.5, y: 0.5}
+  m_AnchoredPosition: {x: 0, y: 0}
+  m_SizeDelta: {x: 100, y: 100}
+  m_Pivot: {x: 0.5, y: 0.5}

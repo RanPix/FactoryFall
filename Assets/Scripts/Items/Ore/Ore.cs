@@ -19,25 +19,35 @@ public class Ore : NetworkBehaviour
     [SerializeField] private GameObject gatherEffect;
 
 
-    private void Start()
+    private void Awake()
     {
         currentHealth = maxHealth;
 
-        
+        GameManager.instance.OnMatchSettingsSettedup += Setup;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.instance.OnMatchSettingsSettedup -= Setup;
     }
 
     public override void OnStartClient()
     {
         base.OnStartClient();
 
-        if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
-            gameObject.SetActive(false);
-
         if (PlayerInfoTransfer.instance.team != team)
         {
             gameObject.layer = LayerMask.NameToLayer("EnemyOre");
         }
     }
+
+
+    private void Setup(bool teamsMatch)
+    {
+        if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
+            gameObject.SetActive(false);
+    }
+
 
     [ClientRpc]
     public void RpcCheckHP(float damage, string netID)

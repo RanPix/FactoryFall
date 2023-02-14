@@ -29,7 +29,7 @@ public class WeaponKeyCodes : NetworkBehaviour
     private AudioSync audioSync;
     private AudioSource audioSource;
 
-    void Start()
+    private void Start()
     {
         if (!isLocalPlayer)
             return;
@@ -44,8 +44,16 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     }
 
-    void Update()
+    private void OnDestroy()
     {
+        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnActivateWeapons -= SetSelectedWeaponsIndexes;
+        controls.Player.WeaponInventory.performed -= GetWeaponIndex;
+    }
+
+    private void Update()
+    {
+        //print($"{SceneManager.GetActiveScene().name} lmao");
+
         if (!isLocalPlayer || !currentWeapon || !weaponsWasSelected)
             return;
         KeyCodes();
@@ -54,6 +62,8 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     public void ChangeWeapon(int index, int currentIndex)
     {
+        //print($"{SceneManager.GetActiveScene().name} lmao2");
+
         if (index == 0)
         {
             index = activatedWeaponsIndexes.Min();

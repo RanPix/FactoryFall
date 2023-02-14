@@ -16,6 +16,7 @@ TagManager:
   - BlueTeamSpawnPoint
   - RedTeamSpawnPoint
   - Ore
+  - DontDestroyOnLoad
   layers:
   - Default
   - TransparentFX

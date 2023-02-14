@@ -12,7 +12,7 @@ public class CursorManager : MonoBehaviour
         set
         {
             _disablesToLockCount = value;
-            OnCanLockChange?.Invoke(value==0?true:false);
+            OnCanLockChange?.Invoke(value == 0 ? true : false);
         }
     }
 

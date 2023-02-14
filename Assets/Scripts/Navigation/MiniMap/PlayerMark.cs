@@ -33,6 +33,8 @@ public class PlayerMark : MonoBehaviour
             blueTeam.SetActive(true);
         else if (team == Team.Red)
             redTeam.SetActive(true);
+        else
+            redTeam.SetActive(true);
 
         firstSetup = false;
     }

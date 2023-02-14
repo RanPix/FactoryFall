@@ -2,6 +2,7 @@ using Mirror;
 using UnityEngine;
 using TMPro;
 using System;
+using Player;
 
 public class Scoreboard : NetworkBehaviour
 {
@@ -19,6 +20,8 @@ public class Scoreboard : NetworkBehaviour
 
     [SerializeField] private TMP_Text blueTeamScoreText;
     [SerializeField] private TMP_Text redTeamScoreText;
+    [SerializeField] private Transform teamScoresContainers;
+
 
     private int localScore;
 
@@ -35,27 +38,48 @@ public class Scoreboard : NetworkBehaviour
     [SyncVar (hook = nameof(UpdateBlueTeamScore))] private int blueTeamScore;
     [SyncVar (hook = nameof(UpdateRedTeamScore))] private int redTeamScore;
 
-    public override void OnStartClient()
+
+    private void Awake()
     {
-        base.OnStartClient();
-        
-        teamsMatch = GameManager.instance.matchSettings.teamsMatch;
-        hasTimer = GameManager.instance.matchSettings.hasTimer;
-        scoreBased = GameManager.instance.matchSettings.gm == Gamemode.BTR ? true : false;
+        GameManager.instance.OnMatchSettingsSettedup += Setup;
+    }
+
+    private void OnDestroy()
+    {
+        GameManager.instance.OnMatchSettingsSettedup -= Setup;
+    }
+
+    public void Setup(bool teamsMatch)
+    {
+        MatchSettingsStruct matchSettings = GameManager.instance.matchSettings.matchSettingsStruct;
+
+        //print("asdkgfasrkgn");
+
+        teamsMatch = matchSettings.teamsMatch;
+        hasTimer = matchSettings.hasTimer;
+        scoreBased = matchSettings.gm == Gamemode.BTR ? true : false;
 
         if (hasTimer)
         {
-            matchTime = GameManager.instance.matchSettings.matchTime;
+            matchTime = matchSettings.matchTime;
             matchTimer = matchTime;
         }
         else
         {
-            goal = GameManager.instance.matchSettings.winningGoal;
+            goal = matchSettings.winningGoal;
             goalOrTimerString = goal.ToString();
         }
 
-        UpdateBlueTeamScore(-1, blueTeamScore);
-        UpdateRedTeamScore(-1, redTeamScore);
+        if (teamsMatch)
+        {
+            UpdateBlueTeamScore(-1, blueTeamScore);
+            UpdateRedTeamScore(-1, redTeamScore);
+
+        }
+        else
+        {
+            teamScoresContainers.gameObject.SetActive(false);
+        }
     }
 
     [Server]
@@ -130,8 +154,30 @@ public class Scoreboard : NetworkBehaviour
         OnPlayerScored.Invoke(scoredPlayerName, team);
         
     }
-    
 
+
+    [Client]    
+    public void CheckPlayersScoreGetsGoal(int amount) 
+    {
+        print($"{amount} yes");
+
+        if (amount >= goal)
+        {
+            print($"got c");
+            CmdCheckPlayersScoreGetsGoal(amount);
+        }
+    }
+
+    [Command]
+    private void CmdCheckPlayersScoreGetsGoal(int amount) 
+    {
+        if (amount >= goal)
+        {
+            print($"got s");
+            EndGame(Team.None);
+        }
+    }
+    
     [Server]
     private void CheckScoreGetsGoal()
     {
@@ -162,8 +208,23 @@ public class Scoreboard : NetworkBehaviour
         }
     }
 
+    [Server]
+    private void CheckPlayersScoreGetGoal()
+    {
+        GamePlayer[] players = GameManager.GetAllPlayers();
+
+        for (int i = 0; i < players.Length; i++)
+        {
+            if (players[i].kills > goal)
+            {
+                EndGame(Team.None);
+                return;
+            }
+        }
+    }
+
     [ClientRpc]
-    private void RpcBroadcastWonTeam(Team team)
+    private void RpcBroadcastWinner(Team team)
     {
         winnersPanel.SetActive(true);
 
@@ -184,7 +245,25 @@ public class Scoreboard : NetworkBehaviour
                 break;
 
             case Team.None: 
-                // has to take the best player from a list
+                GamePlayer[] players = GameManager.GetAllPlayers();
+
+                int currentScore = players[0].kills;
+                int biggestScore = currentScore;
+                int biggestIndex = 0;
+
+                for (int i = 0; i < players.Length; i++)
+                {
+                    currentScore = players[i].kills;
+
+                    if (currentScore < biggestScore)
+                    {
+                        biggestScore = currentScore;
+                        biggestIndex = i;
+                    }
+                }
+
+                winnerText.text = $"{players[biggestIndex].name} Won";
+                winnerText.color = Color.white;
                 break;
         }
 
@@ -196,7 +275,7 @@ public class Scoreboard : NetworkBehaviour
     private void EndGame(Team wonTeam)
     {
         GameManager.instance.EndGame();
-        RpcBroadcastWonTeam(wonTeam);
+        RpcBroadcastWinner(wonTeam);
     }
 
 
@@ -210,12 +289,18 @@ public class Scoreboard : NetworkBehaviour
     [Client]
     private void UpdateBlueTeamScore(int oldScore, int newScore)
     {
+        if (!teamsMatch)
+            return;
+
         blueTeamScoreText.text = newScore.ToString();
     }
 
     [Client]
     private void UpdateRedTeamScore(int oldScore, int newScore)
     {
+        if (!teamsMatch)
+            return;
+
         redTeamScoreText.text = newScore.ToString();
     }
 
@@ -235,7 +320,12 @@ public class Scoreboard : NetworkBehaviour
         {
             countDown = false;
             matchTimer = 0;
-            CheckTeamsScore();
+            UpdateTimer();
+
+            if (teamsMatch)
+                CheckTeamsScore();
+            else
+                CheckPlayersScoreGetGoal();
         }
     }
 

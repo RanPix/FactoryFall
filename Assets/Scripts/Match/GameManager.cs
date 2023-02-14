@@ -12,6 +12,7 @@ public class GameManager : NetworkBehaviour
     public static GameManager instance;
 
     public MatchSettings matchSettings;
+    public Action<bool> OnMatchSettingsSettedup;
 
     [SerializeField] private GameObject sceneCamera;
 
@@ -33,9 +34,24 @@ public class GameManager : NetworkBehaviour
             instance = this;
         }
 
-        matchSettings.Setup();
+        //matchSettings.Setup();
 
         //ChangeTeamSpawnPositions(PlayerInfoTransfer.instance.team);
+    }
+
+    private void OnDestroy()
+    {
+        instance = null;
+    }
+
+    public override void OnStartServer()
+    {
+        base.OnStartServer();
+
+        //print("yes");
+        MatchSettingsTransfer transfer = MatchSettingsTransfer.instance;
+
+        matchSettings.Setup(transfer.gm, transfer.hasTimer, transfer.matchTime, transfer.winningGoal);
     }
 
     public void SetSceneCameraActive(bool state)
@@ -112,6 +128,14 @@ public class GameManager : NetworkBehaviour
     }
     #endregion
 
+
+    [TargetRpc]
+    public void TargetSetMatchSettings(NetworkConnection conn, MatchSettingsStruct settings)
+    {
+        matchSettings.SetMatchSettings(settings);
+    }
+
+
     [Server]
     public void EndGame()
     {
@@ -132,8 +156,18 @@ public class GameManager : NetworkBehaviour
     {
         base.OnStopClient();
 
-        //SceneManager.UnloadSceneAsync();
-        SceneManager.LoadScene("Main menu");
+        if (isServer)
+            return;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        NetworkManager.singleton.StopClient();
+
+        players.Clear();
+
+        SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+        SceneManager.LoadScene("Main Menu");
     }
 
     public override void OnStopServer()
@@ -142,8 +176,51 @@ public class GameManager : NetworkBehaviour
 
         if (isClient)
         {
-            //SceneManager.UnloadSceneAsync();
-            SceneManager.LoadScene("Main menu");
+            Cursor.lockState = CursorLockMode.None;
+            Cursor.visible = true;
+
+            NetworkManager.singleton.StopHost();
+            //NetworkManager.singleton.StopClient();
+
+            players.Clear();
+
+            SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene());
+            SceneManager.LoadScene("Main Menu");
         }
+    }
+
+    public static Team GetBalancedTeam()
+    {
+        if (!instance.matchSettings.teamsMatch)
+        {
+            return Team.None;
+        }
+
+        GamePlayer[] playersList = GetAllPlayers();
+
+        int blueAmount = 0;
+        int redAmount = 0;
+
+        foreach (GamePlayer player in playersList)
+        {
+            if (player.team == Team.Blue)
+            {
+                blueAmount++;
+                continue;
+            }
+
+            if (player.team == Team.Red)
+            {
+                redAmount++;
+                continue;
+            }
+        }
+
+        if (blueAmount > redAmount)
+            return Team.Blue;
+        else if (redAmount > blueAmount)
+            return Team.Red;
+        else
+            return Team.Blue;
     }
 }
