@@ -15,6 +15,7 @@ public class CanvasInstance : MonoBehaviour
     public OreInventory oreInventory;
     public TabBar tabBar;
     public WeaponInfo selectedWeaponInfo;
+    public MainChat mainChat;
 
     void Awake()
     {

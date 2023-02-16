@@ -32,7 +32,7 @@ namespace Player
         [SerializeField] private GameObject ammoTextPrefab;
         [SerializeField] private Transform trail;
         [SerializeField] private Transform hitIndicatorPrefab;
-        [SerializeField] private WeaponKeyCodes weaponKeyCodes;
+        public WeaponKeyCodes weaponKeyCodes { get; private set; }
 
         public Transform muzzlePosition;
 
@@ -168,7 +168,10 @@ namespace Player
 
                 GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
                 menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
+
+
                 CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
+
 
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
 
