@@ -10,7 +10,6 @@ public class SceneCamera : MonoBehaviour
     {
         int random = Random.Range(0, positions.Length);
         gameObject.transform.SetPositionAndRotation(positions[random].position, positions[random].rotation);
-        print(positions[random].name);
     }
 
 }

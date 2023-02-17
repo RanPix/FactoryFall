@@ -94,21 +94,21 @@ public class GameManager : NetworkBehaviour
         OnClientStart?.Invoke();
     }
 
-    void OnGUI()
-    {
-        //return; // if you dont need this
+    //void OnGUI()
+    //{
+    //    //return; // if you dont need this
 
-        GUILayout.BeginArea(new Rect(200, 200, 200, 500));
-        GUILayout.BeginVertical();
+    //    GUILayout.BeginArea(new Rect(200, 200, 200, 500));
+    //    GUILayout.BeginVertical();
 
-        foreach (string playerID in players.Keys)
-        {
-            GUILayout.Label($"{playerID} {players[playerID].team} - {players[playerID].nickname}, kills: {players[playerID].kills}, deaths: {players[playerID].deaths}");
-        }
+    //    foreach (string playerID in players.Keys)
+    //    {
+    //        GUILayout.Label($"{playerID} {players[playerID].team} - {players[playerID].nickname}, kills: {players[playerID].kills}, deaths: {players[playerID].deaths}");
+    //    }
 
-        GUILayout.EndVertical();
-        GUILayout.EndArea();
-    }
+    //    GUILayout.EndVertical();
+    //    GUILayout.EndArea();
+    //}
     #endregion
 
     [Server]
