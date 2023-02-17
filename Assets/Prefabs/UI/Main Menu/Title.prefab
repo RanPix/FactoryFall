@@ -314,6 +314,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 841400163258982976, guid: 7034e85a268b87342878ee893b456014,
         type: 3}
+    - target: {fileID: 8847314804608294199, guid: 1cdfd53e876516d44a73cc39277036e0,
+        type: 3}
+      propertyPath: offlineScene
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1cdfd53e876516d44a73cc39277036e0, type: 3}
 --- !u!114 &6352342469055609455 stripped

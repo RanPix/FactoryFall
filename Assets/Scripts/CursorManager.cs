@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class CursorManager : MonoBehaviour
 {
-    public static List<Behaviour> scriptsWhichNeedUnlockedCursor = new List<Behaviour>();
     [Min(0)]private static int _disablesToLockCount = 0;
     [field: Min(0)]public static int disablesToLockCount
     {
@@ -38,7 +37,7 @@ public class CursorManager : MonoBehaviour
         switch (lockMode)
         {
             case CursorLockMode.Locked:
-                if (scriptsWhichNeedUnlockedCursor.Count > 0)
+                if (disablesToLockCount > 0)
                     return;
                 Cursor.lockState = lockMode;
                 Cursor.visible = false;
