@@ -1,10 +1,10 @@
-using UnityEngine;
-using System.Collections;
-using Mirror;
 using GameBase;
+using Mirror;
 using System;
+using System.Collections;
 using TMPro;
 using UI.Indicators;
+using UnityEngine;
 
 namespace Player
 {
@@ -41,12 +41,20 @@ namespace Player
         [Space]
 
         [Header("UI")]
-        [SerializeField] private GameObject nameGO;
         [SerializeField] private InventoryUI inventory;
         [SerializeField] private GameObject menuPrefab;
 
 
-        [Space]
+        [Header("Player")]
+        [SerializeField] private GameObject nameGO;
+
+        [SerializeField] private GameObject playerModel;
+        [SerializeField] private MeshRenderer playerMesh;
+
+        [SerializeField] private Material bluePowerMat;
+        [SerializeField] private Material blueBaseMat;
+        [SerializeField] private Material redPowerMat;
+        [SerializeField] private Material redBaseMat;
 
         [Header("Cameras")]
         [SerializeField] private Transform cameraPosition;
@@ -62,6 +70,7 @@ namespace Player
         [Header("Death")]
         [SerializeField] private Behaviour[] disableOnDeath;
         [SerializeField] private GameObject[] disableGameObjectsOnDeath;
+
         [field: SyncVar] public bool isDead { get; private set; }
 
         //[SerializeField] private GameObject deathEffect;
@@ -149,6 +158,7 @@ namespace Player
             InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
             if (isLocalPlayer)
             {
+                playerModel.SetActive(false);
                 nameGO.SetActive(false);
 
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
@@ -209,6 +219,18 @@ namespace Player
             else
                 localPlayerTeam = PlayerInfoTransfer.instance.team;
 
+            if (newTeam == Team.Blue)
+            {
+                print("why");
+
+                playerMesh.materials[2].CopyPropertiesFromMaterial(blueBaseMat);
+                playerMesh.materials[0].CopyPropertiesFromMaterial(bluePowerMat);
+            }
+            else if (newTeam == Team.Red)
+            {
+                playerMesh.materials[2].CopyPropertiesFromMaterial(redBaseMat);
+                playerMesh.materials[0].CopyPropertiesFromMaterial(redPowerMat);
+            }
              
             string playerTag = "";
 
@@ -266,7 +288,7 @@ namespace Player
                     weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
                     weaponKeyCodes.currentWeapon.weaponAmmo.UpdateAmmoInScreen();
                 }
-                bool isHitted = Physics.Raycast(rays[i], out RaycastHit hit, shootRange, hitMask);
+                bool isHitted = Physics.Raycast(rays[i], out RaycastHit hit, shootRange, hitMask, QueryTriggerInteraction.Ignore);
 
 
                 if (isHitted && !GameManager.instance.gameEnded)
@@ -297,7 +319,7 @@ namespace Player
             if (GameManager.instance.gameEnded)
                 return;
 
-            bool isHitted = Physics.SphereCast(ray, punchRadius, out RaycastHit hit, punchDistance, hitLM);
+            bool isHitted = Physics.SphereCast(ray, punchRadius, out RaycastHit hit, punchDistance, hitLM, QueryTriggerInteraction.Ignore);
             if (isHitted)
             {
                 if (hit.transform.tag != "FriendlyPlayer")
@@ -482,7 +504,11 @@ namespace Player
                 disableGameObjectsOnDeath[i].SetActive(false);
 
             if (!isLocalPlayer)
+            {
+
+                playerModel.SetActive(false);
                 nameGO.SetActive(false);
+            }
 
         }
 
@@ -493,6 +519,8 @@ namespace Player
             Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition(team);
             transform.position = _spawnPoint.position;
             transform.rotation = _spawnPoint.rotation;
+
+            
 
             OnRespawn.Invoke();
 
@@ -559,7 +587,10 @@ namespace Player
                 disableGameObjectsOnDeath[i].SetActive(true);
 
             if (!isLocalPlayer)
+            {
+                playerModel.SetActive(true);
                 nameGO.SetActive(true);
+            }
         }
 
 
