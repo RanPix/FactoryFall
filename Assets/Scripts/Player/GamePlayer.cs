@@ -32,11 +32,10 @@ namespace Player
         [SerializeField] private GameObject ammoTextPrefab;
         [SerializeField] private Transform trail;
         [SerializeField] private Transform hitIndicatorPrefab;
-        public WeaponKeyCodes weaponKeyCodes { get; private set; }
+        [field: SerializeField] public WeaponKeyCodes weaponKeyCodes { get; private set; }
 
         public Transform muzzlePosition;
 
-        private int spawnedBulletCount = 0;
 
 
         [Space]
@@ -257,8 +256,8 @@ namespace Player
                     break;
 
                 if(weaponKeyCodes.currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets != 0 || i == 0)
-                    audioSync.PlaySound(0);
-
+                    audioSync.PlaySound(ClipType.weapon,true, $"{weaponKeyCodes.currentWeapon.weaponName}_Shoot");
+                
 
                 if (!weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
                 {
@@ -301,24 +300,32 @@ namespace Player
             bool isHitted = Physics.SphereCast(ray, punchRadius, out RaycastHit hit, punchDistance, hitLM);
             if (isHitted)
             {
-                if(hit.transform.tag == "FriendlyPlayer")
-                    return;
-
-                Health hitHealth = hit.transform.GetComponent<Health>();
-
-                if (hitHealth)
+                if (hit.transform.tag != "FriendlyPlayer")
                 {
-                    StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
-                    CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damageToPlayer, playerID);
-                }
-                else if (hit.transform.tag == "Ore")
-                {
-                    StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
+                    Health hitHealth = hit.transform.GetComponent<Health>();
 
-                    Ore _ore = hit.transform.GetComponent<Ore>();
-                    CmdOreHit(damageToOre, GetNetID(), _ore);
+                    if (hitHealth)
+                    {
+                        StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
+                        CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damageToPlayer, playerID);
+                        audioSync.PlaySound(ClipType.player, true, "Arm_HitInPlayer");
+                        return;
+                    }
+                    else if (hit.transform.tag == "Ore")
+                    {
+                        StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
+
+                        Ore _ore = hit.transform.GetComponent<Ore>();
+                        CmdOreHit(damageToOre, GetNetID(), _ore);
+                        audioSync.PlaySound(ClipType.player, true, "Arm_HitInOre");
+                        return;
+                    }
                 }
+
+
             }
+
+            audioSync.PlaySound(ClipType.player, true, "Arm_Shot");
         }
 
         [Command]

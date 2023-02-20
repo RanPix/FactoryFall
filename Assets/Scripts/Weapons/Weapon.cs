@@ -27,6 +27,20 @@ public enum PlaySoundType
     Reload
 }
 
+public enum WeaponName
+{
+    Pistol,
+    AUG,
+    Shotgun,
+}
+public enum WeaponType
+{
+    Pistol,
+    AutomaticRifle,
+    Shotgun,
+
+}
+
 public class Weapon : MonoBehaviour
 {
 
@@ -39,7 +53,9 @@ public class Weapon : MonoBehaviour
     [Header("Enums")] 
     [SerializeField] private States _state;
 
-    [SerializeField] public ShootType _shootType;
+    [field: SerializeField] public ShootType shootType { get; private set; }
+    [field: SerializeField] public WeaponName weaponName{get; private set; }
+    [field: SerializeField] public WeaponType weaponType{get; private set; }
 
 
 

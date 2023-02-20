@@ -1,3 +1,4 @@
+using System;
 using GameBase;
 using UnityEngine;
 
@@ -15,6 +16,8 @@ namespace FiniteMovementStateMachine
         [HideInInspector] public Wallrun wallrun { get; private set; }
 
         private MovementDataIntersection data;
+
+        public Action<string> OnStateChange;
 
         protected void Start()
         {
@@ -58,6 +61,7 @@ namespace FiniteMovementStateMachine
             currentState.Exit();
 
             currentState = newState;
+            OnStateChange?.Invoke(newState.name);
             currentState.Enter();
         }
 

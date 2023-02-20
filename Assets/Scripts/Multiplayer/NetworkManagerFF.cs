@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class NetworkManagerFF : NetworkManager
 {
     private static Team playersCurrentTeam = Team.Null;
-    private static List<Transform> spawnPositions = new List<Transform>();
+    private static List<Transform> spawnPositions = new ();
 
 
     public static Transform GetRespawnPosition(Team team)
