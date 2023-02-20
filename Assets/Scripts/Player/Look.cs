@@ -2,6 +2,7 @@ using GameBase;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using PlayerSettings;
 
 public class Look : MonoBehaviour
 {
@@ -63,8 +64,8 @@ public class Look : MonoBehaviour
             return;
 
         // Laggy beauty
-        yRot += inputVector.x * 0.01f * sensX;
-        xRot -= inputVector.y * 0.01f * sensY;
+        yRot += inputVector.x * 0.01f * Settings.sensetivity;
+        xRot -= inputVector.y * 0.01f * Settings.sensetivity;
         xRot = Mathf.Clamp(xRot, -90f, 90f);
 
         cam.transform.rotation = Quaternion.Euler(xRot, yRot, 0);

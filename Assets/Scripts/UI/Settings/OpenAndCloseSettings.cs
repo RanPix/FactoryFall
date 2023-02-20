@@ -2,28 +2,39 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class OpenAndCloseSettings : MonoBehaviour
+namespace PlayerSettings
 {
-    [SerializeField] GameObject settingsPrefab;
-
-
-    public GameObject settings { get; private set; }
-
-    public bool isOpened { get; private set; } = false;
-
-    public void OpenSettings()
+    public class OpenAndCloseSettings : MonoBehaviour
     {
-        if (!isOpened)
+        [SerializeField] GameObject settingsPrefab;
+        static Transform canvas;
+
+
+        private void Start()
         {
-            settings = Instantiate(settingsPrefab);
+            canvas = GameObject.Find("Canvas").transform;
         }
-    }
+        public GameObject settings { get; private set; }
 
-    public void CloseSettings()
-    {
-        if (isOpened)
+        public bool isOpened { get; private set; } = false;
+
+        public void OpenSettings()
         {
+            if (!isOpened)
+            {
+                settings = Instantiate(settingsPrefab, canvas);
+                settings.GetComponent<Settings>().closeButton.onClick.AddListener(CloseSettings);
+                isOpened = true;
+            }
+        }
 
+        public void CloseSettings()
+        {
+            if (isOpened)
+            {
+                Destroy(settings);
+                isOpened = false;
+            }
         }
     }
 }
