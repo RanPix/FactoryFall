@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 7644531972711148823}
   - component: {fileID: 3308408284977937093}
+  - component: {fileID: 5570966095656513370}
   m_Layer: 0
   m_Name: WeaponHolder
   m_TagString: Untagged
@@ -129,6 +130,102 @@ MonoBehaviour:
       m_RotationOrder: 0
   currentSpeed: 0
   canSway: 1
+--- !u!82 &5570966095656513370
+AudioSource:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 772742556034147628}
+  m_Enabled: 1
+  serializedVersion: 4
+  OutputAudioMixerGroup: {fileID: 0}
+  m_audioClip: {fileID: 0}
+  m_PlayOnAwake: 1
+  m_Volume: 1
+  m_Pitch: 1
+  Loop: 0
+  Mute: 0
+  Spatialize: 0
+  SpatializePostEffects: 0
+  Priority: 128
+  DopplerLevel: 1
+  MinDistance: 1
+  MaxDistance: 500
+  Pan2D: 0
+  rolloffMode: 0
+  BypassEffects: 0
+  BypassListenerEffects: 0
+  BypassReverbZones: 0
+  rolloffCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    - serializedVersion: 3
+      time: 1
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  panLevelCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  spreadCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 0
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
+  reverbZoneMixCustomCurve:
+    serializedVersion: 2
+    m_Curve:
+    - serializedVersion: 3
+      time: 0
+      value: 1
+      inSlope: 0
+      outSlope: 0
+      tangentMode: 0
+      weightedMode: 0
+      inWeight: 0.33333334
+      outWeight: 0.33333334
+    m_PreInfinity: 2
+    m_PostInfinity: 2
+    m_RotationOrder: 4
 --- !u!1 &841400163098873429
 GameObject:
   m_ObjectHideFlags: 0
@@ -316,7 +413,7 @@ AudioSource:
   m_PlayOnAwake: 1
   m_Volume: 0.489
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -600,10 +697,56 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  clips:
-  - {fileID: 8300000, guid: 654c6a2daba18614da2017a1864eb9f1, type: 3}
-  - {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
-  - {fileID: 8300000, guid: e90fe0262e521e44da47896eb35f15de, type: 3}
+  playerSource: {fileID: 841400163258982986}
+  weaponSource: {fileID: 5570966095656513370}
+  weaponAudioEffects:
+    names:
+    - Pistol_Shoot
+    - Pistol_Reload
+    - Pistol_Empty
+    - AUG_Shoot
+    - AUG_Reload
+    - AUG_Empty
+    - Shotgun_Shot
+    - Shotgun_Reload
+    - Shotgun_Empty
+    - Arm_Shot
+    - Arm_HitInPlayer
+    - Arm_HitInOre
+    clips:
+    - {fileID: 8300000, guid: 654c6a2daba18614da2017a1864eb9f1, type: 3}
+    - {fileID: 8300000, guid: e90fe0262e521e44da47896eb35f15de, type: 3}
+    - {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
+    - {fileID: 8300000, guid: 0e9b4317a23a4f64f9ed11c4f3c46003, type: 3}
+    - {fileID: 8300000, guid: 16ed38669058a6147bcf4408aeb56382, type: 3}
+    - {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
+    - {fileID: 8300000, guid: 654c6a2daba18614da2017a1864eb9f1, type: 3}
+    - {fileID: 8300000, guid: e90fe0262e521e44da47896eb35f15de, type: 3}
+    - {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+  playerAudioEffects:
+    names:
+    - Run
+    - MidAir
+    - Idle
+    - Walk
+    - Wallrun
+    - Jump
+    - Redirect
+    - TakeOre
+    - GiveAwayOre
+    clips:
+    - {fileID: 8300000, guid: 3f2715f4780a5804293dd19bf31ba949, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 8300000, guid: bd3120be9a49e1f4cab31e1e8b37269c, type: 3}
+    - {fileID: 8300000, guid: be559e202266a184e97335885d32854c, type: 3}
+    - {fileID: 8300000, guid: afcbe2cb884b2b445b4da8569776d496, type: 3}
+    - {fileID: 8300000, guid: 6ca9faf758b2dc6409effa193c43437b, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
 --- !u!114 &7359030071040500126
 MonoBehaviour:
   m_ObjectHideFlags: 0

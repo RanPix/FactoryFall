@@ -27,7 +27,7 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     private PlayerControls controls;
     private AudioSync audioSync;
-    private AudioSource audioSource;
+    private AudioSource weaponAudioSource;
 
     void Start()
     {
@@ -36,7 +36,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
         arm._isLocalPLayer = true;
         audioSync = GetComponent<AudioSync>();
-        audioSource = GetComponent<AudioSource>();
+        weaponAudioSource = weaponHolder.GetComponent<AudioSource>();
         controls = new PlayerControls();
         //WeaponInventory.instance.OnWeaponchange.Invoke(0); 
         controls.Player.Enable();
@@ -121,7 +121,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         GetComponent<GamePlayer>().muzzlePosition = currentWeapon.muzzlePosition;
         if (!isLocalPlayer)
             return;
-        audioSource.Stop();
+        weaponAudioSource.Stop();
         WeaponSway _sway = weaponHolder.GetComponent<WeaponSway>();
         _sway.weapon = currentWeapon.transform;
         _sway.normalWeaponPosition = currentWeapon.initialWeaponPosition;
@@ -154,14 +154,16 @@ public class WeaponKeyCodes : NetworkBehaviour
             {
                 if (currentWeapon.shootTimer > currentWeapon.weaponScriptableObject.timeBetweenShots)
                 {
-                    if (currentWeapon._shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
+                    if (currentWeapon.shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
                     {
                         //audioSync.PlaySound(0);
+                        print(gamePlayer.GetNetID());
                         StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
                     }
-                    else if (currentWeapon._shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
+                    else if (currentWeapon.shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
                         //audioSync.PlaySound(0);
+                        print(gamePlayer.GetNetID());
                         StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
 
                     }
@@ -171,14 +173,14 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         if (controls.Player.Fire.WasPressedThisFrame() && currentWeapon.weaponAmmo.Ammo <= 0)
         {
-            audioSync.PlaySound(1);
+            audioSync.PlaySound(ClipType.weapon,true, $"{currentWeapon.weaponName}_Empty");
         }
 
         if (controls.Player.Reload.WasPerformedThisFrame() && !currentWeapon.reloading)
         {
             if (currentWeapon.weaponAmmo.Ammo < currentWeapon.weaponScriptableObject.maxAmmo)
             {
-                audioSync.PlaySound(2);
+                audioSync.PlaySound(ClipType.weapon,true, $"{currentWeapon.weaponName}_Reload");
                 StartCoroutine(currentWeapon.ReloadCoroutine());
                 
             }
