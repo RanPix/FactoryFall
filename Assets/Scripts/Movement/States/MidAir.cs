@@ -7,6 +7,8 @@ using Mirror;
 
 public class MidAir : BaseMovementState
 {
+    public Action<Vector2> OnRedirect;
+
     public int hasDoubleJumps
     {
         get => _hasDoubleJumps;
@@ -163,6 +165,8 @@ public class MidAir : BaseMovementState
         data.CalculateHorizontalMagnitude();
 
         data.horizontalMove = data.horizontalMagnitude * input;
+
+        OnRedirect.Invoke(input);
     }
 
     private bool CheckForCharges()

@@ -19,10 +19,13 @@ namespace FiniteMovementStateMachine
 
         public Action<string> OnStateChange;
 
-        protected void Start()
+        private void Awake()
         {
             InitializeStates();
+        }
 
+        private void Start()
+        {
             gameObject.GetComponent<Health>().onDeath += InvokeSpeedReset;
 
             currentState = GetInitialState();
@@ -35,7 +38,10 @@ namespace FiniteMovementStateMachine
 
             currentState?.UpdateLogic();
             currentState?.CheckForChangeState();
+        }
 
+        private void LateUpdate()
+        {
             currentState?.UpdatePhysics();
         }
 

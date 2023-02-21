@@ -6,9 +6,7 @@ using System.Collections;
 using TMPro;
 using UI.Indicators;
 using UnityEngine;
-using UnityEngine.InputSystem;
 using UnityEngine.VFX;
-using static UnityEngine.Rendering.DebugUI;
 
 namespace Player
 {
@@ -175,11 +173,6 @@ namespace Player
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
                 gameObject.tag = "LocalPlayer";
 
-                playerControls = new PlayerControls();
-                playerControls.Player.Move.Enable();
-                playerControls.Player.Redirect.Enable();
-                playerControls.Player.Redirect.performed += OnRedirect;
-
                 Transform hitIndicator = Instantiate(hitIndicatorPrefab, CanvasInstance.instance.canvas.transform);
                 hitIndicator.GetComponent<HitIndicatorTrigger>().Setup(this, orientation);
 
@@ -192,10 +185,10 @@ namespace Player
 
                 GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
                 menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
-
-
+                
                 CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
 
+                gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += RedirectFX;
 
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
 
@@ -661,19 +654,11 @@ namespace Player
         #region Effects
 
 
-        private void OnRedirect(InputAction.CallbackContext context)
+        private void RedirectFX(Vector2 inputVector)
         {
-            Vector2 playerMove = -playerControls.Player.Move.ReadValue<Vector2>();
-
-            if (playerMove == Vector2.zero)
-                return;
-
-            Vector3 inputVector = orientation.forward * playerMove.y + orientation.right * playerMove.x;
-            //Vector3 orientedVector = -new Vector3(inputVector.x, 0, inputVector.z);
-
             //bool isBlue = team == Team.Blue; // why not comment
 
-            CmdSpawnRedirect(-new Vector3(inputVector.x, 0, inputVector.z), team == Team.Blue);
+            CmdSpawnRedirect(new Vector3(inputVector.x, 0, inputVector.y), team == Team.Blue);
         }
 
         [Command]
