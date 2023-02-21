@@ -216,6 +216,36 @@ PrefabInstance:
       propertyPath: m_Name
       value: Back Button
       objectReference: {fileID: 0}
+    - target: {fileID: 6989591763169610042, guid: 9b1fbb5487a383e4e839eb8422b82acc,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989591763169610042, guid: 9b1fbb5487a383e4e839eb8422b82acc,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989591763169610042, guid: 9b1fbb5487a383e4e839eb8422b82acc,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989591763169610042, guid: 9b1fbb5487a383e4e839eb8422b82acc,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SetConnectToSomeoneOrHostButtonGroup
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989591763169610042, guid: 9b1fbb5487a383e4e839eb8422b82acc,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 6989591763169610042, guid: 9b1fbb5487a383e4e839eb8422b82acc,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 6989591763169610043, guid: 9b1fbb5487a383e4e839eb8422b82acc,
         type: 3}
       propertyPath: m_Pivot.x
@@ -336,6 +366,36 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 2938347565192902165}
     m_Modifications:
+    - target: {fileID: 4749266219998748392, guid: c4806f50147f38e4fa6583d0f25b8a18,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4749266219998748392, guid: c4806f50147f38e4fa6583d0f25b8a18,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 4749266219998748392, guid: c4806f50147f38e4fa6583d0f25b8a18,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 4749266219998748392, guid: c4806f50147f38e4fa6583d0f25b8a18,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Host
+      objectReference: {fileID: 0}
+    - target: {fileID: 4749266219998748392, guid: c4806f50147f38e4fa6583d0f25b8a18,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainMenu, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4749266219998748392, guid: c4806f50147f38e4fa6583d0f25b8a18,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 4749266219998748394, guid: c4806f50147f38e4fa6583d0f25b8a18,
         type: 3}
       propertyPath: m_Name

@@ -1,3 +1,4 @@
+using FiniteMovementStateMachine;
 using GameBase;
 using Mirror;
 using System;
@@ -5,6 +6,7 @@ using System.Collections;
 using TMPro;
 using UI.Indicators;
 using UnityEngine;
+using UnityEngine.VFX;
 
 namespace Player
 {
@@ -73,9 +75,14 @@ namespace Player
 
         [field: SyncVar] public bool isDead { get; private set; }
 
+        [Header("Effects")]
+
         //[SerializeField] private GameObject deathEffect;
         //[SerializeField] private GameObject spawnEffect;
 
+        [SerializeField] private Transform redirectEffect;
+        [SerializeField] private Transform redirectEffectPos1;
+        [SerializeField] private Transform redirectEffectPos2;
 
         [Space]
 
@@ -107,6 +114,8 @@ namespace Player
         private OreInventoryItem oreInventory;
 
         private Transform cam;
+
+        private PlayerControls playerControls;
 
 #region Actions
         public Action<string, int> OnGotHit;
@@ -164,7 +173,6 @@ namespace Player
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
                 gameObject.tag = "LocalPlayer";
 
-
                 Transform hitIndicator = Instantiate(hitIndicatorPrefab, CanvasInstance.instance.canvas.transform);
                 hitIndicator.GetComponent<HitIndicatorTrigger>().Setup(this, orientation);
 
@@ -177,10 +185,10 @@ namespace Player
 
                 GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
                 menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
-
-
+                
                 CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
 
+                gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += RedirectFX;
 
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
 
@@ -211,17 +219,13 @@ namespace Player
             }
 
             GameObject localPlayerInstance = GameObject.FindGameObjectWithTag("LocalPlayer");
-            Team localPlayerTeam = Team.Null;
 
-            if (localPlayerInstance != null)
-                localPlayerTeam = localPlayerInstance.GetComponent<GamePlayer>().team;
-
-            else
-                localPlayerTeam = PlayerInfoTransfer.instance.team;
+            Team localPlayerTeam = localPlayerInstance != null ?
+                localPlayerInstance.GetComponent<GamePlayer>().team :
+                PlayerInfoTransfer.instance.team;
 
             if (newTeam == Team.Blue)
             {
-
                 playerMesh.materials[2].CopyPropertiesFromMaterial(blueBaseMat);
                 playerMesh.materials[0].CopyPropertiesFromMaterial(bluePowerMat);
             }
@@ -231,7 +235,7 @@ namespace Player
                 playerMesh.materials[0].CopyPropertiesFromMaterial(redPowerMat);
             }
              
-            string playerTag = "";
+            string playerTag;
 
             if (newTeam == Team.Blue && localPlayerTeam == Team.Blue)
                 playerTag = "FriendlyPlayer";
@@ -644,6 +648,45 @@ namespace Player
 
             scoreboard.ChangeLocalPlayerScore(newAmount);
         }
+
+        #endregion
+
+        #region Effects
+
+
+        private void RedirectFX(Vector2 inputVector)
+        {
+            //bool isBlue = team == Team.Blue; // why not comment
+
+            CmdSpawnRedirect(new Vector3(inputVector.x, 0, inputVector.y), team == Team.Blue);
+        }
+
+        [Command]
+        private void CmdSpawnRedirect(Vector3 orientedVector, bool isBlue)
+        {
+            RpcSpawnRedirect(orientedVector, isBlue);
+        }
+
+        [ClientRpc]
+        private void RpcSpawnRedirect(Vector3 orientedVector, bool isBlue)
+        {
+            if (isLocalPlayer)
+                return;
+
+            Transform effectInstance = Instantiate(redirectEffect, redirectEffectPos1.position, Quaternion.identity, transform);
+            effectInstance.LookAt(redirectEffectPos1.position + orientedVector);
+
+            effectInstance.gameObject.GetComponent<VisualEffect>().SetBool("BlueTeam", isBlue);
+            Destroy(effectInstance.gameObject, 0.13f);
+
+
+            effectInstance = Instantiate(redirectEffect, redirectEffectPos2.position, Quaternion.identity, transform);
+            effectInstance.LookAt(redirectEffectPos2.position + orientedVector);
+
+            effectInstance.gameObject.GetComponent<VisualEffect>().SetBool("BlueTeam", isBlue);
+            Destroy(effectInstance.gameObject, 0.13f);
+        }
+
 
         #endregion
 

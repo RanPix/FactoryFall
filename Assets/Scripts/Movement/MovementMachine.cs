@@ -21,11 +21,13 @@ namespace FiniteMovementStateMachine
         public Action<string> OnStateChange;
 
         public bool canMove = true;
-
-        protected void Start()
+        private void Awake()
         {
             InitializeStates();
+        }
 
+        private void Start()
+        {
             gameObject.GetComponent<Health>().onDeath += InvokeSpeedReset;
             CanvasInstance.instance.mainChat.OnChatToggle += ToggleControls;
 
@@ -38,7 +40,10 @@ namespace FiniteMovementStateMachine
             //Debug.Log($"Im in {currentState}",this);
             currentState?.UpdateLogic();
             currentState?.CheckForChangeState();
+        }
 
+        private void LateUpdate()
+        {
             currentState?.UpdatePhysics();
         }
 
