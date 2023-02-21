@@ -221,7 +221,6 @@ namespace Player
 
             if (newTeam == Team.Blue)
             {
-                print("why");
 
                 playerMesh.materials[2].CopyPropertiesFromMaterial(blueBaseMat);
                 playerMesh.materials[0].CopyPropertiesFromMaterial(bluePowerMat);

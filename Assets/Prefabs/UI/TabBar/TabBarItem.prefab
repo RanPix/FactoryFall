@@ -363,7 +363,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1776215d3f7bf0340b3027ad09f6b4dc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  name: {fileID: 487148975043077613}
+  playerName: {fileID: 487148975043077613}
   kills: {fileID: 386127236474238101}
   death: {fileID: 136576217394190660}
   ping: {fileID: 2831300006592124361}

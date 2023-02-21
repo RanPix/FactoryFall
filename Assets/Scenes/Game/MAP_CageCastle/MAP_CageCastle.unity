@@ -152,6 +152,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6248846876779967366, guid: 0ded737292a34884eb1998889c515aca,
         type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6248846876779967366, guid: 0ded737292a34884eb1998889c515aca,
+        type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
@@ -439,6 +444,18 @@ PrefabInstance:
       objectReference: {fileID: 2100000, guid: e9d9118ff19bc8541a90004e8d8caf4a, type: 2}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: dddb2b5f0abee3443a1eb286db3afd75, type: 3}
+--- !u!114 &1731811691 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4540022322509683964, guid: 94380ed47c6bb404d9daf52ec7683569,
+    type: 3}
+  m_PrefabInstance: {fileID: 2638449499782410753}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ee533d785d4028e45aeed883e035e6a6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &2638449499782410753
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -460,6 +477,46 @@ PrefabInstance:
         type: 3}
       propertyPath: m_SizeDelta.x
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832151212649195526, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_isRichTextEditingAllowed
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 832151212649195526, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_OnDeselect.m_PersistentCalls.m_Calls.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 832151212649195526, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_OnDeselect.m_PersistentCalls.m_Calls.Array.data[0].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 832151212649195526, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_OnDeselect.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 1731811691}
+    - target: {fileID: 832151212649195526, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_OnDeselect.m_PersistentCalls.m_Calls.Array.data[0].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 832151212649195526, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_OnDeselect.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: SelectInputField
+      objectReference: {fileID: 0}
+    - target: {fileID: 832151212649195526, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_OnDeselect.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: MainChat, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 832151212649195526, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_OnDeselect.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 935938480582945250, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
@@ -559,7 +616,7 @@ PrefabInstance:
     - target: {fileID: 6440892346190713397, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_LocalScale.x
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7392936039789879583, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
@@ -590,11 +647,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8609989984990033461, guid: 94380ed47c6bb404d9daf52ec7683569,
-        type: 3}
-      propertyPath: sceneId
-      value: 1760987997
       objectReference: {fileID: 0}
     - target: {fileID: 8609989984990033461, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}

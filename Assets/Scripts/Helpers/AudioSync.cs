@@ -116,6 +116,7 @@ public class AudioSync : NetworkBehaviour
             }
             case ClipType.weapon:
             {
+
                 if (playOneShot)
                 {
                     weaponSource.PlayOneShot(audioClips[clipName]);

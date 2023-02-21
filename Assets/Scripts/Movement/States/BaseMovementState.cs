@@ -27,6 +27,7 @@ namespace FiniteMovementStateMachine
         private bool isMovingForwardIsUpdatedThisFrame;
 
         protected bool isCurrentState { get; private set; } = false;
+
         #region Getters
 
         protected bool GetGotWall()
@@ -126,6 +127,18 @@ namespace FiniteMovementStateMachine
         {
             Debug.LogWarning($"I was in {name} for a brief moment.\n\t   Override {MethodBase.GetCurrentMethod()?.Name} method");
             throw new NotImplementedException();
+        }
+
+        ///  <summary>
+        ///     Call to enable | disable control inputs
+        /// </summary>
+
+        public void ToggleControls(bool turnOn)
+        {
+            if (turnOn)
+                controls.Player.Enable();
+            else
+                controls.Player.Disable();
         }
 
         #endregion
