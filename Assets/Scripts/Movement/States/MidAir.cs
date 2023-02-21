@@ -3,6 +3,7 @@ using FiniteMovementStateMachine;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
 public class MidAir : BaseMovementState
 {
@@ -30,13 +31,18 @@ public class MidAir : BaseMovementState
     private int _hasRedirects;
     public Action<int> OnRedirectsCountChange;
 
-
+    private AudioSync audioSync;
     private bool gotRedirectInput;
 
     public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
         : base("MidAir", stateMachine, movementControl, fields, data)
     {
         controls.Player.Redirect.performed += AddRedirect;
+    }
+
+    private void Awake()
+    {
+        audioSync = NetworkClient.localPlayer.gameObject.GetComponent<AudioSync>();
     }
 
     #region State logic
@@ -123,7 +129,9 @@ public class MidAir : BaseMovementState
                     data.verticalMove + fields.ScriptableFields.JumpHeight;
         else
             data.verticalMove += fields.ScriptableFields.JumpHeight;
-
+        if (!audioSync)
+            audioSync = NetworkClient.localPlayer.gameObject.GetComponent<AudioSync>();
+        audioSync?.PlaySound(ClipType.player, true, "Jump");
         data.gotJumpInput = false;
     }
 
@@ -148,7 +156,10 @@ public class MidAir : BaseMovementState
 
         if (!CheckForCharges()) 
             return;
+        if (!audioSync)
+            audioSync = NetworkClient.localPlayer.gameObject.GetComponent<AudioSync>();
 
+        audioSync?.PlaySound(ClipType.player, true, "Redirect");
         data.CalculateHorizontalMagnitude();
 
         data.horizontalMove = data.horizontalMagnitude * input;

@@ -1,5 +1,6 @@
 using System;
 using TMPro;
+using Mirror;
 using UnityEngine;
 
 public class OreInventoryItem : MonoBehaviour
@@ -28,6 +29,7 @@ public class OreInventoryItem : MonoBehaviour
     {
         UpdateCountText();
         OnCurrentCountchange += UpdateCountText;
+        OnCurrentCountchange += () => NetworkClient.localPlayer.GetComponent<AudioSync>().PlaySound(ClipType.player, true, "TakeOre");
     }
 
     private void Start()
