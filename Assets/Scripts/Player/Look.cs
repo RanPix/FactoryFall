@@ -36,6 +36,7 @@ public class Look : MonoBehaviour
         controls.Player.Enable();
 
         controls.Player.FreeCursor.performed += ControlCursor;
+        UpdateFOV();
     }
 
     private void Update()
@@ -50,6 +51,14 @@ public class Look : MonoBehaviour
     private void GetInput()
         => inputVector = controls.Player.Look.ReadValue<Vector2>();
 
+
+    public void UpdateFOV()
+    {
+       if (PlayerPrefs.HasKey(Settings.FOVPrefsKey))
+       {
+            cam.fieldOfView = PlayerPrefs.GetFloat(Settings.FOVPrefsKey);
+       }
+    }
 
     private void UpdateCamera()
     {
