@@ -40,7 +40,7 @@ public enum WeaponType
     Shotgun,
 
 }
-
+[RequireComponent(typeof(WeaponRecoil))]
 public class Weapon : MonoBehaviour
 {
 
@@ -79,6 +79,13 @@ public class Weapon : MonoBehaviour
 
     [Header("Sway")] 
     public Vector3 initialWeaponPosition;
+
+    [Space(10)] 
+
+    [Header("Recoil")] 
+    public WeaponRecoil recoil;
+
+    [Space]
 
     private PlayerControls controls;
     private Vector2 lookVector;
@@ -185,6 +192,7 @@ public class Weapon : MonoBehaviour
             animator.Play(shootAnimationName);
             weaponAmmo.Ammo--;
             weaponAmmo.UpdateAmmoInScreen();
+            recoil.RecoilFire();
         }
 
 
@@ -275,19 +283,4 @@ public void UpdateAmmo()
 
 }
 
-//[System.Serializable]
-//public class Attachment
-//{
-//    [Header("Silencer")]
-//    public bool hasSilencer;
-//    public GameObject silencerObject;
-
-//    [Header("Scope`s")]
-//    public int Scopeid;
-//    public GameObject ironSight;
-
-//    [Space(10)]
-//    public AttachmentInfo[] scopes;
-//    public Vector3[] positionsInScope;
-//}
 

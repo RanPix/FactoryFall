@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2921068486045732850}
   - component: {fileID: 1345134747312864453}
+  - component: {fileID: 1914002660214119228}
   m_Layer: 0
   m_Name: Pistol3
   m_TagString: Untagged
@@ -49,20 +50,17 @@ MonoBehaviour:
     type: 2}
   gamePlayer: {fileID: 0}
   _state: 0
-  _shootType: 1
-  animator: {fileID: 2173455107278860012}
-  shootAnimationName: Shoot
-  reloadAnimationName: Reload
+  <shootType>k__BackingField: 0
+  <weaponName>k__BackingField: 0
+  <weaponType>k__BackingField: 0
+  <animator>k__BackingField: {fileID: 0}
+  <shootAnimationName>k__BackingField: Shoot
+  <reloadAnimationName>k__BackingField: Reload
   useAudio: 1
   initialWeaponPosition: {x: 0.452, y: -0.18, z: 0.868}
+  recoil: {fileID: 1914002660214119228}
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
-  <maxAmmo>k__BackingField: 12
-  numberOfBulletsPerShot: 1
-  timeBetweenSpawnBullets: 0
-  patern:
-  - {x: 0, y: 0, z: 0}
-  <timeBetweenShots>k__BackingField: 0.16
   <hasInfiniteAmmo>k__BackingField: 0
   reserveAmmo: 240
   muzzlePosition: {fileID: 722410891077129652}
@@ -78,8 +76,28 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ammoText: {fileID: 0}
   weaponView: {fileID: 9141566657429978863}
-  <useOneAmmoPerShot>k__BackingField: 1
   <_isLocalPLayer>k__BackingField: 0
+--- !u!114 &1914002660214119228
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4922877528255494121}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcba7333fee9d184285e1d31a7a4beee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPosition: {x: 0.452, y: -0.18, z: 0.868}
+  rotationRecoilX: -5
+  rotationRecoilY: 5
+  rotationRecoilZ: 0.7
+  positionRecoilX: 0
+  positionRecoilY: 0
+  positionRecoilZ: -0.1
+  snappiness: 6
+  returnSpeed: 8
 --- !u!1001 &9136810670852101883
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -140,12 +158,6 @@ PrefabInstance:
 --- !u!4 &722410891077129652 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8415815955063882575, guid: 6f1a7354265853f44b0ed5e2e43676ad,
-    type: 3}
-  m_PrefabInstance: {fileID: 9136810670852101883}
-  m_PrefabAsset: {fileID: 0}
---- !u!95 &2173455107278860012 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 6982216607665633303, guid: 6f1a7354265853f44b0ed5e2e43676ad,
     type: 3}
   m_PrefabInstance: {fileID: 9136810670852101883}
   m_PrefabAsset: {fileID: 0}
