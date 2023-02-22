@@ -29,6 +29,8 @@ public class WeaponKeyCodes : NetworkBehaviour
     private AudioSync audioSync;
     private AudioSource weaponAudioSource;
 
+    public bool canShoot = true;
+
     void Start()
     {
         if (!isLocalPlayer)
@@ -46,7 +48,7 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     void Update()
     {
-        if (!isLocalPlayer || !currentWeapon || !weaponsWasSelected)
+        if (!isLocalPlayer || !currentWeapon || !weaponsWasSelected || !canShoot)
             return;
         KeyCodes();
     }
@@ -109,7 +111,7 @@ public class WeaponKeyCodes : NetworkBehaviour
     public void GetWeaponIndex(InputAction.CallbackContext context)
     {
         int index = (int)context.ReadValue<float>();
-        if (!weaponsWasSelected)
+        if (!weaponsWasSelected || !canShoot)
             return;
         ChangeWeapon(index, index == 0 ? 1 : 0);
     }

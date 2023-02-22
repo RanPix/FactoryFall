@@ -91,9 +91,9 @@ public class Look : MonoBehaviour
     private void ControlCursor(InputAction.CallbackContext context)
     {
         if (Cursor.lockState == CursorLockMode.Locked)
-            CursorManager.SetCursorLockState(CursorLockMode.None);
+            CursorManager.instance.SetCursorLockState(CursorLockMode.None);
         else if (Cursor.lockState == CursorLockMode.None)
-            CursorManager.SetCursorLockState(CursorLockMode.Locked);
+            CursorManager.instance.SetCursorLockState(CursorLockMode.Locked);
     }
 }
 

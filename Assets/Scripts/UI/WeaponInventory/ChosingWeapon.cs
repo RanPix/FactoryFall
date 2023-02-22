@@ -13,8 +13,8 @@ public class ChosingWeapon : MonoBehaviour
     public Action<string, string, float, float, float, int> OnActivate;
     void Start()
     {
-        CursorManager.SetCursorLockState(CursorLockMode.None);
-        CursorManager.disablesToLockCount++;
+        CursorManager.instance.SetCursorLockState(CursorLockMode.None);
+        CursorManager.instance.disablesToLockCount++;
         Menu.Instance.canOpenMenu = false;
         Menu.Instance.look.canRotateCamera = false;
         CanvasInstance.instance.tabBar.canOpen = false;
@@ -65,13 +65,13 @@ public class ChosingWeapon : MonoBehaviour
             }
         }
         GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>().weaponsWasSelected = true;
-        CursorManager.disablesToLockCount--;
+        CursorManager.instance.disablesToLockCount--;
         Menu.Instance.look.canRotateCamera = true;
         Menu.Instance.canOpenMenu = true;
         CanvasInstance.instance.tabBar.canOpen = true;
         CanvasInstance.instance.selectedWeaponInfo.TurnOff();
 
-        CursorManager.SetCursorLockState(CursorLockMode.Locked);
+        CursorManager.instance.SetCursorLockState(CursorLockMode.Locked);
         
         OnActivateWeapons?.Invoke(firstIndex, secondIndex);
 

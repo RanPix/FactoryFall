@@ -316,6 +316,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   canvas: {fileID: 1664245960477752563}
+  panelWithElementsToHide: {fileID: 8831655692646624483}
   hitMarker: {fileID: 2789781250065864419}
   weaponInventory: {fileID: 9126710919168617054}
   killFeed: {fileID: 6983424474380398455}

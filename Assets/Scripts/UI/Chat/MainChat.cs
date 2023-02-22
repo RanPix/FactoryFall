@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Linq;
 using System.Text;
+using FiniteMovementStateMachine;
 using Mirror;
 using Player;
 using TMPro;
@@ -12,6 +13,8 @@ using UnityEngine.UI;
 
 public class MainChat : MonoBehaviour
 {
+    [SerializeField] private GamePlayer localPlayer;
+
     [SerializeField] private GameObject view;
     [SerializeField] private VerticalLayoutGroup group;
     [SerializeField] private TMP_InputField inputField;
@@ -27,7 +30,9 @@ public class MainChat : MonoBehaviour
     [SerializeField] private Color teamColor;
 
     public bool isOpened = false;
-    public bool isWriting = false;
+
+    public Action<bool> OnChatToggle;
+
 
     private PlayerControls controls;
 
@@ -35,13 +40,15 @@ public class MainChat : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
+        localPlayer = NetworkClient.localPlayer?.GetComponent<GamePlayer>();
+
         view.SetActive(false);
         isOpened = false;
 
         controls = new PlayerControls();
         controls.UI.Enable();
 
-        controls.UI.OpenChat.performed += OpenChat;
+        controls.UI.OpenChat.performed += ChatToggle;
         controls.UI.OpenChat.performed += SendMessage;
         controls.UI.OpenOrCloseMenu.performed += CloseChat;
 
@@ -56,42 +63,98 @@ public class MainChat : MonoBehaviour
     }
 
 
-    public void SetWritingState() => isWriting = true;
-    
-
-    public void OpenChat(InputAction.CallbackContext context)
+    public void SelectInputField()
     {
-        if(isOpened)
+        inputField.placeholder.GetComponent<TMP_Text>().text = "";
+        inputField.Select();
+        inputField.ActivateInputField();
+    }
+
+    public void DeactivateBools()
+    {
+        if(!NetworkClient.localPlayer)
             return;
 
-        CursorManager.SetCursorLockState(CursorLockMode.None);
-        CursorManager.disablesToLockCount++;
-        look.canRotateCamera = false;
-        view.SetActive(true);
+        if(!localPlayer)
+            localPlayer = NetworkClient.localPlayer?.GetComponent<GamePlayer>();
+
+        OnChatToggle?.Invoke(false);
+
+        localPlayer.weaponKeyCodes.canShoot = false;
+
+    }
+    public void ActivateBools()
+    {
+        if(!NetworkClient.localPlayer)
+            return;
+
+        if(!localPlayer)
+            localPlayer = NetworkClient.localPlayer?.GetComponent<GamePlayer>();
 
 
-        isOpened = true;
+        OnChatToggle?.Invoke(true);
+
+        localPlayer.weaponKeyCodes.canShoot = true;
+
+    }
+
+    public void ChatToggle(InputAction.CallbackContext context)
+    {
+        if (!isOpened)
+        {
+            DeactivateBools();
+            CanvasInstance.instance.panelWithElementsToHide.transform.SetAsLastSibling();
+            SelectInputField();
+
+            //inputField.ActivateInputField();
+            CursorManager.instance.SetCursorLockState(CursorLockMode.None);
+            CursorManager.instance.disablesToLockCount++;
+            look.canRotateCamera = false;
+            view.SetActive(true);
+
+
+            isOpened = true;
+
+        }
+        else
+        {
+            if (inputField.text.Replace(" ", "").Length > 0)
+                return;
+
+            CursorManager.instance.disablesToLockCount--;
+            look.canRotateCamera = true;
+
+            view.SetActive(false);
+
+            isOpened = false;
+            ActivateBools();
+
+        }
+
+
     }
 
 
     public void CloseChat(InputAction.CallbackContext context)
     {
-        if(!isOpened)
+        if (inputField.text.Replace(" ", "").Length > 0)
             return;
 
-        CursorManager.disablesToLockCount--;
+        if (!isOpened)
+            return;
+        CursorManager.instance.disablesToLockCount--;
         look.canRotateCamera = true;
 
         view.SetActive(false);
 
-        isWriting = false;
         isOpened = false;
+        ActivateBools();
     }
 
     public IEnumerator AddItem(string name, string message, string senderColor)
     {
         GameObject _charItem = Instantiate(chatItem, content);
-        _charItem.GetComponentInChildren<TMP_Text>().text = $"<size=30><b><color=#{senderColor}>{name}</color></b></size>:<color=#ff000000>_</color><size=20>{message}</size>";
+        _charItem.GetComponentInChildren<TMP_Text>().text = $"<size=30><b><color=#{senderColor}>{name}</color></b></size>:<color=#ff000000>_</color><size=26>{message}</size>";
         yield return new WaitForNextFrameUnit();
         yield return new WaitForNextFrameUnit();
 
@@ -113,14 +176,17 @@ public class MainChat : MonoBehaviour
 
     public void SendMessage(InputAction.CallbackContext context)
     {
-        if (!isWriting)
+        if (inputField.text.Replace(" ", "").Length < 1)
             return;
+        print(inputField.text.Replace(" ", "").Length);
+        print(inputField.text);
+        print(inputField.text.Length);
         inputField.text = CheckMessage();
         teamColor.GetTeamColor(NetworkClient.localPlayer.GetComponent<GamePlayer>().team);
         ChatManager.instance.AddElement(NetworkClient.localPlayer.GetComponent<GamePlayer>().nickname, inputField.text,  teamColor.ToHexString());
 
+        SelectInputField();
         inputField.text = "";
-
     }
 
     public string CheckMessage()

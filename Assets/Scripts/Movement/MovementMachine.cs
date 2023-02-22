@@ -1,5 +1,6 @@
 using System;
 using GameBase;
+using Player;
 using UnityEngine;
 
 namespace FiniteMovementStateMachine
@@ -19,6 +20,7 @@ namespace FiniteMovementStateMachine
 
         public Action<string> OnStateChange;
 
+        public bool canMove = true;
         private void Awake()
         {
             InitializeStates();
@@ -27,6 +29,7 @@ namespace FiniteMovementStateMachine
         private void Start()
         {
             gameObject.GetComponent<Health>().onDeath += InvokeSpeedReset;
+            CanvasInstance.instance.mainChat.OnChatToggle += ToggleControls;
 
             currentState = GetInitialState();
             currentState?.Enter();
@@ -35,7 +38,6 @@ namespace FiniteMovementStateMachine
         private void Update()
         {
             //Debug.Log($"Im in {currentState}",this);
-
             currentState?.UpdateLogic();
             currentState?.CheckForChangeState();
         }
@@ -69,6 +71,15 @@ namespace FiniteMovementStateMachine
             currentState = newState;
             OnStateChange?.Invoke(newState.name);
             currentState.Enter();
+        }
+
+        private void ToggleControls(bool turnOn)
+        {
+            idle.ToggleControls(turnOn);
+            walk.ToggleControls(turnOn);
+            midAir.ToggleControls(turnOn);
+            run.ToggleControls(turnOn);
+            wallrun.ToggleControls(turnOn);
         }
 
         private void InvokeSpeedReset(string s)
