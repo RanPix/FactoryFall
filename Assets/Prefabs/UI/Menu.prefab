@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7093786744666144255}
   - component: {fileID: 3180000495039599266}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Options Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -429,7 +429,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: close menu
+  m_text: Close menu
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 76ad7100400b1414982d6843b513740a, type: 2}
   m_sharedMaterial: {fileID: -8562007397176997475, guid: 76ad7100400b1414982d6843b513740a,
@@ -552,6 +552,7 @@ MonoBehaviour:
   look: {fileID: 0}
   canOpenMenu: 1
   panel: {fileID: 4635157149926215344}
+  openAndCloseSettings: {fileID: 3180000495039599266}
 --- !u!1 &4635157151365398414
 GameObject:
   m_ObjectHideFlags: 0
@@ -565,7 +566,7 @@ GameObject:
   - component: {fileID: 4635157151365398417}
   - component: {fileID: 4635157151365398416}
   m_Layer: 5
-  m_Name: Button
+  m_Name: Close menu Button
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
