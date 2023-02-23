@@ -11,9 +11,7 @@ public class WeaponSway : MonoBehaviour
 
     public Transform weapon;
     [SerializeField] private PlayerOverride[] playerOverrides;
-    [HideInInspector] public float currentSpeed;
 
-    public bool canSway = true;
 
     private float currentTimeX;
     private float currentTimeY;
@@ -22,10 +20,12 @@ public class WeaponSway : MonoBehaviour
     private float yPos;
 
     private Vector3 smoothV;
-
-    Vector2 mouseSwayInput;
-
+    private Vector2 mouseSwayInput;
+    
     private PlayerControls controls;
+
+    public bool canSway = true;
+
 
     private void Awake()
     {
@@ -79,16 +79,11 @@ public class WeaponSway : MonoBehaviour
     [System.Serializable]
     public struct PlayerOverride        
     {
-        public float minSpeed;
-        public float maxSpeed;
-
         [Header("X Settings")] 
-        public float speedX;
         public float intensityX;
         public AnimationCurve bobX;
 
         [Header("Y Settings")] 
-        public float speedY;
         public float intensityY;
         public AnimationCurve bobY;
     }

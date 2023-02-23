@@ -1,36 +1,5 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
---- !u!1 &306979240881129202
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4788287858394792855}
-  m_Layer: 6
-  m_Name: MuzzlePosition
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4788287858394792855
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 306979240881129202}
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -0.047, z: 0.65}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 8393629584849183368}
-  m_RootOrder: 1
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &1858030220556855341
 GameObject:
   m_ObjectHideFlags: 0
@@ -41,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8393629584849183368}
   - component: {fileID: 7660344413018927836}
+  - component: {fileID: 785464242914341554}
   m_Layer: 6
   m_Name: ShotGun
   m_TagString: Untagged
@@ -61,7 +31,6 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 2568994619549500115}
-  - {fileID: 4788287858394792855}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -81,17 +50,20 @@ MonoBehaviour:
     type: 2}
   gamePlayer: {fileID: 0}
   _state: 0
-  _shootType: 1
+  <shootType>k__BackingField: 0
+  <weaponName>k__BackingField: 2
+  <weaponType>k__BackingField: 2
   <animator>k__BackingField: {fileID: 7008811589625759735}
   <shootAnimationName>k__BackingField: Shoot
   <reloadAnimationName>k__BackingField: Reload
   useAudio: 0
   initialWeaponPosition: {x: 0.491, y: -0.24, z: 1.018}
+  recoil: {fileID: 785464242914341554}
   weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
     type: 3}
   <hasInfiniteAmmo>k__BackingField: 1
   reserveAmmo: 0
-  muzzlePosition: {fileID: 4788287858394792855}
+  muzzlePosition: {fileID: 9100937354208881820}
   hitMask:
     serializedVersion: 2
     m_Bits: 153
@@ -105,6 +77,27 @@ MonoBehaviour:
   ammoText: {fileID: 0}
   weaponView: {fileID: 2568994619549500115}
   <_isLocalPLayer>k__BackingField: 0
+--- !u!114 &785464242914341554
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1858030220556855341}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcba7333fee9d184285e1d31a7a4beee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPosition: {x: 0.491, y: -0.24, z: 1.018}
+  rotationRecoilX: -15
+  rotationRecoilY: 4
+  rotationRecoilZ: 0.01
+  positionRecoilX: 0
+  positionRecoilY: 0
+  positionRecoilZ: -0.1
+  snappiness: 6
+  returnSpeed: 8
 --- !u!1001 &2569855181581809695
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -218,3 +211,9 @@ Animator:
   m_HasTransformHierarchy: 1
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorControllerStateOnDisable: 0
+--- !u!4 &9100937354208881820 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 6765800692454347907, guid: 8b0b86b42def11849a8eba21f4a6a684,
+    type: 3}
+  m_PrefabInstance: {fileID: 2569855181581809695}
+  m_PrefabAsset: {fileID: 0}

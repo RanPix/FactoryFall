@@ -290,6 +290,7 @@ namespace Player
                     weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
                     weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
                     weaponKeyCodes.currentWeapon.weaponAmmo.UpdateAmmoInScreen();
+                    weaponKeyCodes.currentWeapon.recoil.RecoilFire();
                 }
                 bool isHitted = Physics.Raycast(rays[i], out RaycastHit hit, shootRange, hitMask, QueryTriggerInteraction.Ignore);
 
