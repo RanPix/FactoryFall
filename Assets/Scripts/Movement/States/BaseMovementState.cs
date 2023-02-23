@@ -81,6 +81,13 @@ namespace FiniteMovementStateMachine
 
         #region State Logic
 
+        private void OnDestroy()
+        {
+            controls.Player.Jump.performed -= AddJump;
+
+        }
+
+
         /// <summary>
         ///     Called once on start of state <br/>
         ///     In case of override base should be put at the start of method

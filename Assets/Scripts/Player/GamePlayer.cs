@@ -43,7 +43,6 @@ namespace Player
         [Space]
 
         [Header("UI")]
-        [SerializeField] private InventoryUI inventory;
         [SerializeField] private GameObject menuPrefab;
 
 
@@ -203,6 +202,13 @@ namespace Player
                 scoreboard.ChangeLocalPlayerScore(0);
             }
         }
+        private void OnDestroy()
+        {
+            health.onDeath -= Die;
+            gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= RedirectFX;
+            OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
+        }
+
 
         private void SetTeam(Team oldTeam, Team newTeam)
         {
@@ -290,6 +296,7 @@ namespace Player
                     weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
                     weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
                     weaponKeyCodes.currentWeapon.weaponAmmo.UpdateAmmoInScreen();
+                    weaponKeyCodes.currentWeapon.recoil.RecoilFire();
                 }
                 bool isHitted = Physics.Raycast(rays[i], out RaycastHit hit, shootRange, hitMask, QueryTriggerInteraction.Ignore);
 

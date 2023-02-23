@@ -8,6 +8,11 @@ public class KillFeed : MonoBehaviour
     {
         GameManager.instance.OnPlayerKilledCallback += OnKill;
     }
+    private void OnDestroy()
+    {
+        GameManager.instance.OnPlayerKilledCallback -= OnKill;
+
+    }
 
     private void OnKill(string killedPlayer, Team killedTeam, string killerPlayer, Team killerTeam)
     {

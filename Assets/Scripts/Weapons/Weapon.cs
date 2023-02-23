@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameBase;
+using Mirror;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -40,7 +41,7 @@ public enum WeaponType
     Shotgun,
 
 }
-
+[RequireComponent(typeof(WeaponRecoil))]
 public class Weapon : MonoBehaviour
 {
 
@@ -73,12 +74,20 @@ public class Weapon : MonoBehaviour
 
     [Header("Audio")] 
     [SerializeField] protected bool useAudio;
+    private AudioSync audioSync;
 
 
     [Space(10)] 
 
     [Header("Sway")] 
     public Vector3 initialWeaponPosition;
+
+    [Space(10)] 
+
+    [Header("Recoil")] 
+    public WeaponRecoil recoil;
+
+    [Space]
 
     private PlayerControls controls;
     private Vector2 lookVector;
@@ -158,7 +167,7 @@ public class Weapon : MonoBehaviour
         cam = Camera.main;
         gunCam = cam.GetComponentInChildren<Camera>();
 
-
+        audioSync = NetworkClient.localPlayer.GetComponent<AudioSync>();
 
 
         weaponAmmo = Instantiate(weaponAmmo.gameObject).GetComponent<WeaponAmmo>();
@@ -168,6 +177,12 @@ public class Weapon : MonoBehaviour
 
         canShoot = true;
 
+    }
+
+    private void OnDestroy()
+    {
+        gamePlayer.GetComponent<Health>().onDeath -= OnDeath;
+        controls.Player.Look.performed -= ReadLookVector;
     }
 
     private void Update()
@@ -185,6 +200,7 @@ public class Weapon : MonoBehaviour
             animator.Play(shootAnimationName);
             weaponAmmo.Ammo--;
             weaponAmmo.UpdateAmmoInScreen();
+            recoil.RecoilFire();
         }
 
 
@@ -220,19 +236,34 @@ public void UpdateAmmo()
 
     public IEnumerator ReloadCoroutine()
     {
-        canShoot = false;
-        reloading = true;
-
-        animator.Play(reloadAnimationName);
-
-        yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
-        if (!wasChanged)
+        bool isFirstIteration = true;
+        do
         {
-            weaponAmmo.AddAmmo();
-            weaponAmmo.UpdateAmmoInScreen();
-        }
-        canShoot = true;
-        reloading = false;
+            canShoot = false;
+            reloading = true;
+
+            animator.Play(reloadAnimationName);
+
+            audioSync.PlaySound(ClipType.weapon,  false, $"{weaponName}_Reload");
+
+            yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
+
+            if (!wasChanged && weaponType != WeaponType.Shotgun)
+            {
+                weaponAmmo.ResetAmmo();
+                weaponAmmo.UpdateAmmoInScreen();
+
+            }
+            else if (!wasChanged && weaponType == WeaponType.Shotgun)
+            {
+                weaponAmmo.AddAmmo(1);
+                weaponAmmo.UpdateAmmoInScreen();
+            }
+            canShoot = true;
+            reloading = false;
+            isFirstIteration = false;
+
+        } while (!wasChanged && weaponType == WeaponType.Shotgun && weaponAmmo.Ammo < weaponScriptableObject.maxAmmo);
     }
 
     private void ReadLookVector(InputAction.CallbackContext context) => lookVector = context.ReadValue<Vector2>();
@@ -275,19 +306,4 @@ public void UpdateAmmo()
 
 }
 
-//[System.Serializable]
-//public class Attachment
-//{
-//    [Header("Silencer")]
-//    public bool hasSilencer;
-//    public GameObject silencerObject;
-
-//    [Header("Scope`s")]
-//    public int Scopeid;
-//    public GameObject ironSight;
-
-//    [Space(10)]
-//    public AttachmentInfo[] scopes;
-//    public Vector3[] positionsInScope;
-//}
 

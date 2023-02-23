@@ -4,6 +4,7 @@ using Player;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using PlayerSettings;
 
 public class Menu : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public class Menu : MonoBehaviour
     private bool isOpened = false;
     private bool wasOpened = false;
     [SerializeField] private GameObject panel;
+    [SerializeField] private OpenAndCloseSettings openAndCloseSettings;
 
     void Awake()
     {
@@ -28,24 +30,22 @@ public class Menu : MonoBehaviour
 
         OpenOrCloseMenu(false);
     }
+    private void OnDestroy()
+    {
+        controls.UI.OpenOrCloseMenu.performed -= OpenOrCloseMenu;
+
+    }
+
 
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
-    {
-        WeaponKeyCodes _localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>();
-        CursorManager.instance.disablesToLockCount = isOpened ? CursorManager.instance.disablesToLockCount - 1 : CursorManager.instance.disablesToLockCount + 1;
-        _localPlayer.weaponHolder.GetComponent<WeaponSway>().canSway = isOpened;
-
-        if(_localPlayer.currentWeapon)
-            _localPlayer.currentWeapon.canShoot = isOpened;
-
-        isOpened = !isOpened;
-        look.canRotateCamera = !isOpened;
-
-        CursorManager.instance.SetCursorLockState(isOpened ? CursorLockMode.None : CursorLockMode.Locked);
-        panel.SetActive(isOpened);
-    }
+        => OpenOrCloseMenu(!isOpened);
     public void OpenOrCloseMenu(bool openMenu)
     {
+        if (openAndCloseSettings.isOpened)
+        {
+            openAndCloseSettings.CloseSettings();
+            return;
+        }
         WeaponKeyCodes _localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>();
         CursorManager.instance.disablesToLockCount = openMenu ? CursorManager.instance.disablesToLockCount +1 : wasOpened ? CursorManager.instance.disablesToLockCount -1: CursorManager.instance.disablesToLockCount;
         _localPlayer.weaponHolder.GetComponent<WeaponSway>().canSway = !openMenu;

@@ -182,7 +182,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         {
             if (currentWeapon.weaponAmmo.Ammo < currentWeapon.weaponScriptableObject.maxAmmo)
             {
-                audioSync.PlaySound(ClipType.weapon,true, $"{currentWeapon.weaponName}_Reload");
+                //audioSync.PlaySound(ClipType.weapon,true, $"{currentWeapon.weaponName}_Reload");
                 StartCoroutine(currentWeapon.ReloadCoroutine());
                 
             }
