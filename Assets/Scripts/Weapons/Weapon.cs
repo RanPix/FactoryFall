@@ -179,6 +179,12 @@ public class Weapon : MonoBehaviour
 
     }
 
+    private void OnDestroy()
+    {
+        gamePlayer.GetComponent<Health>().onDeath -= OnDeath;
+        controls.Player.Look.performed -= ReadLookVector;
+    }
+
     private void Update()
     {
         shootTimer+=Time.deltaTime;

@@ -30,6 +30,12 @@ public class Menu : MonoBehaviour
 
         OpenOrCloseMenu(false);
     }
+    private void OnDestroy()
+    {
+        controls.UI.OpenOrCloseMenu.performed -= OpenOrCloseMenu;
+
+    }
+
 
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
         => OpenOrCloseMenu(!isOpened);

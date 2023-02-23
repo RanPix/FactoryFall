@@ -27,6 +27,12 @@ public class CursorManager : MonoBehaviour
             instance = this;
         OnCanLockChange += TryLock;
     }
+    private void OnDestroy()
+    {
+        OnCanLockChange -= TryLock;
+
+    }
+
 
     private void TryLock(bool canLock)
     {

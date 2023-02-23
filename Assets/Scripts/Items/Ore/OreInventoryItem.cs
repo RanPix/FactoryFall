@@ -36,6 +36,14 @@ public class OreInventoryItem : MonoBehaviour
     {
         OreGiveAwayArea.instance.OnAreaEnter += ResetCount;
     }
+    private void OnDestroy()
+    {
+        OnCurrentCountchange -= UpdateCountText;
+        OnCurrentCountchange -= () => NetworkClient.localPlayer.GetComponent<AudioSync>().PlaySound(ClipType.player, true, "TakeOre");
+        OreGiveAwayArea.instance.OnAreaEnter -= ResetCount;
+
+    }
+
 
 
     private void ResetCount(int amount) 

@@ -38,6 +38,12 @@ public class Look : MonoBehaviour
         controls.Player.FreeCursor.performed += ControlCursor;
         UpdateFOV();
     }
+    private void OnDestroy()
+    {
+        controls.Player.FreeCursor.performed -= ControlCursor;
+
+    }
+
 
     private void Update()
     {
