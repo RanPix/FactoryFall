@@ -28,7 +28,7 @@ MonoBehaviour:
   - {x: -0.05, y: 0.09}
   - {x: 0.03, y: -0.05}
   timeBetweenShots: 0.7
-  reloadTime: 3
+  reloadTime: 0.3
   empty: {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
   reload: {fileID: 8300000, guid: 16ed38669058a6147bcf4408aeb56382, type: 3}
   shotSounds:

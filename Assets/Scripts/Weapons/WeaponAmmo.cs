@@ -9,9 +9,19 @@ public class WeaponAmmo : MonoBehaviour
     public int Ammo = 0;
     public int ReserveAmmo;
 
-    public void AddAmmo()
+    public void ResetAmmo()
     {
         Ammo = ClipSize;
+        UpdateAmmoInScreen();
+    }
+    public void SetAmmo(int count)
+    {
+        Ammo = count;
+        UpdateAmmoInScreen();
+    }
+    public void AddAmmo(int count)
+    {
+        Ammo += count;
         UpdateAmmoInScreen();
     }
     public void UpdateAmmoInScreen()
