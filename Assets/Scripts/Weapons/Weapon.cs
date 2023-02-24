@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameBase;
+using Mirror;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -73,6 +74,7 @@ public class Weapon : MonoBehaviour
 
     [Header("Audio")] 
     [SerializeField] protected bool useAudio;
+    private AudioSync audioSync;
 
 
     [Space(10)] 
@@ -165,7 +167,7 @@ public class Weapon : MonoBehaviour
         cam = Camera.main;
         gunCam = cam.GetComponentInChildren<Camera>();
 
-
+        audioSync = NetworkClient.localPlayer.GetComponent<AudioSync>();
 
 
         weaponAmmo = Instantiate(weaponAmmo.gameObject).GetComponent<WeaponAmmo>();
@@ -175,6 +177,12 @@ public class Weapon : MonoBehaviour
 
         canShoot = true;
 
+    }
+
+    private void OnDestroy()
+    {
+        gamePlayer.GetComponent<Health>().onDeath -= OnDeath;
+        controls.Player.Look.performed -= ReadLookVector;
     }
 
     private void Update()
@@ -228,19 +236,34 @@ public void UpdateAmmo()
 
     public IEnumerator ReloadCoroutine()
     {
-        canShoot = false;
-        reloading = true;
-
-        animator.Play(reloadAnimationName);
-
-        yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
-        if (!wasChanged)
+        bool isFirstIteration = true;
+        do
         {
-            weaponAmmo.AddAmmo();
-            weaponAmmo.UpdateAmmoInScreen();
-        }
-        canShoot = true;
-        reloading = false;
+            canShoot = false;
+            reloading = true;
+
+            animator.Play(reloadAnimationName);
+
+            audioSync.PlaySound(ClipType.weapon,  false, $"{weaponName}_Reload");
+
+            yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
+
+            if (!wasChanged && weaponType != WeaponType.Shotgun)
+            {
+                weaponAmmo.ResetAmmo();
+                weaponAmmo.UpdateAmmoInScreen();
+
+            }
+            else if (!wasChanged && weaponType == WeaponType.Shotgun)
+            {
+                weaponAmmo.AddAmmo(1);
+                weaponAmmo.UpdateAmmoInScreen();
+            }
+            canShoot = true;
+            reloading = false;
+            isFirstIteration = false;
+
+        } while (!wasChanged && weaponType == WeaponType.Shotgun && weaponAmmo.Ammo < weaponScriptableObject.maxAmmo);
     }
 
     private void ReadLookVector(InputAction.CallbackContext context) => lookVector = context.ReadValue<Vector2>();

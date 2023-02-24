@@ -27,6 +27,12 @@ public class CursorManager : MonoBehaviour
             instance = this;
         OnCanLockChange += TryLock;
     }
+    private void OnDestroy()
+    {
+        OnCanLockChange -= TryLock;
+
+    }
+
 
     private void TryLock(bool canLock)
     {
@@ -41,9 +47,9 @@ public class CursorManager : MonoBehaviour
         switch (lockMode)
         {
             case CursorLockMode.Locked:
-                if (_disablesToLockCount > 0)
+                if (disablesToLockCount > 0)
                     return;
-                Cursor.lockState = lockMode;
+                Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 break;
             default:

@@ -63,6 +63,11 @@ public class AudioSync : NetworkBehaviour
         GetComponent<MovementMachine>().OnStateChange += PlayPlayerSound;
     }
 
+    private void OnDestroy()
+    {
+        GetComponent<MovementMachine>().OnStateChange -= PlayPlayerSound;
+    }
+
     private void PlayPlayerSound(string currentStateName)
     {
 

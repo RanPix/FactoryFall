@@ -34,6 +34,13 @@ namespace FiniteMovementStateMachine
             currentState = GetInitialState();
             currentState?.Enter();
         }
+        private void OnDestroy()
+        {
+            gameObject.GetComponent<Health>().onDeath -= InvokeSpeedReset;
+            CanvasInstance.instance.mainChat.OnChatToggle -= ToggleControls;
+
+        }
+
 
         private void Update()
         {

@@ -54,6 +54,15 @@ public class MainChat : MonoBehaviour
 
         group.padding.top = 513;
     }
+    private void OnDestroy()
+    {
+        controls.UI.OpenChat.performed -= ChatToggle;
+        controls.UI.OpenChat.performed -= SendMessage;
+        controls.UI.OpenOrCloseMenu.performed -= CloseChat;
+
+
+    }
+
 
     // Update is called once per frame
     void Update()
