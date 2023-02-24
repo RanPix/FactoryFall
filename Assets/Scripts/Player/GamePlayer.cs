@@ -76,12 +76,18 @@ namespace Player
 
         [Header("Effects")]
 
-        //[SerializeField] private GameObject deathEffect;
-        //[SerializeField] private GameObject spawnEffect;
+        [SerializeField] private Transform deathFX;
+        [SerializeField] private Transform spawnFX;
 
-        [SerializeField] private Transform redirectEffect;
-        [SerializeField] private Transform redirectEffectPos1;
-        [SerializeField] private Transform redirectEffectPos2;
+        [Space(5)] 
+
+        [SerializeField] private Transform hitFX;
+
+        [Space(5)]
+
+        [SerializeField] private Transform redirectFX;
+        [SerializeField] private Transform redirectFXPos1;
+        [SerializeField] private Transform redirectFXPos2;
 
         [Space]
 
@@ -312,6 +318,7 @@ namespace Player
                             CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                         }
                     }
+                    SpawnHitFX(hit.point);
                 }
 
                 CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
@@ -338,6 +345,7 @@ namespace Player
 
                     if (hitHealth)
                     {
+                        SpawnHitFX(hit.point);
                         StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
                         CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damageToPlayer, playerID);
                         audioSync.PlaySound(ClipType.player, true, "Arm_HitInPlayer");
@@ -347,13 +355,13 @@ namespace Player
                     {
                         StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
 
+                        SpawnHitFX(hit.point);
                         Ore _ore = hit.transform.GetComponent<Ore>();
                         CmdOreHit(damageToOre, GetNetID(), _ore);
                         audioSync.PlaySound(ClipType.player, true, "Arm_HitInOre");
                         return;
                     }
                 }
-
 
             }
 
@@ -436,8 +444,6 @@ namespace Player
             CmdDisableComponentsOnDeath();
 
             //Spawn a death effect
-            /*GameObject _gfxIns = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
-            Destroy(_gfxIns, 3f);*/
 
             //Switch cameras
             //if (isLocalPlayer)
@@ -493,6 +499,8 @@ namespace Player
             GamePlayer player = GameManager.GetPlayer(_sourceID);
 
             GameManager.instance.OnPlayerKilledCallback?.Invoke(nickname, team, player.nickname, player.team);
+
+            SpawnDeathFX();
         }
 
         [Command]
@@ -536,6 +544,7 @@ namespace Player
 
             yield return new WaitForSeconds(0.1f);
 
+
             SetupPlayer();
         }
         #endregion
@@ -577,7 +586,7 @@ namespace Player
 
                 firstSetup = false;
             }
-
+            SpawnReSpawnFX();
             SetDefaults();
         }
 
@@ -661,7 +670,7 @@ namespace Player
         #region Effects
 
 
-        private void RedirectFX(Vector2 inputVector)
+        public void RedirectFX(Vector2 inputVector)
         {
             //bool isBlue = team == Team.Blue; // why not comment
 
@@ -680,20 +689,82 @@ namespace Player
             if (isLocalPlayer)
                 return;
 
-            Transform effectInstance = Instantiate(redirectEffect, redirectEffectPos1.position, Quaternion.identity, transform);
-            effectInstance.LookAt(redirectEffectPos1.position + orientedVector);
+            Transform effectInstance = Instantiate(redirectFX, redirectFXPos1.position, Quaternion.identity, transform);
+            effectInstance.LookAt(redirectFXPos1.position + orientedVector);
 
             effectInstance.gameObject.GetComponent<VisualEffect>().SetBool("BlueTeam", isBlue);
             Destroy(effectInstance.gameObject, 0.13f);
 
 
-            effectInstance = Instantiate(redirectEffect, redirectEffectPos2.position, Quaternion.identity, transform);
-            effectInstance.LookAt(redirectEffectPos2.position + orientedVector);
+            effectInstance = Instantiate(redirectFX, redirectFXPos2.position, Quaternion.identity, transform);
+            effectInstance.LookAt(redirectFXPos2.position + orientedVector);
 
             effectInstance.gameObject.GetComponent<VisualEffect>().SetBool("BlueTeam", isBlue);
             Destroy(effectInstance.gameObject, 0.13f);
         }
 
+
+        public void SpawnReSpawnFX()
+        {
+
+            CmdSpawnReSpawnFX(team == Team.Blue);
+        }
+
+        [Command]
+        private void CmdSpawnReSpawnFX( bool isBlue)
+        {
+            RpcSpawnReSpawnFX(isBlue);
+        }
+
+        [ClientRpc]
+        private void RpcSpawnReSpawnFX(bool isBlue)
+        {
+            Transform _spawnedEffect = Instantiate(spawnFX, transform.position, new Quaternion(0, transform.forward.y, 0, 1)).transform;
+
+            _spawnedEffect.gameObject.GetComponent<VisualEffect>().SetBool("BlueTeam", isBlue);
+            Destroy(_spawnedEffect.gameObject, 3);
+
+        }
+        public void SpawnDeathFX()
+        {
+
+            CmdSpawnDeathFX(team == Team.Blue);
+        }
+
+        [Command]
+        private void CmdSpawnDeathFX( bool isBlue)
+        {
+            RpcSpawnDeathFX(isBlue);
+        }
+
+        [ClientRpc]
+        private void RpcSpawnDeathFX(bool isBlue)
+        {
+
+            Transform _spawnedEffect = Instantiate(deathFX, transform.position, Quaternion.identity).transform;
+            _spawnedEffect.LookAt(transform.forward);
+
+            Destroy(_spawnedEffect.gameObject, 3);
+
+        }
+
+        public void SpawnHitFX(Vector3 position)
+        {
+            CmdSpawnHitFX(position);
+        }
+
+        [Command]
+        private void CmdSpawnHitFX(Vector3 position)
+        {
+            RpcSpawnHitFX(position);
+        }
+
+        [ClientRpc]
+        private void RpcSpawnHitFX(Vector3 position)
+        {
+            Transform _spawnedEffect = Instantiate(hitFX, position, Quaternion.identity);
+            Destroy(_spawnedEffect.gameObject, 0.3f);
+        }
 
         #endregion
 

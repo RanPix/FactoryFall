@@ -47,9 +47,9 @@ public class CursorManager : MonoBehaviour
         switch (lockMode)
         {
             case CursorLockMode.Locked:
-                if (_disablesToLockCount > 0)
+                if (disablesToLockCount > 0)
                     return;
-                Cursor.lockState = lockMode;
+                Cursor.lockState = CursorLockMode.Locked;
                 Cursor.visible = false;
                 break;
             default:

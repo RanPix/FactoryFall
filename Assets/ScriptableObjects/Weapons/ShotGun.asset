@@ -15,7 +15,7 @@ MonoBehaviour:
   type: ShotGun
   name: ShotGun
   damage: 10
-  shootRange: 200
+  shootRange: 150
   useOneAmmoPerShot: 1
   maxAmmo: 8
   numberOfBulletsPerShot: 6
