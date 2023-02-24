@@ -97,6 +97,7 @@ MonoBehaviour:
   sensetivitySlider: {fileID: 344607680008997598}
   FOVSlider: {fileID: 1635030752593817380}
   masterVolumeSlider: {fileID: 7331553829519710702}
+  graphicsQualitySelector: {fileID: 0}
   MasterMixer: {fileID: 24100000, guid: 4031e8e6ff826a54c9847afefbc08c15, type: 2}
 --- !u!1 &235305749082972760
 GameObject:
@@ -1315,7 +1316,17 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1194098833707799514, guid: beba200bccb0a0f488aee9ceb4dc3abc,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194098833707799514, guid: beba200bccb0a0f488aee9ceb4dc3abc,
+        type: 3}
       propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1194098833707799514, guid: beba200bccb0a0f488aee9ceb4dc3abc,
+        type: 3}
+      propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7031676331827157084, guid: beba200bccb0a0f488aee9ceb4dc3abc,
@@ -1325,13 +1336,28 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7371081668167977444, guid: beba200bccb0a0f488aee9ceb4dc3abc,
         type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7371081668167977444, guid: beba200bccb0a0f488aee9ceb4dc3abc,
+        type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7710534214880762221, guid: beba200bccb0a0f488aee9ceb4dc3abc,
         type: 3}
+      propertyPath: m_Value
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710534214880762221, guid: beba200bccb0a0f488aee9ceb4dc3abc,
+        type: 3}
       propertyPath: m_MaxValue
       value: 200
+      objectReference: {fileID: 0}
+    - target: {fileID: 7710534214880762221, guid: beba200bccb0a0f488aee9ceb4dc3abc,
+        type: 3}
+      propertyPath: m_MinValue
+      value: 0.00001
       objectReference: {fileID: 0}
     - target: {fileID: 7710534214880762221, guid: beba200bccb0a0f488aee9ceb4dc3abc,
         type: 3}

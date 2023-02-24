@@ -12,7 +12,8 @@ namespace PlayerSettings
             {
                 Settings.sensetivity = PlayerPrefs.GetFloat(Settings.sensetivityPrefsKey);
                 Settings.FOV = PlayerPrefs.GetFloat(Settings.FOVPrefsKey);
-
+                Settings.graphicsQuality = PlayerPrefs.GetInt(Settings.graphicsQualityPrefsKey);
+                Settings.masterVolume = PlayerPrefs.GetFloat(Settings.masterVolumePrefsKey);
             }
             Destroy(gameObject);
         }

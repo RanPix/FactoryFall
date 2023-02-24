@@ -32,6 +32,6 @@ public class ArrayElementSelector : MonoBehaviour
         UpdateElementText();
     }
 
-    void UpdateElementText()
+    public void UpdateElementText()
         => elementText.text = elements[currentElement];
 }
