@@ -4,16 +4,21 @@ using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
 using Player;
+using UnityEngine.Audio;
 
 namespace PlayerSettings
 {
     public class Settings : MonoBehaviour
     {
         [SerializeField] public Button closeButton;
-        [SerializeField] public Slider sensetivitySlider;
-        [SerializeField] public Slider FOVSlider;
+        [SerializeField] private Slider sensetivitySlider;
+        [SerializeField] private Slider FOVSlider;
+        [SerializeField] private Slider masterVolumeSlider;
+        [SerializeField] private ArrayElementSelector graphicsQualitySelector;
 
+        [Space]
 
+        [SerializeField] private AudioMixer MasterMixer;
 
         public static float sensetivity = 15;
         public const string sensetivityPrefsKey = "sensetivity";
@@ -37,10 +42,37 @@ namespace PlayerSettings
         }
 
 
-        private void Start()
+        public static int graphicsQuality = 2;
+        public const string graphicsQualityPrefsKey = "graphicsQuality";
+        public void UpdateGraphicsQuality()
+        {
+            graphicsQuality = graphicsQualitySelector.currentElement;
+            PlayerPrefs.SetInt(graphicsQualityPrefsKey, graphicsQuality);
+            
+            //QualitySettings......
+        }
+
+
+        public static float masterVolume = 60;
+        public const string masterVolumePrefsKey = "masterVolume";
+        public const string MixerVolumeKey = "MasterVolume";
+        public const float masterVolumeMultiplier = 8.5f;
+        public void UpdateMasterVolumeValue()
+        {
+            masterVolume = masterVolumeSlider.value;
+            PlayerPrefs.SetFloat(masterVolumePrefsKey, masterVolume);
+
+            MasterMixer.SetFloat(MixerVolumeKey, Mathf.Log10(masterVolume) * masterVolumeMultiplier);
+        }
+
+
+        private void Awake()
         {
             sensetivitySlider.value = sensetivity;
             FOVSlider.value = FOV;
+            masterVolumeSlider.value = masterVolume;
+            graphicsQualitySelector.currentElement = graphicsQuality;
+            graphicsQualitySelector.UpdateElementText();
         }
     }
 }
