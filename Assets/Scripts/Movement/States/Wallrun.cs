@@ -8,8 +8,8 @@ public class Wallrun : BaseMovementState
     private Vector3 currentWallNormal;
     private Vector2 moveDirectionVector2;
 
-    public Wallrun(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
-        : base("wallrun", stateMachine, movementControl, fields, data) { }
+    public Wallrun(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data, PlayerControls controls)
+        : base("wallrun", stateMachine, movementControl, fields, data, controls) { }
 
     #region State logic
 

@@ -181,6 +181,8 @@ public class Weapon : MonoBehaviour
 
     private void OnDestroy()
     {
+        if(!_isLocalPLayer)
+            return;
         gamePlayer.GetComponent<Health>().onDeath -= OnDeath;
         controls.Player.Look.performed -= ReadLookVector;
     }

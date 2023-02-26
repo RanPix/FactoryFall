@@ -4,6 +4,7 @@ using Mirror;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 using Weapons;
 
 [RequireComponent(typeof(AudioSync))]
@@ -44,6 +45,12 @@ public class WeaponKeyCodes : NetworkBehaviour
         controls.Player.Enable();
         controls.Player.WeaponInventory.performed += GetWeaponIndex;
 
+    }
+
+    private void OnDestroy()
+    {
+        if(gamePlayer.isLocalPlayer)
+            controls?.Player.Disable();
     }
 
     void Update()

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.17792343, g: 0.22276664, b: 0.304897, a: 1}
+  m_IndirectSpecularColor: {r: 0.17792383, g: 0.22276744, b: 0.30489826, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -123,6 +123,24 @@ NavMeshSettings:
     debug:
       m_Flags: 0
   m_NavMeshData: {fileID: 0}
+--- !u!1 &93620905 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 8691070267190371111, guid: 0ded737292a34884eb1998889c515aca,
+    type: 3}
+  m_PrefabInstance: {fileID: 2087736260}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &93620907
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 93620905}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 01f67be965b5ae142b953abc49282371, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &280219313
 GameObject:
   m_ObjectHideFlags: 0
@@ -1719,6 +1737,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: Nickname Input Field
       objectReference: {fileID: 0}
+    - target: {fileID: 1563052955890086472, guid: 8e54d9906675ce64a865574e5dbdb834,
+        type: 3}
+      propertyPath: m_TagString
+      value: NicknameInputField
+      objectReference: {fileID: 0}
     - target: {fileID: 1563052955890086473, guid: 8e54d9906675ce64a865574e5dbdb834,
         type: 3}
       propertyPath: m_Pivot.x
@@ -1822,6 +1845,16 @@ PrefabInstance:
     - target: {fileID: 1563052955890086473, guid: 8e54d9906675ce64a865574e5dbdb834,
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1563052955890086486, guid: 8e54d9906675ce64a865574e5dbdb834,
+        type: 3}
+      propertyPath: m_OnDeselect.m_PersistentCalls.m_Calls.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1563052955890086486, guid: 8e54d9906675ce64a865574e5dbdb834,
+        type: 3}
+      propertyPath: m_OnValueChanged.m_PersistentCalls.m_Calls.Array.size
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 1563052955890086486, guid: 8e54d9906675ce64a865574e5dbdb834,
@@ -2119,6 +2152,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6352342469055609455, guid: 887583700cbcbc948bb55380543020b1,
+        type: 3}
+      propertyPath: offlineScene
+      value: Assets/Scenes/Game/Main Menu.unity
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 887583700cbcbc948bb55380543020b1, type: 3}

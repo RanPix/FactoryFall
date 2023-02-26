@@ -8,7 +8,7 @@ public class MatchSettings
     public bool scoreBased { get; private set; }
 
     public bool hasTimer { get; private set; } = true;
-    public int matchTime { get; private set; } = 200;
+    public int matchTime { get; private set; } = 30;
     public int winningGoal { get; private set; } = 20;
 
 

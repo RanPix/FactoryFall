@@ -30,7 +30,10 @@ public class CursorManager : MonoBehaviour
     private void OnDestroy()
     {
         OnCanLockChange -= TryLock;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
+        instance = null;
     }
 
 

@@ -6,6 +6,7 @@ using System.Collections;
 using TMPro;
 using UI.Indicators;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.VFX;
 
 namespace Player
@@ -168,8 +169,11 @@ namespace Player
 
         private void Start()
         {
+            if (!isLocalPlayer)
+                return;
             audioSync = GetComponent<AudioSync>();
             InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
+            print($"&&&&    =        {SceneManager.GetActiveScene().name}");
             if (isLocalPlayer)
             {
                 playerModel.SetActive(false);
@@ -213,6 +217,7 @@ namespace Player
             health.onDeath -= Die;
             gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= RedirectFX;
             OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
+            
         }
 
 
@@ -224,6 +229,7 @@ namespace Player
             if (isLocalPlayer)
             {
                 Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition(team);
+                print("Scene - " + SceneManager.GetActiveScene().name);
                 transform.position = _spawnPoint.position;
                 transform.rotation = _spawnPoint.rotation;
 

@@ -17,10 +17,10 @@ namespace FiniteMovementStateMachine
         [HideInInspector] public Wallrun wallrun { get; private set; }
 
         private MovementDataIntersection data;
+        private PlayerControls controls;
 
         public Action<string> OnStateChange;
 
-        public bool canMove = true;
         private void Awake()
         {
             InitializeStates();
@@ -28,7 +28,7 @@ namespace FiniteMovementStateMachine
 
         private void Start()
         {
-            gameObject.GetComponent<Health>().onDeath += InvokeSpeedReset;
+            gameObject.GetComponent<Health>().onDeath += (_) => InvokeSpeedReset;
             CanvasInstance.instance.mainChat.OnChatToggle += ToggleControls;
 
             currentState = GetInitialState();
@@ -57,15 +57,19 @@ namespace FiniteMovementStateMachine
 
         private void InitializeStates()
         {
-            PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>());
+            PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>()); // Character controller
             PlayerDataFields fields = GetComponent<PlayerDataFields>();
+
             data = new();
 
-            idle = new(this, movementControl, fields, data);
-            walk = new(this, movementControl, fields, data);
-            midAir = new(this, movementControl, fields, data);
-            run = new(this, movementControl, fields, data);
-            wallrun = new(this, movementControl, fields, data);
+            controls = new PlayerControls();
+            controls.Player.Enable();
+
+            idle = new(this, movementControl, fields, data, controls);
+            walk = new(this, movementControl, fields, data, controls);
+            midAir = new(this, movementControl, fields, data, controls);
+            run = new(this, movementControl, fields, data, controls);
+            wallrun = new(this, movementControl, fields, data, controls);
         }
 
         private BaseMovementState GetInitialState()
@@ -82,14 +86,13 @@ namespace FiniteMovementStateMachine
 
         private void ToggleControls(bool turnOn)
         {
-            idle.ToggleControls(turnOn);
-            walk.ToggleControls(turnOn);
-            midAir.ToggleControls(turnOn);
-            run.ToggleControls(turnOn);
-            wallrun.ToggleControls(turnOn);
+            if (turnOn)
+                controls.Player.Enable();
+            else
+                controls.Player.Disable();
         }
 
-        private void InvokeSpeedReset(string s)
+        private void InvokeSpeedReset()
             => Invoke(nameof(SpeedReset), 0.1f);
 
         private void SpeedReset() // Unoptimazed? Ye, but I dont care rn
