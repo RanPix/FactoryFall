@@ -34,6 +34,7 @@ namespace Player
         [Header("Weapon")]
         [SerializeField] private GameObject ammoTextPrefab;
         [SerializeField] private Transform trail;
+        [SerializeField] private Transform muzzleFlash;
         [SerializeField] private Transform hitIndicatorPrefab;
         [field: SerializeField] public WeaponKeyCodes weaponKeyCodes { get; private set; }
 
@@ -328,7 +329,7 @@ namespace Player
                 }
 
                 CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
-
+                CmdSpawnMuzzle();
                 if(i + 1 < rays.Length)
                     yield return new WaitForSeconds(timeBetweenShots);
 
@@ -397,6 +398,19 @@ namespace Player
             line.SetPosition(0, muzzlePosition.position);
             Vector3 trailFinish = isHitted ? point : origin + direction * shootRange;
             line.SetPosition(1, trailFinish);
+        }
+        
+        [Command]
+        public void CmdSpawnMuzzle()
+        {
+            RpcSpawnMuzzle();
+        }
+
+        [ClientRpc]
+        private void RpcSpawnMuzzle()
+        {
+            Transform _muzzleFalsh = Instantiate(muzzleFlash, muzzlePosition.position, Quaternion.LookRotation(muzzlePosition.forward), muzzlePosition);
+            Destroy(_muzzleFalsh.gameObject, .1f);
         }
         
 

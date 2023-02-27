@@ -7,7 +7,9 @@ public class MoveCamera : MonoBehaviour
 
     private void LateUpdate()
     {
+        if (!transform || !cameraPosition) 
+            return;
+        print("Camera "+SceneManager.GetActiveScene().name);
         transform.position = cameraPosition.position;
-        print(SceneManager.GetActiveScene().name);
     }
 }

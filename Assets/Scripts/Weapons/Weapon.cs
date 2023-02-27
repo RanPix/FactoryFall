@@ -292,13 +292,13 @@ public void UpdateAmmo()
     }
 
     protected void SpawnMuzzle()
-    {
+    {/*
         if (weaponScriptableObject.muzzleFlash is not null)
         {
             Transform spawnedMuzzle = Instantiate(weaponScriptableObject.muzzleFlash, muzzlePosition.position, muzzlePosition.rotation, muzzlePosition);
 
             Destroy(spawnedMuzzle.gameObject, weaponScriptableObject.muzzleFlashLifetime);
-        }
+        }*/
     }
 
     public void OnDeath(string str)

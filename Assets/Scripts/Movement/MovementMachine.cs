@@ -28,7 +28,7 @@ namespace FiniteMovementStateMachine
 
         private void Start()
         {
-            gameObject.GetComponent<Health>().onDeath += (_) => InvokeSpeedReset;
+            //gameObject.GetComponent<Health>().onDeath += (_) => InvokeSpeedReset;
             CanvasInstance.instance.mainChat.OnChatToggle += ToggleControls;
 
             currentState = GetInitialState();
@@ -36,7 +36,7 @@ namespace FiniteMovementStateMachine
         }
         private void OnDestroy()
         {
-            gameObject.GetComponent<Health>().onDeath -= InvokeSpeedReset;
+            //gameObject.GetComponent<Health>().onDeath -= InvokeSpeedReset;
             CanvasInstance.instance.mainChat.OnChatToggle -= ToggleControls;
 
         }

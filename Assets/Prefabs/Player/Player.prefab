@@ -345,6 +345,8 @@ MonoBehaviour:
     type: 3}
   ammoTextPrefab: {fileID: 0}
   trail: {fileID: 2633746653808325309, guid: 737c6536a4c73b4459582beeb06f2a13, type: 3}
+  muzzleFlash: {fileID: 5116486843471396918, guid: f0f47584a1c47a34aa7bcfd4b7f9785d,
+    type: 3}
   hitIndicatorPrefab: {fileID: 6889825533650677275, guid: c794250e05854824e921ffca842cb8e3,
     type: 3}
   <weaponKeyCodes>k__BackingField: {fileID: 11036251873139821}
@@ -803,7 +805,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8005f0cbc4bc18d4ab8efbe1f472469c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  canMove: 1
 --- !u!1 &841400163972923481
 GameObject:
   m_ObjectHideFlags: 0

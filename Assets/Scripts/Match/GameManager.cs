@@ -76,6 +76,8 @@ public class GameManager : NetworkBehaviour
     [Command(requiresAuthority = false)]
     public void CmdUnRegisterAllPlayers()
     {
+        if(!NetworkClient.active)
+            return;
         RpcUnRegisterAllPlayers();
     }
 

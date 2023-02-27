@@ -19,6 +19,8 @@ public class MiniMapCameraMove : MonoBehaviour
 
     private void LateUpdate()
     {
+        if(!transform || !player)
+            return;
         this.transform.SetPositionAndRotation(new Vector3(player.position.x, 291.6f, player.position.z), new Quaternion(90, 0, player.rotation.z, 90));
     }
 }
