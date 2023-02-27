@@ -33,6 +33,8 @@ public class MidAir : BaseMovementState
     private int _hasRedirects;
     public Action<int> OnRedirectsCountChange;
 
+    public Action OnJump;
+
     private AudioSync audioSync;
     private bool gotRedirectInput;
 
@@ -126,6 +128,7 @@ public class MidAir : BaseMovementState
 
     private void Jump()
     {
+        OnJump?.Invoke();
         if (fields.ScriptableFields.JumpOverlap) // Jump overlap fix check
             data.verticalMove =
                 data.verticalMove < fields.ScriptableFields.JumpHeight ?

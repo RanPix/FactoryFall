@@ -28,7 +28,7 @@ namespace FiniteMovementStateMachine
 
         private void Start()
         {
-            //gameObject.GetComponent<Health>().onDeath += (_) => InvokeSpeedReset;
+            gameObject.GetComponent<Health>().onDeath += InvokeSpeedReset;
             CanvasInstance.instance.mainChat.OnChatToggle += ToggleControls;
 
             currentState = GetInitialState();
@@ -36,7 +36,7 @@ namespace FiniteMovementStateMachine
         }
         private void OnDestroy()
         {
-            //gameObject.GetComponent<Health>().onDeath -= InvokeSpeedReset;
+            gameObject.GetComponent<Health>().onDeath -= InvokeSpeedReset;
             CanvasInstance.instance.mainChat.OnChatToggle -= ToggleControls;
 
         }
@@ -92,7 +92,7 @@ namespace FiniteMovementStateMachine
                 controls.Player.Disable();
         }
 
-        private void InvokeSpeedReset()
+        private void InvokeSpeedReset(string s)
             => Invoke(nameof(SpeedReset), 0.1f);
 
         private void SpeedReset() // Unoptimazed? Ye, but I dont care rn

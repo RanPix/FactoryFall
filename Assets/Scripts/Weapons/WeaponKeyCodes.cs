@@ -127,7 +127,7 @@ public class WeaponKeyCodes : NetworkBehaviour
     {
         GetComponent<NetworkAnimator>().animator = currentWeapon.GetComponentInChildren<Animator>();
         GetComponent<NetworkAnimator>().SetValues();
-        GetComponent<GamePlayer>().muzzlePosition = currentWeapon.muzzlePosition;
+        GetComponent<PlayerVFX>().muzzlePosition = currentWeapon.muzzlePosition;
         if (!isLocalPlayer)
             return;
         weaponAudioSource.Stop();
