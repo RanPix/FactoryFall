@@ -173,16 +173,16 @@ public class PlayerVFX : NetworkBehaviour
     }
 
     [Command]
-    public void CmdSpawnMuzzle()
+    public void CmdSpawnMuzzleFlash()
     {
-        RpcSpawnMuzzle();
+        RpcSpawnMuzzleFlash();
     }
 
     [ClientRpc]
-    private void RpcSpawnMuzzle()
+    private void RpcSpawnMuzzleFlash()
     {
         Transform _muzzleFalsh = Instantiate(muzzleFlash, muzzlePosition.position, Quaternion.LookRotation(muzzlePosition.forward), muzzlePosition);
-        Destroy(_muzzleFalsh.gameObject, .1f);
+        Destroy(_muzzleFalsh.gameObject, 0.2f);
     }
 
 
