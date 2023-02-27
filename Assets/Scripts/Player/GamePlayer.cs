@@ -151,9 +151,11 @@ namespace Player
         {
             if (!isLocalPlayer)
                 return;
+
             audioSync = GetComponent<AudioSync>();
             InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
             print($"&&&&    =        {SceneManager.GetActiveScene().name}");
+
             if (isLocalPlayer)
             {
                 playerModel.SetActive(false);
@@ -275,7 +277,7 @@ namespace Player
 
             for (int i = 0; i < rays.Length; i++)
             {
-                if (weaponKeyCodes.currentWeapon.weaponAmmo.Ammo < 1)
+                if (weaponKeyCodes.currentWeapon.weaponAmmo.Ammo + 1 < 1)
                     break;
 
                 if(weaponKeyCodes.currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets != 0 || i == 0)
@@ -284,6 +286,8 @@ namespace Player
 
                 if (!weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
                 {
+                    playerVFX.CmdSpawnMuzzleFlash();
+
                     weaponKeyCodes.currentWeapon.animator.StopPlayback();
                     weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
                     weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
@@ -308,11 +312,21 @@ namespace Player
                 }
 
                 playerVFX.CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
-                playerVFX.CmdSpawnMuzzle();
+
+                
+                
+
+
                 if(i + 1 < rays.Length)
                     yield return new WaitForSeconds(timeBetweenShots);
 
             }
+
+            if (weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
+            {
+                playerVFX.CmdSpawnMuzzleFlash();
+            }
+
             weaponKeyCodes.currentWeapon.canShoot = true;
         }
 
@@ -359,8 +373,6 @@ namespace Player
         {
             ore.RpcCheckHP(damageToOre, netID);
         }
-
-        
 
         [Command]
         private void CmdPlayerHit(string _playerID, int _damage, string _sourceID)
