@@ -128,13 +128,13 @@ MonoBehaviour:
   m_faceColor:
     serializedVersion: 2
     rgba: 4294967295
-  m_fontSize: 3
-  m_fontSizeBase: 3
+  m_fontSize: 2.5
+  m_fontSizeBase: 2.5
   m_fontWeight: 400
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 1
+  m_fontStyle: 0
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -223,3 +223,5 @@ MonoBehaviour:
     type: 2}
   ROTFontMaterial: {fileID: -8562007397176997475, guid: a621f1d472677384887c8134ae9d0b3e,
     type: 2}
+  text: {fileID: 0}
+  thisTeam: 0

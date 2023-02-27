@@ -346,13 +346,9 @@ MonoBehaviour:
   healthBarPrefab: {fileID: 4203298332218061752, guid: 6d56f640da95a044795c8ca3e1c3e160,
     type: 3}
   ammoTextPrefab: {fileID: 0}
-  trail: {fileID: 2633746653808325309, guid: 737c6536a4c73b4459582beeb06f2a13, type: 3}
-  muzzleFlash: {fileID: 5116486843471396918, guid: f0f47584a1c47a34aa7bcfd4b7f9785d,
-    type: 3}
   hitIndicatorPrefab: {fileID: 6889825533650677275, guid: c794250e05854824e921ffca842cb8e3,
     type: 3}
   <weaponKeyCodes>k__BackingField: {fileID: 11036251873139821}
-  muzzlePosition: {fileID: 857324440644313224}
   menuPrefab: {fileID: 4635157150927694193, guid: d37a061eff4b9c64696edba900215302,
     type: 3}
   nameGO: {fileID: 2317577257594477167}
@@ -1136,12 +1132,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 0082b758bc952e346843f07597e664fe, type: 3}
---- !u!4 &857324440644313224 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 722410891077129652, guid: 0082b758bc952e346843f07597e664fe,
-    type: 3}
-  m_PrefabInstance: {fileID: 136041377914680636}
-  m_PrefabAsset: {fileID: 0}
 --- !u!95 &2290917199025970128 stripped
 Animator:
   m_CorrespondingSourceObject: {fileID: 2173455107278860012, guid: 0082b758bc952e346843f07597e664fe,
@@ -1258,11 +1248,6 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Nicknamme
-      objectReference: {fileID: 0}
-    - target: {fileID: 818817036421687420, guid: f65a2aee6ac45d94090607b90c8d2935,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 818817036421687421, guid: f65a2aee6ac45d94090607b90c8d2935,
         type: 3}

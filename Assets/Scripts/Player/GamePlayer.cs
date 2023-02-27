@@ -255,11 +255,9 @@ namespace Player
                 return;
 
             nameGO.SetActive(true);
-            TMP_Text text = nameGO.GetComponentInChildren<TMP_Text>();
+            nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
 
-            //StartCoroutine(WaitForSyncTeam(text));
-            text.color = TeamToColor.GetTeamColor(team);
-            text.text = newName;
+            print("setup");
         }
 
 
