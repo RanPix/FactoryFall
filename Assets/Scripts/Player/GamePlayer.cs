@@ -318,7 +318,7 @@ namespace Player
                             CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                         }
                     }
-                    SpawnHitFX(hit.point);
+                    SpawnHitFX(hit.point, hit.normal);
                 }
 
                 CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
@@ -345,7 +345,7 @@ namespace Player
 
                     if (hitHealth)
                     {
-                        SpawnHitFX(hit.point);
+                        SpawnHitFX(hit.point, hit.normal);
                         StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
                         CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damageToPlayer, playerID);
                         audioSync.PlaySound(ClipType.player, true, "Arm_HitInPlayer");
@@ -355,7 +355,7 @@ namespace Player
                     {
                         StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
 
-                        SpawnHitFX(hit.point);
+                        SpawnHitFX(hit.point, hit.normal);
                         Ore _ore = hit.transform.GetComponent<Ore>();
                         CmdOreHit(damageToOre, GetNetID(), _ore);
                         audioSync.PlaySound(ClipType.player, true, "Arm_HitInOre");
@@ -748,21 +748,23 @@ namespace Player
 
         }
 
-        public void SpawnHitFX(Vector3 position)
+        public void SpawnHitFX(Vector3 position, Vector3 normal)
         {
-            CmdSpawnHitFX(position);
+            CmdSpawnHitFX(position, normal);
         }
 
         [Command]
-        private void CmdSpawnHitFX(Vector3 position)
+        private void CmdSpawnHitFX(Vector3 position, Vector3 normal)
         {
-            RpcSpawnHitFX(position);
+            RpcSpawnHitFX(position, normal);
         }
 
         [ClientRpc]
-        private void RpcSpawnHitFX(Vector3 position)
+        private void RpcSpawnHitFX(Vector3 position, Vector3 normal)
         {
             Transform _spawnedEffect = Instantiate(hitFX, position, Quaternion.identity);
+            //print(normal + position);
+            //_spawnedEffect.LookAt(position - normal);
             Destroy(_spawnedEffect.gameObject, 0.3f);
         }
 
