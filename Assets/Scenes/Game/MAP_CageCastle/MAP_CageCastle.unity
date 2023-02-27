@@ -719,7 +719,7 @@ PrefabInstance:
     - target: {fileID: 4994228548891839374, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 59.37036
+      value: 59.370422
       objectReference: {fileID: 0}
     - target: {fileID: 5507535803968107561, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
@@ -730,6 +730,16 @@ PrefabInstance:
         type: 3}
       propertyPath: m_LocalScale.x
       value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720452758728696873, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: onlineScene
+      value: Assets/Scenes/Game/MAP_CageCastle/MAP_CageCastle.unity
+      objectReference: {fileID: 0}
+    - target: {fileID: 6720452758728696873, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: offlineScene
+      value: Assets/Scenes/Game/Main Menu.unity
       objectReference: {fileID: 0}
     - target: {fileID: 7392936039789879583, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
@@ -765,6 +775,11 @@ PrefabInstance:
         type: 3}
       propertyPath: sceneId
       value: 1541678776
+      objectReference: {fileID: 0}
+    - target: {fileID: 8977477563073639899, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 94380ed47c6bb404d9daf52ec7683569, type: 3}

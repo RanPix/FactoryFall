@@ -16,6 +16,8 @@ TagManager:
   - BlueTeamSpawnPoint
   - RedTeamSpawnPoint
   - Ore
+  - DontDestroyOnLoad
+  - NicknameInputField
   layers:
   - Default
   - TransparentFX

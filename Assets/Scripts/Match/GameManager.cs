@@ -38,6 +38,12 @@ public class GameManager : NetworkBehaviour
         //ChangeTeamSpawnPositions(PlayerInfoTransfer.instance.team);
     }
 
+    private void OnDestroy()
+    {
+        print("inst");
+        instance = null;
+    }
+
     public void SetSceneCameraActive(bool state)
     {
         if (sceneCamera == null)
@@ -56,8 +62,30 @@ public class GameManager : NetworkBehaviour
     public static void RegisterPlayer(string _netID, GamePlayer _player)
     {
         players.Add(_netID, _player);
-        
-        
+    }
+
+    public void UnregisterAllPlayers()
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            players.Remove(players.Keys.ToArray()[i]);
+        }
+
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdUnRegisterAllPlayers()
+    {
+        RpcUnRegisterAllPlayers();
+    }
+
+    [ClientRpc]
+    public void RpcUnRegisterAllPlayers()
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            players.Remove(players.Keys.ToArray()[i]);
+        }
     }
 
     public static void UnRegisterPlayer(string _playerID)
@@ -129,20 +157,25 @@ public class GameManager : NetworkBehaviour
 
     public override void OnStopClient()
     {
-        base.OnStopClient();
 
         //SceneManager.UnloadSceneAsync();
+        SceneManager.UnloadSceneAsync("MAP_CageCastle");
         SceneManager.LoadScene("Main menu");
+        NetworkManager.singleton.StopClient();
+        base.OnStopClient();
     }
 
     public override void OnStopServer()
     {
-        base.OnStopServer();
 
         if (isClient)
         {
             //SceneManager.UnloadSceneAsync();
+            SceneManager.UnloadSceneAsync("MAP_CageCastle");
             SceneManager.LoadScene("Main menu");
         }
+        NetworkManager.singleton.StopHost();
+        base.OnStopServer();
     }
+
 }

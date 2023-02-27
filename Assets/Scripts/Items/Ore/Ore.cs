@@ -33,7 +33,7 @@ public class Ore : NetworkBehaviour
         if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
             gameObject.SetActive(false);
 
-        if (PlayerInfoTransfer.instance.team != team)
+        if (PlayerInfoTransfer.instance?.team != team)
         {
             gameObject.layer = LayerMask.NameToLayer("EnemyOre");
         }

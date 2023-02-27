@@ -36,11 +36,13 @@ public class MidAir : BaseMovementState
     private AudioSync audioSync;
     private bool gotRedirectInput;
 
-    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
-        : base("MidAir", stateMachine, movementControl, fields, data)
+    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data, PlayerControls controls)
+        : base("MidAir", stateMachine, movementControl, fields, data, controls)
     {
         controls.Player.Redirect.performed += AddRedirect;
     }
+
+
 
     private void Awake()
     {
