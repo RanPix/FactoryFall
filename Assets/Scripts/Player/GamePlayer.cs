@@ -172,9 +172,11 @@ namespace Player
         {
             if (!isLocalPlayer)
                 return;
+
             audioSync = GetComponent<AudioSync>();
             InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
             print($"&&&&    =        {SceneManager.GetActiveScene().name}");
+
             if (isLocalPlayer)
             {
                 playerModel.SetActive(false);
@@ -296,7 +298,7 @@ namespace Player
 
             for (int i = 0; i < rays.Length; i++)
             {
-                if (weaponKeyCodes.currentWeapon.weaponAmmo.Ammo < 1)
+                if (weaponKeyCodes.currentWeapon.weaponAmmo.Ammo + 1 < 1)
                     break;
 
                 if(weaponKeyCodes.currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets != 0 || i == 0)
@@ -305,6 +307,8 @@ namespace Player
 
                 if (!weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
                 {
+                    CmdSpawnMuzzleFlash();
+
                     weaponKeyCodes.currentWeapon.animator.StopPlayback();
                     weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
                     weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
@@ -329,11 +333,21 @@ namespace Player
                 }
 
                 CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
-                CmdSpawnMuzzle();
+
+                
+                
+
+
                 if(i + 1 < rays.Length)
                     yield return new WaitForSeconds(timeBetweenShots);
 
             }
+
+            if (weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
+            {
+                CmdSpawnMuzzleFlash();
+            }
+
             weaponKeyCodes.currentWeapon.canShoot = true;
         }
 
@@ -401,16 +415,16 @@ namespace Player
         }
         
         [Command]
-        public void CmdSpawnMuzzle()
+        public void CmdSpawnMuzzleFlash()
         {
-            RpcSpawnMuzzle();
+            RpcSpawnMuzzleFlash();
         }
 
         [ClientRpc]
-        private void RpcSpawnMuzzle()
+        private void RpcSpawnMuzzleFlash()
         {
             Transform _muzzleFalsh = Instantiate(muzzleFlash, muzzlePosition.position, Quaternion.LookRotation(muzzlePosition.forward), muzzlePosition);
-            Destroy(_muzzleFalsh.gameObject, .1f);
+            Destroy(_muzzleFalsh.gameObject, 0.2f);
         }
         
 

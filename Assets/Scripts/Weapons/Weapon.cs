@@ -196,7 +196,7 @@ public class Weapon : MonoBehaviour
     {
         shootTimer = 0;
         nextFire = Time.time;
-        SpawnMuzzle();
+
         if (weaponScriptableObject.useOneAmmoPerShot)
         {
             animator.Play(shootAnimationName);
@@ -289,16 +289,6 @@ public void UpdateAmmo()
                 break;
         }
 
-    }
-
-    protected void SpawnMuzzle()
-    {/*
-        if (weaponScriptableObject.muzzleFlash is not null)
-        {
-            Transform spawnedMuzzle = Instantiate(weaponScriptableObject.muzzleFlash, muzzlePosition.position, muzzlePosition.rotation, muzzlePosition);
-
-            Destroy(spawnedMuzzle.gameObject, weaponScriptableObject.muzzleFlashLifetime);
-        }*/
     }
 
     public void OnDeath(string str)
