@@ -65,7 +65,7 @@ namespace FiniteMovementStateMachine
 
         #endregion
 
-        internal BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
+        internal BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data, PlayerControls controls)
         {
             this.name = name;
             this.stateMachine = stateMachine;
@@ -73,8 +73,7 @@ namespace FiniteMovementStateMachine
             this.fields = fields;
             this.data = data;
 
-            controls = new PlayerControls();
-            controls.Player.Enable();
+            this.controls = controls;
 
             controls.Player.Jump.performed += AddJump;
         }
@@ -134,18 +133,6 @@ namespace FiniteMovementStateMachine
         {
             Debug.LogWarning($"I was in {name} for a brief moment.\n\t   Override {MethodBase.GetCurrentMethod()?.Name} method");
             throw new NotImplementedException();
-        }
-
-        ///  <summary>
-        ///     Call to enable | disable control inputs
-        /// </summary>
-
-        public void ToggleControls(bool turnOn)
-        {
-            if (turnOn)
-                controls.Player.Enable();
-            else
-                controls.Player.Disable();
         }
 
         #endregion

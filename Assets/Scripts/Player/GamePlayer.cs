@@ -6,6 +6,7 @@ using System.Collections;
 using TMPro;
 using UI.Indicators;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.VFX;
 
 namespace Player
@@ -32,11 +33,9 @@ namespace Player
 
         [Header("Weapon")]
         [SerializeField] private GameObject ammoTextPrefab;
-        [SerializeField] private Transform trail;
         [SerializeField] private Transform hitIndicatorPrefab;
         [field: SerializeField] public WeaponKeyCodes weaponKeyCodes { get; private set; }
 
-        public Transform muzzlePosition;
 
 
 
@@ -74,32 +73,12 @@ namespace Player
 
         [field: SyncVar] public bool isDead { get; private set; }
 
-        [Header("Effects")]
-
-        [SerializeField] private Transform deathFX;
-        [SerializeField] private Transform spawnFX;
-
-        [Space(5)] 
-
-        [SerializeField] private Transform hitFX;
-
-        [Space(5)]
-
-        [SerializeField] private Transform redirectFX;
-        [SerializeField] private Transform redirectFXPos1;
-        [SerializeField] private Transform redirectFXPos2;
-
         [Space]
 
-        [Header("Audio")]
-        private AudioSync audioSync;
-
-
+        [Header("Effects")] 
+        [SerializeField] private PlayerVFX playerVFX;
 
         [Space]
-
-
-        private bool[] wasEnabled;
 
         [SerializeField] private CharacterController characterController;
 
@@ -114,6 +93,7 @@ namespace Player
         [SerializeField] private AudioSource audioSource;
 
 
+        private bool[] wasEnabled;
 
         private Scoreboard scoreboard;
         private OreInventoryItem oreInventory;
@@ -122,6 +102,7 @@ namespace Player
 
         private PlayerControls playerControls;
 
+        private AudioSync audioSync;
 #region Actions
         public Action<string, int> OnGotHit;
 
@@ -168,8 +149,13 @@ namespace Player
 
         private void Start()
         {
+            if (!isLocalPlayer)
+                return;
+
             audioSync = GetComponent<AudioSync>();
             InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
+            print($"&&&&    =        {SceneManager.GetActiveScene().name}");
+
             if (isLocalPlayer)
             {
                 playerModel.SetActive(false);
@@ -193,7 +179,7 @@ namespace Player
                 
                 CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
 
-                gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += RedirectFX;
+                gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += playerVFX.RedirectFX;
 
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
 
@@ -211,8 +197,9 @@ namespace Player
         private void OnDestroy()
         {
             health.onDeath -= Die;
-            gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= RedirectFX;
+            gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= playerVFX.RedirectFX;
             OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
+            
         }
 
 
@@ -224,6 +211,7 @@ namespace Player
             if (isLocalPlayer)
             {
                 Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition(team);
+                print("Scene - " + SceneManager.GetActiveScene().name);
                 transform.position = _spawnPoint.position;
                 transform.rotation = _spawnPoint.rotation;
 
@@ -267,11 +255,9 @@ namespace Player
                 return;
 
             nameGO.SetActive(true);
-            TMP_Text text = nameGO.GetComponentInChildren<TMP_Text>();
+            nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
 
-            //StartCoroutine(WaitForSyncTeam(text));
-            text.color = TeamToColor.GetTeamColor(team);
-            text.text = newName;
+            print("setup");
         }
 
 
@@ -289,7 +275,7 @@ namespace Player
 
             for (int i = 0; i < rays.Length; i++)
             {
-                if (weaponKeyCodes.currentWeapon.weaponAmmo.Ammo < 1)
+                if (weaponKeyCodes.currentWeapon.weaponAmmo.Ammo + 1 < 1)
                     break;
 
                 if(weaponKeyCodes.currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets != 0 || i == 0)
@@ -298,6 +284,8 @@ namespace Player
 
                 if (!weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
                 {
+                    playerVFX.CmdSpawnMuzzleFlash();
+
                     weaponKeyCodes.currentWeapon.animator.StopPlayback();
                     weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
                     weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
@@ -318,15 +306,25 @@ namespace Player
                             CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                         }
                     }
-                    SpawnHitFX(hit.point);
+                    playerVFX.SpawnHitFX(hit.point, hit.normal);
                 }
 
-                CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
+                playerVFX.CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
+
+                
+                
+
 
                 if(i + 1 < rays.Length)
                     yield return new WaitForSeconds(timeBetweenShots);
 
             }
+
+            if (weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
+            {
+                playerVFX.CmdSpawnMuzzleFlash();
+            }
+
             weaponKeyCodes.currentWeapon.canShoot = true;
         }
 
@@ -345,7 +343,7 @@ namespace Player
 
                     if (hitHealth)
                     {
-                        SpawnHitFX(hit.point);
+                        playerVFX.SpawnHitFX(hit.point, hit.normal);
                         StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
                         CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damageToPlayer, playerID);
                         audioSync.PlaySound(ClipType.player, true, "Arm_HitInPlayer");
@@ -355,7 +353,7 @@ namespace Player
                     {
                         StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
 
-                        SpawnHitFX(hit.point);
+                        playerVFX.SpawnHitFX(hit.point, hit.normal);
                         Ore _ore = hit.transform.GetComponent<Ore>();
                         CmdOreHit(damageToOre, GetNetID(), _ore);
                         audioSync.PlaySound(ClipType.player, true, "Arm_HitInOre");
@@ -373,26 +371,6 @@ namespace Player
         {
             ore.RpcCheckHP(damageToOre, netID);
         }
-
-        [Command]
-        public void CmdSpawnTrail(bool isHitted, Vector3 origin, Vector3 direction, Vector3 point, float shootRange)
-        {
-            RpcSpawnTrail(isHitted, origin, direction, point, shootRange);
-        }
-
-        [ClientRpc]
-        private void RpcSpawnTrail(bool isHitted, Vector3 origin, Vector3 direction, Vector3 point, float shootRange)
-        {
-            Transform _trail = Instantiate(trail);
-
-            LineRenderer line = _trail.GetComponent<LineRenderer>();
-
-
-            line.SetPosition(0, muzzlePosition.position);
-            Vector3 trailFinish = isHitted ? point : origin + direction * shootRange;
-            line.SetPosition(1, trailFinish);
-        }
-        
 
         [Command]
         private void CmdPlayerHit(string _playerID, int _damage, string _sourceID)
@@ -500,7 +478,7 @@ namespace Player
 
             GameManager.instance.OnPlayerKilledCallback?.Invoke(nickname, team, player.nickname, player.team);
 
-            SpawnDeathFX();
+            playerVFX.SpawnDeathFX();
         }
 
         [Command]
@@ -586,7 +564,7 @@ namespace Player
 
                 firstSetup = false;
             }
-            SpawnReSpawnFX();
+            playerVFX.SpawnReSpawnFX();
             SetDefaults();
         }
 
@@ -666,7 +644,7 @@ namespace Player
         }
 
         #endregion
-
+        /*
         #region Effects
 
 
@@ -701,6 +679,22 @@ namespace Player
 
             effectInstance.gameObject.GetComponent<VisualEffect>().SetBool("BlueTeam", isBlue);
             Destroy(effectInstance.gameObject, 0.13f);
+        }
+
+        public void SpawnJumpFX()
+        {
+            CmdSpawnJumpFX();
+        }
+        [Command]
+        public void CmdSpawnJumpFX()
+        {
+            RpcSpawnJumpFX();
+        }
+        [ClientRpc]
+        public void RpcSpawnJumpFX()
+        {
+            Transform _jumpEffect = Instantiate(jumpFX, jumpFXPos.position, Quaternion.identity, transform);
+            Destroy(_jumpEffect, .13f);
         }
 
 
@@ -748,26 +742,28 @@ namespace Player
 
         }
 
-        public void SpawnHitFX(Vector3 position)
+        public void SpawnHitFX(Vector3 position, Vector3 normal)
         {
-            CmdSpawnHitFX(position);
+            CmdSpawnHitFX(position, normal);
         }
 
         [Command]
-        private void CmdSpawnHitFX(Vector3 position)
+        private void CmdSpawnHitFX(Vector3 position, Vector3 normal)
         {
-            RpcSpawnHitFX(position);
+            RpcSpawnHitFX(position, normal);
         }
 
         [ClientRpc]
-        private void RpcSpawnHitFX(Vector3 position)
+        private void RpcSpawnHitFX(Vector3 position, Vector3 normal)
         {
             Transform _spawnedEffect = Instantiate(hitFX, position, Quaternion.identity);
+            //print(normal + position);
+            //_spawnedEffect.LookAt(position - normal);
             Destroy(_spawnedEffect.gameObject, 0.3f);
         }
 
         #endregion
-
+        */
         private IEnumerator ActivateForSeconds(GameObject GO, float time)
         {
             GO.SetActive(true);

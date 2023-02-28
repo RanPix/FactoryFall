@@ -38,6 +38,13 @@ public class GameManager : NetworkBehaviour
         //ChangeTeamSpawnPositions(PlayerInfoTransfer.instance.team);
     }
 
+    private void OnDestroy()
+    {
+        print("inst");
+        UnregisterAllPlayers();
+        instance = null;
+    }
+
     public void SetSceneCameraActive(bool state)
     {
         if (sceneCamera == null)
@@ -53,11 +60,42 @@ public class GameManager : NetworkBehaviour
     
     private static Dictionary<string, GamePlayer> players = new Dictionary<string, GamePlayer>();
 
+    public static int GetPlayersCount() => players.Count;
+
     public static void RegisterPlayer(string _netID, GamePlayer _player)
     {
         players.Add(_netID, _player);
-        
-        
+    }
+
+    public void UnregisterAllPlayers()
+    {
+        print($"removing {players.Count}");
+        int count = players.Count;
+        for (int i = 0; i < players.Count; i++)
+        {
+            players.Remove(players.Keys.ToArray()[i]);
+            print($"{i} iteration");
+            print($"{ players.Count} count");
+        }
+        print($"removed {players.Count}");
+
+    }
+
+    [Command(requiresAuthority = false)]
+    public void CmdUnRegisterAllPlayers()
+    {
+        if(!NetworkClient.active)
+            return;
+        RpcUnRegisterAllPlayers();
+    }
+
+    [ClientRpc]
+    public void RpcUnRegisterAllPlayers()
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            players.Remove(players.Keys.ToArray()[i]);
+        }
     }
 
     public static void UnRegisterPlayer(string _playerID)
@@ -129,20 +167,25 @@ public class GameManager : NetworkBehaviour
 
     public override void OnStopClient()
     {
-        base.OnStopClient();
 
         //SceneManager.UnloadSceneAsync();
+        SceneManager.UnloadSceneAsync("MAP_CageCastle");
         SceneManager.LoadScene("Main menu");
+        NetworkManager.singleton.StopClient();
+        base.OnStopClient();
     }
 
     public override void OnStopServer()
     {
-        base.OnStopServer();
 
         if (isClient)
         {
             //SceneManager.UnloadSceneAsync();
+            SceneManager.UnloadSceneAsync("MAP_CageCastle");
             SceneManager.LoadScene("Main menu");
         }
+        NetworkManager.singleton.StopHost();
+        base.OnStopServer();
     }
+
 }

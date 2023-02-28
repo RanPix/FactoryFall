@@ -33,14 +33,18 @@ public class MidAir : BaseMovementState
     private int _hasRedirects;
     public Action<int> OnRedirectsCountChange;
 
+    public Action OnJump;
+
     private AudioSync audioSync;
     private bool gotRedirectInput;
 
-    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
-        : base("MidAir", stateMachine, movementControl, fields, data)
+    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data, PlayerControls controls)
+        : base("MidAir", stateMachine, movementControl, fields, data, controls)
     {
         controls.Player.Redirect.performed += AddRedirect;
     }
+
+
 
     private void Awake()
     {
@@ -124,6 +128,7 @@ public class MidAir : BaseMovementState
 
     private void Jump()
     {
+        OnJump?.Invoke();
         if (fields.ScriptableFields.JumpOverlap) // Jump overlap fix check
             data.verticalMove =
                 data.verticalMove < fields.ScriptableFields.JumpHeight ?

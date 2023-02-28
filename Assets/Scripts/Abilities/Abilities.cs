@@ -44,11 +44,13 @@ public class Abilities : MonoBehaviour
     {
         for (int i = 0; i < jump.items.Count; i++)
         {
+            if(!jump.items[i])
+                return;
             jump.items[i].color = jump.inactiveColor;
-        }
-        for (int i = 0; i < jumpCount; i++)
-        {
-            jump.items[i].color = jump.activeColor;
+            if (i < jumpCount)
+            {
+                jump.items[i].color = jump.activeColor;
+            }
         }
 
     }

@@ -68,6 +68,8 @@ public class Look : MonoBehaviour
 
     private void UpdateCamera()
     {
+        if(!cam || !orientation)
+            return;
         if (!lookEnabled)
         {
             cam.transform.LookAt(spectatePlayer.position + new Vector3(0, 1f));
