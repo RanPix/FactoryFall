@@ -181,6 +181,11 @@ public class PlayerVFX : NetworkBehaviour
     [ClientRpc]
     private void RpcSpawnMuzzleFlash()
     {
+        if (!muzzlePosition || !muzzleFlash)
+        {
+            //Debug.LogError($"Muzzle position equals = {muzzlePosition!=null}\n Muzzle flash equals = {muzzleFlash != null}");
+            return;
+        }
         Transform _muzzleFalsh = Instantiate(muzzleFlash, muzzlePosition.position, Quaternion.LookRotation(muzzlePosition.forward), muzzlePosition);
         Destroy(_muzzleFalsh.gameObject, 0.2f);
     }

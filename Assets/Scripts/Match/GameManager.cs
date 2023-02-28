@@ -41,6 +41,7 @@ public class GameManager : NetworkBehaviour
     private void OnDestroy()
     {
         print("inst");
+        UnregisterAllPlayers();
         instance = null;
     }
 
@@ -59,6 +60,8 @@ public class GameManager : NetworkBehaviour
     
     private static Dictionary<string, GamePlayer> players = new Dictionary<string, GamePlayer>();
 
+    public static int GetPlayersCount() => players.Count;
+
     public static void RegisterPlayer(string _netID, GamePlayer _player)
     {
         players.Add(_netID, _player);
@@ -66,10 +69,15 @@ public class GameManager : NetworkBehaviour
 
     public void UnregisterAllPlayers()
     {
+        print($"removing {players.Count}");
+        int count = players.Count;
         for (int i = 0; i < players.Count; i++)
         {
             players.Remove(players.Keys.ToArray()[i]);
+            print($"{i} iteration");
+            print($"{ players.Count} count");
         }
+        print($"removed {players.Count}");
 
     }
 
