@@ -97,7 +97,7 @@ MonoBehaviour:
   sensetivitySlider: {fileID: 344607680008997598}
   FOVSlider: {fileID: 1635030752593817380}
   masterVolumeSlider: {fileID: 7331553829519710702}
-  graphicsQualitySelector: {fileID: 0}
+  graphicsQualitySelector: {fileID: 958911282993966925}
   MasterMixer: {fileID: 24100000, guid: 4031e8e6ff826a54c9847afefbc08c15, type: 2}
 --- !u!1 &235305749082972760
 GameObject:
@@ -714,9 +714,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Graphics
-
-'
+  m_text: Video
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 76ad7100400b1414982d6843b513740a, type: 2}
   m_sharedMaterial: {fileID: -8562007397176997475, guid: 76ad7100400b1414982d6843b513740a,
@@ -1329,6 +1327,11 @@ PrefabInstance:
       propertyPath: m_AnchorMin.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2060424675118726614, guid: beba200bccb0a0f488aee9ceb4dc3abc,
+        type: 3}
+      propertyPath: minValue
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7031676331827157084, guid: beba200bccb0a0f488aee9ceb4dc3abc,
         type: 3}
       propertyPath: m_Name
@@ -1347,12 +1350,12 @@ PrefabInstance:
     - target: {fileID: 7710534214880762221, guid: beba200bccb0a0f488aee9ceb4dc3abc,
         type: 3}
       propertyPath: m_Value
-      value: 10
+      value: 0.00001
       objectReference: {fileID: 0}
     - target: {fileID: 7710534214880762221, guid: beba200bccb0a0f488aee9ceb4dc3abc,
         type: 3}
       propertyPath: m_MaxValue
-      value: 200
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 7710534214880762221, guid: beba200bccb0a0f488aee9ceb4dc3abc,
         type: 3}
@@ -1558,6 +1561,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a73d92e9fd7b4d40bb5462ec111fb18, type: 3}
+--- !u!114 &958911282993966925 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
+    type: 3}
+  m_PrefabInstance: {fileID: 3464359709117302565}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ac060fd232649c64d800126bbfdbc7da, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &1854687269263913444 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 3003563342363555521, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,

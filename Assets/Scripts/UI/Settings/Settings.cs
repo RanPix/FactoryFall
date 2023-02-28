@@ -48,15 +48,29 @@ namespace PlayerSettings
         {
             graphicsQuality = graphicsQualitySelector.currentElement;
             PlayerPrefs.SetInt(graphicsQualityPrefsKey, graphicsQuality);
-            
-            //QualitySettings......
+
+            switch(graphicsQuality)
+            {
+                case 0:
+                    //??? ????? 
+                    break;
+                case 1:
+                    QualitySettings.currentLevel = QualityLevel.Simple;
+                    break;
+                case 2:
+                    QualitySettings.currentLevel = QualityLevel.Good;
+                    break;
+                case 3:
+                    QualitySettings.currentLevel = QualityLevel.Fantastic;
+                    break;
+            };
         }
 
 
-        public static float masterVolume = 60;
+        public static float masterVolume = 1;
         public const string masterVolumePrefsKey = "masterVolume";
         public const string MixerVolumeKey = "MasterVolume";
-        public const float masterVolumeMultiplier = 8.5f;
+        public const float masterVolumeMultiplier = 20;
         public void UpdateMasterVolumeValue()
         {
             masterVolume = masterVolumeSlider.value;
@@ -72,7 +86,6 @@ namespace PlayerSettings
             FOVSlider.value = FOV;
             masterVolumeSlider.value = masterVolume;
             graphicsQualitySelector.currentElement = graphicsQuality;
-            graphicsQualitySelector.UpdateElementText();
         }
     }
 }

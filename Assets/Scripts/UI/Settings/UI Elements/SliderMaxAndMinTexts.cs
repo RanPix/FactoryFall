@@ -7,11 +7,14 @@ using TMPro;
 public class SliderMaxAndMinTexts : MonoBehaviour
 {
     [SerializeField] Slider slider;
+
+    [SerializeField] string minValue;//if no value, it sets texts automaticly
+    [SerializeField] string maxValue;
     [SerializeField] TMP_Text minValueText;
     [SerializeField] TMP_Text MaxValueText;
     void Start()
     {
-        minValueText.text = slider.minValue.ToString();
-        MaxValueText.text = slider.maxValue.ToString();
+        minValueText.text = minValue == "" ? slider.minValue.ToString() : minValue;
+        MaxValueText.text = maxValue == "" ? slider.maxValue.ToString() : maxValue;
     }
 }
