@@ -33,13 +33,13 @@ public class NetworkManagerFF : NetworkManager
         return spawnPositions[Random.Range(0, spawnPositions.Count - 1)];
     }
 
-    /*public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        //GameManager.instance.CmdRemovePlayerFromAllClientsLists(conn.identity.netId.ToString());
-        GameManager.instance.CmdUnRegisterAllPlayers();
+        GameManager.instance.CmdRemovePlayerFromAllClientsLists(conn.identity.netId.ToString());
+        //GameManager.instance.CmdUnRegisterAllPlayers();
 
         base.OnServerDisconnect(conn);
-    }*/
+    }
 
 
     public override void OnStopHost()
@@ -73,6 +73,7 @@ public class NetworkManagerFF : NetworkManager
     }
     public override void OnStopClient()
     {
+        GameManager.instance?.CmdRemovePlayerFromAllClientsLists(NetworkClient.localPlayer.GetComponent<GamePlayer>().netId.ToString());
         GameManager.instance?.UnregisterAllPlayers();
         playersCurrentTeam = Team.Null;
 

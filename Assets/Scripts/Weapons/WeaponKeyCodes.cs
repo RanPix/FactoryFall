@@ -21,6 +21,7 @@ public class WeaponKeyCodes : NetworkBehaviour
     public int currentWeaponIndex = -1;
     public GameObject[] weapons;
     public List<int> activatedWeaponsIndexes = new List<int>();
+    [SyncVar] public int currentWeaponChildIndex = 0;
 
     [Space]
     [Header("Audio")]
@@ -90,7 +91,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         CmdChangeWeapon(currentWeaponIndex, index);
         WeaponInventory.instance.ChangeBlurIcon(index, currentWeaponIndex);
         currentWeaponIndex = index;
-
+        
         weapons[currentWeaponIndex].SetActive(true);
 
         currentWeapon = weapons[index].GetComponent<Weapon>();
@@ -100,15 +101,28 @@ public class WeaponKeyCodes : NetworkBehaviour
         //currentWeapon.UpdateAmmo(); 
     }
 
-    [Command]
+
+
+    [Command(requiresAuthority = false)]
     public void CmdChangeWeapon(int currentIndex, int newIndex)
     {
+        for (int i = 0; i < weaponHolder.childCount; i++)
+        {
+            if(weaponHolder.GetChild(i).gameObject == weapons[newIndex].gameObject)
+            {
+                currentWeaponChildIndex = i; 
+                break;
+            }
+
+        }
         RpcChangeWeapon(currentIndex, newIndex);
     }
 
     [ClientRpc]
     private void RpcChangeWeapon(int currentIndex, int newIndex)
     {
+        if (gamePlayer.isLocalPlayer)
+            return;
         weapons[currentIndex].SetActive(false);
         weapons[newIndex].SetActive(true);
         currentWeapon = weapons[newIndex].GetComponent<Weapon>();
@@ -127,6 +141,7 @@ public class WeaponKeyCodes : NetworkBehaviour
     {
         GetComponent<NetworkAnimator>().animator = currentWeapon.GetComponentInChildren<Animator>();
         GetComponent<NetworkAnimator>().SetValues();
+        print($"muzzle position was been here    =           {currentWeapon.muzzlePosition!=null}");
         GetComponent<PlayerVFX>().muzzlePosition = currentWeapon.muzzlePosition;
         if (!isLocalPlayer)
             return;

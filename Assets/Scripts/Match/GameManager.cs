@@ -103,7 +103,7 @@ public class GameManager : NetworkBehaviour
         players.Remove(_playerID);
     }
 
-    [Server]
+    [Command(requiresAuthority = false)]
     public void CmdRemovePlayerFromAllClientsLists(string netID)
     {
         RpcRemovePlayerFromAllClientsLists(netID);

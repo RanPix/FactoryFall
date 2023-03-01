@@ -267,6 +267,10 @@ namespace Player
         
         public IEnumerator Shoot(Ray[] rays, int damage, float shootRange, string playerID, float timeBetweenShots)
         {
+            if (!isLocalPlayer)
+            {
+                yield break;
+            }
             weaponKeyCodes.currentWeapon.canShoot = false;
 
             if(rays.Length < 1 || rays.Length != weaponKeyCodes.currentWeapon.weaponScriptableObject.numberOfBulletsPerShot)
@@ -284,7 +288,7 @@ namespace Player
 
                 if (!weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
                 {
-                    playerVFX.CmdSpawnMuzzleFlash();
+                   playerVFX.CmdSpawnMuzzleFlash();
 
                     weaponKeyCodes.currentWeapon.animator.StopPlayback();
                     weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
