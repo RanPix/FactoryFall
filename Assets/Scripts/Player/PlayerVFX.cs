@@ -1,9 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using FiniteMovementStateMachine;
 using Mirror;
 using Player;
 using UnityEngine;
+using UnityEngine.UI;
 using UnityEngine.VFX;
 
 public class PlayerVFX : NetworkBehaviour
@@ -36,9 +35,17 @@ public class PlayerVFX : NetworkBehaviour
     [SerializeField] private Transform muzzleFlash;
     public Transform muzzlePosition;
 
+    [Space]
+
+    [SerializeField] private GameObject damageVingette;
+    [SerializeField] private Image damageVingetteImage;
+
     private void Start()
     {
         GetComponent<MovementMachine>().midAir.OnJump += SpawnJumpFX;
+
+        damageVingette = CanvasInstance.instance.damageVingette;
+        damageVingetteImage = damageVingette.GetComponent<Image>();
     }
 
     public void RedirectFX(Vector2 inputVector)
@@ -86,6 +93,9 @@ public class PlayerVFX : NetworkBehaviour
     [ClientRpc]
     public void RpcSpawnJumpFX()
     {
+        if (isLocalPlayer)
+            return;
+
         Transform _jumpEffect = Instantiate(jumpFX, jumpFXPos.position, Quaternion.identity, transform);
         Destroy(_jumpEffect.gameObject, .2f);
     }
@@ -156,6 +166,9 @@ public class PlayerVFX : NetworkBehaviour
     [Command]
     public void CmdSpawnTrail(bool isHitted, Vector3 origin, Vector3 direction, Vector3 point, float shootRange)
     {
+        if ((origin - point).magnitude < 5f)
+            return;
+
         RpcSpawnTrail(isHitted, origin, direction, point, shootRange);
     }
 
@@ -187,9 +200,16 @@ public class PlayerVFX : NetworkBehaviour
             muzzlePosition = player.weaponKeyCodes.weaponHolder.GetChild(player.weaponKeyCodes.currentWeaponChildIndex).GetComponent<Weapon>().muzzlePosition;
         }
         Transform _muzzleFalsh = Instantiate(muzzleFlash, muzzlePosition.position, Quaternion.LookRotation(muzzlePosition.forward), muzzlePosition);
+        if (isLocalPlayer)
+            _muzzleFalsh.gameObject.layer = LayerMask.NameToLayer("Weapon");
+
         Destroy(_muzzleFalsh.gameObject, 0.2f);
     }
 
 
+    [Client]
+    private void PlayerDamagedVingette()
+    {
 
+    }
 }

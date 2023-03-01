@@ -12,19 +12,19 @@ public class WeaponAmmo : MonoBehaviour
     public void ResetAmmo()
     {
         Ammo = ClipSize;
-        UpdateAmmoInScreen();
+        UpdateAmmoOnScreen();
     }
     public void SetAmmo(int count)
     {
         Ammo = count;
-        UpdateAmmoInScreen();
+        UpdateAmmoOnScreen();
     }
     public void AddAmmo(int count)
     {
         Ammo += count;
-        UpdateAmmoInScreen();
+        UpdateAmmoOnScreen();
     }
-    public void UpdateAmmoInScreen()
+    public void UpdateAmmoOnScreen()
     {
         AmmoText.text = Ammo.ToString();
         if (Ammo <= 0) Ammo = 0;

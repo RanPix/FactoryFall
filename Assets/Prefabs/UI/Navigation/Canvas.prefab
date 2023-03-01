@@ -327,6 +327,7 @@ MonoBehaviour:
   tabBar: {fileID: 5155247850615335583}
   selectedWeaponInfo: {fileID: 1375380051440877333}
   mainChat: {fileID: 1989678341354774664}
+  damageVingette: {fileID: 3282467105061186850}
 --- !u!1 &2516031900871155941
 GameObject:
   m_ObjectHideFlags: 0

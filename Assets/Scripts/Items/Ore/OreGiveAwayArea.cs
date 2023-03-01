@@ -1,6 +1,5 @@
 using System;
 using Mirror;
-using Player;
 using UnityEngine;
 
 public class OreGiveAwayArea : MonoBehaviour

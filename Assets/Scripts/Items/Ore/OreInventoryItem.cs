@@ -2,6 +2,7 @@ using System;
 using TMPro;
 using Mirror;
 using UnityEngine;
+using Player;
 
 public class OreInventoryItem : MonoBehaviour
 {
@@ -17,8 +18,10 @@ public class OreInventoryItem : MonoBehaviour
         set
         {
             _currentCount = value;
+
             if(value != 0)
                 NetworkClient.localPlayer.GetComponent<AudioSync>().PlaySound(ClipType.player, true, "TakeOre");
+
             OnCurrentCountchange?.Invoke();
         }
     }
@@ -35,8 +38,10 @@ public class OreInventoryItem : MonoBehaviour
 
     private void Start()
     {
+        //GetComponentInParent<GamePlayer>().OnDeath += (_, _, _, _) => ResetCount;
         OreGiveAwayArea.instance.OnAreaEnter += ResetCount;
     }
+
     private void OnDestroy()
     {
         OnCurrentCountchange -= UpdateCountText;
@@ -45,9 +50,9 @@ public class OreInventoryItem : MonoBehaviour
     }
 
 
-
     private void ResetCount(int amount) 
         => currentCount = 0;
+
     private void UpdateCountText()
     {
         oreAmountText.text = $"{currentCount}/{maxCount}";

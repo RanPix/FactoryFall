@@ -74,8 +74,10 @@ public class TabBar : MonoBehaviour
     {
         if(!canOpen)
             return;
+
         bluePartUnsorted.Clear();
         redPartUnsorted.Clear();
+
         for (int i = 0; i < GameManager.GetAllPlayers().Length; i++)
         {
             switch (GameManager.GetAllPlayers()[i].team)
@@ -83,6 +85,7 @@ public class TabBar : MonoBehaviour
                 case Team.Blue:
                     bluePartUnsorted.Add(GameManager.GetAllPlayers()[i].GetNetID(), GameManager.GetAllPlayers()[i].kills);
                     break;
+
                 case Team.Red:
                     redPartUnsorted.Add(GameManager.GetAllPlayers()[i].GetNetID(), GameManager.GetAllPlayers()[i].kills);
                     break;
@@ -105,7 +108,7 @@ public class TabBar : MonoBehaviour
 
             GamePlayer _bluePlayer = GameManager.GetPlayer(bluePartUnsorted.Keys.ToArray()[maxKDIndex]);
 
-            bluePart.transform.GetChild(i).GetComponent<TabBarItem>().SetValues(_bluePlayer.nickname, _bluePlayer.kills, _bluePlayer.deaths, 10);
+            bluePart.transform.GetChild(i).GetComponent<TabBarItem>().SetValues(_bluePlayer.nickname, _bluePlayer.kills, _bluePlayer.deaths, _bluePlayer.score);
             
             if (_bluePlayer.gameObject == NetworkClient.localPlayer?.gameObject)
             {
@@ -125,11 +128,11 @@ public class TabBar : MonoBehaviour
             int maxKDIndex = redPartUnsorted.Values.ToList().IndexOf(redPartUnsorted.Values.Max());
             redPart.transform.GetChild(i).gameObject.SetActive(true);
 
-            GamePlayer _bluePlayer = GameManager.GetPlayer(redPartUnsorted.Keys.ToArray()[maxKDIndex]);
+            GamePlayer _redPlayer = GameManager.GetPlayer(redPartUnsorted.Keys.ToArray()[maxKDIndex]);
 
-            redPart.transform.GetChild(i).GetComponent<TabBarItem>().SetValues(_bluePlayer.nickname, _bluePlayer.kills, _bluePlayer.deaths, 10);
+            redPart.transform.GetChild(i).GetComponent<TabBarItem>().SetValues(_redPlayer.nickname, _redPlayer.kills, _redPlayer.deaths, _redPlayer.score);
 
-            if (_bluePlayer.gameObject == NetworkClient.localPlayer.gameObject)
+            if (_redPlayer.gameObject == NetworkClient.localPlayer.gameObject)
             {
                 redPart.transform.GetChild(i).GetComponent<Image>().color = ownRedColor;
 

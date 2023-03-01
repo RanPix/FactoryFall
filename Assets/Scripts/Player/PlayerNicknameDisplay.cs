@@ -14,6 +14,7 @@ public class PlayerNicknameDisplay : MonoBehaviour
 
     [SerializeField] private TMP_Text text;
     [SerializeField] private Team thisTeam;
+    [SerializeField] private bool isInSameTeam;
 
     private bool nicknameSettedUp;
 
@@ -32,9 +33,12 @@ public class PlayerNicknameDisplay : MonoBehaviour
         {
             Team localPlayerTeam = localPlayer.GetComponent<GamePlayer>().team;
 
-            GetComponentInChildren<TMP_Text>().fontSharedMaterial =
-                localPlayerTeam == team ?
-                ROTFontMaterial :
+            isInSameTeam = localPlayerTeam == team; //?
+                //true:
+                //false;
+            GetComponentInChildren<TMP_Text>().fontSharedMaterial = 
+                isInSameTeam ?
+                ROTFontMaterial:
                 normalFontMaterial;
 
             nicknameSettedUp = true;
@@ -50,8 +54,15 @@ public class PlayerNicknameDisplay : MonoBehaviour
         {
             transform.LookAt(cam.transform);
 
-            float magnitudeFromCamera = (cam.transform.position - transform.position).magnitude * 0.09f;
-            transform.localScale = new Vector3(magnitudeFromCamera, magnitudeFromCamera, magnitudeFromCamera);
+            print($"team {thisTeam}");
+
+            if (isInSameTeam)
+            {
+                print("insane");
+
+                float magnitudeFromCamera = Mathf.Clamp((cam.transform.position - transform.position).magnitude * 0.09f, 2f, 1000f);
+                transform.localScale = new Vector3(magnitudeFromCamera, magnitudeFromCamera, magnitudeFromCamera);
+            }
 
             if (nicknameSettedUp == false)
             {

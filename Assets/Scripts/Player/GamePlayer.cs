@@ -257,7 +257,7 @@ namespace Player
             nameGO.SetActive(true);
             nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
 
-            print("setup");
+            print(NetworkClient.localPlayer?.GetComponent<Transform>());
         }
 
 
@@ -293,7 +293,7 @@ namespace Player
                     weaponKeyCodes.currentWeapon.animator.StopPlayback();
                     weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
                     weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
-                    weaponKeyCodes.currentWeapon.weaponAmmo.UpdateAmmoInScreen();
+                    weaponKeyCodes.currentWeapon.weaponAmmo.UpdateAmmoOnScreen();
                     weaponKeyCodes.currentWeapon.recoil.RecoilFire();
                 }
                 bool isHitted = Physics.Raycast(rays[i], out RaycastHit hit, shootRange, hitMask, QueryTriggerInteraction.Ignore);

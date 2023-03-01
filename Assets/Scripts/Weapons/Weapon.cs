@@ -44,6 +44,7 @@ public enum WeaponType
 [RequireComponent(typeof(WeaponRecoil))]
 public class Weapon : MonoBehaviour
 {
+    
 
     public WeaponScriptableObject weaponScriptableObject;
 
@@ -168,12 +169,9 @@ public class Weapon : MonoBehaviour
         gunCam = cam.GetComponentInChildren<Camera>();
 
         audioSync = NetworkClient.localPlayer.GetComponent<AudioSync>();
-
-
         weaponAmmo = Instantiate(weaponAmmo.gameObject).GetComponent<WeaponAmmo>();
 
         UpdateAmmo();
-
 
         canShoot = true;
 
@@ -189,7 +187,7 @@ public class Weapon : MonoBehaviour
 
     private void Update()
     {
-        shootTimer+=Time.deltaTime;
+        shootTimer += Time.deltaTime;
     }
 
     public Ray[] Shoot()
@@ -201,7 +199,7 @@ public class Weapon : MonoBehaviour
         {
             animator.Play(shootAnimationName);
             weaponAmmo.Ammo--;
-            weaponAmmo.UpdateAmmoInScreen();
+            weaponAmmo.UpdateAmmoOnScreen();
             recoil.RecoilFire();
         }
 
@@ -211,14 +209,14 @@ public class Weapon : MonoBehaviour
 
 
 
-public void UpdateAmmo()
+    public void UpdateAmmo()
     {
         weaponAmmo.Ammo = weaponScriptableObject.maxAmmo;
         weaponAmmo.ClipSize = weaponScriptableObject.maxAmmo;
         weaponAmmo.ReserveAmmo = reserveAmmo;
 
         weaponAmmo.AmmoText = ammoText;
-        weaponAmmo.UpdateAmmoInScreen();
+        weaponAmmo.UpdateAmmoOnScreen();
     }
 
     /*void OnEnable()
@@ -253,13 +251,13 @@ public void UpdateAmmo()
             if (!wasChanged && weaponType != WeaponType.Shotgun)
             {
                 weaponAmmo.ResetAmmo();
-                weaponAmmo.UpdateAmmoInScreen();
+                weaponAmmo.UpdateAmmoOnScreen();
 
             }
             else if (!wasChanged && weaponType == WeaponType.Shotgun)
             {
                 weaponAmmo.AddAmmo(1);
-                weaponAmmo.UpdateAmmoInScreen();
+                weaponAmmo.UpdateAmmoOnScreen();
             }
             canShoot = true;
             reloading = false;

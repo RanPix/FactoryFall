@@ -86,6 +86,7 @@ public class GameManager : NetworkBehaviour
     {
         if(!NetworkClient.active)
             return;
+
         RpcUnRegisterAllPlayers();
     }
 

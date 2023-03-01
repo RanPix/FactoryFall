@@ -4,7 +4,6 @@ using Mirror;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SceneManagement;
 using Weapons;
 
 [RequireComponent(typeof(AudioSync))]
@@ -33,19 +32,22 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     public bool canShoot = true;
 
-    void Start()
+    private void Start()
     {
         if (!isLocalPlayer)
             return;
+
         CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
+
         arm._isLocalPLayer = true;
+
         audioSync = GetComponent<AudioSync>();
         weaponAudioSource = weaponHolder.GetComponent<AudioSource>();
+
         controls = new PlayerControls();
         //WeaponInventory.instance.OnWeaponchange.Invoke(0); 
         controls.Player.Enable();
         controls.Player.WeaponInventory.performed += GetWeaponIndex;
-
     }
 
     private void OnDestroy()
@@ -54,10 +56,11 @@ public class WeaponKeyCodes : NetworkBehaviour
             controls?.Player.Disable();
     }
 
-    void Update()
+    private void Update()
     {
         if (!isLocalPlayer || !currentWeapon || !weaponsWasSelected || !canShoot)
             return;
+
         KeyCodes();
     }
 
@@ -98,7 +101,8 @@ public class WeaponKeyCodes : NetworkBehaviour
         currentWeapon.wasChanged = false;
         currentWeapon._isLocalPLayer = true;
         ChangeAnotherValuesAfterChangeWeapon();
-        //currentWeapon.UpdateAmmo(); 
+
+        currentWeapon.weaponAmmo.UpdateAmmoOnScreen();
     }
 
 
@@ -125,15 +129,19 @@ public class WeaponKeyCodes : NetworkBehaviour
             return;
         weapons[currentIndex].SetActive(false);
         weapons[newIndex].SetActive(true);
+
         currentWeapon = weapons[newIndex].GetComponent<Weapon>();
+
         ChangeAnotherValuesAfterChangeWeapon();
     }
 
     public void GetWeaponIndex(InputAction.CallbackContext context)
     {
         int index = (int)context.ReadValue<float>();
+
         if (!weaponsWasSelected || !canShoot)
             return;
+
         ChangeWeapon(index, index == 0 ? 1 : 0);
     }
 
@@ -143,9 +151,12 @@ public class WeaponKeyCodes : NetworkBehaviour
         GetComponent<NetworkAnimator>().SetValues();
         print($"muzzle position was been here    =           {currentWeapon.muzzlePosition!=null}");
         GetComponent<PlayerVFX>().muzzlePosition = currentWeapon.muzzlePosition;
+
         if (!isLocalPlayer)
             return;
+
         weaponAudioSource.Stop();
+
         WeaponSway _sway = weaponHolder.GetComponent<WeaponSway>();
         _sway.weapon = currentWeapon.transform;
         _sway.normalWeaponPosition = currentWeapon.initialWeaponPosition;
