@@ -49,21 +49,7 @@ namespace PlayerSettings
             graphicsQuality = graphicsQualitySelector.currentElement;
             PlayerPrefs.SetInt(graphicsQualityPrefsKey, graphicsQuality);
 
-            switch(graphicsQuality)
-            {
-                case 0:
-                    //??? ????? 
-                    break;
-                case 1:
-                    QualitySettings.currentLevel = QualityLevel.Simple;
-                    break;
-                case 2:
-                    QualitySettings.currentLevel = QualityLevel.Good;
-                    break;
-                case 3:
-                    QualitySettings.currentLevel = QualityLevel.Fantastic;
-                    break;
-            };
+            QualitySettings.SetQualityLevel(graphicsQuality);
         }
 
 
