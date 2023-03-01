@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 using TMPro;
 
 public class ArrayElementSelector : MonoBehaviour
@@ -8,6 +9,7 @@ public class ArrayElementSelector : MonoBehaviour
     [SerializeField] public int currentElement;
     [SerializeField] public string[] elements;
     [SerializeField] private TMP_Text elementText;
+    [SerializeField] private UnityEvent OnElementChange;
 
     void Start()
     {
@@ -21,6 +23,7 @@ public class ArrayElementSelector : MonoBehaviour
         else
             currentElement++;
         UpdateElementText();
+        OnElementChange.Invoke();
     }
 
     public void PreviousElement()
@@ -30,6 +33,7 @@ public class ArrayElementSelector : MonoBehaviour
         else
             currentElement--;
         UpdateElementText();
+        OnElementChange.Invoke();
     }
 
     public void UpdateElementText()

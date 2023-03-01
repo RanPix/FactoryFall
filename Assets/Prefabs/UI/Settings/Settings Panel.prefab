@@ -988,7 +988,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 'Graphics
+  m_text: 'Graphics quality
 
 '
   m_isRightToLeft: 0
@@ -1527,12 +1527,12 @@ PrefabInstance:
     - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
         type: 3}
       propertyPath: currentElement
-      value: 2
+      value: 4
       objectReference: {fileID: 0}
     - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
         type: 3}
       propertyPath: elements.Array.size
-      value: 4
+      value: 6
       objectReference: {fileID: 0}
     - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
         type: 3}
@@ -1547,17 +1547,47 @@ PrefabInstance:
     - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
         type: 3}
       propertyPath: elements.Array.data[2]
-      value: medium
+      value: lower
       objectReference: {fileID: 0}
     - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
         type: 3}
       propertyPath: elements.Array.data[3]
+      value: medium
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
+        type: 3}
+      propertyPath: elements.Array.data[4]
       value: high
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
+        type: 3}
+      propertyPath: elements.Array.data[5]
+      value: best
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
+        type: 3}
+      propertyPath: OnElementChange.m_PersistentCalls.m_Calls.Array.data[0].m_Target
+      value: 
+      objectReference: {fileID: 5326630278377874165}
+    - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
+        type: 3}
+      propertyPath: OnElementChange.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: UpdateGraphicsQuality
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
+        type: 3}
+      propertyPath: OnElementChange.m_PersistentCalls.m_Calls.Array.data[0].m_TargetAssemblyTypeName
+      value: PlayerSettings.Settings, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 4421792078907107432, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
+        type: 3}
+      propertyPath: OnElementChange.m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
       objectReference: {fileID: 0}
     - target: {fileID: 6793168253934276714, guid: 1a73d92e9fd7b4d40bb5462ec111fb18,
         type: 3}
       propertyPath: m_Name
-      value: Array Element Selector
+      value: Graphics Quality Array Element Selector
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 1a73d92e9fd7b4d40bb5462ec111fb18, type: 3}
