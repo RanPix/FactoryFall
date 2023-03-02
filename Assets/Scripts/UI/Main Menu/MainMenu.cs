@@ -9,9 +9,8 @@ using TMPro;
 public enum ButtonGroup
 {
     Main = 0,
-    ConnectToSomeoneOrHost = 1,
-    Host = 2,
-    ConnectToSomeone = 3,
+    JoinOrHost = 1,
+    Join = 2,
 }
 
 public class MainMenu : MonoBehaviour
@@ -33,6 +32,7 @@ public class MainMenu : MonoBehaviour
     void Start()
     {
         SetMainButtonGroup();
+        manager = GameObject.FindObjectOfType<NetworkManager>();
     }
 
     public void Join()
@@ -54,11 +54,9 @@ public class MainMenu : MonoBehaviour
     public void SetMainButtonGroup()
         => SetMenuButtonGroup(ButtonGroup.Main);
     public void SetConnectToSomeoneOrHostButtonGroup()
-        => SetMenuButtonGroup(ButtonGroup.ConnectToSomeoneOrHost);
-    public void SetHostButtonGroup()
-        => SetMenuButtonGroup(ButtonGroup.Host);
+        => SetMenuButtonGroup(ButtonGroup.JoinOrHost);
     public void SetConnectToSomeoneButtonGroup()
-        => SetMenuButtonGroup(ButtonGroup.ConnectToSomeone);
+        => SetMenuButtonGroup(ButtonGroup.Join);
 
     public void SetMenuButtonGroup(ButtonGroup buttonGroup)
     {
