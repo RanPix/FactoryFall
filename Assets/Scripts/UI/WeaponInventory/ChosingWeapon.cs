@@ -18,6 +18,10 @@ public class ChosingWeapon : MonoBehaviour
         Menu.Instance.canOpenMenu = false;
         Menu.Instance.look.canRotateCamera = false;
         CanvasInstance.instance.tabBar.canOpen = false;
+        CanvasInstance.instance.tipsManager.gameObject.SetActive(true);
+
+        if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
+            CanvasInstance.instance.tipsManager.ActivateTip("ChosingWeapon");
 
     }
 
@@ -72,7 +76,9 @@ public class ChosingWeapon : MonoBehaviour
         CanvasInstance.instance.selectedWeaponInfo.TurnOff();
 
         CursorManager.instance.SetCursorLockState(CursorLockMode.Locked);
-        
+        if(CanvasInstance.instance.tipsManager.isActiveAndEnabled)
+            CanvasInstance.instance.tipsManager.ActivateTip("PressTab");
+
         OnActivateWeapons?.Invoke(firstIndex, secondIndex);
 
     }

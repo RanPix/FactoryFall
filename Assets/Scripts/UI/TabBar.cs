@@ -64,9 +64,10 @@ public class TabBar : MonoBehaviour
         }
         else if (controls.UI.OpenTabBar.WasReleasedThisFrame() && isOpen)
         {
+            if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
+                CanvasInstance.instance.tipsManager.ActivateTip("HitOre");
             view.SetActive(false);
-
-            isOpen = false;
+                isOpen = false;
         }
     }
 

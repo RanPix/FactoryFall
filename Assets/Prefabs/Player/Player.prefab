@@ -664,6 +664,7 @@ MonoBehaviour:
   - {fileID: 152426027125627892}
   - {fileID: 4669288630619760332}
   activatedWeaponsIndexes: 
+  currentWeaponChildIndex: 0
   changeWeaponClip: {fileID: 0}
   canShoot: 1
 --- !u!114 &6120899351348563184
@@ -722,9 +723,9 @@ MonoBehaviour:
     - {fileID: 8300000, guid: 9cadf066a823a044b86868f8c4b8d253, type: 3}
     - {fileID: 8300000, guid: 352eb14932a78714085faf8f61d939e4, type: 3}
     - {fileID: 8300000, guid: 9033123de8cbac04f816531adb98bfce, type: 3}
+    - {fileID: 8300000, guid: 27fad9c4e3d064a449f2cf23147776e7, type: 3}
     - {fileID: 0}
-    - {fileID: 0}
-    - {fileID: 0}
+    - {fileID: 8300000, guid: f51b85fa02914a94d8a0c8af6b172448, type: 3}
   playerAudioEffects:
     names:
     - Run

@@ -18,6 +18,7 @@ public class CanvasInstance : MonoBehaviour
     public WeaponInfo selectedWeaponInfo;
     public MainChat mainChat;
     public GameObject damageVingette;
+    public TipsManager tipsManager;
 
     void Awake()
     {
