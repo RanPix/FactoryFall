@@ -9,7 +9,7 @@ public class MoveCamera : MonoBehaviour
     {
         if (!transform || !cameraPosition) 
             return;
-        print("Camera "+SceneManager.GetActiveScene().name);
+        //print("Camera "+SceneManager.GetActiveScene().name);
         transform.position = cameraPosition.position;
     }
 }
