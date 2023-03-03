@@ -2,12 +2,13 @@ using UnityEngine;
 using TMPro;
 using Mirror;
 using UnityEngine.UI;
+using PlayerSettings;
 
 namespace GameBase
 {
     public class HealthBar : MonoBehaviour
     {
-        [SerializeField] private Image healthBar;
+        [SerializeField] public Image healthBar;
         [SerializeField] private TMP_Text HPText;
         [SerializeField] private float smoothness;
 
@@ -16,15 +17,19 @@ namespace GameBase
 
         private Health localPlayerHealth;
 
+        static public Color[] healthBarColors = new Color[7] { Color.red, Color.green, Color.blue, Color.cyan, Color.magenta, Color.yellow, Color.white };//it would be const if it could be const
+
+        public void UpdateColor()
+            => healthBar.color = healthBarColors[Settings.healthBarColor];
+
         private void Start()
         {
-
             localPlayerHealth = NetworkClient.localPlayer.gameObject.GetComponent<Health>();
             localPlayerHealth.OnHealthChanged += OnHealthChanged;
 
             healthPercent = localPlayerHealth.currentHealth;
 
-
+            UpdateColor();
             OnHealthChanged();
         }
 

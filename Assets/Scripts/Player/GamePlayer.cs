@@ -26,6 +26,7 @@ namespace Player
 
         [Header("Health")]
         [SerializeField] private Health health;
+        [SerializeField] public GameObject healthBar;
         [SerializeField] private GameObject healthBarPrefab;
 
 
@@ -172,7 +173,7 @@ namespace Player
 
                 health.onDeath += Die;
 
-                Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
+                healthBar = Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
 
                 GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
                 menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using Mirror;
+using GameBase;
 using Player;
 using UnityEngine.Audio;
 
@@ -15,6 +16,7 @@ namespace PlayerSettings
         [SerializeField] private Slider FOVSlider;
         [SerializeField] private Slider masterVolumeSlider;
         [SerializeField] private ArrayElementSelector graphicsQualitySelector;
+        [SerializeField] private ArrayElementSelector healthBarColorSelector;
 
         [Space]
 
@@ -66,12 +68,28 @@ namespace PlayerSettings
         }
 
 
+        public static int healthBarColor = 0;
+        public const string healthBarColorPrefsKey = "healthBarColor";
+        public void UpdatehealthBarColor()
+        {
+            healthBarColor = healthBarColorSelector.currentElement;
+            PlayerPrefs.SetFloat(healthBarColorPrefsKey, healthBarColor);
+            if (NetworkClient.localPlayer != null)
+            {
+                GamePlayer gamePlayer = NetworkClient.localPlayer.GetComponent<GamePlayer>();
+                gamePlayer.healthBar.GetComponent<HealthBar>().UpdateColor();
+            }
+        }
+
+
         private void Awake()
         {
             sensetivitySlider.value = sensetivity;
             FOVSlider.value = FOV;
             masterVolumeSlider.value = masterVolume;
             graphicsQualitySelector.currentElement = graphicsQuality;
+            healthBarColorSelector.currentElement = healthBarColor;
+            UpdatehealthBarColor();
         }
     }
 }

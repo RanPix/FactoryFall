@@ -2650,6 +2650,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6621000310825607199, guid: 1acee46df367ccf4cb308b4fbdd8dd56,
+        type: 3}
+      propertyPath: m_AnchorMax.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621000310825607199, guid: 1acee46df367ccf4cb308b4fbdd8dd56,
+        type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6621000310825607199, guid: 1acee46df367ccf4cb308b4fbdd8dd56,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7593988369823988146, guid: 1acee46df367ccf4cb308b4fbdd8dd56,
         type: 3}
       propertyPath: m_SizeDelta.y

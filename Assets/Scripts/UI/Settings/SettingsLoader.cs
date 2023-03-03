@@ -13,6 +13,7 @@ namespace PlayerSettings
                 Settings.sensetivity = PlayerPrefs.GetFloat(Settings.sensetivityPrefsKey);
                 Settings.FOV = PlayerPrefs.GetFloat(Settings.FOVPrefsKey);
                 Settings.graphicsQuality = PlayerPrefs.GetInt(Settings.graphicsQualityPrefsKey);
+                Settings.healthBarColor = PlayerPrefs.GetInt(Settings.healthBarColorPrefsKey);
                 Settings.masterVolume = PlayerPrefs.GetFloat(Settings.masterVolumePrefsKey);
             }
             Destroy(gameObject);
