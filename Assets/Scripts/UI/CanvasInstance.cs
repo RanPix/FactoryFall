@@ -19,6 +19,7 @@ public class CanvasInstance : MonoBehaviour
     public MainChat mainChat;
     public GameObject damageVingette;
     public TipsManager tipsManager;
+    public Menu menu;
 
     void Awake()
     {

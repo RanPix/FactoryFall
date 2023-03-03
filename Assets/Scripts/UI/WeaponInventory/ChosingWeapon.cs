@@ -1,5 +1,7 @@
 using System;
 using System.Collections.Generic;
+using Mirror;
+using Player;
 using UnityEngine;
 
 public class ChosingWeapon : MonoBehaviour
@@ -16,7 +18,8 @@ public class ChosingWeapon : MonoBehaviour
         CursorManager.instance.SetCursorLockState(CursorLockMode.None);
         CursorManager.instance.disablesToLockCount++;
         Menu.Instance.canOpenMenu = false;
-        Menu.Instance.look.canRotateCamera = false;
+        Look _look = NetworkClient.localPlayer.GetComponent<GamePlayer>().cameraHolder.GetComponent<Look>();
+        _look.canRotateCamera = false;
         CanvasInstance.instance.tabBar.canOpen = false;
         CanvasInstance.instance.tipsManager.gameObject.SetActive(true);
 

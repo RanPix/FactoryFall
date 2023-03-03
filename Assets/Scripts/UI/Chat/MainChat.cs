@@ -195,11 +195,8 @@ public class MainChat : MonoBehaviour
 
         SelectInputField();
         inputField.text = "";
-        while (scrollRect.verticalScrollbar.value>0.00000001)
-        {
-            print($"value = {scrollRect.verticalScrollbar.value}");
-            scrollRect.verticalScrollbar.value -= scrollRect.verticalScrollbar.value;
-        }
+        print($"value = {scrollRect.verticalScrollbar.value}");
+        scrollRect.verticalScrollbar.value = 0;
         print($"after value = {scrollRect.verticalScrollbar.value}");
     }
 

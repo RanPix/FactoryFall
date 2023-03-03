@@ -382,6 +382,11 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 872219952885612888, guid: dddb2b5f0abee3443a1eb286db3afd75,
+        type: 3}
+      propertyPath: <team>k__BackingField
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 872219952885612889, guid: dddb2b5f0abee3443a1eb286db3afd75,
         type: 3}
       propertyPath: m_Name
@@ -601,6 +606,11 @@ PrefabInstance:
         \u043A\u0430\u0440\u0442\u0438 \u0449\u043E\u0431 \u043E\u0442\u0440\u0438\u043C\u0430\u0442\u0438
         \u043E\u0447\u043A\u0438 \u043A\u043E\u043C\u0430\u043D\u0434\u0456"
       objectReference: {fileID: 0}
+    - target: {fileID: 3086079366839204625, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_Size
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 3372052905944505718, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_AnchorMax.x
@@ -731,6 +741,11 @@ PrefabInstance:
       propertyPath: offlineScene
       value: Assets/Scenes/Game/Main Menu.unity
       objectReference: {fileID: 0}
+    - target: {fileID: 6745688199354423998, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_Elasticity
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7392936039789879583, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_AnchorMax.y
@@ -760,6 +775,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.y
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7907332643713451247, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_FillCenter
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 8609989984990033461, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
