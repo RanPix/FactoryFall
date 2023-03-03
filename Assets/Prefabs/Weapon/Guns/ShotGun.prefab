@@ -95,7 +95,7 @@ MonoBehaviour:
   rotationRecoilZ: 0.01
   positionRecoilX: 0
   positionRecoilY: 0
-  positionRecoilZ: -0.1
+  positionRecoilZ: -0.2
   snappiness: 6
   returnSpeed: 8
 --- !u!1001 &2569855181581809695
