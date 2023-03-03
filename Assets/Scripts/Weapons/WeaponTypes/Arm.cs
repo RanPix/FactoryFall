@@ -6,9 +6,7 @@ namespace Weapons
     {
         [SerializeField] private Animator animator;
 
-        [Space]
-
-        [SerializeField] private Transform weaponView;
+        [field: Space]
 
         [field: Header("Stats")]
 
@@ -26,17 +24,22 @@ namespace Weapons
         [field: SerializeField] public float reloadTime { get; private set; }
         public float reloadTimer { get; private set; }
 
-        
+        public Team team { get; set; }
         public bool _isLocalPLayer { get; set; }
 
         private void Start()
         {
-            if (!_isLocalPLayer)
+            transform.GetChild(0).gameObject.SetActive(false);
+            transform.GetChild(1).gameObject.SetActive(false);
+
+            SetArmTeam();
+
+            if (_isLocalPLayer)
             {
-                SetLayerRecursive(weaponView.gameObject, LayerMask.NameToLayer("Default"));
+                SetLayerRecursive(transform.GetChild(0).gameObject, LayerMask.NameToLayer("Weapon"));
+                SetLayerRecursive(transform.GetChild(1).gameObject, LayerMask.NameToLayer("Weapon"));
                 return;
             }
-
         }
 
         private void SetLayerRecursive(GameObject targetGameObject, LayerMask layer)
@@ -45,6 +48,20 @@ namespace Weapons
 
             foreach (Transform child in targetGameObject.transform)
                 SetLayerRecursive(child.gameObject, layer);
+        }
+
+        private void SetArmTeam()
+        {
+            if (team == Team.Blue) 
+            { 
+                transform.GetChild(0).gameObject.SetActive(true);
+                animator = transform.GetChild(0).gameObject.GetComponent<Animator>();
+            }
+            else if (team == Team.Red)
+            {
+                transform.GetChild(1).gameObject.SetActive(true);
+                animator = transform.GetChild(1).gameObject.GetComponent<Animator>();
+            }
         }
 
         private void Update()

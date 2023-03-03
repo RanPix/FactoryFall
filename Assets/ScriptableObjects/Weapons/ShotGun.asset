@@ -14,21 +14,19 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: ShotGun
   name: ShotGun
-  damage: 10
-  shootRange: 150
+  damage: 22
+  shootRange: 15
   useOneAmmoPerShot: 1
-  maxAmmo: 8
-  numberOfBulletsPerShot: 6
+  maxAmmo: 3
+  numberOfBulletsPerShot: 4
   timeBetweenSpawnBullets: 0
   patern:
   - {x: 0, y: 0}
-  - {x: 0.1, y: 0}
-  - {x: 0.02, y: 0.2}
-  - {x: -0.1, y: -0.04}
-  - {x: -0.05, y: 0.09}
-  - {x: 0.03, y: -0.05}
-  timeBetweenShots: 0.7
-  reloadTime: 0.3
+  - {x: 0, y: 0.075}
+  - {x: 0.075, y: -0.05}
+  - {x: -0.075, y: -0.05}
+  timeBetweenShots: 0.5
+  reloadTime: 0.4
   empty: {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
   reload: {fileID: 8300000, guid: 16ed38669058a6147bcf4408aeb56382, type: 3}
   shotSounds:

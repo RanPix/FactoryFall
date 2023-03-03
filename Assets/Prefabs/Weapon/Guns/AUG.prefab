@@ -627,11 +627,11 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   startPosition: {x: 0.463, y: -0.322, z: 0.995}
   rotationRecoilX: -5
-  rotationRecoilY: 4
+  rotationRecoilY: 2
   rotationRecoilZ: 0.01
   positionRecoilX: 0
   positionRecoilY: 0
-  positionRecoilZ: -0.1
+  positionRecoilZ: -0.08
   snappiness: 6
   returnSpeed: 8
 --- !u!1 &8819927564547973316

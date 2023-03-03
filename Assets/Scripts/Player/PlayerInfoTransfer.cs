@@ -1,8 +1,4 @@
-using System.Security.Cryptography;
-using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.UI;
 
 namespace Player
 {
@@ -40,7 +36,10 @@ namespace Player
 
 
         public void SetName(string name)
-            => nickname = name;
+        {
+            if (string.IsNullOrEmpty(name))
+                nickname = name;
+        }
 
         public void SetTeam(int team)
             => this.team = (Team)team;

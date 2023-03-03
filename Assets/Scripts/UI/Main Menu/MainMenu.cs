@@ -1,9 +1,6 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using DG.Tweening;
-using UnityEngine.UI;
 using TMPro;
 
 public enum ButtonGroup
@@ -25,22 +22,21 @@ public class MainMenu : MonoBehaviour
     [SerializeField] RectTransform openedGroupPosition;
 
     [SerializeField] TMP_Text IPAdressInputFieldText;
-    [SerializeField] TMP_Text passWordClientInputFieldText;
-    [SerializeField] TMP_Text passWordHostInputFieldText;
-    [SerializeField] TMP_Text nicknameInputFieldText;
 
-    void Start()
+    private void Start()
     {
         SetMainButtonGroup();
-        manager = GameObject.FindObjectOfType<NetworkManager>();
+        manager = NetworkManager.singleton;
     }
 
     public void Join()
     {
         string adress = IPAdressInputFieldText.text;
-        Debug.Log(adress);
-        manager.networkAddress = adress;
-        manager.StartClient();
+        manager.Join(adress);
+
+        //print(NetworkClient.active);
+        //manager.networkAddress = adress;
+        //manager.StartClient();
     }
 
     public void Host()

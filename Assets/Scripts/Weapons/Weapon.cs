@@ -236,6 +236,12 @@ public class Weapon : MonoBehaviour
 
     public IEnumerator ReloadCoroutine()
     {
+        if (!wasChanged && weaponType == WeaponType.Shotgun)
+        {
+            animator.SetBool("StartReload", true);
+            animator.SetBool("EndReload", false);
+        }
+
         bool isFirstIteration = true;
         do
         {
@@ -264,6 +270,12 @@ public class Weapon : MonoBehaviour
             isFirstIteration = false;
 
         } while (!wasChanged && weaponType == WeaponType.Shotgun && weaponAmmo.Ammo < weaponScriptableObject.maxAmmo);
+
+        if (!wasChanged && weaponType == WeaponType.Shotgun)
+        {
+            animator.SetBool("StartReload", false);
+            animator.SetBool("EndReload", true);
+        }
     }
 
     private void ReadLookVector(InputAction.CallbackContext context) => lookVector = context.ReadValue<Vector2>();

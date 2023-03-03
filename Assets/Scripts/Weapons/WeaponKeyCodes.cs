@@ -40,6 +40,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
 
         arm._isLocalPLayer = true;
+        arm.team = gamePlayer.team;
 
         audioSync = GetComponent<AudioSync>();
         weaponAudioSource = weaponHolder.GetComponent<AudioSource>();
@@ -149,7 +150,7 @@ public class WeaponKeyCodes : NetworkBehaviour
     {
         GetComponent<NetworkAnimator>().animator = currentWeapon.GetComponentInChildren<Animator>();
         GetComponent<NetworkAnimator>().SetValues();
-        print($"muzzle position was been here    =           {currentWeapon.muzzlePosition!=null}");
+        //print($"muzzle position was been here    =           {currentWeapon.muzzlePosition!=null}");
         GetComponent<PlayerVFX>().muzzlePosition = currentWeapon.muzzlePosition;
 
         if (!isLocalPlayer)
@@ -192,13 +193,13 @@ public class WeaponKeyCodes : NetworkBehaviour
                     if (currentWeapon.shootType == ShootType.Auto && controls.Player.Fire.IsPressed())
                     {
                         //audioSync.PlaySound(0);
-                        print(gamePlayer.GetNetID());
+                        //print(gamePlayer.GetNetID());
                         StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
                     }
                     else if (currentWeapon.shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
                         //audioSync.PlaySound(0);
-                        print(gamePlayer.GetNetID());
+                        //print(gamePlayer.GetNetID());
                         StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
 
                     }

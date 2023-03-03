@@ -13,22 +13,23 @@ public class ChosingWeapon : MonoBehaviour
     public Action<int, int> OnActivateWeapons;
 
     public Action<string, string, float, float, float, int> OnActivate;
-    void Start()
+
+    public void Setup()
     {
         CursorManager.instance.SetCursorLockState(CursorLockMode.None);
         CursorManager.instance.disablesToLockCount++;
+
         Menu.Instance.canOpenMenu = false;
+
         Look _look = NetworkClient.localPlayer.GetComponent<GamePlayer>().cameraHolder.GetComponent<Look>();
         _look.canRotateCamera = false;
+
         CanvasInstance.instance.tabBar.canOpen = false;
         CanvasInstance.instance.tipsManager.gameObject.SetActive(true);
 
         if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
             CanvasInstance.instance.tipsManager.ActivateTip("ChosingWeapon");
-
     }
-
-    // Update is called once per frame
 
     public void OnWeaponClick(bool wasSelected)
     {
