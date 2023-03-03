@@ -5,7 +5,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class PlayerInfoTransforSubscriber : MonoBehaviour
+public class PlayerInfoTransferSubscriber : MonoBehaviour
 {
     [SerializeField] private TMP_InputField inputfilField;
     [SerializeField] private Button blueTeamButton;

@@ -175,8 +175,8 @@ namespace Player
 
                 healthBar = Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
 
-                GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
-                menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
+                //GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
+                CanvasInstance.instance.menu.look = cameraHolder.GetComponent<Look>();
                 
                 CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
 
