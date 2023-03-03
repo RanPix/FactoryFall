@@ -18,6 +18,7 @@ public class MainChat : MonoBehaviour
     [SerializeField] private GameObject view;
     [SerializeField] private VerticalLayoutGroup group;
     [SerializeField] private TMP_InputField inputField;
+    [SerializeField] private ScrollRect scrollRect;
     [SerializeField] private GameObject chatItem;
 
     [SerializeField] private string[] banWords;
@@ -187,15 +188,19 @@ public class MainChat : MonoBehaviour
     {
         if (inputField.text.Replace(" ", "").Length < 1)
             return;
-        print(inputField.text.Replace(" ", "").Length);
-        print(inputField.text);
-        print(inputField.text.Length);
         inputField.text = CheckMessage();
         teamColor.GetTeamColor(NetworkClient.localPlayer.GetComponent<GamePlayer>().team);
         ChatManager.instance.AddElement(NetworkClient.localPlayer.GetComponent<GamePlayer>().nickname, inputField.text,  teamColor.ToHexString());
 
+
         SelectInputField();
         inputField.text = "";
+        while (scrollRect.verticalScrollbar.value>0.00000001)
+        {
+            print($"value = {scrollRect.verticalScrollbar.value}");
+            scrollRect.verticalScrollbar.value -= scrollRect.verticalScrollbar.value;
+        }
+        print($"after value = {scrollRect.verticalScrollbar.value}");
     }
 
     public string CheckMessage()

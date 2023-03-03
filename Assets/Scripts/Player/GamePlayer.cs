@@ -271,7 +271,6 @@ namespace Player
             {
                 yield break;
             }
-            weaponKeyCodes.currentWeapon.canShoot = false;
 
             if(rays.Length < 1 || rays.Length != weaponKeyCodes.currentWeapon.weaponScriptableObject.numberOfBulletsPerShot)
                 Debug.LogError("The number of patterns must be equal to the number of bullets per shot");
@@ -329,7 +328,6 @@ namespace Player
                 playerVFX.CmdSpawnMuzzleFlash();
             }
 
-            weaponKeyCodes.currentWeapon.canShoot = true;
         }
 
         [Client]

@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 1049663398068331962}
   - component: {fileID: 1049663398068331943}
   - component: {fileID: 1049663398068331941}
+  - component: {fileID: 617683480871946026}
   m_Layer: 5
   m_Name: Button
   m_TagString: Untagged
@@ -93,7 +94,33 @@ MonoBehaviour:
   m_TargetGraphic: {fileID: 2636254331544513365}
   m_OnClick:
     m_PersistentCalls:
-      m_Calls: []
+      m_Calls:
+      - m_Target: {fileID: 617683480871946026}
+        m_TargetAssemblyTypeName: PlayerSettings.OpenAndCloseSettings, Assembly-CSharp
+        m_MethodName: OpenSettings
+        m_Mode: 1
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
+--- !u!114 &617683480871946026
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1049663398068331963}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8d52963533448544bb13870b059f6465, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  settingsPrefab: {fileID: 84902203095614380, guid: 0349ab3822e78b3488d16dee2256cd3b,
+    type: 3}
 --- !u!1 &1049663398499524337
 GameObject:
   m_ObjectHideFlags: 0
@@ -160,7 +187,9 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: Button
+  m_text: 'Options
+
+'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 76ad7100400b1414982d6843b513740a, type: 2}
   m_sharedMaterial: {fileID: -8562007397176997475, guid: 76ad7100400b1414982d6843b513740a,

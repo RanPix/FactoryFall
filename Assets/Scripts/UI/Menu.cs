@@ -36,7 +36,7 @@ public class Menu : MonoBehaviour
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
         => OpenOrCloseMenu(!isOpened);
     public void OpenOrCloseMenu(bool openMenu)
-    {
+    { 
         if (openAndCloseSettings.isOpened)
         {
             openAndCloseSettings.CloseSettings();
