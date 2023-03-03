@@ -1054,6 +1054,26 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1977578684}
+    - target: {fileID: 4634340021884839139, guid: a5fdf60773caa7647853e81504948d01,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 12.294189
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634340022210586740, guid: a5fdf60773caa7647853e81504948d01,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 590
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634340022210586740, guid: a5fdf60773caa7647853e81504948d01,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634340022685975055, guid: a5fdf60773caa7647853e81504948d01,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: -0.5968628
+      objectReference: {fileID: 0}
     - target: {fileID: 4634340022698819718, guid: a5fdf60773caa7647853e81504948d01,
         type: 3}
       propertyPath: m_Name
@@ -1283,6 +1303,18 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 7014402909a7430498e20f1d2ecc2ef8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!114 &2025937592 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7239849676590623624, guid: 8e54d9906675ce64a865574e5dbdb834,
+    type: 3}
+  m_PrefabInstance: {fileID: 1563052956195245350}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4688fdb7df04437aeb418b961361dc5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &2049953944
@@ -1771,6 +1803,11 @@ PrefabInstance:
       propertyPath: m_TargetGraphic
       value: 
       objectReference: {fileID: 1563052956195245351}
+    - target: {fileID: 1563052955890086486, guid: 8e54d9906675ce64a865574e5dbdb834,
+        type: 3}
+      propertyPath: m_TextComponent
+      value: 
+      objectReference: {fileID: 2025937592}
     - target: {fileID: 1563052956006790425, guid: 8e54d9906675ce64a865574e5dbdb834,
         type: 3}
       propertyPath: m_fontAsset
@@ -1808,12 +1845,20 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 2684354559
       objectReference: {fileID: 0}
+    - target: {fileID: 1563052956006790427, guid: 8e54d9906675ce64a865574e5dbdb834,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: -34.3326
+      objectReference: {fileID: 0}
+    - target: {fileID: 1563052956006790427, guid: 8e54d9906675ce64a865574e5dbdb834,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 17.1663
+      objectReference: {fileID: 0}
     - target: {fileID: 7239849676590623624, guid: 8e54d9906675ce64a865574e5dbdb834,
         type: 3}
       propertyPath: m_text
-      value: '
-
-'
+      value: "\u200B"
       objectReference: {fileID: 0}
     - target: {fileID: 7239849676590623624, guid: 8e54d9906675ce64a865574e5dbdb834,
         type: 3}
@@ -1846,6 +1891,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4294967295
+      objectReference: {fileID: 0}
+    - target: {fileID: 7239849676590623624, guid: 8e54d9906675ce64a865574e5dbdb834,
+        type: 3}
+      propertyPath: m_enableWordWrapping
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 8e54d9906675ce64a865574e5dbdb834, type: 3}
