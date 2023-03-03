@@ -64,11 +64,6 @@ public class NetworkManagerFF : NetworkManager
     {
         SceneManager.UnloadSceneAsync("Main Menu");
         base.OnStartHost();
-        if (GameManager.instance != null)
-        {
-            if(GameManager.GetPlayersCount()>0)
-                GameManager.instance?.UnregisterAllPlayers();
-        }
         
     }
     public override void OnStopClient()
@@ -90,11 +85,8 @@ public class NetworkManagerFF : NetworkManager
     {
         //SceneManager.UnloadSceneAsync("Main Menu");
         base.OnStartHost();
-        if (GameManager.instance != null)
-        {
-            if (GameManager.GetPlayersCount() > 0)
-                GameManager.instance?.UnregisterAllPlayers();
-        }
+
+
 
 
     }

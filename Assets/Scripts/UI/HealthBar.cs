@@ -42,7 +42,7 @@ namespace GameBase
 
             difference = healthBar.fillAmount - healthPercent;
 
-            HPText.text = $"{localPlayerHealth.currentHealth}/{localPlayerHealth.GetMaxHealth()}";
+            HPText.text = localPlayerHealth.currentHealth.ToString();
         }
 
         private float HealthLerp()
