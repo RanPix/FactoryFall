@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.056953352, g: 0.19542691, b: 0.38955036, a: 1}
+  m_IndirectSpecularColor: {r: 0.056953274, g: 0.19542673, b: 0.38954994, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1010,7 +1010,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca22162e7bbdfab40b62b8fc65be8526, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputfilField: {fileID: 332906352}
+  inputfilField: {fileID: 807997550}
   blueTeamButton: {fileID: 2049953946}
   redTeamButton: {fileID: 280219315}
 --- !u!224 &1227841207 stripped
@@ -2068,6 +2068,11 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1977578684}
+    - target: {fileID: 8185155135242131296, guid: 254aa8ba648cd474bbe278dfcb108c73,
+        type: 3}
+      propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_MethodName
+      value: Host
+      objectReference: {fileID: 0}
     - target: {fileID: 8185155135483003455, guid: 254aa8ba648cd474bbe278dfcb108c73,
         type: 3}
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
