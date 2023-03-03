@@ -15,5 +15,5 @@ public class OreInventory : MonoBehaviour
     }
 
     private void Start()
-        => oreImage.color = NetworkClient.localPlayer.GetComponent<GamePlayer>().team == 0 ? Color.cyan : Color.red;
+        => oreImage.color = NetworkClient.localPlayer.GetComponent<GamePlayer>().team == Team.Red ? Color.red : Color.blue;
 }

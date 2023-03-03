@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using PlayerSettings;
+using Mirror;
 
 public class Menu : MonoBehaviour
 {
@@ -32,6 +33,13 @@ public class Menu : MonoBehaviour
 
     }
 
+    public void Disconnect()
+    {
+        if (NetworkClient.localPlayer.GetComponent<NetworkIdentity>().isClient)
+            NetworkManagerFF.singleton.StopClient();
+        else
+            NetworkManagerFF.singleton.StopServer();
+    }
 
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
         => OpenOrCloseMenu(!isOpened);

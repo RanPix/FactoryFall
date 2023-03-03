@@ -134,7 +134,7 @@ AudioSource:
   m_GameObject: {fileID: 772742556034147628}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 4031e8e6ff826a54c9847afefbc08c15,
+  OutputAudioMixerGroup: {fileID: 7805219147729545204, guid: 4031e8e6ff826a54c9847afefbc08c15,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1
@@ -343,6 +343,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   health: {fileID: 2135578962297529565}
+  healthBar: {fileID: 0}
   healthBarPrefab: {fileID: 4203298332218061752, guid: 6d56f640da95a044795c8ca3e1c3e160,
     type: 3}
   ammoTextPrefab: {fileID: 0}
@@ -405,7 +406,7 @@ AudioSource:
   m_GameObject: {fileID: 841400163258982976}
   m_Enabled: 1
   serializedVersion: 4
-  OutputAudioMixerGroup: {fileID: 24300002, guid: 4031e8e6ff826a54c9847afefbc08c15,
+  OutputAudioMixerGroup: {fileID: 312476893145852189, guid: 4031e8e6ff826a54c9847afefbc08c15,
     type: 2}
   m_audioClip: {fileID: 0}
   m_PlayOnAwake: 1

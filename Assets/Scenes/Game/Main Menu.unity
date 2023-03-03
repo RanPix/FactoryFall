@@ -295,18 +295,6 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 1563052956195245350}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &332906352 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 1563052955890086486, guid: 8e54d9906675ce64a865574e5dbdb834,
-    type: 3}
-  m_PrefabInstance: {fileID: 1563052956195245350}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2da0c512f12947e489f739169773d7ca, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &380842157
 GameObject:
   m_ObjectHideFlags: 0
@@ -1010,7 +998,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ca22162e7bbdfab40b62b8fc65be8526, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  inputfilField: {fileID: 807997550}
+  inputfilField: {fileID: 0}
   blueTeamButton: {fileID: 2049953946}
   redTeamButton: {fileID: 280219315}
 --- !u!224 &1227841207 stripped
@@ -1042,6 +1030,16 @@ PrefabInstance:
       propertyPath: m_OnClick.m_PersistentCalls.m_Calls.Array.data[0].m_Target
       value: 
       objectReference: {fileID: 1977578684}
+    - target: {fileID: 4634340021884839137, guid: a5fdf60773caa7647853e81504948d01,
+        type: 3}
+      propertyPath: m_text
+      value: Enter IP Adress...
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634340021884839137, guid: a5fdf60773caa7647853e81504948d01,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4634340021884839139, guid: a5fdf60773caa7647853e81504948d01,
         type: 3}
       propertyPath: m_AnchoredPosition.x
@@ -1056,6 +1054,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 295
+      objectReference: {fileID: 0}
+    - target: {fileID: 4634340022210586741, guid: a5fdf60773caa7647853e81504948d01,
+        type: 3}
+      propertyPath: m_Text
+      value: 
       objectReference: {fileID: 0}
     - target: {fileID: 4634340022685975055, guid: a5fdf60773caa7647853e81504948d01,
         type: 3}
