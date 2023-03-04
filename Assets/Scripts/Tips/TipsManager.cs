@@ -51,6 +51,9 @@ public class TipsManager : MonoBehaviour
 
         for (int i = 0; i < tipsMessages.Length; i++)
         {
+            tipsMessages[i] = tipsMessages[i].Replace("\\n", "\n");
+            tipsMessages[i] = tipsMessages[i].Replace("\\", "");
+
             tips.Add(tipsNames[i], tipsMessages[i]);
         }
 

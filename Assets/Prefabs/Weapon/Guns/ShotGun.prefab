@@ -50,7 +50,7 @@ MonoBehaviour:
     type: 2}
   gamePlayer: {fileID: 0}
   _state: 0
-  <shootType>k__BackingField: 0
+  <shootType>k__BackingField: 1
   <weaponName>k__BackingField: 2
   <weaponType>k__BackingField: 2
   <animator>k__BackingField: {fileID: 38881921348543205}
@@ -96,7 +96,7 @@ MonoBehaviour:
   positionRecoilX: 0
   positionRecoilY: 0
   positionRecoilZ: -0.2
-  snappiness: 6
+  snappiness: 10
   returnSpeed: 8
 --- !u!1001 &2569855181581809695
 PrefabInstance:

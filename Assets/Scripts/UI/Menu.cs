@@ -14,23 +14,24 @@ public class Menu : MonoBehaviour
     [SerializeField] private GameObject panel;
     [SerializeField] private OpenAndCloseSettings openAndCloseSettings;
 
-    void Awake()
+    private void Awake()
     {
-        if(Instance==null)
+        if(Instance == null)
             Instance = this;
     }
-    void Start()
+    private void OnDestroy()
+    {
+        controls.UI.OpenOrCloseMenu.performed -= OpenOrCloseMenu;
+    }
+
+    public void Setup()
     {
         controls = new PlayerControls();
         controls.UI.Enable();
         controls.UI.OpenOrCloseMenu.performed += OpenOrCloseMenu;
 
-        OpenOrCloseMenu(false);
-    }
-    private void OnDestroy()
-    {
-        controls.UI.OpenOrCloseMenu.performed -= OpenOrCloseMenu;
 
+        OpenOrCloseMenu(false);
     }
 
     public void Disconnect()
@@ -51,8 +52,8 @@ public class Menu : MonoBehaviour
             return;
         }
 
-        WeaponKeyCodes _localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>();
-        CursorManager.instance.disablesToLockCount = openMenu ? CursorManager.instance.disablesToLockCount +1 : wasOpened ? CursorManager.instance.disablesToLockCount - 1: CursorManager.instance.disablesToLockCount;
+        WeaponKeyCodes _localPlayer = NetworkClient.localPlayer.GetComponent<WeaponKeyCodes>();
+        CursorManager.instance.disablesToLockCount = openMenu ? CursorManager.instance.disablesToLockCount + 1 : wasOpened ? CursorManager.instance.disablesToLockCount - 1: CursorManager.instance.disablesToLockCount;
         _localPlayer.weaponHolder.GetComponent<WeaponSway>().canSway = !openMenu;
 
         if(_localPlayer.currentWeapon)

@@ -2,7 +2,6 @@ using System;
 using UnityEngine;
 using Mirror;
 using System.Collections.Generic;
-using FiniteMovementStateMachine;
 using Player;
 using UnityEngine.SceneManagement;
 using Random = UnityEngine.Random;
@@ -13,6 +12,8 @@ public class NetworkManagerFF : NetworkManager
     private static List<Transform> spawnPositions = new ();
 
     public Action<bool> onGameStop;
+
+     
 
     public static Transform GetRespawnPosition(Team team)
     {
@@ -81,14 +82,7 @@ public class NetworkManagerFF : NetworkManager
         base.OnStopHost();
     }
 
-    public override void OnStartClient()
-    {
-        //SceneManager.UnloadSceneAsync("Main Menu");
-        base.OnStartHost();
 
-
-
-
-    }
+    
 }
 

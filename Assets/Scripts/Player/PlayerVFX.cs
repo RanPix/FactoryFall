@@ -160,7 +160,8 @@ public class PlayerVFX : NetworkBehaviour
     private void RpcSpawnHitFX(Vector3 position, Vector3 normal)
     {
         Transform _spawnedEffect = Instantiate(hitFX, position, Quaternion.identity);
-        Destroy(_spawnedEffect.gameObject, 0.3f);
+
+        Destroy(_spawnedEffect.gameObject, 0.5f);
     }
 
     [Command]

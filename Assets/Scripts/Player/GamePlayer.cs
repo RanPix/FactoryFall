@@ -155,10 +155,11 @@ namespace Player
 
             audioSync = GetComponent<AudioSync>();
             InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
-            print($"&&&&    =        {SceneManager.GetActiveScene().name}");
 
             if (isLocalPlayer)
             {
+                CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
+
                 playerModel.SetActive(false);
                 nameGO.SetActive(false);
 
@@ -175,10 +176,12 @@ namespace Player
 
                 healthBar = Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
 
-                //GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
                 CanvasInstance.instance.menu.look = cameraHolder.GetComponent<Look>();
+
+                CanvasInstance.instance.menu.GetComponent<Menu>().Setup();
+                CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
+                CanvasInstance.instance.weaponsToChose.GetComponent<ChosingWeapon>().Setup();
                 
-                CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
 
                 gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += playerVFX.RedirectFX;
 
@@ -212,7 +215,6 @@ namespace Player
             if (isLocalPlayer)
             {
                 Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition(team);
-                print("Scene - " + SceneManager.GetActiveScene().name);
                 transform.position = _spawnPoint.position;
                 transform.rotation = _spawnPoint.rotation;
 

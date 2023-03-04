@@ -54,11 +54,11 @@ public class PlayerNicknameDisplay : MonoBehaviour
         {
             transform.LookAt(cam.transform);
 
-            print($"team {thisTeam}");
+            //print($"team {thisTeam}");
 
             if (isInSameTeam)
             {
-                print("insane");
+                //print("insane");
 
                 float magnitudeFromCamera = Mathf.Clamp((cam.transform.position - transform.position).magnitude * 0.09f, 2f, 1000f);
                 transform.localScale = new Vector3(magnitudeFromCamera, magnitudeFromCamera, magnitudeFromCamera);

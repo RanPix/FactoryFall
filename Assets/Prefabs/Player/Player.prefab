@@ -739,11 +739,11 @@ MonoBehaviour:
     - TakeOre
     - GiveAwayOre
     clips:
-    - {fileID: 8300000, guid: 5a2c7f7620e817240962fbf55f34a644, type: 3}
-    - {fileID: 8300000, guid: 5a2c7f7620e817240962fbf55f34a644, type: 3}
-    - {fileID: 8300000, guid: 5a2c7f7620e817240962fbf55f34a644, type: 3}
-    - {fileID: 8300000, guid: 5a2c7f7620e817240962fbf55f34a644, type: 3}
-    - {fileID: 8300000, guid: 5a2c7f7620e817240962fbf55f34a644, type: 3}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
+    - {fileID: 0}
     - {fileID: 8300000, guid: afcbe2cb884b2b445b4da8569776d496, type: 3}
     - {fileID: 8300000, guid: 6ca9faf758b2dc6409effa193c43437b, type: 3}
     - {fileID: 8300000, guid: 2b97eaf857e160c48820e5a5df678317, type: 3}

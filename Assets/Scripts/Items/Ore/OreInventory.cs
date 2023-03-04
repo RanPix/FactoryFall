@@ -11,9 +11,12 @@ public class OreInventory : MonoBehaviour
     private void Awake()
     {
         if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
+        {
             gameObject.SetActive(false);
+            return;
+        }
     }
 
-    private void Start()
-        => oreImage.color = NetworkClient.localPlayer.GetComponent<GamePlayer>().team == Team.Red ? Color.cyan : Color.red;
+    public void Setup()
+        => oreImage.color = NetworkClient.localPlayer.GetComponent<GamePlayer>().team == Team.Red ? Color.blue : Color.red;
 }
