@@ -34,9 +34,8 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     private void Start()
     {
-        arm._isLocalPLayer = gamePlayer.isLocalPlayer;
-        arm.team = gamePlayer.team;
-        arm.SetupArm();
+        print("player team "+gamePlayer.team);
+        arm.SetupArm(gamePlayer.team != Team.Null ? gamePlayer.team : gamePlayer.isLocalPlayer ? PlayerInfoTransfer.instance.team : Team.Red, gamePlayer.isLocalPlayer);
         if (!gamePlayer.isLocalPlayer)
             return;
 

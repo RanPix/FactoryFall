@@ -22,6 +22,8 @@ public class GameManager : NetworkBehaviour
 
     public Action OnClientStart;
 
+    public Action OnGameManagerSet;
+
     private void Awake()
     {
         if (instance != null)
@@ -31,6 +33,7 @@ public class GameManager : NetworkBehaviour
         else
         {
             instance = this;
+            OnGameManagerSet?.Invoke();
         }
 
         matchSettings.Setup();

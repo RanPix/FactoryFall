@@ -6,8 +6,22 @@ public class KillFeed : MonoBehaviour
 
     private void Start()
     {
+        if (GameManager.instance)
+        {
+            SubscribeToKill();
+        }
+        else
+        {
+            GameManager.instance.OnGameManagerSet += SubscribeToKill;
+        }
+            
+    }
+
+    private void SubscribeToKill()
+    {
         GameManager.instance.OnPlayerKilledCallback += OnKill;
     }
+
     private void OnDestroy()
     {
         GameManager.instance.OnPlayerKilledCallback -= OnKill;

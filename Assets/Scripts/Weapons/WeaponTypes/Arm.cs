@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 namespace Weapons
@@ -5,6 +6,15 @@ namespace Weapons
     public class Arm : MonoBehaviour
     {
         [SerializeField] private Animator animator;
+
+        [Space]
+
+        [SerializeField] private GameObject redArm;
+        [SerializeField] private GameObject blueArm;
+        private GameObject currentArm;
+
+
+        [SerializeField] private GameObject player;
 
         [field: Space]
 
@@ -25,23 +35,24 @@ namespace Weapons
         public float reloadTimer { get; private set; }
 
         public Team team { get; set; }
-        public bool _isLocalPLayer { get; set; } = false;
+        public bool isLocalPLayer { get; set; } = false;
 
         private void Start()
         {
         }
 
-        public void SetupArm()
+        public void SetupArm(Team _team, bool _isLocalPlayer)
         {
-            //transform.GetChild(0).gameObject.SetActive(false);
+            team = _team;
+            isLocalPLayer = _isLocalPlayer;
+            print("team = " + team);
+            currentArm = team == Team.Blue ? blueArm : redArm;
+            currentArm.SetActive(true);
+            animator = currentArm.GetComponent<Animator>();
 
-            SetArmTeam();
-
-            if (_isLocalPLayer)
+            if (isLocalPLayer)
             {
-                SetLayerRecursive(transform.GetChild(0).gameObject, LayerMask.NameToLayer("Weapon"));
-                SetLayerRecursive(transform.GetChild(1).gameObject, LayerMask.NameToLayer("Weapon"));
-                return;
+                SetLayerRecursive(currentArm, LayerMask.NameToLayer("Weapon"));
             }
         }
 
@@ -53,22 +64,6 @@ namespace Weapons
                 SetLayerRecursive(child.gameObject, layer);
         }
 
-        private void SetArmTeam()
-        {
-                //transform.GetChild(1).gameObject.SetActive(false);
-            print("WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
-            if (team == Team.Blue) 
-            { 
-                print("FK           BLUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
-                transform.GetChild(0).gameObject.SetActive(true);
-                animator = transform.GetChild(0).gameObject.GetComponent<Animator>();
-            }
-            else if (team == Team.Red)
-            {
-                transform.GetChild(1).gameObject.SetActive(true);
-                animator = transform.GetChild(1).gameObject.GetComponent<Animator>();
-            }
-        }
 
         private void Update()
         {
