@@ -12,8 +12,6 @@ public enum ButtonGroup
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] NetworkManager manager;
-
     ButtonGroup currentButtonGroup = ButtonGroup.Main;
     [SerializeField] GameObject[] MainMenuButtonGroupsToGroupGameObject;
     [SerializeField] float buttonGroupMoveTime;
@@ -21,27 +19,23 @@ public class MainMenu : MonoBehaviour
     [SerializeField] RectTransform closedGroupPosition;
     [SerializeField] RectTransform openedGroupPosition;
 
-    [SerializeField] TMP_Text IPAdressInputFieldText;
+    [SerializeField] TMP_InputField IPAdressInputFieldText;
 
     private void Start()
     {
         SetMainButtonGroup();
-        manager = NetworkManager.singleton;
     }
 
     public void Join()
     {
         string adress = IPAdressInputFieldText.text;
-        manager.Join(adress);
-
-        //print(NetworkClient.active);
-        //manager.networkAddress = adress;
-        //manager.StartClient();
+        NetworkManager.singleton.networkAddress = adress;
+        NetworkManager.singleton.StartClient();
     }
 
     public void Host()
     {
-        manager.StartHost();
+        NetworkManager.singleton.StartHost();
     }
 
     public void Quit()

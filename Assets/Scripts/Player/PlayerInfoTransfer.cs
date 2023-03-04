@@ -37,7 +37,7 @@ namespace Player
 
         public void SetName(string name)
         {
-            if (string.IsNullOrEmpty(name))
+            if (!string.IsNullOrEmpty(name))
                 nickname = name;
         }
 

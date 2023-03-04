@@ -100,7 +100,6 @@ MonoBehaviour:
   - BringOre
   - GiveAwayOre
   tipText: {fileID: 7735295584932116188}
-  _tipsIsActive: 1
 --- !u!1 &1664245960477752563
 GameObject:
   m_ObjectHideFlags: 0
@@ -453,14 +452,15 @@ GameObject:
   m_Component:
   - component: {fileID: 4389199130133310925}
   - component: {fileID: 6346216833513522699}
-  - component: {fileID: 7871913596947598618}
+  - component: {fileID: 3422787726776832559}
+  - component: {fileID: 1246666152336405871}
   m_Layer: 5
   m_Name: DamageVingette
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &4389199130133310925
 RectTransform:
   m_ObjectHideFlags: 0
@@ -489,7 +489,7 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3282467105061186850}
   m_CullTransparentMesh: 1
---- !u!114 &7871913596947598618
+--- !u!114 &3422787726776832559
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -498,27 +498,37 @@ MonoBehaviour:
   m_GameObject: {fileID: 3282467105061186850}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fe87c0e1cc204ed48ad3b37840f39efc, type: 3}
+  m_Script: {fileID: 11500000, guid: 1344c3c82d62a2a41a3576d8abb8e3ea, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
-  m_Color: {r: 0.5566038, g: 0, b: 0, a: 1}
-  m_RaycastTarget: 1
+  m_Color: {r: 0.5566038, g: 0, b: 0.023191737, a: 0.68235296}
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
-  m_Maskable: 1
+  m_Maskable: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 80b7e45bc39984f4385ab48534e1a8e4, type: 3}
-  m_Type: 0
-  m_PreserveAspect: 0
-  m_FillCenter: 1
-  m_FillMethod: 4
-  m_FillAmount: 1
-  m_FillClockwise: 1
-  m_FillOrigin: 0
-  m_UseSpriteMesh: 0
-  m_PixelsPerUnitMultiplier: 1
+  m_Texture: {fileID: 2800000, guid: 80b7e45bc39984f4385ab48534e1a8e4, type: 3}
+  m_UVRect:
+    serializedVersion: 2
+    x: 0
+    y: 0
+    width: 1
+    height: 1
+--- !u!114 &1246666152336405871
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 3282467105061186850}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3ec3de9ed2f3f8443918eb26f5d338ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  vingette: {fileID: 3422787726776832559}
 --- !u!1 &3498648492648633625
 GameObject:
   m_ObjectHideFlags: 0

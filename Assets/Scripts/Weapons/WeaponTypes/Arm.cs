@@ -29,19 +29,12 @@ namespace Weapons
 
         private void Start()
         {
-        }
-
-        public void SetupArm()
-        {
-            //transform.GetChild(0).gameObject.SetActive(false);
-
             SetArmTeam();
 
             if (_isLocalPLayer)
             {
                 SetLayerRecursive(transform.GetChild(0).gameObject, LayerMask.NameToLayer("Weapon"));
                 SetLayerRecursive(transform.GetChild(1).gameObject, LayerMask.NameToLayer("Weapon"));
-                return;
             }
         }
 
@@ -56,18 +49,17 @@ namespace Weapons
         private void SetArmTeam()
         {
                 //transform.GetChild(1).gameObject.SetActive(false);
-            print("WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
+            //print("WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
             if (team == Team.Blue) 
             { 
-                print("FK           BLUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
+                //print("FK           BLUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 transform.GetChild(0).gameObject.SetActive(true);
-                animator = transform.GetChild(0).gameObject.GetComponent<Animator>();
             }
             else if (team == Team.Red)
             {
                 transform.GetChild(1).gameObject.SetActive(true);
-                animator = transform.GetChild(1).gameObject.GetComponent<Animator>();
             }
+            animator = transform.GetChild(0).gameObject.GetComponent<Animator>();
         }
 
         private void Update()

@@ -379,6 +379,8 @@ MonoBehaviour:
   hitMask:
     serializedVersion: 2
     m_Bits: 1689
+  killedPlayersListPrefab: {fileID: 9129474346210923066, guid: bb6e455c4337a7a46b2ef8033828973b,
+    type: 3}
   killerPlayerInfoPrefab: {fileID: 1956560174642625219, guid: b9b57a8d59b569641bd132dd2df4deb3,
     type: 3}
   audioSource: {fileID: 0}
@@ -746,7 +748,7 @@ MonoBehaviour:
     - {fileID: 0}
     - {fileID: 8300000, guid: afcbe2cb884b2b445b4da8569776d496, type: 3}
     - {fileID: 8300000, guid: 6ca9faf758b2dc6409effa193c43437b, type: 3}
-    - {fileID: 8300000, guid: 2b97eaf857e160c48820e5a5df678317, type: 3}
+    - {fileID: 8300000, guid: 0eb0f0dc9796eba42963edbb139828f3, type: 3}
     - {fileID: 0}
 --- !u!114 &7359030071040500126
 MonoBehaviour:

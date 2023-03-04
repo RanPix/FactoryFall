@@ -3,11 +3,8 @@ using GameBase;
 using Mirror;
 using System;
 using System.Collections;
-using TMPro;
 using UI.Indicators;
 using UnityEngine;
-using UnityEngine.SceneManagement;
-using UnityEngine.VFX;
 
 namespace Player
 {
@@ -89,6 +86,7 @@ namespace Player
 
         //[SerializeField] private GameObject compass;
 
+        [SerializeField] private Transform killedPlayersListPrefab;
         [SerializeField] private Transform killerPlayerInfoPrefab;
  
         [SerializeField] private AudioSource audioSource;
@@ -181,10 +179,11 @@ namespace Player
                 CanvasInstance.instance.menu.GetComponent<Menu>().Setup();
                 CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
                 CanvasInstance.instance.weaponsToChose.GetComponent<ChosingWeapon>().Setup();
-                
+                CanvasInstance.instance.damageVingette.GetComponent<DamageVingette>().Setup(this);
 
                 gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += playerVFX.RedirectFX;
 
+                Instantiate(killedPlayersListPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KilledPlayerInfo>().Setup(this);
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
 
                 oreInventory = CanvasInstance.instance.oreInventory.GetComponent<OreInventoryItem>();
@@ -461,12 +460,12 @@ namespace Player
             if (killedNetID != GetNetID())
             {
                 CmdUpdateKillsCount(1);
-                OnKill?.Invoke(killedNetID, nickname);
+                OnKill?.Invoke(killedNetID, killedNickname);
             }
             else
             {
                 CmdUpdateKillsCount(-1);
-                OnKill?.Invoke(killedNetID, nickname);
+                OnKill?.Invoke(killedNetID, killedNickname);
             }
         }
 

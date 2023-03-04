@@ -34,10 +34,10 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     private void Start()
     {
-        arm._isLocalPLayer = gamePlayer.isLocalPlayer;
+        arm._isLocalPLayer = isLocalPlayer;
         arm.team = gamePlayer.team;
-        arm.SetupArm();
-        if (!gamePlayer.isLocalPlayer)
+
+        if (!isLocalPlayer)
             return;
 
         CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;

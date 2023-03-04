@@ -36,10 +36,16 @@ public class Menu : MonoBehaviour
 
     public void Disconnect()
     {
-        if (NetworkClient.localPlayer.GetComponent<NetworkIdentity>().isClient)
+        NetworkIdentity player = NetworkClient.localPlayer.GetComponent<NetworkIdentity>();
+
+        if (player.isClient && !player.isServer)
+        {
             NetworkManager.singleton.StopClient();
-        else
+        }
+        else if (player.isClient && player.isServer)
+        {
             NetworkManager.singleton.StopHost();
+        }
     }
 
     public void OpenOrCloseMenu(InputAction.CallbackContext context)
@@ -53,7 +59,7 @@ public class Menu : MonoBehaviour
         }
 
         WeaponKeyCodes _localPlayer = NetworkClient.localPlayer.GetComponent<WeaponKeyCodes>();
-        print($"is open = {openMenu}");
+        //print($"is open = {openMenu}");
         CursorManager.instance.disablesToLockCount = openMenu ? CursorManager.instance.disablesToLockCount + 1 : wasOpened ? CursorManager.instance.disablesToLockCount - 1: CursorManager.instance.disablesToLockCount;
         _localPlayer.weaponHolder.GetComponent<WeaponSway>().canSway = !openMenu;
 
