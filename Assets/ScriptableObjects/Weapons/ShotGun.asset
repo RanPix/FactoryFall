@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   type: ShotGun
   name: ShotGun
-  damage: 22
-  shootRange: 15
+  damage: 18
+  shootRange: 30
   useOneAmmoPerShot: 1
   maxAmmo: 3
   numberOfBulletsPerShot: 4

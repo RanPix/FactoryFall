@@ -34,13 +34,14 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     private void Start()
     {
-        if (!isLocalPlayer)
+        arm._isLocalPLayer = gamePlayer.isLocalPlayer;
+        arm.team = gamePlayer.team;
+        arm.SetupArm();
+        if (!gamePlayer.isLocalPlayer)
             return;
 
         CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
 
-        arm._isLocalPLayer = true;
-        arm.team = gamePlayer.team;
 
         audioSync = GetComponent<AudioSync>();
         weaponAudioSource = weaponHolder.GetComponent<AudioSource>();

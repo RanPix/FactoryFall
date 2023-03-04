@@ -25,7 +25,8 @@ public class ChosingWeapon : MonoBehaviour
         _look.canRotateCamera = false;
 
         CanvasInstance.instance.tabBar.canOpen = false;
-        CanvasInstance.instance.tipsManager.gameObject.SetActive(true);
+        if(CanvasInstance.instance.tipsManager.tipsIsActive)
+            CanvasInstance.instance.tipsManager.gameObject.SetActive(true);
 
         if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
             CanvasInstance.instance.tipsManager.ActivateTip("ChosingWeapon");

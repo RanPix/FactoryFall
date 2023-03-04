@@ -34,7 +34,7 @@ public class TipsManager : MonoBehaviour
         }
     }
 
-    public bool _tipsIsActive = true;
+    private bool _tipsIsActive = true;
 
     private string _currentTipName;
 
@@ -58,6 +58,7 @@ public class TipsManager : MonoBehaviour
         }
 
         OnChangeTip += ChangeTip;
+        OnSetActiveTips += gameObject.SetActive;
     }
 
     private void OnDestroy()

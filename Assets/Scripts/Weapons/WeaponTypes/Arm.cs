@@ -25,12 +25,15 @@ namespace Weapons
         public float reloadTimer { get; private set; }
 
         public Team team { get; set; }
-        public bool _isLocalPLayer { get; set; }
+        public bool _isLocalPLayer { get; set; } = false;
 
         private void Start()
         {
-            transform.GetChild(0).gameObject.SetActive(false);
-            transform.GetChild(1).gameObject.SetActive(false);
+        }
+
+        public void SetupArm()
+        {
+            //transform.GetChild(0).gameObject.SetActive(false);
 
             SetArmTeam();
 
@@ -52,8 +55,11 @@ namespace Weapons
 
         private void SetArmTeam()
         {
+                //transform.GetChild(1).gameObject.SetActive(false);
+            print("WTFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF");
             if (team == Team.Blue) 
             { 
+                print("FK           BLUEEEEEEEEEEEEEEEEEEEEEEEEEEEEEEE");
                 transform.GetChild(0).gameObject.SetActive(true);
                 animator = transform.GetChild(0).gameObject.GetComponent<Animator>();
             }
