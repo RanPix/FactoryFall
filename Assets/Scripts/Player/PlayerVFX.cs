@@ -83,21 +83,23 @@ public class PlayerVFX : NetworkBehaviour
 
     public void SpawnJumpFX()
     {
-        CmdSpawnJumpFX();
+        CmdSpawnJumpFX(player.team == Team.Blue);
     }
     [Command]
-    public void CmdSpawnJumpFX()
+    public void CmdSpawnJumpFX(bool isBlue)
     {
-        RpcSpawnJumpFX();
+        RpcSpawnJumpFX(isBlue);
     }
     [ClientRpc]
-    public void RpcSpawnJumpFX()
+    public void RpcSpawnJumpFX(bool isBlue)
     {
         if (isLocalPlayer)
             return;
 
         Transform _jumpEffect = Instantiate(jumpFX, jumpFXPos.position, Quaternion.identity, transform);
-        Destroy(_jumpEffect.gameObject, .2f);
+        _jumpEffect.GetComponent<VisualEffect>().SetBool("BlueTeam", isBlue);
+
+        Destroy(_jumpEffect.gameObject, .5f);
     }
 
 
@@ -176,6 +178,11 @@ public class PlayerVFX : NetworkBehaviour
     [ClientRpc]
     private void RpcSpawnTrail(bool isHitted, Vector3 origin, Vector3 direction, Vector3 point, float shootRange)
     {
+        if (!muzzlePosition)
+        {
+            muzzlePosition = player.weaponKeyCodes.weaponHolder.GetChild(player.weaponKeyCodes.currentWeaponChildIndex).GetComponent<Weapon>().muzzlePosition;
+        }
+
         Transform _trail = Instantiate(trail);
 
         LineRenderer line = _trail.GetComponent<LineRenderer>();

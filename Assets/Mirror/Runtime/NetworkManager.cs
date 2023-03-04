@@ -339,7 +339,7 @@ namespace Mirror
                 Debug.LogError("Must set the Network Address field in the manager");
                 return;
             }
-             Debug.Log($"NetworkManager StartClient address:{networkAddress}");
+            //Debug.Log($"NetworkManager StartClient address:{networkAddress}");
 
             NetworkClient.Connect(networkAddress);
 
@@ -1350,13 +1350,13 @@ namespace Mirror
 
 
 
-        public void Join(string adress)
-        {
-            if (NetworkClient.active)
-                return;
+        //public void Join(string adress)
+        //{
+        //    if (NetworkClient.active)
+        //        return;
 
-            networkAddress = adress;
-            StartClient();
-        }
+        //    networkAddress = adress;
+        //    StartClient();
+        //}
     }
 }

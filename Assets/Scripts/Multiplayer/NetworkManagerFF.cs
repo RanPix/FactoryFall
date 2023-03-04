@@ -69,6 +69,7 @@ public class NetworkManagerFF : NetworkManager
     }
     public override void OnStopClient()
     {
+
         GameManager.instance?.CmdRemovePlayerFromAllClientsLists(NetworkClient.localPlayer.GetComponent<GamePlayer>().netId.ToString());
         GameManager.instance?.UnregisterAllPlayers();
         playersCurrentTeam = Team.Null;
@@ -81,6 +82,8 @@ public class NetworkManagerFF : NetworkManager
         SceneManager.UnloadSceneAsync("MAP_CageCastle");
         base.OnStopHost();
     }
+
+    
 
 
     

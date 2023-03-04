@@ -103,6 +103,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: IP Input Field
       objectReference: {fileID: 0}
+    - target: {fileID: 6809550175505110090, guid: 7f093533bf7899e4190e2eec24d89aba,
+        type: 3}
+      propertyPath: m_RichText
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6809550175505110091, guid: 7f093533bf7899e4190e2eec24d89aba,
         type: 3}
       propertyPath: m_Pivot.x
