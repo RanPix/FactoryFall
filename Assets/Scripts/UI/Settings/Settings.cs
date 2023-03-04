@@ -58,8 +58,7 @@ namespace PlayerSettings
             }
         }
 
-
-        public static int graphicsQuality = 2;
+        public static int graphicsQuality = 4;
         public const string graphicsQualityPrefsKey = "graphicsQuality";
         public void UpdateGraphicsQualityValue()
         {
