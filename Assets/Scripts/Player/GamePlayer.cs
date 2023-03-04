@@ -158,6 +158,8 @@ namespace Player
 
             if (isLocalPlayer)
             {
+                CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
+
                 playerModel.SetActive(false);
                 nameGO.SetActive(false);
 
@@ -180,7 +182,6 @@ namespace Player
                 CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
                 CanvasInstance.instance.weaponsToChose.GetComponent<ChosingWeapon>().Setup();
                 
-                CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
 
                 gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += playerVFX.RedirectFX;
 
