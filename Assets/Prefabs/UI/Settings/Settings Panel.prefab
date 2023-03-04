@@ -99,7 +99,7 @@ MonoBehaviour:
   masterVolumeSlider: {fileID: 7331553829519710702}
   playerSoundsVolumeSlider: {fileID: 5301284994645842104}
   shootVolumeSlider: {fileID: 1876515869491504511}
-  isShowingGuideToggle: {fileID: 1088881803298221362}
+  isShowingTipsToggle: {fileID: 1088881803298221362}
   graphicsQualitySelector: {fileID: 958911282993966925}
   healthBarColorSelector: {fileID: 2529562178750949740}
   MasterMixer: {fileID: 24100000, guid: 4031e8e6ff826a54c9847afefbc08c15, type: 2}

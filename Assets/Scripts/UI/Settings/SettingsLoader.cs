@@ -13,7 +13,7 @@ namespace PlayerSettings
         {
             if (PlayerPrefs.HasKey(Settings.sensetivityPrefsKey))
             {
-                Settings.isShowingGuide = PlayerPrefs.GetInt(Settings.isShowingGuidePrefsKey) == 1;
+                Settings.isShowingTips = PlayerPrefs.GetInt(Settings.isShowingTipsPrefsKey) == 1;
                 Settings.sensetivity = PlayerPrefs.GetFloat(Settings.sensetivityPrefsKey);
                 Settings.FOV = PlayerPrefs.GetFloat(Settings.FOVPrefsKey);
                 Settings.graphicsQuality = PlayerPrefs.GetInt(Settings.graphicsQualityPrefsKey);
