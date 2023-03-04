@@ -189,6 +189,8 @@ namespace Player
 
                 oreInventory = CanvasInstance.instance.oreInventory.GetComponent<OreInventoryItem>();
                 OreGiveAwayArea.instance.OnAreaEnter += UpdateScore;
+
+                OnDeath += (_, _, _, _) => CanvasInstance.instance.oreInventory.item.currentCount = 0;
             }
 
             scoreboard = CanvasInstance.instance.scoreBoard.GetComponent<Scoreboard>();
