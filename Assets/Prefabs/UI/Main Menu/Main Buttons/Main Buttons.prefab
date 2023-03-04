@@ -236,6 +236,11 @@ PrefabInstance:
       value: 
       objectReference: {fileID: -8562007397176997475, guid: 76ad7100400b1414982d6843b513740a,
         type: 2}
+    - target: {fileID: 2008311152719485001, guid: a9f302726da2f4f4185fe61b49ca167c,
+        type: 3}
+      propertyPath: m_PixelsPerUnitMultiplier
+      value: 1.2
+      objectReference: {fileID: 0}
     - target: {fileID: 2008311152719485004, guid: a9f302726da2f4f4185fe61b49ca167c,
         type: 3}
       propertyPath: m_Name
