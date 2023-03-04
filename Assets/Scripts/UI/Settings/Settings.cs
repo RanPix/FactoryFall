@@ -17,12 +17,25 @@ namespace PlayerSettings
         [SerializeField] private Slider masterVolumeSlider;
         [SerializeField] private Slider playerSoundsVolumeSlider;
         [SerializeField] private Slider shootVolumeSlider;
+        [SerializeField] private Toggle isShowingGuideToggle;
         [SerializeField] private ArrayElementSelector graphicsQualitySelector;
         [SerializeField] private ArrayElementSelector healthBarColorSelector;
 
         [Space]
 
         [SerializeField] public AudioMixer MasterMixer;
+
+        public static bool isShowingGuide = true;
+        public const string isShowingGuidePrefsKey = "isShowingGuide";
+        public void UpdateisShowingGuideValue()
+        {
+            isShowingGuide = isShowingGuideToggle.isOn;
+            PlayerPrefs.SetInt(isShowingGuidePrefsKey, isShowingGuide? 1 : 0);
+
+            if (TipsManager.instance != null)
+                TipsManager.instance.tipsIsActive = isShowingGuide;
+        }
+
 
         public static float sensetivity = 15;
         public const string sensetivityPrefsKey = "sensetivity";
@@ -52,6 +65,8 @@ namespace PlayerSettings
         {
             graphicsQuality = graphicsQualitySelector.currentElement;
             PlayerPrefs.SetInt(graphicsQualityPrefsKey, graphicsQuality);
+
+            Debug.Log("asssaaaaaaaaaaaaaaaaaaaaaaaaaasasasas");
 
             UpdateGraphicsQuality();
         }
@@ -114,6 +129,7 @@ namespace PlayerSettings
 
         private void Awake()
         {
+            isShowingGuideToggle.isOn = isShowingGuide;
             sensetivitySlider.value = sensetivity;
             FOVSlider.value = FOV;
             masterVolumeSlider.value = masterVolume;
