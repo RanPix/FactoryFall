@@ -24,11 +24,6 @@ namespace Player
                 }
             }
 
-            /*TMP_InputField nickNameInputField =
-                GameObject.FindGameObjectWithTag("NicknameInputField").GetComponent<TMP_InputField>();
-            nickNameInputField?.onValueChanged.AddListener(SetName);
-            nickNameInputField?.onDeselect.AddListener(SetName);*/
-
             DontDestroyOnLoad(gameObject);
         }
 

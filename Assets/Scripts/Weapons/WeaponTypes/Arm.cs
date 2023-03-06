@@ -45,7 +45,6 @@ namespace Weapons
         {
             team = _team;
             isLocalPLayer = _isLocalPlayer;
-            print("team = " + team);
             currentArm = team == Team.Blue ? blueArm : redArm;
             currentArm.SetActive(true);
             animator = currentArm.GetComponent<Animator>();

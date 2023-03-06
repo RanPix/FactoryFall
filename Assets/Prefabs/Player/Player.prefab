@@ -1173,11 +1173,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Arm
       objectReference: {fileID: 0}
-    - target: {fileID: 2936342119856056392, guid: b1db0f11aee261949970a4bd9071be51,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 1
-      objectReference: {fileID: 0}
     - target: {fileID: 2936342119856056393, guid: b1db0f11aee261949970a4bd9071be51,
         type: 3}
       propertyPath: m_RootOrder
@@ -1233,43 +1228,16 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4056156701403004463, guid: b1db0f11aee261949970a4bd9071be51,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5081923345695306208, guid: b1db0f11aee261949970a4bd9071be51,
         type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 841400163258982976}
-    - target: {fileID: 5081923345695306208, guid: b1db0f11aee261949970a4bd9071be51,
-        type: 3}
-      propertyPath: redArm
-      value: 
-      objectReference: {fileID: 4552212398247106129}
-    - target: {fileID: 5081923345695306208, guid: b1db0f11aee261949970a4bd9071be51,
-        type: 3}
-      propertyPath: blueArm
-      value: 
-      objectReference: {fileID: 1298728007266768542}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1db0f11aee261949970a4bd9071be51, type: 3}
 --- !u!4 &212694629844713720 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2936342119856056393, guid: b1db0f11aee261949970a4bd9071be51,
-    type: 3}
-  m_PrefabInstance: {fileID: 3047915751887251633}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &1298728007266768542 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 4056156701403004463, guid: b1db0f11aee261949970a4bd9071be51,
-    type: 3}
-  m_PrefabInstance: {fileID: 3047915751887251633}
-  m_PrefabAsset: {fileID: 0}
---- !u!1 &4552212398247106129 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 1540488585565404896, guid: b1db0f11aee261949970a4bd9071be51,
     type: 3}
   m_PrefabInstance: {fileID: 3047915751887251633}
   m_PrefabAsset: {fileID: 0}
@@ -1295,12 +1263,12 @@ PrefabInstance:
     - target: {fileID: 818817036421687420, guid: f65a2aee6ac45d94090607b90c8d2935,
         type: 3}
       propertyPath: m_Name
-      value: Nicknamme
+      value: Nickname
       objectReference: {fileID: 0}
     - target: {fileID: 818817036421687420, guid: f65a2aee6ac45d94090607b90c8d2935,
         type: 3}
       propertyPath: m_IsActive
-      value: 0
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 818817036421687421, guid: f65a2aee6ac45d94090607b90c8d2935,
         type: 3}
@@ -1315,7 +1283,7 @@ PrefabInstance:
     - target: {fileID: 818817036421687421, guid: f65a2aee6ac45d94090607b90c8d2935,
         type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.468
+      value: 2.37
       objectReference: {fileID: 0}
     - target: {fileID: 818817036421687421, guid: f65a2aee6ac45d94090607b90c8d2935,
         type: 3}

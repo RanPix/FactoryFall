@@ -651,6 +651,11 @@ PrefabInstance:
       propertyPath: m_Name
       value: BasicPrefabForScene
       objectReference: {fileID: 0}
+    - target: {fileID: 3765710421730829978, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4141048958021183185, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_RootOrder
@@ -809,6 +814,11 @@ PrefabInstance:
     - target: {fileID: 7392936039789879583, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 7822103158340074673, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7907332643713451247, guid: 94380ed47c6bb404d9daf52ec7683569,

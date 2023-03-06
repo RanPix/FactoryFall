@@ -1,3 +1,4 @@
+using System.Collections;
 using Player;
 using UnityEngine;
 using TMPro;
@@ -18,6 +19,12 @@ public class PlayerNicknameDisplay : MonoBehaviour
 
     private bool nicknameSettedUp;
 
+    private IEnumerator WaitForLocalPlayer(Team team)
+    {
+        yield return new WaitUntil(() => NetworkClient.localPlayer == null);
+        ULTRASetup(team);
+    }
+
     public void Setup(string name, Team team)
     {
         text = GetComponentInChildren<TMP_Text>();
@@ -26,25 +33,34 @@ public class PlayerNicknameDisplay : MonoBehaviour
         text.color = TeamToColor.GetTeamColor(team);
         text.text = name;
 
-
-        localPlayer = NetworkClient.localPlayer?.GetComponent<Transform>();
-
-        if (localPlayer)
+        if (NetworkClient.localPlayer)
         {
-            Team localPlayerTeam = localPlayer.GetComponent<GamePlayer>().team;
+            ULTRASetup(team);
+        }
+        else
+        {
+            StartCoroutine(WaitForLocalPlayer(team));
+        }
+    }
 
-            isInSameTeam = localPlayerTeam == team; //?
-                //true:
-                //false;
-            GetComponentInChildren<TMP_Text>().fontSharedMaterial = 
-                isInSameTeam ?
-                ROTFontMaterial:
+    private void ULTRASetup(Team team)
+    {
+        localPlayer = NetworkClient.localPlayer?.GetComponent<Transform>();
+        print("local player = " + NetworkClient.localPlayer);
+        Team localPlayerTeam = localPlayer.GetComponent<GamePlayer>().team;
+
+        isInSameTeam = localPlayerTeam == team; //?
+        //true:
+        //false;
+        GetComponentInChildren<TMP_Text>().fontSharedMaterial =
+            isInSameTeam ?
+                ROTFontMaterial :
                 normalFontMaterial;
 
-            nicknameSettedUp = true;
-        }
+        nicknameSettedUp = true;
 
         cam = Camera.main;
+
     }
 
 

@@ -28,6 +28,8 @@ public class MainMenu : MonoBehaviour
 
     public void Join()
     {
+        if(!NetworkManager.singleton)
+            return;
         string adress = IPAdressInputFieldText.text;
         NetworkManager.singleton.networkAddress = adress;
         NetworkManager.singleton.StartClient();
