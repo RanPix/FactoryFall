@@ -663,6 +663,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   localPlayer: {fileID: 0}
+  rectTransform: {fileID: 4680944478150489998}
+  openedPosition: {x: -597.047, y: -208, z: 0}
+  closedPosition: {x: -1587.3, y: -208, z: 0}
   view: {fileID: 2833424883517659763}
   group: {fileID: 5895479268202477537}
   inputField: {fileID: 5826955551661638234}

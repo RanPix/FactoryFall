@@ -1,8 +1,6 @@
 using System;
 using System.Collections;
 using System.Linq;
-using System.Text;
-using FiniteMovementStateMachine;
 using Mirror;
 using Player;
 using TMPro;
@@ -14,6 +12,8 @@ using UnityEngine.UI;
 public class MainChat : MonoBehaviour
 {
     [SerializeField] private GamePlayer localPlayer;
+
+    [SerializeField] private Mask mask;
 
     [SerializeField] private GameObject view;
     [SerializeField] private VerticalLayoutGroup group;
@@ -43,7 +43,7 @@ public class MainChat : MonoBehaviour
     {
         localPlayer = NetworkClient.localPlayer?.GetComponent<GamePlayer>();
 
-        view.SetActive(false);
+        mask.enabled = true;
         isOpened = false;
 
         controls = new PlayerControls();
@@ -120,7 +120,8 @@ public class MainChat : MonoBehaviour
             CursorManager.instance.SetCursorLockState(CursorLockMode.None);
             CursorManager.instance.disablesToLockCount++;
             look.canRotateCamera = false;
-            view.SetActive(true);
+
+            mask.enabled = false;
 
 
             isOpened = true;
@@ -130,11 +131,11 @@ public class MainChat : MonoBehaviour
         {
             if (inputField.text.Replace(" ", "").Length > 0)
                 return;
-
+            inputField.DeactivateInputField();
             CursorManager.instance.disablesToLockCount--;
             look.canRotateCamera = true;
 
-            view.SetActive(false);
+            mask.enabled = true;
 
             isOpened = false;
             ActivateBools();
@@ -152,10 +153,12 @@ public class MainChat : MonoBehaviour
 
         if (!isOpened)
             return;
+
+        inputField.DeactivateInputField();
         CursorManager.instance.disablesToLockCount--;
         look.canRotateCamera = true;
 
-        view.SetActive(false);
+        mask.enabled = true;
 
         isOpened = false;
         ActivateBools();
