@@ -13,7 +13,8 @@ namespace Player
     {
 #region SyncVar
         [field: SyncVar (hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
-        [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; }
+
+        [field: SyncVar(hook = nameof(SetNickname))] public string nickname { get; private set; } = string.Empty;
 
         [field: SyncVar (hook = nameof(UpdateKillsCount))] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
@@ -109,6 +110,9 @@ namespace Player
         public Action OnRespawn;
 
         public Action<string, string> OnKill;
+
+        public Action OnSetPlayerInfoTransfer;
+        private bool playerInfoTransferWasSet = false;
 #endregion
 
 
@@ -134,8 +138,6 @@ namespace Player
             MiniMapCameraMove _miniMapCameraMove = _miniMapCamera.GetComponent<MiniMapCameraMove>();
             _miniMapCameraMove.Setup(gameObject.transform);
 
-            //GameObject _compass = GameObject.Instantiate(compass, CanvasInstance.instance.canvas.transform);
-            //_compass.GetComponent<Compass>().reference = gameObject.transform.GetChild(0).GetChild(0);
 
         }
 
@@ -146,16 +148,19 @@ namespace Player
             nickname = name;
         }
 
+        private IEnumerator WaitForPlayerInfoTransfer()
+        {
+            yield return new WaitUntil(() => team != Team.Null && nickname != String.Empty);
+            OnSetPlayerInfoTransfer?.Invoke();
+        }
+
         private void Start()
         {
-            if (!isLocalPlayer)
-                return;
 
             audioSync = GetComponent<AudioSync>();
-            InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
-
             if (isLocalPlayer)
             {
+                InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
                 CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
 
                 playerModel.SetActive(false);
@@ -175,9 +180,9 @@ namespace Player
                 healthBar = Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
 
                 CanvasInstance.instance.menu.look = cameraHolder.GetComponent<Look>();
-
                 CanvasInstance.instance.menu.GetComponent<Menu>().Setup();
                 CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
+
                 CanvasInstance.instance.weaponsToChose.GetComponent<ChosingWeapon>().Setup();
                 CanvasInstance.instance.damageVingette.GetComponent<DamageVingette>().Setup(this);
 
@@ -191,6 +196,7 @@ namespace Player
 
                 OnDeath += (_, _, _, _) => CanvasInstance.instance.oreInventory.item.currentCount = 0;
             }
+            StartCoroutine(WaitForPlayerInfoTransfer());
 
             scoreboard = CanvasInstance.instance.scoreBoard.GetComponent<Scoreboard>();
 
@@ -216,11 +222,18 @@ namespace Player
             playerMark = Instantiate(playerMark);
             playerMark.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
 
+            /*if (nickname != String.Empty && !playerInfoTransferWasSet)
+            {
+                OnSetPlayerInfoTransfer?.Invoke();
+                playerInfoTransferWasSet = true;
+            }*/
+
             if (isLocalPlayer)
             {
                 Transform _spawnPoint = NetworkManagerFF.GetRespawnPosition(team);
                 transform.position = _spawnPoint.position;
                 transform.rotation = _spawnPoint.rotation;
+
 
                 return;
             }
@@ -262,16 +275,22 @@ namespace Player
                 return;
 
             nameGO.SetActive(true);
-            nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
+            if (team != Team.Null)
+            {
+                nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
+            }
+            else
+            {
+                OnSetPlayerInfoTransfer += () => nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
+            }
 
-            print(NetworkClient.localPlayer?.GetComponent<Transform>());
         }
 
 
         #region Weapon
 
 
-        
+
         public IEnumerator Shoot(Ray[] rays, int damage, float shootRange, string playerID, float timeBetweenShots)
         {
             if (!isLocalPlayer)

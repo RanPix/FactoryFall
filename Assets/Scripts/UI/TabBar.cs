@@ -100,6 +100,16 @@ public class TabBar : MonoBehaviour
 
     private void SortPlayers()
     {
+        for (int i = 0; i < bluePart.transform.childCount; i++)
+        {
+            bluePart.transform.GetChild(i).gameObject.SetActive(false);
+        }
+        for (int i = 0; i < redPart.transform.childCount; i++)
+        {
+            redPart.transform.GetChild(i).gameObject.SetActive(false);
+        }
+
+
         for ( int i = 0; bluePartUnsorted.Keys.Count > 0; i++)
         {
             if(!NetworkClient.localPlayer)
@@ -110,11 +120,9 @@ public class TabBar : MonoBehaviour
             GamePlayer _bluePlayer = GameManager.GetPlayer(bluePartUnsorted.Keys.ToArray()[maxKDIndex]);
 
             bluePart.transform.GetChild(i).GetComponent<TabBarItem>().SetValues(_bluePlayer.nickname, _bluePlayer.kills, _bluePlayer.deaths, _bluePlayer.score);
-            
             if (_bluePlayer.gameObject == NetworkClient.localPlayer?.gameObject)
             {
                 bluePart.transform.GetChild(i).GetComponent<Image>().color = ownBlueColor;
-
             }
             else
             {

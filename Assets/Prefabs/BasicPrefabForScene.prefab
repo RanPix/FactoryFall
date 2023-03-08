@@ -1116,6 +1116,11 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 1989678341354774664, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+        type: 3}
+      propertyPath: mask
+      value: 
+      objectReference: {fileID: 5632486495755313465}
     - target: {fileID: 2068972173882067200, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
         type: 3}
       propertyPath: m_IsActive
@@ -2324,6 +2329,18 @@ RectTransform:
     type: 3}
   m_PrefabInstance: {fileID: 2638449500384263284}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &5632486495755313465 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 7689680272146292045, guid: 7a5f6061b52eb144ebb8c62255a9e6f3,
+    type: 3}
+  m_PrefabInstance: {fileID: 2638449500384263284}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31a19414c41e5ae4aae2af33fee712f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &4953514417648861393
 PrefabInstance:
   m_ObjectHideFlags: 0

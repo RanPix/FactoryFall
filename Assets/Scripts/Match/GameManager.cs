@@ -33,20 +33,19 @@ public class GameManager : NetworkBehaviour
         else
         {
             instance = this;
+            if (players.Count > 0)
+            {
+                UnregisterAllPlayers();
+            }
             OnGameManagerSet?.Invoke();
         }
+
 
         matchSettings.Setup();
 
         //ChangeTeamSpawnPositions(PlayerInfoTransfer.instance.team);
     }
 
-    private void OnDestroy()
-    {
-        //print("inst");
-        UnregisterAllPlayers();
-        instance = null;
-    }
 
     public void SetSceneCameraActive(bool state)
     {
@@ -84,12 +83,11 @@ public class GameManager : NetworkBehaviour
 
     }
 
-    [Command(requiresAuthority = false)]
+    [Server]
     public void CmdUnRegisterAllPlayers()
     {
         if(!NetworkClient.active)
             return;
-
         RpcUnRegisterAllPlayers();
     }
 
@@ -107,7 +105,7 @@ public class GameManager : NetworkBehaviour
         players.Remove(_playerID);
     }
 
-    [Command(requiresAuthority = false)]
+    [Server]
     public void CmdRemovePlayerFromAllClientsLists(string netID)
     {
         RpcRemovePlayerFromAllClientsLists(netID);

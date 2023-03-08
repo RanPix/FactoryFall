@@ -47,6 +47,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animator: {fileID: 5430791445173639578}
+  redArm: {fileID: 1540488585565404896}
+  blueArm: {fileID: 4056156701403004463}
+  player: {fileID: 0}
   <damageToPlayer>k__BackingField: 35
   <damageToOre>k__BackingField: 1
   <punchRadius>k__BackingField: 0.3
@@ -150,7 +153,7 @@ PrefabInstance:
     - target: {fileID: 3182453728842164045, guid: d7dd154ac6750ad43bd6f31662edb411,
         type: 3}
       propertyPath: m_IsActive
-      value: 1
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3241235927702850047, guid: d7dd154ac6750ad43bd6f31662edb411,
         type: 3}
