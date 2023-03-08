@@ -163,6 +163,8 @@ public class PlayerVFX : NetworkBehaviour
     {
         Transform _spawnedEffect = Instantiate(hitFX, position, Quaternion.identity);
 
+        _spawnedEffect.LookAt(position + normal);
+
         Destroy(_spawnedEffect.gameObject, 0.5f);
     }
 
