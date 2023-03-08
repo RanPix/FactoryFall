@@ -46,7 +46,6 @@ public class PlayerNicknameDisplay : MonoBehaviour
     private void ULTRASetup(Team team)
     {
         localPlayer = NetworkClient.localPlayer?.GetComponent<Transform>();
-        print("local player = " + NetworkClient.localPlayer);
         Team localPlayerTeam = localPlayer.GetComponent<GamePlayer>().team;
 
         isInSameTeam = localPlayerTeam == team; //?

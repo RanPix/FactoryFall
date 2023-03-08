@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using DG.Tweening.Core.Easing;
 using kcp2k;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -520,6 +521,7 @@ namespace Mirror
 
             StopClient();
             StopServer();
+            
         }
 
         /// <summary>Stops the server from listening and simulating the game.</summary>

@@ -277,12 +277,10 @@ namespace Player
             nameGO.SetActive(true);
             if (team != Team.Null)
             {
-                print($"if {team}");
                 nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
             }
             else
             {
-                print("else");
                 OnSetPlayerInfoTransfer += () => nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
             }
 
