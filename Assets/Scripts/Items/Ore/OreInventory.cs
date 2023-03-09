@@ -10,6 +10,17 @@ public class OreInventory : MonoBehaviour
 
     private void Awake()
     {
+        if (GameManager.instance)
+        {
+            ULTRASETUP();
+        }
+        else
+            GameManager.OnGameManagerSet += ULTRASETUP;
+
+    }
+
+    private void ULTRASETUP()
+    {
         if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
         {
             gameObject.SetActive(false);

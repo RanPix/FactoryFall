@@ -22,7 +22,7 @@ public class GameManager : NetworkBehaviour
 
     public Action OnClientStart;
 
-    public Action OnGameManagerSet;
+    public static Action OnGameManagerSet;
 
     private void Awake()
     {
