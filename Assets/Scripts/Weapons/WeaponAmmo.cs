@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using TMPro;
 
@@ -6,8 +7,18 @@ public class WeaponAmmo : MonoBehaviour
     public TMP_Text AmmoText;
     public int ClipSize;
 
-    [Min(0)]public int Ammo = 0;
-    public int ReserveAmmo;
+    public int Ammo
+    {
+        get => _ammo;
+        set
+        {
+            _ammo = value;
+            OnAmmoChange?.Invoke(value);
+        }
+    }
+    private int _ammo = 0;
+
+    public Action<int> OnAmmoChange;
 
     public void ResetAmmo()
     {
@@ -27,7 +38,6 @@ public class WeaponAmmo : MonoBehaviour
     public void UpdateAmmoOnScreen()
     {
         if (Ammo <= 0) Ammo = 0;
-        if (ReserveAmmo <= 0) ReserveAmmo = 0;
         AmmoText.text = Ammo.ToString();
     }
 }

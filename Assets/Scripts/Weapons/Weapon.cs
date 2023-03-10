@@ -170,7 +170,7 @@ public class Weapon : MonoBehaviour
 
         audioSync = NetworkClient.localPlayer.GetComponent<AudioSync>();
         weaponAmmo = Instantiate(weaponAmmo.gameObject).GetComponent<WeaponAmmo>();
-
+        weaponAmmo.OnAmmoChange += AutoReload;
         UpdateAmmo();
 
         canShoot = true;
@@ -213,16 +213,11 @@ public class Weapon : MonoBehaviour
     {
         weaponAmmo.Ammo = weaponScriptableObject.maxAmmo;
         weaponAmmo.ClipSize = weaponScriptableObject.maxAmmo;
-        weaponAmmo.ReserveAmmo = reserveAmmo;
 
         weaponAmmo.AmmoText = ammoText;
         weaponAmmo.UpdateAmmoOnScreen();
     }
 
-    /*void OnEnable()
-    {
-        UpdateAmmo();
-    }*/
 
     private Ray[] GetRay(Vector2[] pattern)
     {
@@ -232,6 +227,23 @@ public class Weapon : MonoBehaviour
             rays[i] = (new Ray(cam.transform.position, new Vector3(cam.transform.forward.x+pattern[i].x, cam.transform.forward.y + pattern[i].y, cam.transform.forward.z)));
         }
         return rays;
+    }
+
+    public void AutoReload(int ammo)
+    {
+        if (ammo > 0)
+            return;
+
+        StartCoroutine(AutoReloadCoroutine(ammo));
+    }
+
+    public IEnumerator AutoReloadCoroutine(int ammo)
+    {
+        yield return new WaitForSeconds(.5f);
+        if (!reloading)
+        {
+            StartCoroutine(ReloadCoroutine());
+        }
     }
 
     public IEnumerator ReloadCoroutine()
