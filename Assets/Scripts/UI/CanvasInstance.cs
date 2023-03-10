@@ -20,6 +20,7 @@ public class CanvasInstance : MonoBehaviour
     public GameObject damageVingette;
     public TipsManager tipsManager;
     public Menu menu;
+    public InGameUIDisabler inGameUIDisabler;
 
     void Awake()
     {

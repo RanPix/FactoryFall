@@ -709,6 +709,15 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""DisableOrEnableUI"",
+                    ""type"": ""Button"",
+                    ""id"": ""0b2c4ba4-8b65-4d37-896f-f0a70417dee6"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -1173,6 +1182,17 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""action"": ""OpenChat"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1defe159-18ed-4652-b67f-15196eb90328"",
+                    ""path"": ""<Keyboard>/f1"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""DisableOrEnableUI"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -1275,6 +1295,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_UI_OpenOrCloseMenu = m_UI.FindAction("OpenOrCloseMenu", throwIfNotFound: true);
         m_UI_OpenTabBar = m_UI.FindAction("OpenTabBar", throwIfNotFound: true);
         m_UI_OpenChat = m_UI.FindAction("OpenChat", throwIfNotFound: true);
+        m_UI_DisableOrEnableUI = m_UI.FindAction("DisableOrEnableUI", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1509,6 +1530,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
     private readonly InputAction m_UI_OpenOrCloseMenu;
     private readonly InputAction m_UI_OpenTabBar;
     private readonly InputAction m_UI_OpenChat;
+    private readonly InputAction m_UI_DisableOrEnableUI;
     public struct UIActions
     {
         private @PlayerControls m_Wrapper;
@@ -1527,6 +1549,7 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         public InputAction @OpenOrCloseMenu => m_Wrapper.m_UI_OpenOrCloseMenu;
         public InputAction @OpenTabBar => m_Wrapper.m_UI_OpenTabBar;
         public InputAction @OpenChat => m_Wrapper.m_UI_OpenChat;
+        public InputAction @DisableOrEnableUI => m_Wrapper.m_UI_DisableOrEnableUI;
         public InputActionMap Get() { return m_Wrapper.m_UI; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -1578,6 +1601,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @OpenChat.started -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenChat;
                 @OpenChat.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenChat;
                 @OpenChat.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnOpenChat;
+                @DisableOrEnableUI.started -= m_Wrapper.m_UIActionsCallbackInterface.OnDisableOrEnableUI;
+                @DisableOrEnableUI.performed -= m_Wrapper.m_UIActionsCallbackInterface.OnDisableOrEnableUI;
+                @DisableOrEnableUI.canceled -= m_Wrapper.m_UIActionsCallbackInterface.OnDisableOrEnableUI;
             }
             m_Wrapper.m_UIActionsCallbackInterface = instance;
             if (instance != null)
@@ -1624,6 +1650,9 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                 @OpenChat.started += instance.OnOpenChat;
                 @OpenChat.performed += instance.OnOpenChat;
                 @OpenChat.canceled += instance.OnOpenChat;
+                @DisableOrEnableUI.started += instance.OnDisableOrEnableUI;
+                @DisableOrEnableUI.performed += instance.OnDisableOrEnableUI;
+                @DisableOrEnableUI.canceled += instance.OnDisableOrEnableUI;
             }
         }
     }
@@ -1709,5 +1738,6 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnOpenOrCloseMenu(InputAction.CallbackContext context);
         void OnOpenTabBar(InputAction.CallbackContext context);
         void OnOpenChat(InputAction.CallbackContext context);
+        void OnDisableOrEnableUI(InputAction.CallbackContext context);
     }
 }

@@ -11,8 +11,10 @@ public class Menu : MonoBehaviour
     public bool canOpenMenu = true;
     private bool isOpened = false;
     private bool wasOpened = false;
+
     [SerializeField] private GameObject panel;
     [SerializeField] private OpenAndCloseSettings openAndCloseSettings;
+    [SerializeField] private InGameUIDisabler UIDisabler;
 
     private void Awake()
     {

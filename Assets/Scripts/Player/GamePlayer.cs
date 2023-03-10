@@ -181,6 +181,7 @@ namespace Player
 
                 CanvasInstance.instance.menu.look = cameraHolder.GetComponent<Look>();
                 CanvasInstance.instance.menu.GetComponent<Menu>().Setup();
+                CanvasInstance.instance.inGameUIDisabler.Setup();
                 CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
 
                 CanvasInstance.instance.weaponsToChose.GetComponent<ChosingWeapon>().Setup();

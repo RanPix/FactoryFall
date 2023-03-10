@@ -687,6 +687,15 @@
                     "processors": "",
                     "interactions": "",
                     "initialStateCheck": false
+                },
+                {
+                    "name": "DisableOrEnableUI",
+                    "type": "Button",
+                    "id": "0b2c4ba4-8b65-4d37-896f-f0a70417dee6",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
                 }
             ],
             "bindings": [
@@ -1149,6 +1158,17 @@
                     "processors": "",
                     "groups": "Keyboard&Mouse",
                     "action": "OpenChat",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "1defe159-18ed-4652-b67f-15196eb90328",
+                    "path": "<Keyboard>/f1",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "DisableOrEnableUI",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

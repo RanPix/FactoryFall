@@ -711,6 +711,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4635157150927694194}
   - component: {fileID: 4635157150927694195}
+  - component: {fileID: 4256098788651341346}
   m_Layer: 5
   m_Name: Menu
   m_TagString: Untagged
@@ -755,6 +756,21 @@ MonoBehaviour:
   canOpenMenu: 1
   panel: {fileID: 4635157149926215344}
   openAndCloseSettings: {fileID: 5384175797087795761}
+  UIDisabler: {fileID: 4256098788651341346}
+--- !u!114 &4256098788651341346
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4635157150927694193}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff48913b9a5d405418d0479dcb075c50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menu: {fileID: 4635157150927694195}
+  canvas: {fileID: 0}
 --- !u!1 &4635157151365398414
 GameObject:
   m_ObjectHideFlags: 0
