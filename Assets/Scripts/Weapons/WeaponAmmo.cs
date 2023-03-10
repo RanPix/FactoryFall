@@ -1,6 +1,4 @@
 using UnityEngine;
-using System;
-using System.Collections;
 using TMPro;
 
 public class WeaponAmmo : MonoBehaviour
@@ -8,25 +6,29 @@ public class WeaponAmmo : MonoBehaviour
     public TMP_Text AmmoText;
     public int ClipSize;
 
-    public int Ammo = 0;
+    [Min(0)]public int Ammo = 0;
     public int ReserveAmmo;
 
-    private void Awake()
-    {
-    }
-    private void Start()
-    {
-    }
-    public void AddAmmo()
+    public void ResetAmmo()
     {
         Ammo = ClipSize;
-        UpdateAmmoInScreen();
+        UpdateAmmoOnScreen();
     }
-    public void UpdateAmmoInScreen()
+    public void SetAmmo(int count)
     {
-        AmmoText.text = Ammo.ToString();
+        Ammo = count;
+        UpdateAmmoOnScreen();
+    }
+    public void AddAmmo(int count)
+    {
+        Ammo += count;
+        UpdateAmmoOnScreen();
+    }
+    public void UpdateAmmoOnScreen()
+    {
         if (Ammo <= 0) Ammo = 0;
         if (ReserveAmmo <= 0) ReserveAmmo = 0;
+        AmmoText.text = Ammo.ToString();
     }
 }
 

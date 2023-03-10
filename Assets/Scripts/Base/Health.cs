@@ -43,7 +43,10 @@ namespace GameBase
         public void CheckHealth(string playerID)
         {
             if (currentHealth < 1)
+            {
+                currentHealth = 0;
                 onDeath?.Invoke(playerID);
+            }
         }
 
         public int GetMaxHealth()

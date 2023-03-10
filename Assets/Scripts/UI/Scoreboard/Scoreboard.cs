@@ -2,7 +2,6 @@ using Mirror;
 using UnityEngine;
 using TMPro;
 using System;
-using System.Collections;
 
 public class Scoreboard : NetworkBehaviour
 {
@@ -13,6 +12,7 @@ public class Scoreboard : NetworkBehaviour
     private bool scoreNotificationEnabled;
     public Action<string, Team> OnPlayerScored;
 
+    [SyncVar (hook = nameof(UpdateGoalOrTimerText))] private string goalOrTimerString;
     [SerializeField] private TMP_Text goalOrTimerText;
 
     [SerializeField] private TMP_Text playerScoreText;
@@ -20,8 +20,13 @@ public class Scoreboard : NetworkBehaviour
     [SerializeField] private TMP_Text blueTeamScoreText;
     [SerializeField] private TMP_Text redTeamScoreText;
 
+    private int localScore;
+
     private int goal;
-    private float matchTime;
+
+    private int matchTime;
+    [SyncVar] private float matchTimer;
+    private bool countDown = true;
 
     [SerializeField] private GameObject winnersPanel;
     [SerializeField] private TMP_Text winnerText;
@@ -41,33 +46,37 @@ public class Scoreboard : NetworkBehaviour
         if (hasTimer)
         {
             matchTime = GameManager.instance.matchSettings.matchTime;
-        
+            matchTimer = matchTime;
         }
         else
         {
             goal = GameManager.instance.matchSettings.winningGoal;
-            goalOrTimerText.text = goal.ToString();
+            goalOrTimerString = goal.ToString();
         }
 
         UpdateBlueTeamScore(-1, blueTeamScore);
         UpdateRedTeamScore(-1, redTeamScore);
     }
 
-
     [Server]
     private void Update()
     {
+        if (!NetworkManager.singleton.isNetworkActive)
+            return;
+
         if (hasTimer)
         {
-
-            
+            Timer();
         }
     }
-
+    
 
     [Command]
     public void CmdAddScore(Team team, int amount, string scoredPlayerName)
     {
+        if (GameManager.instance.gameEnded)
+            return;
+
         if (scoreNotificationEnabled)
             RpcNotificatePlayerScored(scoredPlayerName, team);
 
@@ -88,6 +97,9 @@ public class Scoreboard : NetworkBehaviour
     [Server]
     public void AddScore(Team team, int amount, string scoredPlayerName)
     {
+        if (GameManager.instance.gameEnded) 
+            return;
+
         if (scoreNotificationEnabled)
             RpcNotificatePlayerScored(scoredPlayerName, team);
 
@@ -105,6 +117,13 @@ public class Scoreboard : NetworkBehaviour
         CheckScoreGetsGoal();
     }
 
+    [Client]
+    public void ChangeLocalPlayerScore(int amount)
+    {
+        playerScoreText.text = amount.ToString();
+    }
+
+
     [ClientRpc]
     private void RpcNotificatePlayerScored(string scoredPlayerName, Team team)
     {
@@ -118,13 +137,28 @@ public class Scoreboard : NetworkBehaviour
     {
         if (blueTeamScore >= goal)
         {
-            GameManager.instance.EndGame();
-            RpcBroadcastWonTeam(Team.Blue);
+            EndGame(Team.Blue);
         }
         else if (redTeamScore >= goal)
         {
-            GameManager.instance.EndGame();
-            RpcBroadcastWonTeam(Team.Red);
+            EndGame(Team.Red);
+        }
+    }
+
+    [Server]
+    private void CheckTeamsScore()
+    {
+        if (blueTeamScore == redTeamScore)
+        {
+            EndGame(Team.Null);
+        }
+        else if(blueTeamScore > redTeamScore)
+        {
+            EndGame(Team.Blue);
+        }
+        else if (blueTeamScore < redTeamScore)
+        {
+            EndGame(Team.Red);
         }
     }
 
@@ -135,13 +169,17 @@ public class Scoreboard : NetworkBehaviour
 
         switch (team)
         {
+            case Team.Null:
+                winnerText.text = "Draw";
+                break;
+
             case Team.Blue:
-                winnerText.text = "Blue Team Won!";
+                winnerText.text = "Blue Team Won";
                 winnerText.color = TeamToColor.GetTeamColor(team);
                 break;
 
             case Team.Red:
-                winnerText.text = "Red Team Won!";
+                winnerText.text = "Red Team Won";
                 winnerText.color = TeamToColor.GetTeamColor(team);
                 break;
 
@@ -154,8 +192,20 @@ public class Scoreboard : NetworkBehaviour
         
     }
 
-    
+    [Server]
+    private void EndGame(Team wonTeam)
+    {
+        GameManager.instance.EndGame();
+        RpcBroadcastWonTeam(wonTeam);
+    }
 
+
+
+    [Client]
+    private void UpdateGoalOrTimerText(string oldText, string newText)
+    {
+        goalOrTimerText.text = newText;
+    }
 
     [Client]
     private void UpdateBlueTeamScore(int oldScore, int newScore)
@@ -168,4 +218,35 @@ public class Scoreboard : NetworkBehaviour
     {
         redTeamScoreText.text = newScore.ToString();
     }
+
+
+#region Timer
+
+    [Server]
+    private void Timer()
+    {
+        if (!countDown)
+            return;
+
+        matchTimer -= Time.deltaTime;
+        UpdateTimer();
+
+        if (matchTimer < 0)
+        {
+            countDown = false;
+            matchTimer = 0;
+            CheckTeamsScore();
+        }
+    }
+
+    [Server]
+    private void UpdateTimer()
+    {
+        float minutes = Mathf.FloorToInt(matchTimer / 60);
+        float seconds = Mathf.FloorToInt(matchTimer % 60);
+
+        goalOrTimerString = $"{minutes:00}:{seconds:00}";
+    }
+
+#endregion
 }

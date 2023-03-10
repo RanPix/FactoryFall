@@ -27,6 +27,7 @@ namespace FiniteMovementStateMachine
         private bool isMovingForwardIsUpdatedThisFrame;
 
         protected bool isCurrentState { get; private set; } = false;
+
         #region Getters
 
         protected bool GetGotWall()
@@ -64,7 +65,7 @@ namespace FiniteMovementStateMachine
 
         #endregion
 
-        internal BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
+        internal BaseMovementState(string name, MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data, PlayerControls controls)
         {
             this.name = name;
             this.stateMachine = stateMachine;
@@ -72,13 +73,19 @@ namespace FiniteMovementStateMachine
             this.fields = fields;
             this.data = data;
 
-            controls = new PlayerControls();
-            controls.Player.Enable();
+            this.controls = controls;
 
             controls.Player.Jump.performed += AddJump;
         }
 
         #region State Logic
+
+        private void OnDestroy()
+        {
+            controls.Player.Jump.performed -= AddJump;
+
+        }
+
 
         /// <summary>
         ///     Called once on start of state <br/>

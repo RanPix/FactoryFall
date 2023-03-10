@@ -1,9 +1,7 @@
-using System.Collections;
-using System.Collections.Generic;
-using Player;
 using UnityEngine;
-using UnityEngine.UI;
 using UnityEngine.InputSystem;
+using PlayerSettings;
+using Mirror;
 
 public class Menu : MonoBehaviour
 {
@@ -14,45 +12,67 @@ public class Menu : MonoBehaviour
     private bool isOpened = false;
     private bool wasOpened = false;
     [SerializeField] private GameObject panel;
+    [SerializeField] private OpenAndCloseSettings openAndCloseSettings;
 
-    void Awake()
+    private void Awake()
     {
-        if(Instance==null)
+        if(Instance == null)
             Instance = this;
     }
-    void Start()
+    private void OnDestroy()
+    {
+        controls.UI.OpenOrCloseMenu.performed -= OpenOrCloseMenu;
+    }
+
+    public void Setup()
     {
         controls = new PlayerControls();
         controls.UI.Enable();
         controls.UI.OpenOrCloseMenu.performed += OpenOrCloseMenu;
 
+
         OpenOrCloseMenu(false);
     }
 
-    public void OpenOrCloseMenu(InputAction.CallbackContext context)
+    public void Disconnect()
     {
-        WeaponKeyCodes _localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>();
-        CursorManager.disablesToLockCount = isOpened ? CursorManager.disablesToLockCount+1 : wasOpened ? CursorManager.disablesToLockCount-1: CursorManager.disablesToLockCount;
-        _localPlayer.weaponHolder.GetComponent<WeaponSway>().canSway = isOpened;
-        if(_localPlayer.currentWeapon)
-            _localPlayer.currentWeapon.canShoot = isOpened;
-        isOpened = !isOpened;
-        wasOpened = isOpened?true:false;
-        look.canRotateCamera = !isOpened;
-        CursorManager.SetCursorLockState(isOpened ? CursorLockMode.None : CursorLockMode.Locked);
-        panel.SetActive(isOpened);
+        NetworkIdentity player = NetworkClient.localPlayer.GetComponent<NetworkIdentity>();
+
+        if (player.isClient && !player.isServer)
+        {
+            NetworkManager.singleton.StopClient();
+        }
+        else if (player.isClient && player.isServer)
+        {
+            NetworkManager.singleton.StopHost();
+        }
     }
+
+    public void OpenOrCloseMenu(InputAction.CallbackContext context)
+        => OpenOrCloseMenu(!isOpened);
     public void OpenOrCloseMenu(bool openMenu)
-    {
-        WeaponKeyCodes _localPlayer = GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>();
-        CursorManager.disablesToLockCount = openMenu ? CursorManager.disablesToLockCount+1 : wasOpened ? CursorManager.disablesToLockCount-1: CursorManager.disablesToLockCount;
+    { 
+        if (openAndCloseSettings.isOpened)
+        {
+            openAndCloseSettings.CloseSettings();
+            return;
+        }
+
+        WeaponKeyCodes _localPlayer = NetworkClient.localPlayer.GetComponent<WeaponKeyCodes>();
+        //print($"is open = {openMenu}");
+        CursorManager.instance.disablesToLockCount = openMenu ? CursorManager.instance.disablesToLockCount + 1 : wasOpened ? CursorManager.instance.disablesToLockCount - 1: CursorManager.instance.disablesToLockCount;
         _localPlayer.weaponHolder.GetComponent<WeaponSway>().canSway = !openMenu;
+
         if(_localPlayer.currentWeapon)
             _localPlayer.currentWeapon.canShoot = !openMenu;
 
         isOpened = openMenu;
         look.canRotateCamera = !openMenu;
-        CursorManager.SetCursorLockState(openMenu ? CursorLockMode.None : CursorLockMode.Locked);
+
+        if (!wasOpened && isOpened)
+            wasOpened = true;
+
+        CursorManager.instance.SetCursorLockState(openMenu ? CursorLockMode.None : CursorLockMode.Locked);
         panel.SetActive(openMenu);
     }
 }

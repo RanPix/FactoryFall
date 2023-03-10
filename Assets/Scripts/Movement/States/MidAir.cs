@@ -1,19 +1,54 @@
+using System;
 using FiniteMovementStateMachine;
 using Unity.Mathematics;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using Mirror;
 
 public class MidAir : BaseMovementState
 {
-    private int hasDoubleJumps;
-    private int hasRedirects;
+    public Action<Vector2> OnRedirect;
 
+    public int hasDoubleJumps
+    {
+        get => _hasDoubleJumps;
+        private set
+        {
+            _hasDoubleJumps = value;
+            OnDoubleJumpsCountChange?.Invoke(value);
+        }
+    }
+    private int _hasDoubleJumps;
+    public Action<int> OnDoubleJumpsCountChange;
+
+    public int hasRedirects
+    {
+        get => _hasRedirects;
+        private set
+        {
+            _hasRedirects = value;
+            OnRedirectsCountChange?.Invoke(value);
+        }
+    }
+    private int _hasRedirects;
+    public Action<int> OnRedirectsCountChange;
+
+    public Action OnJump;
+
+    private AudioSync audioSync;
     private bool gotRedirectInput;
 
-    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
-        : base("MidAir", stateMachine, movementControl, fields, data)
+    public MidAir(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data, PlayerControls controls)
+        : base("MidAir", stateMachine, movementControl, fields, data, controls)
     {
         controls.Player.Redirect.performed += AddRedirect;
+    }
+
+
+
+    private void Awake()
+    {
+        audioSync = NetworkClient.localPlayer.gameObject.GetComponent<AudioSync>();
     }
 
     #region State logic
@@ -93,6 +128,7 @@ public class MidAir : BaseMovementState
 
     private void Jump()
     {
+        OnJump?.Invoke();
         if (fields.ScriptableFields.JumpOverlap) // Jump overlap fix check
             data.verticalMove =
                 data.verticalMove < fields.ScriptableFields.JumpHeight ?
@@ -100,7 +136,9 @@ public class MidAir : BaseMovementState
                     data.verticalMove + fields.ScriptableFields.JumpHeight;
         else
             data.verticalMove += fields.ScriptableFields.JumpHeight;
-
+        if (!audioSync)
+            audioSync = NetworkClient.localPlayer.gameObject.GetComponent<AudioSync>();
+        audioSync?.PlaySound(ClipType.player, true, "Jump");
         data.gotJumpInput = false;
     }
 
@@ -125,10 +163,15 @@ public class MidAir : BaseMovementState
 
         if (!CheckForCharges()) 
             return;
+        if (!audioSync)
+            audioSync = NetworkClient.localPlayer.gameObject.GetComponent<AudioSync>();
 
+        audioSync?.PlaySound(ClipType.player, true, "Redirect");
         data.CalculateHorizontalMagnitude();
 
         data.horizontalMove = data.horizontalMagnitude * input;
+
+        OnRedirect.Invoke(input);
     }
 
     private bool CheckForCharges()

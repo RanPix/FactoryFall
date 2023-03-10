@@ -1,31 +1,30 @@
-using UnityEngine;
-using System.Collections;
-using Mirror;
+using FiniteMovementStateMachine;
 using GameBase;
+using Mirror;
 using System;
-using System.Collections.Generic;
-using TMPro;
+using System.Collections;
 using UI.Indicators;
-using System.Runtime.CompilerServices;
-using UnityEditor.Experimental.GraphView;
+using UnityEngine;
 
 namespace Player
 {
     [RequireComponent(typeof(PlayerSetup))]
     public class GamePlayer : NetworkBehaviour
     {
-#region SynkVars
-        [field: SyncVar(hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
-        [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; }
+#region SyncVar
+        [field: SyncVar (hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
 
-        [field: SyncVar] public int kills { get; private set; }
+        [field: SyncVar(hook = nameof(SetNickname))] public string nickname { get; private set; } = string.Empty;
+
+        [field: SyncVar (hook = nameof(UpdateKillsCount))] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
-        [field: SyncVar] public int score { get; private set; }
+        [field: SyncVar (hook = nameof(UpdateScoreCount))] public int score { get; private set; }
 #endregion
 
 
         [Header("Health")]
         [SerializeField] private Health health;
+        [SerializeField] public GameObject healthBar;
         [SerializeField] private GameObject healthBarPrefab;
 
 
@@ -33,31 +32,35 @@ namespace Player
 
         [Header("Weapon")]
         [SerializeField] private GameObject ammoTextPrefab;
-        [SerializeField] private Transform trail;
         [SerializeField] private Transform hitIndicatorPrefab;
-        [SerializeField] private WeaponKeyCodes weaponKeyCodes;
+        [field: SerializeField] public WeaponKeyCodes weaponKeyCodes { get; private set; }
 
-        public Transform muzzlePosition;
 
-        private int spawnedBulletCount = 0;
 
 
         [Space]
 
         [Header("UI")]
-        [SerializeField] private GameObject nameGO;
-        [SerializeField] private InventoryUI inventory;
         [SerializeField] private GameObject menuPrefab;
 
 
-        [Space]
+        [Header("Player")]
+        [SerializeField] private GameObject nameGO;
+
+        [SerializeField] private GameObject playerModel;
+        [SerializeField] private MeshRenderer playerMesh;
+
+        [SerializeField] private Material bluePowerMat;
+        [SerializeField] private Material blueBaseMat;
+        [SerializeField] private Material redPowerMat;
+        [SerializeField] private Material redBaseMat;
 
         [Header("Cameras")]
         [SerializeField] private Transform cameraPosition;
         [SerializeField] private Transform orientation;
 
         [SerializeField] private Camera miniMapCamera;
-        [SerializeField] private GameObject playerMark;
+        [field: SerializeField] public GameObject playerMark { get; private set; }
         [field: SerializeField] public GameObject cameraHolder { get; private set; }
 
 
@@ -66,23 +69,15 @@ namespace Player
         [Header("Death")]
         [SerializeField] private Behaviour[] disableOnDeath;
         [SerializeField] private GameObject[] disableGameObjectsOnDeath;
+
         [field: SyncVar] public bool isDead { get; private set; }
 
-        //[SerializeField] private GameObject deathEffect;
-        //[SerializeField] private GameObject spawnEffect;
-
-
         [Space]
 
-        [Header("Audio")]
-        private AudioSync audioSync;
-
-
+        [Header("Effects")] 
+        [SerializeField] private PlayerVFX playerVFX;
 
         [Space]
-
-
-        private bool[] wasEnabled;
 
         [SerializeField] private CharacterController characterController;
 
@@ -92,16 +87,22 @@ namespace Player
 
         //[SerializeField] private GameObject compass;
 
+        [SerializeField] private Transform killedPlayersListPrefab;
         [SerializeField] private Transform killerPlayerInfoPrefab;
  
         [SerializeField] private AudioSource audioSource;
 
 
+        private bool[] wasEnabled;
 
         private Scoreboard scoreboard;
+        private OreInventoryItem oreInventory;
 
         private Transform cam;
 
+        private PlayerControls playerControls;
+
+        private AudioSync audioSync;
 #region Actions
         public Action<string, int> OnGotHit;
 
@@ -109,6 +110,9 @@ namespace Player
         public Action OnRespawn;
 
         public Action<string, string> OnKill;
+
+        public Action OnSetPlayerInfoTransfer;
+        private bool playerInfoTransferWasSet = false;
 #endregion
 
 
@@ -134,8 +138,6 @@ namespace Player
             MiniMapCameraMove _miniMapCameraMove = _miniMapCamera.GetComponent<MiniMapCameraMove>();
             _miniMapCameraMove.Setup(gameObject.transform);
 
-            //GameObject _compass = GameObject.Instantiate(compass, CanvasInstance.instance.canvas.transform);
-            //_compass.GetComponent<Compass>().reference = gameObject.transform.GetChild(0).GetChild(0);
 
         }
 
@@ -146,15 +148,26 @@ namespace Player
             nickname = name;
         }
 
+        private IEnumerator WaitForPlayerInfoTransfer()
+        {
+            yield return new WaitUntil(() => team != Team.Null && nickname != String.Empty);
+            OnSetPlayerInfoTransfer?.Invoke();
+        }
+
         private void Start()
         {
+
             audioSync = GetComponent<AudioSync>();
             if (isLocalPlayer)
             {
+                InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
+                CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
+
+                playerModel.SetActive(false);
+                nameGO.SetActive(false);
+
                 gameObject.layer = LayerMask.NameToLayer("LocalPlayer");
                 gameObject.tag = "LocalPlayer";
-
-                InitializePlayerInfo(PlayerInfoTransfer.instance.nickname, PlayerInfoTransfer.instance.team);
 
                 Transform hitIndicator = Instantiate(hitIndicatorPrefab, CanvasInstance.instance.canvas.transform);
                 hitIndicator.GetComponent<HitIndicatorTrigger>().Setup(this, orientation);
@@ -164,22 +177,56 @@ namespace Player
 
                 health.onDeath += Die;
 
-                Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
+                healthBar = Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
 
-                GameObject menu = Instantiate(menuPrefab, CanvasInstance.instance.canvas.transform);
-                menu.GetComponent<Menu>().look = cameraHolder.GetComponent<Look>();
-                CanvasInstance.instance.canvas.transform.GetChild(0).gameObject.SetActive(true);
+                CanvasInstance.instance.menu.look = cameraHolder.GetComponent<Look>();
+                CanvasInstance.instance.menu.GetComponent<Menu>().Setup();
+                CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
 
+                CanvasInstance.instance.weaponsToChose.GetComponent<ChosingWeapon>().Setup();
+                CanvasInstance.instance.damageVingette.GetComponent<DamageVingette>().Setup(this);
+
+                gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += playerVFX.RedirectFX;
+
+                Instantiate(killedPlayersListPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KilledPlayerInfo>().Setup(this);
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
+
+                oreInventory = CanvasInstance.instance.oreInventory.GetComponent<OreInventoryItem>();
+                OreGiveAwayArea.instance.OnAreaEnter += UpdateScore;
+
+                OnDeath += (_, _, _, _) => CanvasInstance.instance.oreInventory.item.currentCount = 0;
             }
+            StartCoroutine(WaitForPlayerInfoTransfer());
 
             scoreboard = CanvasInstance.instance.scoreBoard.GetComponent<Scoreboard>();
+
+            if (isLocalPlayer)
+            {
+                scoreboard.ChangeLocalPlayerScore(0);
+            }
         }
 
-        public void SetTeam(Team oldTeam, Team newTeam)
+
+        private void OnDestroy()
         {
-            GameObject playerRow = Instantiate(playerMark);
-            playerRow.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
+            Destroy(playerMark);
+            health.onDeath -= Die;
+            gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= playerVFX.RedirectFX;
+            OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
+            
+        }
+
+
+        private void SetTeam(Team oldTeam, Team newTeam)
+        {
+            playerMark = Instantiate(playerMark);
+            playerMark.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
+
+            /*if (nickname != String.Empty && !playerInfoTransferWasSet)
+            {
+                OnSetPlayerInfoTransfer?.Invoke();
+                playerInfoTransferWasSet = true;
+            }*/
 
             if (isLocalPlayer)
             {
@@ -187,20 +234,28 @@ namespace Player
                 transform.position = _spawnPoint.position;
                 transform.rotation = _spawnPoint.rotation;
 
+
                 return;
             }
 
             GameObject localPlayerInstance = GameObject.FindGameObjectWithTag("LocalPlayer");
-            Team localPlayerTeam = Team.Null;
 
-            if (localPlayerInstance != null)
-                localPlayerTeam = localPlayerInstance.GetComponent<GamePlayer>().team;
+            Team localPlayerTeam = localPlayerInstance != null ?
+                localPlayerInstance.GetComponent<GamePlayer>().team :
+                PlayerInfoTransfer.instance.team;
 
-            else
-                localPlayerTeam = PlayerInfoTransfer.instance.team;
-
+            if (newTeam == Team.Blue)
+            {
+                playerMesh.materials[2].CopyPropertiesFromMaterial(blueBaseMat);
+                playerMesh.materials[0].CopyPropertiesFromMaterial(bluePowerMat);
+            }
+            else if (newTeam == Team.Red)
+            {
+                playerMesh.materials[2].CopyPropertiesFromMaterial(redBaseMat);
+                playerMesh.materials[0].CopyPropertiesFromMaterial(redPowerMat);
+            }
              
-            string playerTag = "";
+            string playerTag;
 
             if (newTeam == Team.Blue && localPlayerTeam == Team.Blue)
                 playerTag = "FriendlyPlayer";
@@ -220,36 +275,53 @@ namespace Player
                 return;
 
             nameGO.SetActive(true);
-            TMP_Text text = nameGO.GetComponentInChildren<TMP_Text>();
+            if (team != Team.Null)
+            {
+                nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
+            }
+            else
+            {
+                OnSetPlayerInfoTransfer += () => nameGO.GetComponent<PlayerNicknameDisplay>().Setup(newName, team);
+            }
 
-            //StartCoroutine(WaitForSyncTeam(text));
-            text.color = TeamToColor.GetTeamColor(team);
-            text.text = newName;
         }
 
 
         #region Weapon
 
 
-        
+
         public IEnumerator Shoot(Ray[] rays, int damage, float shootRange, string playerID, float timeBetweenShots)
         {
-            weaponKeyCodes.currentWeapon.canShoot = false;
+            if (!isLocalPlayer)
+            {
+                yield break;
+            }
 
-            if(rays.Length<1 || rays.Length!=weaponKeyCodes.currentWeapon.numberOfBulletsPerShot)
+            if(rays.Length < 1 || rays.Length != weaponKeyCodes.currentWeapon.weaponScriptableObject.numberOfBulletsPerShot)
                 Debug.LogError("The number of patterns must be equal to the number of bullets per shot");
+
 
             for (int i = 0; i < rays.Length; i++)
             {
+                if (weaponKeyCodes.currentWeapon.weaponAmmo.Ammo + 1 < 1)
+                    break;
+
+                if(weaponKeyCodes.currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets != 0 || i == 0)
+                    audioSync.PlaySound(ClipType.weapon,true, $"{weaponKeyCodes.currentWeapon.weaponName}_Shoot");
                 
-                audioSync.PlaySound(0);
-                if (!weaponKeyCodes.currentWeapon.useOneAmmoPerShot)
+
+                if (!weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
                 {
+                   playerVFX.CmdSpawnMuzzleFlash();
+
+                    weaponKeyCodes.currentWeapon.animator.StopPlayback();
                     weaponKeyCodes.currentWeapon.animator.Play(weaponKeyCodes.currentWeapon.shootAnimationName);
                     weaponKeyCodes.currentWeapon.weaponAmmo.Ammo--;
-                    weaponKeyCodes.currentWeapon.weaponAmmo.UpdateAmmoInScreen();
+                    weaponKeyCodes.currentWeapon.weaponAmmo.UpdateAmmoOnScreen();
+                    weaponKeyCodes.currentWeapon.recoil.RecoilFire();
                 }
-                bool isHitted = Physics.Raycast(rays[i], out RaycastHit hit, shootRange, hitMask);
+                bool isHitted = Physics.Raycast(rays[i], out RaycastHit hit, shootRange, hitMask, QueryTriggerInteraction.Ignore);
 
 
                 if (isHitted && !GameManager.instance.gameEnded)
@@ -263,16 +335,25 @@ namespace Player
                             CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damage, playerID);
                         }
                     }
+                    playerVFX.SpawnHitFX(hit.point, hit.normal);
                 }
 
-                CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
-                if(i+1<rays.Length)
+                playerVFX.CmdSpawnTrail(isHitted, rays[i].origin, rays[i].direction, hit.point, shootRange);
+
+                
+                
+
+
+                if(i + 1 < rays.Length)
                     yield return new WaitForSeconds(timeBetweenShots);
-                else if(rays.Length>1&&timeBetweenShots>0)
-                    yield return new WaitForSeconds(0.07f);
 
             }
-            weaponKeyCodes.currentWeapon.canShoot = true;
+
+            if (weaponKeyCodes.currentWeapon.weaponScriptableObject.useOneAmmoPerShot)
+            {
+                playerVFX.CmdSpawnMuzzleFlash();
+            }
+
         }
 
         [Client]
@@ -281,25 +362,38 @@ namespace Player
             if (GameManager.instance.gameEnded)
                 return;
 
-            bool isHitted = Physics.SphereCast(ray, punchRadius, out RaycastHit hit, punchDistance, hitLM);
+            bool isHitted = Physics.SphereCast(ray, punchRadius, out RaycastHit hit, punchDistance, hitLM, QueryTriggerInteraction.Ignore);
             if (isHitted)
             {
-                if(hit.transform.tag == "FriendlyPlayer")
-                    return;
-                Health hitHealth = hit.transform.GetComponent<Health>();
-                if (hitHealth)
+                if (hit.transform.tag != "FriendlyPlayer")
                 {
-                    StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
-                    CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damageToPlayer, playerID);
-                }
-                else if (hit.transform.tag == "Ore")
-                {
-                    StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
+                    Health hitHealth = hit.transform.GetComponent<Health>();
 
-                    Ore _ore = hit.transform.GetComponent<Ore>();
-                    CmdOreHit(damageToOre, GetNetID(), _ore);
+                    if (hitHealth)
+                    {
+                        playerVFX.SpawnHitFX(hit.point, hit.normal);
+                        StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
+                        CmdPlayerHit(hit.transform.GetComponent<NetworkIdentity>().netId.ToString(), damageToPlayer, playerID);
+                        audioSync.PlaySound(ClipType.player, true, "Arm_HitInPlayer");
+                        return;
+                    }
+                    else if (hit.transform.tag == "Ore")
+                    {
+                        StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
+                        if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
+                            CanvasInstance.instance.tipsManager.ActivateTip("BringOre");
+
+                        playerVFX.SpawnHitFX(hit.point, hit.normal);
+                        Ore _ore = hit.transform.GetComponent<Ore>();
+                        CmdOreHit(damageToOre, GetNetID(), _ore);
+                        audioSync.PlaySound(ClipType.player, true, "Arm_HitInOre");
+                        return;
+                    }
                 }
+
             }
+
+            audioSync.PlaySound(ClipType.player, true, "Arm_Shot");
         }
 
         [Command]
@@ -307,26 +401,6 @@ namespace Player
         {
             ore.RpcCheckHP(damageToOre, netID);
         }
-
-        [Command]
-        public void CmdSpawnTrail(bool isHitted, Vector3 origin, Vector3 direction, Vector3 point, float shootRange)
-        {
-            RpcSpawnTrail(isHitted, origin, direction, point, shootRange);
-        }
-
-        [ClientRpc]
-        private void RpcSpawnTrail(bool isHitted, Vector3 origin, Vector3 direction, Vector3 point, float shootRange)
-        {
-            Transform _trail = Instantiate(trail);
-
-            LineRenderer line = _trail.GetComponent<LineRenderer>();
-
-
-            line.SetPosition(0, muzzlePosition.position);
-            Vector3 trailFinish = isHitted ? point : origin + direction * shootRange;
-            line.SetPosition(1, trailFinish);
-        }
-        
 
         [Command]
         private void CmdPlayerHit(string _playerID, int _damage, string _sourceID)
@@ -378,8 +452,6 @@ namespace Player
             CmdDisableComponentsOnDeath();
 
             //Spawn a death effect
-            /*GameObject _gfxIns = (GameObject)Instantiate(deathEffect, transform.position, Quaternion.identity);
-            Destroy(_gfxIns, 3f);*/
 
             //Switch cameras
             //if (isLocalPlayer)
@@ -409,22 +481,14 @@ namespace Player
 
             if (killedNetID != GetNetID())
             {
-                UpdateKillsCount(1);
-                OnKill?.Invoke(killedNetID, nickname);
+                CmdUpdateKillsCount(1);
+                OnKill?.Invoke(killedNetID, killedNickname);
             }
             else
             {
-                UpdateKillsCount(-1);
-                OnKill?.Invoke(killedNetID, nickname);
+                CmdUpdateKillsCount(-1);
+                OnKill?.Invoke(killedNetID, killedNickname);
             }
-        }
-
-        [Command]
-        private void UpdateKillsCount(int kill)
-        {
-            kills += kill;
-
-            scoreboard.AddScore(team, kill, nickname);
         }
 
 
@@ -432,10 +496,6 @@ namespace Player
         [Command]
         private void CmdDie(string _sourceID)
         {
-            //GamePlayer player = GameManager.GetPlayer(_sourceID);
-            //player.kills++;
-            //scoreboard.AddScore(player.team, 1, player.nickname);
-
             deaths++;
 
             RpcDie(_sourceID);
@@ -447,6 +507,8 @@ namespace Player
             GamePlayer player = GameManager.GetPlayer(_sourceID);
 
             GameManager.instance.OnPlayerKilledCallback?.Invoke(nickname, team, player.nickname, player.team);
+
+            playerVFX.SpawnDeathFX();
         }
 
         [Command]
@@ -468,7 +530,11 @@ namespace Player
                 disableGameObjectsOnDeath[i].SetActive(false);
 
             if (!isLocalPlayer)
+            {
+
+                playerModel.SetActive(false);
                 nameGO.SetActive(false);
+            }
 
         }
 
@@ -480,9 +546,12 @@ namespace Player
             transform.position = _spawnPoint.position;
             transform.rotation = _spawnPoint.rotation;
 
+            
+
             OnRespawn.Invoke();
 
             yield return new WaitForSeconds(0.1f);
+
 
             SetupPlayer();
         }
@@ -525,7 +594,7 @@ namespace Player
 
                 firstSetup = false;
             }
-
+            playerVFX.SpawnReSpawnFX();
             SetDefaults();
         }
 
@@ -545,14 +614,66 @@ namespace Player
                 disableGameObjectsOnDeath[i].SetActive(true);
 
             if (!isLocalPlayer)
+            {
+                playerModel.SetActive(true);
                 nameGO.SetActive(true);
+            }
         }
 
 
         #endregion
 
-        
 
+        #region Score
+
+        private void UpdateScore(int amount)
+        {
+            CmdUpdateScore(amount);
+        }
+
+        [Command]
+        private void CmdUpdateScore(int amount)
+        {
+            score += amount;
+
+            if (GameManager.instance.matchSettings.scoreBased)
+                scoreboard.AddScore(team, amount, nickname);
+        }
+
+        [Command]
+        private void CmdUpdateKillsCount(int kill)
+        {
+            kills += kill;
+
+            if (!GameManager.instance.matchSettings.scoreBased)
+                scoreboard.AddScore(team, kill, nickname);
+        }
+
+        [Client]
+        private void UpdateKillsCount(int oldAmount, int newAmount)
+        {
+            if (!isLocalPlayer)
+                return;
+
+            if (GameManager.instance.matchSettings.scoreBased)
+                return;
+
+            scoreboard.ChangeLocalPlayerScore(newAmount);
+        }
+
+        [Client]
+        private void UpdateScoreCount(int oldAmount, int newAmount)
+        {
+            if (!isLocalPlayer)
+                return;
+
+            if (!GameManager.instance.matchSettings.scoreBased)
+                return;
+
+            scoreboard.ChangeLocalPlayerScore(newAmount);
+        }
+
+        #endregion
         private IEnumerator ActivateForSeconds(GameObject GO, float time)
         {
             GO.SetActive(true);

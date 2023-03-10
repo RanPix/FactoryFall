@@ -2,6 +2,7 @@ using GameBase;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using PlayerSettings;
 
 public class Look : MonoBehaviour
 {
@@ -35,7 +36,14 @@ public class Look : MonoBehaviour
         controls.Player.Enable();
 
         controls.Player.FreeCursor.performed += ControlCursor;
+        UpdateFOV();
     }
+    private void OnDestroy()
+    {
+        controls.Player.FreeCursor.performed -= ControlCursor;
+
+    }
+
 
     private void Update()
     {
@@ -50,8 +58,18 @@ public class Look : MonoBehaviour
         => inputVector = controls.Player.Look.ReadValue<Vector2>();
 
 
+    public void UpdateFOV()
+    {
+       if (PlayerPrefs.HasKey(Settings.FOVPrefsKey))
+       {
+            cam.fieldOfView = PlayerPrefs.GetFloat(Settings.FOVPrefsKey);
+       }
+    }
+
     private void UpdateCamera()
     {
+        if(!cam || !orientation)
+            return;
         if (!lookEnabled)
         {
             cam.transform.LookAt(spectatePlayer.position + new Vector3(0, 1f));
@@ -63,8 +81,8 @@ public class Look : MonoBehaviour
             return;
 
         // Laggy beauty
-        yRot += inputVector.x * 0.01f * sensX;
-        xRot -= inputVector.y * 0.01f * sensY;
+        yRot += inputVector.x * 0.01f * Settings.sensetivity;
+        xRot -= inputVector.y * 0.01f * Settings.sensetivity;
         xRot = Mathf.Clamp(xRot, -90f, 90f);
 
         cam.transform.rotation = Quaternion.Euler(xRot, yRot, 0);
@@ -90,9 +108,9 @@ public class Look : MonoBehaviour
     private void ControlCursor(InputAction.CallbackContext context)
     {
         if (Cursor.lockState == CursorLockMode.Locked)
-            CursorManager.SetCursorLockState(CursorLockMode.None);
+            CursorManager.instance.SetCursorLockState(CursorLockMode.None);
         else if (Cursor.lockState == CursorLockMode.None)
-            CursorManager.SetCursorLockState(CursorLockMode.Locked);
+            CursorManager.instance.SetCursorLockState(CursorLockMode.Locked);
     }
 }
 

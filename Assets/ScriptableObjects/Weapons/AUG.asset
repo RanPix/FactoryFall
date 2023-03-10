@@ -12,9 +12,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb56126a0b08f7b4e9c59ca1ca666da1, type: 3}
   m_Name: AUG
   m_EditorClassIdentifier: 
+  type: Rifle
+  name: AUG
   damage: 10
+  shootRange: 1000
   fireRate: 7.8
-  weaponShootRange: 1000
+  useOneAmmoPerShot: 0
+  maxAmmo: 25
+  numberOfBulletsPerShot: 2
+  timeBetweenSpawnBullets: 0.08
+  patern:
+  - {x: 0, y: 0}
+  - {x: 0, y: 0}
+  timeBetweenShots: 0.25
   reloadTime: 1.2
   empty: {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
   reload: {fileID: 8300000, guid: 16ed38669058a6147bcf4408aeb56382, type: 3}

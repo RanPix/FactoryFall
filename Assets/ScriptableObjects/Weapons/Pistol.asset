@@ -12,9 +12,17 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fb56126a0b08f7b4e9c59ca1ca666da1, type: 3}
   m_Name: Pistol
   m_EditorClassIdentifier: 
+  type: Pistol
+  name: Classic
   damage: 20
-  fireRate: 6.97
-  weaponShootRange: 1000
+  shootRange: 1000
+  useOneAmmoPerShot: 1
+  maxAmmo: 12
+  numberOfBulletsPerShot: 1
+  timeBetweenSpawnBullets: 0
+  patern:
+  - {x: 0, y: 0}
+  timeBetweenShots: 0.16
   reloadTime: 1.5
   empty: {fileID: 8300000, guid: 8c52ece6ee1001f4a9ca171ec54f3791, type: 3}
   reload: {fileID: 8300000, guid: e90fe0262e521e44da47896eb35f15de, type: 3}

@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 namespace Weapons
@@ -8,7 +9,14 @@ namespace Weapons
 
         [Space]
 
-        [SerializeField] private Transform weaponView;
+        [SerializeField] private GameObject redArm;
+        [SerializeField] private GameObject blueArm;
+        private GameObject currentArm;
+
+
+        [SerializeField] private GameObject player;
+
+        [field: Space]
 
         [field: Header("Stats")]
 
@@ -26,17 +34,25 @@ namespace Weapons
         [field: SerializeField] public float reloadTime { get; private set; }
         public float reloadTimer { get; private set; }
 
-        
-        public bool _isLocalPLayer { get; set; }
+        public Team team { get; set; }
+        public bool isLocalPLayer { get; set; } = false;
 
         private void Start()
         {
-            if (!_isLocalPLayer)
-            {
-                SetLayerRecursive(weaponView.gameObject, LayerMask.NameToLayer("Default"));
-                return;
-            }
+        }
 
+        public void SetupArm(Team _team, bool _isLocalPlayer)
+        {
+            team = _team;
+            isLocalPLayer = _isLocalPlayer;
+            currentArm = team == Team.Blue ? blueArm : redArm;
+            currentArm.SetActive(true);
+            animator = currentArm.GetComponent<Animator>();
+
+            if (isLocalPLayer)
+            {
+                SetLayerRecursive(currentArm, LayerMask.NameToLayer("Weapon"));
+            }
         }
 
         private void SetLayerRecursive(GameObject targetGameObject, LayerMask layer)
@@ -46,6 +62,7 @@ namespace Weapons
             foreach (Transform child in targetGameObject.transform)
                 SetLayerRecursive(child.gameObject, layer);
         }
+
 
         private void Update()
         {

@@ -1,23 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 using Mirror;
 using DG.Tweening;
-using UnityEngine.UI;
 using TMPro;
 
 public enum ButtonGroup
 {
     Main = 0,
-    ConnectToSomeoneOrHost = 1,
-    Host = 2,
-    ConnectToSomeone = 3,
+    JoinOrHost = 1,
+    Join = 2,
 }
 
 public class MainMenu : MonoBehaviour
 {
-    [SerializeField] NetworkManager manager;
-
     ButtonGroup currentButtonGroup = ButtonGroup.Main;
     [SerializeField] GameObject[] MainMenuButtonGroupsToGroupGameObject;
     [SerializeField] float buttonGroupMoveTime;
@@ -25,27 +19,25 @@ public class MainMenu : MonoBehaviour
     [SerializeField] RectTransform closedGroupPosition;
     [SerializeField] RectTransform openedGroupPosition;
 
-    [SerializeField] TMP_Text IPAdressInputFieldText;
-    [SerializeField] TMP_Text passWordClientInputFieldText;
-    [SerializeField] TMP_Text passWordHostInputFieldText;
-    [SerializeField] TMP_Text nicknameInputFieldText;
+    [SerializeField] TMP_InputField IPAdressInputFieldText;
 
-    void Start()
+    private void Start()
     {
         SetMainButtonGroup();
     }
 
     public void Join()
     {
+        if(!NetworkManager.singleton)
+            return;
         string adress = IPAdressInputFieldText.text;
-        Debug.Log(adress);
-        manager.networkAddress = adress;
-        manager.StartClient();
+        NetworkManager.singleton.networkAddress = adress;
+        NetworkManager.singleton.StartClient();
     }
 
     public void Host()
     {
-        manager.StartHost();
+        NetworkManager.singleton.StartHost();
     }
 
     public void Quit()
@@ -54,11 +46,9 @@ public class MainMenu : MonoBehaviour
     public void SetMainButtonGroup()
         => SetMenuButtonGroup(ButtonGroup.Main);
     public void SetConnectToSomeoneOrHostButtonGroup()
-        => SetMenuButtonGroup(ButtonGroup.ConnectToSomeoneOrHost);
-    public void SetHostButtonGroup()
-        => SetMenuButtonGroup(ButtonGroup.Host);
+        => SetMenuButtonGroup(ButtonGroup.JoinOrHost);
     public void SetConnectToSomeoneButtonGroup()
-        => SetMenuButtonGroup(ButtonGroup.ConnectToSomeone);
+        => SetMenuButtonGroup(ButtonGroup.Join);
 
     public void SetMenuButtonGroup(ButtonGroup buttonGroup)
     {

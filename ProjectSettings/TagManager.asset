@@ -16,6 +16,8 @@ TagManager:
   - BlueTeamSpawnPoint
   - RedTeamSpawnPoint
   - Ore
+  - DontDestroyOnLoad
+  - NicknameInputField
   layers:
   - Default
   - TransparentFX
@@ -28,7 +30,7 @@ TagManager:
   - LocalPlayer
   - Ore
   - Block
-  - 
+  - EnemyOre
   - Mark
   - MIniMap
   - Ghost

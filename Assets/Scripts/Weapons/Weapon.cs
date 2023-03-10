@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using GameBase;
+using Mirror;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -27,8 +28,23 @@ public enum PlaySoundType
     Reload
 }
 
+public enum WeaponName
+{
+    Pistol,
+    AUG,
+    Shotgun,
+}
+public enum WeaponType
+{
+    Pistol,
+    AutomaticRifle,
+    Shotgun,
+
+}
+[RequireComponent(typeof(WeaponRecoil))]
 public class Weapon : MonoBehaviour
 {
+    
 
     public WeaponScriptableObject weaponScriptableObject;
 
@@ -39,7 +55,9 @@ public class Weapon : MonoBehaviour
     [Header("Enums")] 
     [SerializeField] private States _state;
 
-    [SerializeField] public ShootType _shootType;
+    [field: SerializeField] public ShootType shootType { get; private set; }
+    [field: SerializeField] public WeaponName weaponName{get; private set; }
+    [field: SerializeField] public WeaponType weaponType{get; private set; }
 
 
 
@@ -57,6 +75,7 @@ public class Weapon : MonoBehaviour
 
     [Header("Audio")] 
     [SerializeField] protected bool useAudio;
+    private AudioSync audioSync;
 
 
     [Space(10)] 
@@ -64,21 +83,22 @@ public class Weapon : MonoBehaviour
     [Header("Sway")] 
     public Vector3 initialWeaponPosition;
 
+    [Space(10)] 
+
+    [Header("Recoil")] 
+    public WeaponRecoil recoil;
+
+    [Space]
+
     private PlayerControls controls;
     private Vector2 lookVector;
 
 
     [Space(10)] 
 
-    [Header("Ammo")] 
+    [Header("Ammo")]
     public WeaponAmmo weaponAmmo;
-    [field: SerializeField] public bool useOneAmmoPerShot { get; private set; }
-    [field: SerializeField]public int maxAmmo { get; private set; }
-    public int numberOfBulletsPerShot;
-    public float timeBetweenSpawnBullets;
-    [SerializeField] private Vector3[] patern;
 
-    [field: SerializeField] public float timeBetweenShots { get; private set; }
     public float shootTimer { get; private set; }
 
     [field: SerializeField] public bool hasInfiniteAmmo { get; private set; }
@@ -148,50 +168,55 @@ public class Weapon : MonoBehaviour
         cam = Camera.main;
         gunCam = cam.GetComponentInChildren<Camera>();
 
-
-        GameObject help = Instantiate(weaponAmmo.gameObject);
-
-
-        weaponAmmo = help.GetComponent<WeaponAmmo>();
+        audioSync = NetworkClient.localPlayer.GetComponent<AudioSync>();
+        weaponAmmo = Instantiate(weaponAmmo.gameObject).GetComponent<WeaponAmmo>();
 
         UpdateAmmo();
-
 
         canShoot = true;
 
     }
 
+    private void OnDestroy()
+    {
+        if(!_isLocalPLayer)
+            return;
+        gamePlayer.GetComponent<Health>().onDeath -= OnDeath;
+        controls.Player.Look.performed -= ReadLookVector;
+    }
+
     private void Update()
     {
-        shootTimer+=Time.deltaTime;
+        shootTimer += Time.deltaTime;
     }
 
     public Ray[] Shoot()
     {
         shootTimer = 0;
         nextFire = Time.time;
-        SpawnMuzzle();
-        if (useOneAmmoPerShot)
+
+        if (weaponScriptableObject.useOneAmmoPerShot)
         {
             animator.Play(shootAnimationName);
             weaponAmmo.Ammo--;
-            weaponAmmo.UpdateAmmoInScreen();
+            weaponAmmo.UpdateAmmoOnScreen();
+            recoil.RecoilFire();
         }
 
 
-        return GetRay(patern);
+        return GetRay(weaponScriptableObject.patern);
     }
 
 
 
-public void UpdateAmmo()
+    public void UpdateAmmo()
     {
-        weaponAmmo.Ammo = maxAmmo;
-        weaponAmmo.ClipSize = maxAmmo;
+        weaponAmmo.Ammo = weaponScriptableObject.maxAmmo;
+        weaponAmmo.ClipSize = weaponScriptableObject.maxAmmo;
         weaponAmmo.ReserveAmmo = reserveAmmo;
 
         weaponAmmo.AmmoText = ammoText;
-        weaponAmmo.UpdateAmmoInScreen();
+        weaponAmmo.UpdateAmmoOnScreen();
     }
 
     /*void OnEnable()
@@ -199,31 +224,58 @@ public void UpdateAmmo()
         UpdateAmmo();
     }*/
 
-    private Ray[] GetRay(Vector3[] pattern)
+    private Ray[] GetRay(Vector2[] pattern)
     {
         Ray[] rays = new Ray[pattern.Length];
         for (int i = 0; i < pattern.Length; i++)
         {
-            rays[i] = (new Ray(cam.transform.position, new Vector3(cam.transform.forward.x+pattern[i].x, cam.transform.forward.y + pattern[i].y, cam.transform.forward.z + pattern[i].z)));
+            rays[i] = (new Ray(cam.transform.position, new Vector3(cam.transform.forward.x+pattern[i].x, cam.transform.forward.y + pattern[i].y, cam.transform.forward.z)));
         }
         return rays;
     }
 
     public IEnumerator ReloadCoroutine()
     {
-        canShoot = false;
-        reloading = true;
-
-        animator.Play(reloadAnimationName);
-
-        yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
-        if (!wasChanged)
+        if (!wasChanged && weaponType == WeaponType.Shotgun)
         {
-            weaponAmmo.AddAmmo();
-            weaponAmmo.UpdateAmmoInScreen();
+            animator.SetBool("StartReload", true);
+            animator.SetBool("EndReload", false);
         }
-        canShoot = true;
-        reloading = false;
+
+        bool isFirstIteration = true;
+        do
+        {
+            canShoot = false;
+            reloading = true;
+
+            animator.Play(reloadAnimationName);
+
+            audioSync.PlaySound(ClipType.weapon,  false, $"{weaponName}_Reload");
+
+            yield return new WaitForSeconds(weaponScriptableObject.reloadTime);
+
+            if (!wasChanged && weaponType != WeaponType.Shotgun)
+            {
+                weaponAmmo.ResetAmmo();
+                weaponAmmo.UpdateAmmoOnScreen();
+
+            }
+            else if (!wasChanged && weaponType == WeaponType.Shotgun)
+            {
+                weaponAmmo.AddAmmo(1);
+                weaponAmmo.UpdateAmmoOnScreen();
+            }
+            canShoot = true;
+            reloading = false;
+            isFirstIteration = false;
+
+        } while (!wasChanged && weaponType == WeaponType.Shotgun && weaponAmmo.Ammo < weaponScriptableObject.maxAmmo);
+
+        if (!wasChanged && weaponType == WeaponType.Shotgun)
+        {
+            animator.SetBool("StartReload", false);
+            animator.SetBool("EndReload", true);
+        }
     }
 
     private void ReadLookVector(InputAction.CallbackContext context) => lookVector = context.ReadValue<Vector2>();
@@ -249,16 +301,6 @@ public void UpdateAmmo()
 
     }
 
-    protected void SpawnMuzzle()
-    {
-        if (weaponScriptableObject.muzzleFlash is not null)
-        {
-            Transform spawnedMuzzle = Instantiate(weaponScriptableObject.muzzleFlash, muzzlePosition.position, muzzlePosition.rotation, muzzlePosition);
-
-            Destroy(spawnedMuzzle.gameObject, weaponScriptableObject.muzzleFlashLifetime);
-        }
-    }
-
     public void OnDeath(string str)
     {
         weaponAmmo.Ammo = weaponAmmo.ClipSize;
@@ -266,19 +308,4 @@ public void UpdateAmmo()
 
 }
 
-//[System.Serializable]
-//public class Attachment
-//{
-//    [Header("Silencer")]
-//    public bool hasSilencer;
-//    public GameObject silencerObject;
-
-//    [Header("Scope`s")]
-//    public int Scopeid;
-//    public GameObject ironSight;
-
-//    [Space(10)]
-//    public AttachmentInfo[] scopes;
-//    public Vector3[] positionsInScope;
-//}
 

@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class KillFeed : MonoBehaviour
@@ -6,8 +7,22 @@ public class KillFeed : MonoBehaviour
 
     private void Start()
     {
+        if (GameManager.instance)
+        {
+            SubscribeToKill();
+        }
+        else
+        {
+            GameManager.OnGameManagerSet += SubscribeToKill;
+        }
+            
+    }
+
+    private void SubscribeToKill()
+    {
         GameManager.instance.OnPlayerKilledCallback += OnKill;
     }
+
 
     private void OnKill(string killedPlayer, Team killedTeam, string killerPlayer, Team killerTeam)
     {

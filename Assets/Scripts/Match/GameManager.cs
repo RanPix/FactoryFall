@@ -22,6 +22,8 @@ public class GameManager : NetworkBehaviour
 
     public Action OnClientStart;
 
+    public static Action OnGameManagerSet;
+
     private void Awake()
     {
         if (instance != null)
@@ -31,10 +33,19 @@ public class GameManager : NetworkBehaviour
         else
         {
             instance = this;
+            if (players.Count > 0)
+            {
+                UnregisterAllPlayers();
+            }
+            OnGameManagerSet?.Invoke();
         }
+
+
+        matchSettings.Setup();
 
         //ChangeTeamSpawnPositions(PlayerInfoTransfer.instance.team);
     }
+
 
     public void SetSceneCameraActive(bool state)
     {
@@ -51,12 +62,42 @@ public class GameManager : NetworkBehaviour
     
     private static Dictionary<string, GamePlayer> players = new Dictionary<string, GamePlayer>();
 
+    public static int GetPlayersCount() => players.Count;
+
     public static void RegisterPlayer(string _netID, GamePlayer _player)
     {
         players.Add(_netID, _player);
+    }
 
-        
-        
+    public void UnregisterAllPlayers()
+    {
+        //print($"removing {players.Count}");
+        int count = players.Count;
+        for (int i = 0; i < players.Count; i++)
+        {
+            players.Remove(players.Keys.ToArray()[i]);
+            //print($"{i} iteration");
+            //print($"{ players.Count} count");
+        }
+        //print($"removed {players.Count}");
+
+    }
+
+    [Server]
+    public void CmdUnRegisterAllPlayers()
+    {
+        if(!NetworkClient.active)
+            return;
+        RpcUnRegisterAllPlayers();
+    }
+
+    [ClientRpc]
+    public void RpcUnRegisterAllPlayers()
+    {
+        for (int i = 0; i < players.Count; i++)
+        {
+            players.Remove(players.Keys.ToArray()[i]);
+        }
     }
 
     public static void UnRegisterPlayer(string _playerID)
@@ -93,21 +134,21 @@ public class GameManager : NetworkBehaviour
         OnClientStart?.Invoke();
     }
 
-    void OnGUI()
-    {
-        //return; // if you dont need this
+    //void OnGUI()
+    //{
+    //    //return; // if you dont need this
 
-        GUILayout.BeginArea(new Rect(200, 200, 200, 500));
-        GUILayout.BeginVertical();
+    //    GUILayout.BeginArea(new Rect(200, 200, 200, 500));
+    //    GUILayout.BeginVertical();
 
-        foreach (string playerID in players.Keys)
-        {
-            GUILayout.Label($"{playerID} {players[playerID].team} - {players[playerID].nickname}, kills: {players[playerID].kills}, deaths: {players[playerID].deaths}");
-        }
+    //    foreach (string playerID in players.Keys)
+    //    {
+    //        GUILayout.Label($"{playerID} {players[playerID].team} - {players[playerID].nickname}, kills: {players[playerID].kills}, deaths: {players[playerID].deaths}");
+    //    }
 
-        GUILayout.EndVertical();
-        GUILayout.EndArea();
-    }
+    //    GUILayout.EndVertical();
+    //    GUILayout.EndArea();
+    //}
     #endregion
 
     [Server]
@@ -128,16 +169,25 @@ public class GameManager : NetworkBehaviour
 
     public override void OnStopClient()
     {
-        base.OnStopClient();
 
-        SceneManager.LoadScene("Main Menu");
+        //SceneManager.UnloadSceneAsync();
+        SceneManager.UnloadSceneAsync("MAP_CageCastle");
+        SceneManager.LoadScene("Main menu");
+        NetworkManager.singleton.StopClient();
+        base.OnStopClient();
     }
 
     public override void OnStopServer()
     {
-        base.OnStopServer();
 
         if (isClient)
-            SceneManager.LoadScene("Main Menu");
+        {
+            //SceneManager.UnloadSceneAsync();
+            SceneManager.UnloadSceneAsync("MAP_CageCastle");
+            SceneManager.LoadScene("Main menu");
+        }
+        NetworkManager.singleton.StopHost();
+        base.OnStopServer();
     }
+
 }

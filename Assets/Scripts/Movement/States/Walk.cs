@@ -3,8 +3,8 @@ using UnityEngine;
 
 public class Walk : BaseMovementState
 {
-    public Walk(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data)
-        : base("Walk", stateMachine, movementControl, fields, data) { }
+    public Walk(MovementMachine stateMachine, PlayerMovement movementControl, PlayerDataFields fields, MovementDataIntersection data, PlayerControls controls)
+        : base("Walk", stateMachine, movementControl, fields, data, controls) { }
 
     #region State logic
     

@@ -1,4 +1,6 @@
+using System;
 using GameBase;
+using Player;
 using UnityEngine;
 
 namespace FiniteMovementStateMachine
@@ -15,39 +17,59 @@ namespace FiniteMovementStateMachine
         [HideInInspector] public Wallrun wallrun { get; private set; }
 
         private MovementDataIntersection data;
+        private PlayerControls controls;
 
-        protected void Start()
+        public Action<string> OnStateChange;
+
+        private void Awake()
         {
             InitializeStates();
+        }
 
+        private void Start()
+        {
             gameObject.GetComponent<Health>().onDeath += InvokeSpeedReset;
+            CanvasInstance.instance.mainChat.OnChatToggle += ToggleControls;
 
             currentState = GetInitialState();
             currentState?.Enter();
         }
+        private void OnDestroy()
+        {
+            gameObject.GetComponent<Health>().onDeath -= InvokeSpeedReset;
+            CanvasInstance.instance.mainChat.OnChatToggle -= ToggleControls;
+
+        }
+
 
         private void Update()
         {
             //Debug.Log($"Im in {currentState}",this);
-
             currentState?.UpdateLogic();
             currentState?.CheckForChangeState();
+        }
 
+        private void LateUpdate()
+        {
             currentState?.UpdatePhysics();
         }
 
 
         private void InitializeStates()
         {
-            PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>());
+            PlayerMovement movementControl = new(gameObject.GetComponent<CharacterController>()); // Character controller
             PlayerDataFields fields = GetComponent<PlayerDataFields>();
+
             data = new();
 
-            idle = new(this, movementControl, fields, data);
-            walk = new(this, movementControl, fields, data);
-            midAir = new(this, movementControl, fields, data);
-            run = new(this, movementControl, fields, data);
-            wallrun = new(this, movementControl, fields, data);
+            controls = new PlayerControls();
+            controls.Player.Enable();
+
+            idle = new(this, movementControl, fields, data, controls);
+            walk = new(this, movementControl, fields, data, controls);
+            midAir = new(this, movementControl, fields, data, controls);
+            run = new(this, movementControl, fields, data, controls);
+            wallrun = new(this, movementControl, fields, data, controls);
         }
 
         private BaseMovementState GetInitialState()
@@ -58,7 +80,16 @@ namespace FiniteMovementStateMachine
             currentState.Exit();
 
             currentState = newState;
+            OnStateChange?.Invoke(newState.name);
             currentState.Enter();
+        }
+
+        private void ToggleControls(bool turnOn)
+        {
+            if (turnOn)
+                controls.Player.Enable();
+            else
+                controls.Player.Disable();
         }
 
         private void InvokeSpeedReset(string s)

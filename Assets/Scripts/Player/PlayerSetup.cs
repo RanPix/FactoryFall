@@ -14,7 +14,14 @@ public class PlayerSetup : NetworkBehaviour
     {
         if (isLocalPlayer)
         {
-            player.SetupPlayer();
+            if (player.team != Team.Null)
+            {
+                player.SetupPlayer();
+            }
+            else
+            {
+                player.OnSetPlayerInfoTransfer += player.SetupPlayer;
+            }
 
             return;
         }

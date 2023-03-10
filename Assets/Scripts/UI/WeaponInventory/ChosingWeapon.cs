@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Mirror;
+using Player;
 using UnityEngine;
 
 public class ChosingWeapon : MonoBehaviour
@@ -10,16 +11,26 @@ public class ChosingWeapon : MonoBehaviour
     private int maxWeaponsCount;
     public bool canSelectAnotherWeapon = true;
     public Action<int, int> OnActivateWeapons;
-    void Start()
+
+    public Action<string, string, float, float, float, int> OnActivate;
+
+    public void Setup()
     {
-        CursorManager.SetCursorLockState(CursorLockMode.None);
-        CursorManager.disablesToLockCount++;
+        CursorManager.instance.SetCursorLockState(CursorLockMode.None);
+        CursorManager.instance.disablesToLockCount++;
+
         Menu.Instance.canOpenMenu = false;
-        Menu.Instance.look.canRotateCamera = false;
 
+        Look _look = NetworkClient.localPlayer.GetComponent<GamePlayer>().cameraHolder.GetComponent<Look>();
+        _look.canRotateCamera = false;
+
+        CanvasInstance.instance.tabBar.canOpen = false;
+        if(CanvasInstance.instance.tipsManager.tipsIsActive)
+            CanvasInstance.instance.tipsManager.gameObject.SetActive(true);
+
+        if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
+            CanvasInstance.instance.tipsManager.ActivateTip("ChosingWeapon");
     }
-
-    // Update is called once per frame
 
     public void OnWeaponClick(bool wasSelected)
     {
@@ -45,28 +56,34 @@ public class ChosingWeapon : MonoBehaviour
     private void ActivateSelectedWeapons()
     {
         int firstIndex = 0;
-        int secondIndex = 1;
+        int secondIndex = 0;
         for (int i = 0; i < 2; i++)
         {
-            weaponsInventoryItems[i].gameObject.SetActive(true);
+            weaponsInventoryItems[i].SetActive(true);
         }
 
-        Transform parent = weaponsInventoryItems[0].transform.parent;
-        for (int i = 0; i < parent.childCount; i++)
+        
+        for (int i = 0; i < CanvasInstance.instance.weaponInventory.transform.childCount; i++)
         {
-            if (weaponsInventoryItems[0] == parent.GetChild(i))
+            if (weaponsInventoryItems[0] == CanvasInstance.instance.weaponInventory.transform.GetChild(i).gameObject)
             {
                 firstIndex = i;
-            }else if (weaponsInventoryItems[1] == parent.GetChild(i))
+            }else if (weaponsInventoryItems[1] == CanvasInstance.instance.weaponInventory.transform.GetChild(i).gameObject)
             {
                 secondIndex = i;
             }
         }
         GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>().weaponsWasSelected = true;
-        CursorManager.disablesToLockCount--;
+        CursorManager.instance.disablesToLockCount--;
         Menu.Instance.look.canRotateCamera = true;
         Menu.Instance.canOpenMenu = true;
-        CursorManager.SetCursorLockState(CursorLockMode.Locked);
+        CanvasInstance.instance.tabBar.canOpen = true;
+        CanvasInstance.instance.selectedWeaponInfo.TurnOff();
+
+        CursorManager.instance.SetCursorLockState(CursorLockMode.Locked);
+        if(CanvasInstance.instance.tipsManager.isActiveAndEnabled)
+            CanvasInstance.instance.tipsManager.ActivateTip("PressTab");
+
         OnActivateWeapons?.Invoke(firstIndex, secondIndex);
 
     }
