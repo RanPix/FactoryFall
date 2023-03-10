@@ -188,7 +188,7 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         }
 
-        if (currentWeapon.canShoot == true)
+        if (currentWeapon.canShoot && !currentWeapon.reloading)
         {
             if (currentWeapon.weaponAmmo.Ammo > 0)
             {

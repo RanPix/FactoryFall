@@ -230,6 +230,7 @@ MonoBehaviour:
   damageVingette: {fileID: 3282467105061186850}
   tipsManager: {fileID: 324371308385293634}
   menu: {fileID: 5257785388665144915}
+  inGameUIDisabler: {fileID: 3725803343981885698}
 --- !u!1 &2064562998885942411
 GameObject:
   m_ObjectHideFlags: 0
@@ -971,6 +972,11 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 8831655692646624483}
     m_Modifications:
+    - target: {fileID: 4256098788651341346, guid: d37a061eff4b9c64696edba900215302,
+        type: 3}
+      propertyPath: canvas
+      value: 
+      objectReference: {fileID: 1664245960477752572}
     - target: {fileID: 4635157150927694193, guid: d37a061eff4b9c64696edba900215302,
         type: 3}
       propertyPath: m_Name
@@ -1088,6 +1094,18 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d37a061eff4b9c64696edba900215302, type: 3}
+--- !u!114 &3725803343981885698 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 4256098788651341346, guid: d37a061eff4b9c64696edba900215302,
+    type: 3}
+  m_PrefabInstance: {fileID: 622628330180980512}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ff48913b9a5d405418d0479dcb075c50, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!224 &5257785388665144914 stripped
 RectTransform:
   m_CorrespondingSourceObject: {fileID: 4635157150927694194, guid: d37a061eff4b9c64696edba900215302,

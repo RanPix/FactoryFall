@@ -1,3 +1,4 @@
+using UnityEditor.SceneManagement;
 using UnityEngine;
 
 public class KillFeed : MonoBehaviour
@@ -12,7 +13,7 @@ public class KillFeed : MonoBehaviour
         }
         else
         {
-            GameManager.instance.OnGameManagerSet += SubscribeToKill;
+            GameManager.OnGameManagerSet += SubscribeToKill;
         }
             
     }

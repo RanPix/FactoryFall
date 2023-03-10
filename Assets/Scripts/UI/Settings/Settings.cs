@@ -65,8 +65,6 @@ namespace PlayerSettings
             graphicsQuality = graphicsQualitySelector.currentElement;
             PlayerPrefs.SetInt(graphicsQualityPrefsKey, graphicsQuality);
 
-            Debug.Log("asssaaaaaaaaaaaaaaaaaaaaaaaaaasasasas");
-
             UpdateGraphicsQuality();
         }
         public static void UpdateGraphicsQuality()

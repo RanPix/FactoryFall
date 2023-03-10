@@ -257,7 +257,6 @@ public class Weapon : MonoBehaviour
         bool isFirstIteration = true;
         do
         {
-            canShoot = false;
             reloading = true;
 
             animator.Play(reloadAnimationName);
@@ -277,7 +276,6 @@ public class Weapon : MonoBehaviour
                 weaponAmmo.AddAmmo(1);
                 weaponAmmo.UpdateAmmoOnScreen();
             }
-            canShoot = true;
             reloading = false;
             isFirstIteration = false;
 
