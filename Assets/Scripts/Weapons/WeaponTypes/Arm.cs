@@ -15,6 +15,7 @@ namespace Weapons
 
 
         [SerializeField] private GameObject player;
+        [SerializeField] private MultiNetworkComponentsSorter multiNetworkComponentsSorter;
 
         [field: Space]
 
@@ -39,6 +40,7 @@ namespace Weapons
 
         private void Start()
         {
+            multiNetworkComponentsSorter = player.GetComponent<MultiNetworkComponentsSorter>();
         }
 
         public void SetupArm(Team _team, bool _isLocalPlayer)
@@ -48,6 +50,9 @@ namespace Weapons
             currentArm = team == Team.Blue ? blueArm : redArm;
             currentArm.SetActive(true);
             animator = currentArm.GetComponent<Animator>();
+            multiNetworkComponentsSorter.GetNetworkAnimator("ArmNetworkAnimator").animator = animator;
+            multiNetworkComponentsSorter.GetNetworkAnimator("ArmNetworkAnimator").SetValues();
+            multiNetworkComponentsSorter.GetNetworkTransform("ArmNetworkTransform").target = currentArm.transform;
 
             if (isLocalPLayer)
             {

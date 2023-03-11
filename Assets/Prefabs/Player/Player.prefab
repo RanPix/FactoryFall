@@ -272,6 +272,8 @@ GameObject:
   - component: {fileID: -2901291077034960170}
   - component: {fileID: -3920510412529851583}
   - component: {fileID: 1274067961160585513}
+  - component: {fileID: 450969613505205166}
+  - component: {fileID: 7009553636611865656}
   - component: {fileID: 11036251873139821}
   - component: {fileID: 6120899351348563184}
   - component: {fileID: 5088136169615148319}
@@ -279,6 +281,7 @@ GameObject:
   - component: {fileID: 7949385208417809091}
   - component: {fileID: 159709272076130208}
   - component: {fileID: 3426320685297723480}
+  - component: {fileID: 5550393908000591552}
   m_Layer: 7
   m_Name: Player
   m_TagString: Untagged
@@ -564,7 +567,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
-  clientAuthority: 0
+  clientAuthority: 1
   animator: {fileID: 644462955629608857}
 --- !u!114 &-3920510412529851583
 MonoBehaviour:
@@ -642,6 +645,60 @@ MonoBehaviour:
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
   target: {fileID: 841400163098873428}
+--- !u!114 &450969613505205166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841400163258982976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7f6f3bf89aa97405989c802ba270f815, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 1
+  animator: {fileID: 6994744645108412715}
+--- !u!114 &7009553636611865656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841400163258982976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 734b48bea0b204338958ee3d885e11f0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncMode: 0
+  syncInterval: 0.1
+  clientAuthority: 1
+  sendRate: 30
+  bufferTimeMultiplier: 2
+  bufferSizeLimit: 64
+  catchupNegativeThreshold: -1
+  catchupPositiveThreshold: 1
+  catchupSpeed: 0.009999999776482582
+  slowdownSpeed: 0.009999999776482582
+  driftEmaDuration: 1
+  dynamicAdjustment: 1
+  dynamicAdjustmentTolerance: 1
+  deliveryTimeEmaDuration: 2
+  onlySyncOnChange: 1
+  bufferResetMultiplier: 5
+  positionSensitivity: 0.01
+  rotationSensitivity: 0.01
+  scaleSensitivity: 0.01
+  syncPosition: 1
+  syncRotation: 1
+  syncScale: 0
+  showGizmos: 0
+  showOverlay: 0
+  overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+  target: {fileID: 1823344945546447908}
 --- !u!114 &11036251873139821
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -657,6 +714,7 @@ MonoBehaviour:
   syncMode: 0
   syncInterval: 0.1
   gamePlayer: {fileID: 627041124257517008}
+  multiNetworkComponentsSorter: {fileID: 5550393908000591552}
   <arm>k__BackingField: {fileID: 7839290727025629521}
   weaponsWasSelected: 0
   weaponHolder: {fileID: 7644531972711148823}
@@ -831,6 +889,32 @@ MonoBehaviour:
   muzzlePosition: {fileID: 0}
   damageVingette: {fileID: 0}
   damageVingetteImage: {fileID: 0}
+--- !u!114 &5550393908000591552
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 841400163258982976}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9215256a86cacfa4cb092d32276df5bd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  <animatorComponents>k__BackingField:
+  - {fileID: -2901291077034960170}
+  - {fileID: 450969613505205166}
+  <animatorNames>k__BackingField:
+  - WeaponNetworkAnimator
+  - ArmNetworkAnimator
+  <transformComponents>k__BackingField:
+  - {fileID: -3920510412529851583}
+  - {fileID: 1274067961160585513}
+  - {fileID: 7009553636611865656}
+  <transformNames>k__BackingField:
+  - WeaponNetworkTransform
+  - PlayerViewNetworkTransform
+  - ArmNetworkTransform
 --- !u!1 &841400163972923481
 GameObject:
   m_ObjectHideFlags: 0
@@ -1477,16 +1561,38 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4056156701403004463, guid: b1db0f11aee261949970a4bd9071be51,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5081923345695306208, guid: b1db0f11aee261949970a4bd9071be51,
         type: 3}
       propertyPath: player
       value: 
       objectReference: {fileID: 841400163258982976}
+    - target: {fileID: 5081923345695306208, guid: b1db0f11aee261949970a4bd9071be51,
+        type: 3}
+      propertyPath: multiNetworkComponentsSorter
+      value: 
+      objectReference: {fileID: 5550393908000591552}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1db0f11aee261949970a4bd9071be51, type: 3}
 --- !u!4 &212694629844713720 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 2936342119856056393, guid: b1db0f11aee261949970a4bd9071be51,
+    type: 3}
+  m_PrefabInstance: {fileID: 3047915751887251633}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &1823344945546447908 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 3675374536871797909, guid: b1db0f11aee261949970a4bd9071be51,
+    type: 3}
+  m_PrefabInstance: {fileID: 3047915751887251633}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &6994744645108412715 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 5430791445173639578, guid: b1db0f11aee261949970a4bd9071be51,
     type: 3}
   m_PrefabInstance: {fileID: 3047915751887251633}
   m_PrefabAsset: {fileID: 0}

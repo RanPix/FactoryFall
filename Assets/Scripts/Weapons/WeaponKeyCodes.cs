@@ -10,6 +10,7 @@ using Weapons;
 public class WeaponKeyCodes : NetworkBehaviour
 {
     [SerializeField] private GamePlayer gamePlayer;
+    [SerializeField] private MultiNetworkComponentsSorter multiNetworkComponentsSorter;
     [field: SerializeField] public Arm arm { get; private set; }
 
     [Space]
@@ -34,6 +35,7 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     private void Start()
     {
+        multiNetworkComponentsSorter = GetComponent<MultiNetworkComponentsSorter>();
         if(gamePlayer.team != Team.Null)
             arm.SetupArm(gamePlayer.team, gamePlayer.isLocalPlayer);
         else
@@ -152,8 +154,8 @@ public class WeaponKeyCodes : NetworkBehaviour
 
     public void ChangeAnotherValuesAfterChangeWeapon()
     {
-        GetComponent<NetworkAnimator>().animator = currentWeapon.GetComponentInChildren<Animator>();
-        GetComponent<NetworkAnimator>().SetValues();
+        multiNetworkComponentsSorter.GetNetworkAnimator("WeaponNetworkAnimator").animator = currentWeapon.GetComponentInChildren<Animator>();
+        multiNetworkComponentsSorter.GetNetworkAnimator("WeaponNetworkAnimator").SetValues();
         //print($"muzzle position was been here    =           {currentWeapon.muzzlePosition!=null}");
         GetComponent<PlayerVFX>().muzzlePosition = currentWeapon.muzzlePosition;
 

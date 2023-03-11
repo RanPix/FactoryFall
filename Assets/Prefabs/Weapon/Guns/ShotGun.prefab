@@ -55,7 +55,7 @@ MonoBehaviour:
   <weaponType>k__BackingField: 2
   <animator>k__BackingField: {fileID: 38881921348543205}
   <shootAnimationName>k__BackingField: Shoot
-  <reloadAnimationName>k__BackingField: Reload
+  <reloadAnimationName>k__BackingField: Reload_Prepare
   useAudio: 0
   initialWeaponPosition: {x: 0.491, y: -0.24, z: 1.018}
   recoil: {fileID: 785464242914341554}
