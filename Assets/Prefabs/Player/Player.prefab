@@ -367,6 +367,8 @@ MonoBehaviour:
     type: 3}
   <cameraHolder>k__BackingField: {fileID: 1815510803479595639, guid: 9cd35dd2eee6472418d7e6257d3f106c,
     type: 3}
+  spectatorCamera: {fileID: 1759439985729675202, guid: a50d9cff8673b0d41aef1ef848548a8b,
+    type: 3}
   disableOnDeath:
   - {fileID: 2135578962297529565}
   - {fileID: 11036251873139821}

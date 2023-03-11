@@ -1,4 +1,3 @@
-using GameBase;
 using Player;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -24,7 +23,7 @@ public class Look : MonoBehaviour
     private float xRot;
     private float yRot;
 
-    private bool lookEnabled = true;
+    private bool dontSpectatePlayer = true;
 
     private Transform spectatePlayer;
 
@@ -68,17 +67,17 @@ public class Look : MonoBehaviour
 
     private void UpdateCamera()
     {
-        if(!cam || !orientation)
+        if(!cam || !orientation || !canRotateCamera)
             return;
-        if (!lookEnabled)
+        if (!dontSpectatePlayer)
         {
             cam.transform.LookAt(spectatePlayer.position + new Vector3(0, 1f));
 
             return;
         }
+        /*if (!canRotateCamera)
+            return;*/
 
-        if (!canRotateCamera)
-            return;
 
         // Laggy beauty
         yRot += inputVector.x * 0.01f * Settings.sensetivity;
@@ -87,6 +86,12 @@ public class Look : MonoBehaviour
 
         cam.transform.rotation = Quaternion.Euler(xRot, yRot, 0);
         orientation.rotation = Quaternion.Euler(0, yRot, 0);
+    }
+
+    public void SetRotation(float x, float y)
+    {
+        xRot = x;
+        yRot = y;
     }
 
 
@@ -100,9 +105,9 @@ public class Look : MonoBehaviour
     private void DisableLook(string netID, Team team, string name, int hp)
     {
         spectatePlayer = GameManager.GetPlayer(netID)?.transform;
-        lookEnabled = false;
+        dontSpectatePlayer = false;
     }
-    private void EnableLook() => lookEnabled = true;    
+    private void EnableLook() => dontSpectatePlayer = true;    
 
 
     private void ControlCursor(InputAction.CallbackContext context)
