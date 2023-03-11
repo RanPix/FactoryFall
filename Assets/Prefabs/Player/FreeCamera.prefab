@@ -96,7 +96,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 4294967295
+    m_Bits: 118783
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -201,7 +201,6 @@ MonoBehaviour:
   speed: 100
   speedChange: 5
   smoothness: 3
-  isInSpectate: 0
   randomTransformForOrientationCalledSIIIUUUU: {fileID: 1759439984705919578}
 --- !u!114 &1759439985729675203
 MonoBehaviour:
