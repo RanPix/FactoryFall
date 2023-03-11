@@ -5,6 +5,7 @@ using System;
 using System.Collections;
 using UI.Indicators;
 using UnityEngine;
+using UnityEngine.InputSystem.XR;
 
 namespace Player
 {
@@ -63,6 +64,7 @@ namespace Player
         [field: SerializeField] public GameObject playerMark { get; private set; }
         [field: SerializeField] public GameObject cameraHolder { get; private set; }
 
+        [SerializeField] private GameObject spectatorCamera;
 
         [Space]
 
@@ -103,6 +105,7 @@ namespace Player
         private PlayerControls playerControls;
 
         private AudioSync audioSync;
+
 #region Actions
         public Action<string, int> OnGotHit;
 
@@ -192,6 +195,13 @@ namespace Player
                 Instantiate(killedPlayersListPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KilledPlayerInfo>().Setup(this);
                 Instantiate(killerPlayerInfoPrefab, CanvasInstance.instance.canvas.transform).GetComponent<KillerPlayerInfo>().Setup(this);
 
+                spectatorCamera = Instantiate(spectatorCamera, new Vector3(0f, 150f, 0f), Quaternion.identity);
+                SpectatorCameraController SCController = spectatorCamera.GetComponent<SpectatorCameraController>();
+                SCController.Setup();
+                SCController.OnCameraChange += GetComponent<MovementMachine>().PublicToggle;
+                SCController.OnCameraChange += weaponKeyCodes.ToggleCanShoot;
+                //SCController.ChangeCamera();
+
                 oreInventory = CanvasInstance.instance.oreInventory.GetComponent<OreInventoryItem>();
                 OreGiveAwayArea.instance.OnAreaEnter += UpdateScore;
 
@@ -214,7 +224,8 @@ namespace Player
             health.onDeath -= Die;
             gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= playerVFX.RedirectFX;
             OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
-            
+            spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= GetComponent<MovementMachine>().PublicToggle;
+            spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= weaponKeyCodes.ToggleCanShoot;
         }
 
 

@@ -177,7 +177,10 @@ public class WeaponKeyCodes : NetworkBehaviour
         activatedWeaponsIndexes.Add(second);
     }
 
-
+    public void ToggleCanShoot(bool toggle)
+    {
+        canShoot = toggle;
+    }
 
     public void KeyCodes()
     {

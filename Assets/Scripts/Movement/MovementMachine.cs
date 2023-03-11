@@ -84,6 +84,9 @@ namespace FiniteMovementStateMachine
             currentState.Enter();
         }
 
+        public void PublicToggle(bool toggle)
+            => ToggleControls(toggle);
+
         private void ToggleControls(bool turnOn)
         {
             if (turnOn)

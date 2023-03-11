@@ -1195,6 +1195,204 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""SpectateCamera"",
+            ""id"": ""c1633f0d-90b9-4ae6-b84c-106a1276e15c"",
+            ""actions"": [
+                {
+                    ""name"": ""Move"",
+                    ""type"": ""Value"",
+                    ""id"": ""7707896b-7571-48e5-9549-318ff4987558"",
+                    ""expectedControlType"": ""Vector3"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""Pan"",
+                    ""type"": ""Button"",
+                    ""id"": ""0ae2d47a-e628-4994-a0b0-2e4dad1af6f1"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ChangeSpeed"",
+                    ""type"": ""Button"",
+                    ""id"": ""4ca6bfbf-81d0-44de-b6cd-f2c0056a1828"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ToggleSpectator"",
+                    ""type"": ""Button"",
+                    ""id"": ""b88d3880-d94d-4216-b816-1e280695b8ad"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": ""3D Vector"",
+                    ""id"": ""b76aeb85-a23d-4ded-aec0-e5aac1108d7d"",
+                    ""path"": ""3DVector(mode=1)"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""up"",
+                    ""id"": ""8f746554-16cb-4b2f-9205-bd2719d0649e"",
+                    ""path"": ""<Keyboard>/e"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""down"",
+                    ""id"": ""ff01e480-3f54-4df1-a50e-d88f4b6a3e7d"",
+                    ""path"": ""<Keyboard>/q"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""left"",
+                    ""id"": ""596a1dbe-a4ae-4094-a2ca-0cc9c5f683a3"",
+                    ""path"": ""<Keyboard>/a"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""right"",
+                    ""id"": ""7db76d56-961b-4880-8c83-d1b85f3b7c87"",
+                    ""path"": ""<Keyboard>/d"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""forward"",
+                    ""id"": ""3f85bf13-e268-4edb-b061-1a280f33390f"",
+                    ""path"": ""<Keyboard>/w"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""backward"",
+                    ""id"": ""e2ee547d-d2b0-44b0-96ae-98c69a4545a5"",
+                    ""path"": ""<Keyboard>/s"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Move"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c48d1e9c-47d5-4231-991c-90642f87a13c"",
+                    ""path"": ""<Keyboard>/z"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=0)"",
+                    ""groups"": """",
+                    ""action"": ""Pan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""fdd0c359-505e-42dc-958d-92df0e4bbc2f"",
+                    ""path"": ""<Keyboard>/x"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Pan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ff3deb77-ffd8-411e-aa13-cf2f147e814c"",
+                    ""path"": ""<Keyboard>/c"",
+                    ""interactions"": """",
+                    ""processors"": ""Scale(factor=2)"",
+                    ""groups"": """",
+                    ""action"": ""Pan"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""1D Axis"",
+                    ""id"": ""8ad04c11-ae78-4083-a8af-511b147ae0ae"",
+                    ""path"": ""1DAxis"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ChangeSpeed"",
+                    ""isComposite"": true,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": ""negative"",
+                    ""id"": ""84c3d36d-16b2-4497-b559-583d996b2bb8"",
+                    ""path"": ""<Mouse>/scroll/down"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ChangeSpeed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": ""positive"",
+                    ""id"": ""18a11bba-9b1d-4175-8ab3-763dab030cc3"",
+                    ""path"": ""<Mouse>/scroll/up"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""Keyboard&Mouse"",
+                    ""action"": ""ChangeSpeed"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": true
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""a3fdaf58-5987-4e13-8f97-4bc03be9b96b"",
+                    ""path"": ""<Keyboard>/f2"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ToggleSpectator"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -1296,6 +1494,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         m_UI_OpenTabBar = m_UI.FindAction("OpenTabBar", throwIfNotFound: true);
         m_UI_OpenChat = m_UI.FindAction("OpenChat", throwIfNotFound: true);
         m_UI_DisableOrEnableUI = m_UI.FindAction("DisableOrEnableUI", throwIfNotFound: true);
+        // SpectateCamera
+        m_SpectateCamera = asset.FindActionMap("SpectateCamera", throwIfNotFound: true);
+        m_SpectateCamera_Move = m_SpectateCamera.FindAction("Move", throwIfNotFound: true);
+        m_SpectateCamera_Pan = m_SpectateCamera.FindAction("Pan", throwIfNotFound: true);
+        m_SpectateCamera_ChangeSpeed = m_SpectateCamera.FindAction("ChangeSpeed", throwIfNotFound: true);
+        m_SpectateCamera_ToggleSpectator = m_SpectateCamera.FindAction("ToggleSpectator", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -1657,6 +1861,63 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         }
     }
     public UIActions @UI => new UIActions(this);
+
+    // SpectateCamera
+    private readonly InputActionMap m_SpectateCamera;
+    private ISpectateCameraActions m_SpectateCameraActionsCallbackInterface;
+    private readonly InputAction m_SpectateCamera_Move;
+    private readonly InputAction m_SpectateCamera_Pan;
+    private readonly InputAction m_SpectateCamera_ChangeSpeed;
+    private readonly InputAction m_SpectateCamera_ToggleSpectator;
+    public struct SpectateCameraActions
+    {
+        private @PlayerControls m_Wrapper;
+        public SpectateCameraActions(@PlayerControls wrapper) { m_Wrapper = wrapper; }
+        public InputAction @Move => m_Wrapper.m_SpectateCamera_Move;
+        public InputAction @Pan => m_Wrapper.m_SpectateCamera_Pan;
+        public InputAction @ChangeSpeed => m_Wrapper.m_SpectateCamera_ChangeSpeed;
+        public InputAction @ToggleSpectator => m_Wrapper.m_SpectateCamera_ToggleSpectator;
+        public InputActionMap Get() { return m_Wrapper.m_SpectateCamera; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(SpectateCameraActions set) { return set.Get(); }
+        public void SetCallbacks(ISpectateCameraActions instance)
+        {
+            if (m_Wrapper.m_SpectateCameraActionsCallbackInterface != null)
+            {
+                @Move.started -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnMove;
+                @Move.performed -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnMove;
+                @Move.canceled -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnMove;
+                @Pan.started -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnPan;
+                @Pan.performed -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnPan;
+                @Pan.canceled -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnPan;
+                @ChangeSpeed.started -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnChangeSpeed;
+                @ChangeSpeed.performed -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnChangeSpeed;
+                @ChangeSpeed.canceled -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnChangeSpeed;
+                @ToggleSpectator.started -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnToggleSpectator;
+                @ToggleSpectator.performed -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnToggleSpectator;
+                @ToggleSpectator.canceled -= m_Wrapper.m_SpectateCameraActionsCallbackInterface.OnToggleSpectator;
+            }
+            m_Wrapper.m_SpectateCameraActionsCallbackInterface = instance;
+            if (instance != null)
+            {
+                @Move.started += instance.OnMove;
+                @Move.performed += instance.OnMove;
+                @Move.canceled += instance.OnMove;
+                @Pan.started += instance.OnPan;
+                @Pan.performed += instance.OnPan;
+                @Pan.canceled += instance.OnPan;
+                @ChangeSpeed.started += instance.OnChangeSpeed;
+                @ChangeSpeed.performed += instance.OnChangeSpeed;
+                @ChangeSpeed.canceled += instance.OnChangeSpeed;
+                @ToggleSpectator.started += instance.OnToggleSpectator;
+                @ToggleSpectator.performed += instance.OnToggleSpectator;
+                @ToggleSpectator.canceled += instance.OnToggleSpectator;
+            }
+        }
+    }
+    public SpectateCameraActions @SpectateCamera => new SpectateCameraActions(this);
     private int m_KeyboardMouseSchemeIndex = -1;
     public InputControlScheme KeyboardMouseScheme
     {
@@ -1739,5 +2000,12 @@ public partial class @PlayerControls : IInputActionCollection2, IDisposable
         void OnOpenTabBar(InputAction.CallbackContext context);
         void OnOpenChat(InputAction.CallbackContext context);
         void OnDisableOrEnableUI(InputAction.CallbackContext context);
+    }
+    public interface ISpectateCameraActions
+    {
+        void OnMove(InputAction.CallbackContext context);
+        void OnPan(InputAction.CallbackContext context);
+        void OnChangeSpeed(InputAction.CallbackContext context);
+        void OnToggleSpectator(InputAction.CallbackContext context);
     }
 }

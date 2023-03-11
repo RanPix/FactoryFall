@@ -61,4 +61,21 @@ public class CursorManager : MonoBehaviour
                 break;
         }
     }
+
+    public void SetLockStateImmediately(CursorLockMode lockMode)
+    {
+        _disablesToLockCount = 0;
+        switch (lockMode)
+        {
+            case CursorLockMode.Locked:
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                break;
+            default:
+                Cursor.lockState = lockMode;
+                Cursor.visible = true;
+                break;
+        }
+
+    }
 }
