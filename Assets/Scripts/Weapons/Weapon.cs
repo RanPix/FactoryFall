@@ -313,6 +313,7 @@ public class Weapon : MonoBehaviour
 
     public void OnDeath(string str)
     {
+        reloading = false;
         weaponAmmo.Ammo = weaponAmmo.ClipSize;
     }
 

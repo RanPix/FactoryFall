@@ -36,7 +36,7 @@ public class NetworkManagerFF : NetworkManager
 
     public override void OnServerDisconnect(NetworkConnectionToClient conn)
     {
-        GameManager.instance.CmdRemovePlayerFromAllClientsLists(conn.identity.netId.ToString());
+        GameManager.instance?.CmdRemovePlayerFromAllClientsLists(conn.identity.netId.ToString());
         //GameManager.instance.CmdUnRegisterAllPlayers();
 
         base.OnServerDisconnect(conn);
@@ -50,14 +50,6 @@ public class NetworkManagerFF : NetworkManager
             GameManager.instance?.CmdUnRegisterAllPlayers();
             GameManager.instance?.UnregisterAllPlayers();
         }
-        playersCurrentTeam = Team.Null;
-
-        PlayerInfoTransfer.instance.SetNullInstance();
-        Destroy(PlayerInfoTransfer.instance.gameObject);
-
-        onGameStop?.Invoke(false);
-
-        SceneManager.UnloadSceneAsync("MAP_CageCastle");
         base.OnStopHost();
     }
 
@@ -69,18 +61,17 @@ public class NetworkManagerFF : NetworkManager
     }
     public override void OnStopClient()
     {
-
-        GameManager.instance.UnregisterAllPlayers();
+        GameManager.instance?.UnregisterAllPlayers();
         playersCurrentTeam = Team.Null;
 
-        PlayerInfoTransfer.instance.SetNullInstance();
-        Destroy(PlayerInfoTransfer.instance.gameObject);
+        PlayerInfoTransfer.instance?.SetNullInstance();
+
+        if (SceneManager.GetActiveScene().name != "Main Menu")
+            Destroy(PlayerInfoTransfer.instance?.gameObject);
 
         onGameStop?.Invoke(false);
-
-        SceneManager.UnloadSceneAsync("MAP_CageCastle");
-        base.OnStopHost();
         GameManager.instance = null;
+        base.OnStopClient();
     }
 
 

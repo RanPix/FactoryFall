@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using UI.Indicators;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 namespace Player
 {
@@ -15,7 +14,7 @@ namespace Player
 #region SyncVar
         [field: SyncVar (hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
 
-        [field: SyncVar(hook = nameof(SetNickname))] public string nickname { get; private set; } = string.Empty;
+        [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; } = string.Empty;
 
         [field: SyncVar (hook = nameof(UpdateKillsCount))] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
@@ -64,7 +63,7 @@ namespace Player
         [field: SerializeField] public GameObject playerMark { get; private set; }
         [field: SerializeField] public GameObject cameraHolder { get; private set; }
 
-        [SerializeField] private GameObject spectatorCamera;
+        public GameObject spectatorCamera;
 
         [Space]
 
@@ -147,6 +146,24 @@ namespace Player
         [Command]
         private void InitializePlayerInfo(string name, Team newTeam)
         {
+            print(GameManager.GetAllPlayers().Length);
+            if (isLocalPlayer)
+            {
+                int teamCount = 0;
+                for (int i = 0; i < GameManager.GetAllPlayers().Length; i++)
+                {
+                    print($"team = {GameManager.GetAllPlayers()[i].team}");
+                    if (GameManager.GetAllPlayers()[i].team == newTeam)
+                        teamCount++;
+                }
+
+                if (teamCount >= 7)
+                {
+                    newTeam = newTeam == Team.Blue ? Team.Red : Team.Blue;
+                }
+                print($"Count = {teamCount}");
+                //GameManager.RegisterPlayer(netId.ToString(), this);
+            }
             team = newTeam;
             nickname = name;
         }
@@ -187,7 +204,7 @@ namespace Player
                 CanvasInstance.instance.inGameUIDisabler.Setup();
                 CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
 
-                CanvasInstance.instance.weaponsToChose.GetComponent<ChosingWeapon>().Setup();
+                CanvasInstance.instance.weaponsToChose.GetComponent<ChoosingWeapon>().Setup();
                 CanvasInstance.instance.damageVingette.GetComponent<DamageVingette>().Setup(this);
 
                 gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += playerVFX.RedirectFX;
@@ -239,6 +256,8 @@ namespace Player
                 OnSetPlayerInfoTransfer?.Invoke();
                 playerInfoTransferWasSet = true;
             }*/
+
+
 
             if (isLocalPlayer)
             {
@@ -392,8 +411,7 @@ namespace Player
                     else if (hit.transform.tag == "Ore")
                     {
                         StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
-                        if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
-                            CanvasInstance.instance.tipsManager.ActivateTip("BringOre");
+                        CanvasInstance.instance.tipsManager.ActivateTip("BringOre");
 
                         playerVFX.SpawnHitFX(hit.point, hit.normal);
                         Ore _ore = hit.transform.GetComponent<Ore>();

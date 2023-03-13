@@ -58,10 +58,12 @@ public class Scoreboard : NetworkBehaviour
         UpdateRedTeamScore(-1, redTeamScore);
     }
 
-    [Server]
     private void Update()
     {
         if (!NetworkManager.singleton.isNetworkActive)
+            return;
+
+        if (!isServer)
             return;
 
         if (hasTimer)

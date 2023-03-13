@@ -611,6 +611,11 @@ PrefabInstance:
       propertyPath: sceneId
       value: 768774408
       objectReference: {fileID: 0}
+    - target: {fileID: 1391518494218691238, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_CullTransparentMesh
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 1445679201934043501, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_IsActive
@@ -679,7 +684,7 @@ PrefabInstance:
     - target: {fileID: 3617129500843414510, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: -0.0000013067903
+      value: -0.00000060378375
       objectReference: {fileID: 0}
     - target: {fileID: 3749335825863258748, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}

@@ -11,7 +11,7 @@ public class CanvasInstance : MonoBehaviour
     public WeaponInventory weaponInventory;
     public KillFeed killFeed;
     public GameObject weaponAmmoText;
-    public ChosingWeapon weaponsToChose;
+    public ChoosingWeapon weaponsToChose;
     public GameObject scoreBoard;
     public OreInventory oreInventory;
     public TabBar tabBar;

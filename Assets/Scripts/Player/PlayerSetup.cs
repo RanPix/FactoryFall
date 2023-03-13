@@ -35,9 +35,10 @@ public class PlayerSetup : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
-
         player = GetComponent<GamePlayer>();
-
+        /*if (player.isLocalPlayer)
+            return;*/
         GameManager.RegisterPlayer(GetComponent<NetworkIdentity>().netId.ToString(), player);
+
     }
 }

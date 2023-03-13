@@ -4,7 +4,7 @@ using Mirror;
 using Player;
 using UnityEngine;
 
-public class ChosingWeapon : MonoBehaviour
+public class ChoosingWeapon : MonoBehaviour
 {
     public List<GameObject> weaponsInventoryItems = new List<GameObject>();
     private int selectedWeaponsCount;
@@ -25,11 +25,8 @@ public class ChosingWeapon : MonoBehaviour
         _look.canRotateCamera = false;
 
         CanvasInstance.instance.tabBar.canOpen = false;
-        if(CanvasInstance.instance.tipsManager.tipsIsActive)
-            CanvasInstance.instance.tipsManager.gameObject.SetActive(true);
 
-        if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
-            CanvasInstance.instance.tipsManager.ActivateTip("ChosingWeapon");
+        CanvasInstance.instance.tipsManager.ActivateTip("ChosingWeapon");
     }
 
     public void OnWeaponClick(bool wasSelected)
@@ -81,8 +78,7 @@ public class ChosingWeapon : MonoBehaviour
         CanvasInstance.instance.selectedWeaponInfo.TurnOff();
 
         CursorManager.instance.SetCursorLockState(CursorLockMode.Locked);
-        if(CanvasInstance.instance.tipsManager.isActiveAndEnabled)
-            CanvasInstance.instance.tipsManager.ActivateTip("PressTab");
+        CanvasInstance.instance.tipsManager.ActivateTip("PressTab");
 
         OnActivateWeapons?.Invoke(firstIndex, secondIndex);
 

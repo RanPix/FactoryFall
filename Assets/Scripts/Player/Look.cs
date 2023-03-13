@@ -23,7 +23,7 @@ public class Look : MonoBehaviour
     private float xRot;
     private float yRot;
 
-    private bool dontSpectatePlayer = true;
+    private bool lookAtPlayer = true;
 
     private Transform spectatePlayer;
 
@@ -69,15 +69,13 @@ public class Look : MonoBehaviour
     {
         if(!cam || !orientation || !canRotateCamera)
             return;
-        if (!dontSpectatePlayer)
+
+        if (!lookAtPlayer && spectatePlayer)
         {
             cam.transform.LookAt(spectatePlayer.position + new Vector3(0, 1f));
 
             return;
         }
-        /*if (!canRotateCamera)
-            return;*/
-
 
         // Laggy beauty
         yRot += inputVector.x * 0.01f * Settings.sensetivity;
@@ -105,9 +103,9 @@ public class Look : MonoBehaviour
     private void DisableLook(string netID, Team team, string name, int hp)
     {
         spectatePlayer = GameManager.GetPlayer(netID)?.transform;
-        dontSpectatePlayer = false;
+        lookAtPlayer = false;
     }
-    private void EnableLook() => dontSpectatePlayer = true;    
+    private void EnableLook() => lookAtPlayer = true;    
 
 
     private void ControlCursor(InputAction.CallbackContext context)
