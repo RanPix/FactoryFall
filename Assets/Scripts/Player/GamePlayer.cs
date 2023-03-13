@@ -146,23 +146,16 @@ namespace Player
         [Command]
         private void InitializePlayerInfo(string name, Team newTeam)
         {
-            print(GameManager.GetAllPlayers().Length);
-            if (isLocalPlayer)
+            int teamCount = 0;
+            for (int i = 0; i < GameManager.GetAllPlayers().Length; i++)
             {
-                int teamCount = 0;
-                for (int i = 0; i < GameManager.GetAllPlayers().Length; i++)
-                {
-                    print($"team = {GameManager.GetAllPlayers()[i].team}");
-                    if (GameManager.GetAllPlayers()[i].team == newTeam)
-                        teamCount++;
-                }
+                if (GameManager.GetAllPlayers()[i].team == newTeam)
+                    teamCount++;
+            }
 
-                if (teamCount >= 7)
-                {
-                    newTeam = newTeam == Team.Blue ? Team.Red : Team.Blue;
-                }
-                print($"Count = {teamCount}");
-                //GameManager.RegisterPlayer(netId.ToString(), this);
+            if (teamCount >= 7)
+            {
+                newTeam = newTeam == Team.Blue ? Team.Red : Team.Blue;
             }
             team = newTeam;
             nickname = name;
