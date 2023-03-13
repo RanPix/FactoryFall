@@ -169,10 +169,12 @@ public class GameManager : NetworkBehaviour
 
     public override void OnStopClient()
     {
+        if (!isServer)
+        {
+            SceneManager.UnloadSceneAsync("MAP_CageCastle");
+            SceneManager.LoadScene("Main menu");
 
-        //SceneManager.UnloadSceneAsync();
-        SceneManager.UnloadSceneAsync("MAP_CageCastle");
-        SceneManager.LoadScene("Main menu");
+        }
         NetworkManager.singleton.StopClient();
         base.OnStopClient();
     }
@@ -182,7 +184,6 @@ public class GameManager : NetworkBehaviour
 
         if (isClient)
         {
-            //SceneManager.UnloadSceneAsync();
             SceneManager.UnloadSceneAsync("MAP_CageCastle");
             SceneManager.LoadScene("Main menu");
         }

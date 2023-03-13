@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-using UnityEditor.Rendering.LookDev;
-using System.Xml.Serialization;
 
 public enum Pan
 {

@@ -55,7 +55,7 @@ public class PlayerVFX : NetworkBehaviour
         CmdSpawnRedirect(new Vector3(inputVector.x, 0, inputVector.y), player.team == Team.Blue);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdSpawnRedirect(Vector3 orientedVector, bool isBlue)
     {
         RpcSpawnRedirect(orientedVector, isBlue);
@@ -85,7 +85,7 @@ public class PlayerVFX : NetworkBehaviour
     {
         CmdSpawnJumpFX(player.team == Team.Blue);
     }
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CmdSpawnJumpFX(bool isBlue)
     {
         RpcSpawnJumpFX(isBlue);
@@ -109,7 +109,7 @@ public class PlayerVFX : NetworkBehaviour
         CmdSpawnReSpawnFX(player.team == Team.Blue);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdSpawnReSpawnFX(bool isBlue)
     {
         RpcSpawnReSpawnFX(isBlue);
@@ -130,7 +130,7 @@ public class PlayerVFX : NetworkBehaviour
         CmdSpawnDeathFX(player.team == Team.Blue);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdSpawnDeathFX(bool isBlue)
     {
         RpcSpawnDeathFX(isBlue);
@@ -152,7 +152,7 @@ public class PlayerVFX : NetworkBehaviour
         CmdSpawnHitFX(position, normal);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     private void CmdSpawnHitFX(Vector3 position, Vector3 normal)
     {
         RpcSpawnHitFX(position, normal);
@@ -168,7 +168,7 @@ public class PlayerVFX : NetworkBehaviour
         Destroy(_spawnedEffect.gameObject, 0.5f);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CmdSpawnTrail(bool isHitted, Vector3 origin, Vector3 direction, Vector3 point, float shootRange)
     {
         if ((origin - point).magnitude < 5f)
@@ -195,7 +195,7 @@ public class PlayerVFX : NetworkBehaviour
         line.SetPosition(1, trailFinish);
     }
 
-    [Command]
+    [Command(requiresAuthority = false)]
     public void CmdSpawnMuzzleFlash()
     {
         RpcSpawnMuzzleFlash();
@@ -214,12 +214,5 @@ public class PlayerVFX : NetworkBehaviour
             _muzzleFalsh.gameObject.layer = LayerMask.NameToLayer("Weapon");
 
         Destroy(_muzzleFalsh.gameObject, 0.2f);
-    }
-
-
-    [Client]
-    private void PlayerDamagedVingette()
-    {
-
     }
 }

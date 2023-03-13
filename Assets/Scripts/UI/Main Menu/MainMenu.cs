@@ -2,6 +2,7 @@ using UnityEngine;
 using Mirror;
 using DG.Tweening;
 using TMPro;
+using System.Net;
 
 public enum ButtonGroup
 {
@@ -28,11 +29,26 @@ public class MainMenu : MonoBehaviour
 
     public void Join()
     {
-        if(!NetworkManager.singleton)
+        if (!NetworkManager.singleton)
             return;
+
+        if (IPAdressInputFieldText.text != "localhost")
+        {
+            if (!ValidateIPAdress(IPAdressInputFieldText.text))
+                return;
+        }
+
+
         string adress = IPAdressInputFieldText.text;
         NetworkManager.singleton.networkAddress = adress;
         NetworkManager.singleton.StartClient();
+    }
+
+    private bool ValidateIPAdress(string userIP)
+    {
+        IPAddress adress;
+
+        return IPAddress.TryParse(userIP, out adress) && adress.ToString() == userIP;
     }
 
     public void Host()
@@ -41,7 +57,7 @@ public class MainMenu : MonoBehaviour
     }
 
     public void Quit()
-        =>Application.Quit();
+        => Application.Quit();
 
     public void SetMainButtonGroup()
         => SetMenuButtonGroup(ButtonGroup.Main);

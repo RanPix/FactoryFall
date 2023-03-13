@@ -5,7 +5,6 @@ using System;
 using System.Collections;
 using UI.Indicators;
 using UnityEngine;
-using UnityEngine.InputSystem.XR;
 
 namespace Player
 {
@@ -15,7 +14,7 @@ namespace Player
 #region SyncVar
         [field: SyncVar (hook = nameof(SetTeam))] public Team team { get; private set; } = Team.Null;
 
-        [field: SyncVar(hook = nameof(SetNickname))] public string nickname { get; private set; } = string.Empty;
+        [field: SyncVar (hook = nameof(SetNickname))] public string nickname { get; private set; } = string.Empty;
 
         [field: SyncVar (hook = nameof(UpdateKillsCount))] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
@@ -64,7 +63,7 @@ namespace Player
         [field: SerializeField] public GameObject playerMark { get; private set; }
         [field: SerializeField] public GameObject cameraHolder { get; private set; }
 
-        [SerializeField] private GameObject spectatorCamera;
+        public GameObject spectatorCamera;
 
         [Space]
 
@@ -147,6 +146,20 @@ namespace Player
         [Command]
         private void InitializePlayerInfo(string name, Team newTeam)
         {
+            if (isLocalPlayer)
+            {
+                int teamCount = 0;
+                for (int i = 0; i < GameManager.GetAllPlayers().Length; i++)
+                {
+                    if (GameManager.GetAllPlayers()[i].team == newTeam)
+                        teamCount++;
+                }
+
+                if (teamCount >= 7)
+                {
+                    newTeam = newTeam == Team.Blue ? Team.Red : Team.Blue;
+                }
+            }
             team = newTeam;
             nickname = name;
         }
@@ -239,6 +252,8 @@ namespace Player
                 OnSetPlayerInfoTransfer?.Invoke();
                 playerInfoTransferWasSet = true;
             }*/
+
+
 
             if (isLocalPlayer)
             {

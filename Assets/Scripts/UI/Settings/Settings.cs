@@ -55,6 +55,7 @@ namespace PlayerSettings
             if (NetworkClient.localPlayer != null)
             {
                 NetworkClient.localPlayer.GetComponent<GamePlayer>().cameraHolder.GetComponent<Look>().UpdateFOV();
+                NetworkClient.localPlayer.GetComponent<GamePlayer>().spectatorCamera.GetComponent<Look>().UpdateFOV();
             }
         }
 

@@ -22,7 +22,7 @@ namespace GameBase
 
         public void Damage(string playerID, int damage)
         {
-            currentHealth -= damage;
+            currentHealth = Mathf.Clamp(currentHealth - damage, 0, healthValues.MaxHealth);
 
             OnHealthChanged?.Invoke();
 

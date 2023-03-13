@@ -198,9 +198,9 @@ public class MainChat : MonoBehaviour
 
         SelectInputField();
         inputField.text = "";
-        print($"value = {scrollRect.verticalScrollbar.value}");
+        //print($"value = {scrollRect.verticalScrollbar.value}");
         scrollRect.verticalScrollbar.value = 0;
-        print($"after value = {scrollRect.verticalScrollbar.value}");
+        //print($"after value = {scrollRect.verticalScrollbar.value}");
     }
 
     public string CheckMessage()
