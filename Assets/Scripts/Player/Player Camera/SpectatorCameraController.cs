@@ -1,8 +1,6 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
-using UnityEditor.Rendering.LookDev;
-using System.Xml.Serialization;
 
 public enum Pan
 {
@@ -156,6 +154,7 @@ public class SpectatorCameraController : MonoBehaviour
         mainCamera.enabled = !isInSpectate;
         mainCamera.GetComponent<AudioListener>().enabled = !isInSpectate;
         mainCamera.GetComponent<Camera>().enabled = !isInSpectate;
+
 
         spectateCamera.enabled  = isInSpectate;
         spectateCamera.GetComponent<AudioListener>().enabled = isInSpectate;
