@@ -155,6 +155,7 @@ public class SpectatorCameraController : MonoBehaviour
         mainCamera.GetComponent<AudioListener>().enabled = !isInSpectate;
         mainCamera.GetComponent<Camera>().enabled = !isInSpectate;
 
+
         spectateCamera.enabled  = isInSpectate;
         spectateCamera.GetComponent<AudioListener>().enabled = isInSpectate;
 

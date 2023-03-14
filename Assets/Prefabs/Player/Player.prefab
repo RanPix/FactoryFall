@@ -345,6 +345,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   syncMode: 0
   syncInterval: 0.1
+  multiNetworkComponentsSorter: {fileID: 5550393908000591552}
   health: {fileID: 2135578962297529565}
   healthBar: {fileID: 0}
   healthBarPrefab: {fileID: 4203298332218061752, guid: 6d56f640da95a044795c8ca3e1c3e160,
@@ -1329,6 +1330,11 @@ PrefabInstance:
       propertyPath: multiNetworkComponentsSorter
       value: 
       objectReference: {fileID: 5550393908000591552}
+    - target: {fileID: 5081923345695306208, guid: b1db0f11aee261949970a4bd9071be51,
+        type: 3}
+      propertyPath: <punchDistance>k__BackingField
+      value: 5
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b1db0f11aee261949970a4bd9071be51, type: 3}
 --- !u!4 &212694629844713720 stripped

@@ -598,10 +598,10 @@ MonoBehaviour:
   secondPartPosition: {x: 568.1115, y: -493.313, z: 0}
   view: {fileID: 8426894657025582164}
   startItemPosition: {x: 569, y: -22, z: 0}
-  ownBlueColor: {r: 0, g: 0.26026773, b: 1, a: 1}
-  baseBlueColor: {r: 0, g: 0.2627451, b: 1, a: 0.5019608}
-  ownRedColor: {r: 1, g: 0, b: 0, a: 1}
-  baseRedColor: {r: 1, g: 0, b: 0, a: 0.5019608}
+  ownBlueColor: {r: 1, g: 0.9371229, b: 0, a: 1}
+  baseBlueColor: {r: 0.29803923, g: 0.4862745, b: 1, a: 0.5019608}
+  ownRedColor: {r: 1, g: 0.9685757, b: 0, a: 1}
+  baseRedColor: {r: 1, g: 0.3647059, b: 0.3647059, a: 0.5019608}
   firstSort: 0
   canOpen: 1
 --- !u!1 &5417629064372462422

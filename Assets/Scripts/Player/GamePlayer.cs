@@ -19,8 +19,11 @@ namespace Player
         [field: SyncVar (hook = nameof(UpdateKillsCount))] public int kills { get; private set; }
         [field: SyncVar] public int deaths { get; private set; }
         [field: SyncVar (hook = nameof(UpdateScoreCount))] public int score { get; private set; }
-#endregion
+        #endregion
 
+        [SerializeField] private MultiNetworkComponentsSorter multiNetworkComponentsSorter;
+
+        [Space]
 
         [Header("Health")]
         [SerializeField] private Health health;
@@ -114,7 +117,6 @@ namespace Player
         public Action<string, string> OnKill;
 
         public Action OnSetPlayerInfoTransfer;
-        private bool playerInfoTransferWasSet = false;
 #endregion
 
 
@@ -146,19 +148,16 @@ namespace Player
         [Command]
         private void InitializePlayerInfo(string name, Team newTeam)
         {
-            if (isLocalPlayer)
+            int teamCount = 0;
+            for (int i = 0; i < GameManager.GetAllPlayers().Length; i++)
             {
-                int teamCount = 0;
-                for (int i = 0; i < GameManager.GetAllPlayers().Length; i++)
-                {
-                    if (GameManager.GetAllPlayers()[i].team == newTeam)
-                        teamCount++;
-                }
+                if (GameManager.GetAllPlayers()[i].team == newTeam)
+                    teamCount++;
+            }
 
-                if (teamCount >= 7)
-                {
-                    newTeam = newTeam == Team.Blue ? Team.Red : Team.Blue;
-                }
+            if (teamCount >= 7)
+            {
+                newTeam = newTeam == Team.Blue ? Team.Red : Team.Blue;
             }
             team = newTeam;
             nickname = name;
@@ -191,6 +190,9 @@ namespace Player
                 SetupCameraHolder();
                 SetupMiniMap();
 
+                health.onDeath = (_) => multiNetworkComponentsSorter.GetNetworkAnimator("WeaponNetworkAnimator").enabled = false;
+                health.onDeath = (_) => multiNetworkComponentsSorter.GetNetworkAnimator("ArmNetworkAnimator").enabled = false;
+
                 health.onDeath += Die;
 
                 healthBar = Instantiate(healthBarPrefab, CanvasInstance.instance.canvas.transform);
@@ -198,9 +200,13 @@ namespace Player
                 CanvasInstance.instance.menu.look = cameraHolder.GetComponent<Look>();
                 CanvasInstance.instance.menu.GetComponent<Menu>().Setup();
                 CanvasInstance.instance.inGameUIDisabler.Setup();
-                CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
 
-                CanvasInstance.instance.weaponsToChose.GetComponent<ChosingWeapon>().Setup();
+
+                if (team != Team.Null && nickname != string.Empty)
+                    CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
+                else
+                    OnSetPlayerInfoTransfer += CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup;
+                CanvasInstance.instance.weaponsToChose.GetComponent<ChoosingWeapon>().Setup();
                 CanvasInstance.instance.damageVingette.GetComponent<DamageVingette>().Setup(this);
 
                 gameObject.GetComponent<MovementMachine>().midAir.OnRedirect += playerVFX.RedirectFX;
@@ -227,6 +233,9 @@ namespace Player
             if (isLocalPlayer)
             {
                 scoreboard.ChangeLocalPlayerScore(0);
+
+                OnRespawn += () => multiNetworkComponentsSorter.GetNetworkAnimator("WeaponNetworkAnimator").enabled = true;
+                OnRespawn += () => multiNetworkComponentsSorter.GetNetworkAnimator("ArmNetworkAnimator").enabled = true;
             }
         }
 

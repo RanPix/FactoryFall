@@ -14,7 +14,7 @@ public class ChosingWeaponItem : MonoBehaviour
     public void OnCursorEnter()
     {
         blur.SetActive(false);
-        transform.GetComponentInParent<ChosingWeapon>().OnActivate?.Invoke(weaponScriptableObject.type, weaponScriptableObject.name, weaponScriptableObject.damage, weaponScriptableObject.timeBetweenShots, weaponScriptableObject.shootRange, weaponScriptableObject.numberOfBulletsPerShot);
+        transform.GetComponentInParent<ChoosingWeapon>().OnActivate?.Invoke(weaponScriptableObject.type, weaponScriptableObject.name, weaponScriptableObject.damage, weaponScriptableObject.timeBetweenShots, weaponScriptableObject.shootRange, weaponScriptableObject.numberOfBulletsPerShot);
     }
 
     public void OnCursorExit()
@@ -32,7 +32,7 @@ public class ChosingWeaponItem : MonoBehaviour
             if (wasSelected)
             {
                 CanvasInstance.instance.weaponsToChose.weaponsInventoryItems.Add(weaponInventoryItem);
-                transform.GetComponentInParent<ChosingWeapon>().OnActivate?.Invoke(weaponScriptableObject.type, weaponScriptableObject.name, weaponScriptableObject.damage, weaponScriptableObject.timeBetweenShots, weaponScriptableObject.shootRange, weaponScriptableObject.numberOfBulletsPerShot);
+                transform.GetComponentInParent<ChoosingWeapon>().OnActivate?.Invoke(weaponScriptableObject.type, weaponScriptableObject.name, weaponScriptableObject.damage, weaponScriptableObject.timeBetweenShots, weaponScriptableObject.shootRange, weaponScriptableObject.numberOfBulletsPerShot);
 
             }
             else

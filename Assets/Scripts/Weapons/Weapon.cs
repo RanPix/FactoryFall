@@ -161,6 +161,12 @@ public class Weapon : MonoBehaviour
         ammoText = CanvasInstance.instance.weaponAmmoText.GetComponent<TMP_Text>();
 
         gamePlayer.GetComponent<Health>().onDeath += OnDeath;
+
+        gamePlayer.OnRespawn += () => canShoot = true;
+        gamePlayer.OnRespawn += () => reloading = false;
+
+
+
         controls = new PlayerControls();
         controls.Player.Enable();
         controls.Player.Look.performed += ReadLookVector;
@@ -314,6 +320,7 @@ public class Weapon : MonoBehaviour
     public void OnDeath(string str)
     {
         reloading = false;
+        canShoot = false;
         weaponAmmo.Ammo = weaponAmmo.ClipSize;
     }
 

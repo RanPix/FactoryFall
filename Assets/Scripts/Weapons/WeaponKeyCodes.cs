@@ -45,7 +45,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         if (!gamePlayer.isLocalPlayer)
             return;
 
-        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
+        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChoosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
 
 
         audioSync = GetComponent<AudioSync>();

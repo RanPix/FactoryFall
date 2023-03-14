@@ -16,9 +16,8 @@ MonoBehaviour:
   name: AUG
   damage: 10
   shootRange: 1000
-  fireRate: 7.8
   useOneAmmoPerShot: 0
-  maxAmmo: 25
+  maxAmmo: 26
   numberOfBulletsPerShot: 2
   timeBetweenSpawnBullets: 0.08
   patern:
