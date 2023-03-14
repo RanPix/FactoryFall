@@ -28,8 +28,7 @@ public class ChosingWeapon : MonoBehaviour
         if(CanvasInstance.instance.tipsManager.tipsIsActive)
             CanvasInstance.instance.tipsManager.gameObject.SetActive(true);
 
-        if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
-            CanvasInstance.instance.tipsManager.ActivateTip("ChosingWeapon");
+        CanvasInstance.instance.tipsManager.ActivateTip("ChosingWeapon");
     }
 
     public void OnWeaponClick(bool wasSelected)
@@ -81,8 +80,7 @@ public class ChosingWeapon : MonoBehaviour
         CanvasInstance.instance.selectedWeaponInfo.TurnOff();
 
         CursorManager.instance.SetCursorLockState(CursorLockMode.Locked);
-        if(CanvasInstance.instance.tipsManager.isActiveAndEnabled)
-            CanvasInstance.instance.tipsManager.ActivateTip("PressTab");
+        CanvasInstance.instance.tipsManager.ActivateTip("PressTab");
 
         OnActivateWeapons?.Invoke(firstIndex, secondIndex);
 

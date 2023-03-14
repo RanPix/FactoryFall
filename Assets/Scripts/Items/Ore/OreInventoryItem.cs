@@ -20,8 +20,7 @@ public class OreInventoryItem : MonoBehaviour
 
             if(value != 0)
                 NetworkClient.localPlayer.GetComponent<AudioSync>().PlaySound(ClipType.player, true, "TakeOre");
-            if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
-                CanvasInstance.instance.tipsManager.ActivateTip("GiveAwayOre");
+            CanvasInstance.instance.tipsManager.ActivateTip("GiveAwayOre");
             OnCurrentCountchange?.Invoke();
         }
     }

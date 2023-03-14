@@ -407,8 +407,7 @@ namespace Player
                     else if (hit.transform.tag == "Ore")
                     {
                         StartCoroutine(ActivateForSeconds(CanvasInstance.instance.hitMarker, 0.5f));
-                        if (CanvasInstance.instance.tipsManager.isActiveAndEnabled)
-                            CanvasInstance.instance.tipsManager.ActivateTip("BringOre");
+                        CanvasInstance.instance.tipsManager.ActivateTip("BringOre");
 
                         playerVFX.SpawnHitFX(hit.point, hit.normal);
                         Ore _ore = hit.transform.GetComponent<Ore>();

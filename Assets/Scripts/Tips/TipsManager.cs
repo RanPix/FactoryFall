@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using PlayerSettings;
+using UnityEngine.UI;
 
 public class TipsManager : MonoBehaviour
 {
@@ -11,6 +13,7 @@ public class TipsManager : MonoBehaviour
     public string[] tipsNames;
 
     [SerializeField] private TMP_Text tipText;
+    [SerializeField] private Mask mask;
 
     public Dictionary<string, string> tips = new Dictionary<string, string>();
     public string currentTipName
@@ -29,6 +32,7 @@ public class TipsManager : MonoBehaviour
         get => _tipsIsActive;
         set
         {
+            mask.enabled = !value;
             _tipsIsActive = value;
             OnSetActiveTips?.Invoke(value);
         }
@@ -49,6 +53,7 @@ public class TipsManager : MonoBehaviour
             instance = this;
         }
 
+
         for (int i = 0; i < tipsMessages.Length; i++)
         {
             tipsMessages[i] = tipsMessages[i].Replace("\\n", "\n");
@@ -58,12 +63,14 @@ public class TipsManager : MonoBehaviour
         }
 
         OnChangeTip += ChangeTip;
-        OnSetActiveTips += gameObject.SetActive;
+        tipsIsActive = Settings.isShowingTips;
     }
 
     private void OnDestroy()
     {
         instance = null;
+        OnChangeTip -= ChangeTip;
+        OnSetActiveTips -= gameObject.SetActive;
     }
     public void ActivateTip(string tipName)
     {

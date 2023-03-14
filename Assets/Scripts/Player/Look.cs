@@ -5,6 +5,8 @@ using PlayerSettings;
 
 public class Look : MonoBehaviour
 {
+    const string nickNameLayer = "Nickname";
+
     private PlayerControls controls;
 
     [HideInInspector] public bool canRotateCamera;
@@ -40,7 +42,6 @@ public class Look : MonoBehaviour
     private void OnDestroy()
     {
         controls.Player.FreeCursor.performed -= ControlCursor;
-
     }
 
 
@@ -56,14 +57,18 @@ public class Look : MonoBehaviour
     private void GetInput()
         => inputVector = controls.Player.Look.ReadValue<Vector2>();
 
-
     public void UpdateFOV()
     {
-       if (PlayerPrefs.HasKey(Settings.FOVPrefsKey))
-       {
-            cam.fieldOfView = PlayerPrefs.GetFloat(Settings.FOVPrefsKey);
-       }
+        cam.fieldOfView = Settings.FOV;
     }
+
+    public void UpdateShowingNickNames()
+    {
+        bool isShowingNickNames = Settings.isShowingNickNames;
+        // if (isShowingNickNames)
+            //cam.cullingMask |= (1 << layerToAdd);//PLS END THIS
+    }
+
 
     private void UpdateCamera()
     {
