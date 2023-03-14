@@ -8,26 +8,40 @@ public class OreInventory : MonoBehaviour
     public OreInventoryItem item;
     [SerializeField] private RawImage oreImage;
 
-    private void Awake()
+    private void Start()
     {
-        if (GameManager.instance)
+        /*if (NetworkClient.localPlayer)
         {
-            ULTRASETUP();
+            print(1);
+            TrySetup();
         }
         else
-            GameManager.OnGameManagerSet += ULTRASETUP;
+        {
+            print(2);
+            NetworkClient.OnConnectedEvent += TrySetup;
+        }*/
+
 
     }
 
-    private void ULTRASETUP()
+    private void TrySetup()
     {
-        if (GameManager.instance.matchSettings.gm != Gamemode.BTR)
+        if (NetworkClient.localPlayer.GetComponent<GamePlayer>().team != Team.Null)
         {
-            gameObject.SetActive(false);
-            return;
+            print(3);
+            Setup();
+        }
+        else
+        {
+            print(4);
+            NetworkClient.localPlayer.GetComponent<GamePlayer>().OnSetPlayerInfoTransfer += Setup;
         }
     }
 
+
     public void Setup()
-        => oreImage.color = NetworkClient.localPlayer.GetComponent<GamePlayer>().team == Team.Red ? Color.blue : Color.red;
+    {
+        oreImage.color = NetworkClient.localPlayer.GetComponent<GamePlayer>().team == Team.Red ? Color.blue : Color.red;
+        print(5);
+    }
 }
