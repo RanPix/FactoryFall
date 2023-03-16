@@ -128,7 +128,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] private TMP_Text ammoText;
     [SerializeField] private Transform weaponView;
 
-    public bool reloading { get; private set; } = false;
+    public bool reloading = false;
     public float nextFire { get; private set; }
 
 

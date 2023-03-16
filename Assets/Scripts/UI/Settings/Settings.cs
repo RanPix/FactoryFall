@@ -18,6 +18,7 @@ namespace PlayerSettings
         [SerializeField] private Slider playerSoundsVolumeSlider;
         [SerializeField] private Slider shootVolumeSlider;
         [SerializeField] private Toggle isShowingTipsToggle;
+        [SerializeField] private Toggle isShowingNickNamesToggle;
         [SerializeField] private ArrayElementSelector graphicsQualitySelector;
         [SerializeField] private ArrayElementSelector healthBarColorSelector;
 
@@ -26,11 +27,9 @@ namespace PlayerSettings
         [SerializeField] public AudioMixer MasterMixer;
 
         public static bool isShowingTips = true;
-        public const string isShowingTipsPrefsKey = "isShowingTips";
         public void UpdateisShowingGuideValue()
         {
             isShowingTips = isShowingTipsToggle.isOn;
-            PlayerPrefs.SetInt(isShowingTipsPrefsKey, isShowingTips? 1 : 0);
 
             if (TipsManager.instance != null)
                 TipsManager.instance.tipsIsActive = isShowingTips;
@@ -38,20 +37,16 @@ namespace PlayerSettings
 
 
         public static float sensetivity = 15;
-        public const string sensetivityPrefsKey = "sensetivity";
         public void UpdateSensetivityValue()
         {
             sensetivity = sensetivitySlider.value;
-            PlayerPrefs.SetFloat(sensetivityPrefsKey, sensetivity);
         }
 
 
         public static float FOV = 60;
-        public const string FOVPrefsKey = "FOV";
         public void UpdateFOVValue()
         {
             FOV = FOVSlider.value;
-            PlayerPrefs.SetFloat(FOVPrefsKey, FOV);
             if (NetworkClient.localPlayer != null)
             {
                 NetworkClient.localPlayer.GetComponent<GamePlayer>().cameraHolder.GetComponent<Look>().UpdateFOV();
@@ -60,11 +55,9 @@ namespace PlayerSettings
         }
 
         public static int graphicsQuality = 4;
-        public const string graphicsQualityPrefsKey = "graphicsQuality";
         public void UpdateGraphicsQualityValue()
         {
             graphicsQuality = graphicsQualitySelector.currentElement;
-            PlayerPrefs.SetInt(graphicsQualityPrefsKey, graphicsQuality);
 
             UpdateGraphicsQuality();
         }
@@ -72,51 +65,43 @@ namespace PlayerSettings
             => QualitySettings.SetQualityLevel(graphicsQuality);
 
 
-        public static float masterVolume = 1;
-        public const string masterVolumePrefsKey = "masterVolume";
+        public static float masterVolume = 0.2f;
         public const string masterMixerVolumeKey = "MasterVolume";
         public const float masterVolumeMultiplier = 20;
         public void UpdateMasterVolumeValue()
         {
             masterVolume = masterVolumeSlider.value;
-            PlayerPrefs.SetFloat(masterVolumePrefsKey, masterVolume);
 
             MasterMixer.SetFloat(masterMixerVolumeKey, Mathf.Log10(masterVolume) * masterVolumeMultiplier);
         }
 
 
         public static float playerSoundsVolume = 1;
-        public const string playerSoundsVolumePrefsKey = "playerSoundsVolume";
         public const string playerSoundsMixerVolumeKey = "PlayerSoundsVolume";
         public const float playerSoundsVolumeMultiplier = masterVolumeMultiplier;
         public void UpdatePlayerSoundsVolumeValue()
         {
             playerSoundsVolume = playerSoundsVolumeSlider.value;
-            PlayerPrefs.SetFloat(playerSoundsVolumePrefsKey, playerSoundsVolume);
 
             MasterMixer.SetFloat(playerSoundsMixerVolumeKey, Mathf.Log10(playerSoundsVolume) * playerSoundsVolumeMultiplier);
         }
 
 
         public static float shootVolume = 1;
-        public const string shootVolumePrefsKey = "shootVolume";
         public const string shootMixerVolumeKey = "ShootVolume";
         public const float shootVolumeMultiplier = masterVolumeMultiplier;
         public void UpdateShootVolumeValue()
         {
             shootVolume = shootVolumeSlider.value;
-            PlayerPrefs.SetFloat(shootVolumePrefsKey, shootVolume);
 
             MasterMixer.SetFloat(shootMixerVolumeKey, Mathf.Log10(shootVolume) * shootVolumeMultiplier);
         }
 
 
         public static int healthBarColor = 0;
-        public const string healthBarColorPrefsKey = "healthBarColor";
         public void UpdatehealthBarColor()
         {
             healthBarColor = healthBarColorSelector.currentElement;
-            PlayerPrefs.SetInt(healthBarColorPrefsKey, healthBarColor);
             if (NetworkClient.localPlayer != null)
             {
                 GamePlayer gamePlayer = NetworkClient.localPlayer.GetComponent<GamePlayer>();
@@ -124,6 +109,18 @@ namespace PlayerSettings
             }
         }
 
+
+        public static bool isShowingNickNames = true;
+        public void UpdateisShowingNickNamesValue()
+        {
+            isShowingNickNames = isShowingNickNamesToggle.isOn;
+
+            if (NetworkClient.localPlayer != null)
+            {
+                NetworkClient.localPlayer.GetComponent<GamePlayer>().cameraHolder.GetComponent<Look>().UpdateShowingNickNames();
+                NetworkClient.localPlayer.GetComponent<GamePlayer>().spectatorCamera.GetComponent<Look>().UpdateShowingNickNames();
+            }
+        }
 
         private void Awake()
         {
@@ -135,6 +132,7 @@ namespace PlayerSettings
             shootVolumeSlider.value = shootVolume;
             graphicsQualitySelector.currentElement = graphicsQuality;
             healthBarColorSelector.currentElement = healthBarColor;
+            isShowingNickNamesToggle.isOn = isShowingNickNames;
             UpdatehealthBarColor();
         }
     }
