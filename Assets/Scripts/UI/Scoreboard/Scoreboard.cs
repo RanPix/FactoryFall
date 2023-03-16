@@ -2,6 +2,8 @@ using Mirror;
 using UnityEngine;
 using TMPro;
 using System;
+using System.Collections.Generic;
+using System.Linq;
 
 public class Scoreboard : NetworkBehaviour
 {
@@ -178,11 +180,30 @@ public class Scoreboard : NetworkBehaviour
             case Team.Blue:
                 winnerText.text = "Blue Team Won";
                 winnerText.color = TeamToColor.GetTeamColor(team);
+
+                //(string[], int[]) places = Get3PlacesFromLB();
+
+                //if (places.Item2.Length >= 3)
+                //    best3FromLeaderBoard.text = $"<color=#D6A109>N3: {places.Item1[2]} - {places.Item2[2]}</color>   <color=#FFE15D>N1: {places.Item1[0]} - {places.Item2[0]}</color>   <color=#D2D3C9>N2: {places.Item1[1]} - {places.Item2[1]}</color>";
+                //else if (places.Item2.Length == 2)
+                //    best3FromLeaderBoard.text = $"<color=#FFE15D>N1: {places.Item1[0]} - {places.Item2[0]}</color>   <color=#D2D3C9>N2: {places.Item1[1]} - {places.Item2[1]}</color>";
+                //else
+                best3FromLeaderBoard.text = "";
+
                 break;
 
             case Team.Red:
                 winnerText.text = "Red Team Won";
                 winnerText.color = TeamToColor.GetTeamColor(team);
+
+                //(string[], int[]) _places = Get3PlacesFromLB();
+
+                //if (_places.Item2.Length >= 3)
+                //    best3FromLeaderBoard.text = $"<color=#D6A109>N3: {_places.Item1[2]} - {_places.Item2[2]}</color>   <color=#FFE15D>N1: {_places.Item1[0]} - {_places.Item2[0]}</color>   <color=#D2D3C9>N2: {_places.Item1[1]} - {_places.Item2[1]}</color>";
+                //else if (_places.Item2.Length == 2)
+                //    best3FromLeaderBoard.text = $"<color=#FFE15D>N1: {_places.Item1[0]} - {_places.Item2[0]}</color>   <color=#D2D3C9>N2: {_places.Item1[1]} - {_places.Item2[1]}</color>";
+                //else
+                best3FromLeaderBoard.text = "";
                 break;
 
             case Team.None: 
@@ -198,10 +219,41 @@ public class Scoreboard : NetworkBehaviour
     private void EndGame(Team wonTeam)
     {
         GameManager.instance.EndGame();
+        
         RpcBroadcastWonTeam(wonTeam);
     }
 
+    [Client]
+    private (string[], int[]) Get3PlacesFromLB()
+    {
+        print("start");
+        Dictionary<string, int> scores = new Dictionary<string, int>();
+        for (int i = 0; i < GameManager.GetAllPlayers().Length; i++)
+        {
 
+            if(scores.Count < 3)
+            {
+                scores.Add(GameManager.GetAllPlayers()[i].nickname, GameManager.GetAllPlayers()[i].score);
+            }
+            else if(scores.Values.ToList().Min() < GameManager.GetAllPlayers()[i].score)
+            {
+                int index = Array.IndexOf(scores.Values.ToArray(), scores.Values.ToList().Min());
+
+                scores.Remove(scores.Keys.ToList()[index]);
+                scores.Add(GameManager.GetAllPlayers()[i].nickname, GameManager.GetAllPlayers()[i].score);
+                print($"Added after delete: score - {GameManager.GetAllPlayers()[i].score}; nickname - {GameManager.GetAllPlayers()[i].nickname}");
+                
+            }
+
+
+        }
+
+        Array.Sort(scores.Values.ToArray());
+
+        print($"count = {scores.Count}");
+        return (scores.Keys.ToArray(), scores.Values.ToArray());
+    }
+     
 
     [Client]
     private void UpdateGoalOrTimerText(string oldText, string newText)

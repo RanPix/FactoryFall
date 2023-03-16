@@ -50,7 +50,7 @@ namespace Player
         [Header("Player")]
         [SerializeField] private GameObject nameGO;
 
-        [SerializeField] private GameObject playerModel;
+        [field: SerializeField] public GameObject playerModel { get; private set; }
         [SerializeField] private MeshRenderer playerMesh;
 
         [SerializeField] private Material bluePowerMat;
@@ -206,6 +206,7 @@ namespace Player
                     CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
                 else
                     OnSetPlayerInfoTransfer += CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup;
+
                 CanvasInstance.instance.weaponsToChose.GetComponent<ChoosingWeapon>().Setup();
                 CanvasInstance.instance.damageVingette.GetComponent<DamageVingette>().Setup(this);
 
@@ -242,7 +243,8 @@ namespace Player
 
         private void OnDestroy()
         {
-            Destroy(playerMark);
+            if(playerMark)
+                Destroy(playerMark);
             health.onDeath -= Die;
             gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= playerVFX.RedirectFX;
 
@@ -253,13 +255,18 @@ namespace Player
                 return;
             spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= GetComponent<MovementMachine>().PublicToggle;
             spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= weaponKeyCodes.ToggleCanShoot;
+            OnSetPlayerInfoTransfer -= () => nameGO.GetComponent<PlayerNicknameDisplay>().Setup(nickname, team);
+            OnSetPlayerInfoTransfer -= CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup;
         }
 
 
         private void SetTeam(Team oldTeam, Team newTeam)
         {
-            playerMark = Instantiate(playerMark);
-            playerMark.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
+            if (playerMark)
+            {
+                playerMark = Instantiate(playerMark);
+                playerMark.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
+            }
 
             /*if (nickname != String.Empty && !playerInfoTransferWasSet)
             {
@@ -481,7 +488,7 @@ namespace Player
                 OnDeath?.Invoke(_sourceID, sourcePlayer.team, sourcePlayer.nickname, (int)sourcePlayer.gameObject.GetComponent<Health>().currentHealth);
                 //sourcePlayer.CmdAddKill();
 
-                print($"die {_sourceID} {GetNetID()}");
+                //print($"die {_sourceID} {GetNetID()}");
 
 
                 CmdPlayerKilled(GetNetID(), nickname, sourcePlayer.netIdentity);

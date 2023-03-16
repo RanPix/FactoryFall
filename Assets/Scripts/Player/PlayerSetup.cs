@@ -32,6 +32,11 @@ public class PlayerSetup : NetworkBehaviour
         }
     }
 
+    private void OnDestroy()
+    {
+        player.OnSetPlayerInfoTransfer -= player.SetupPlayer;
+    }
+
     public override void OnStartClient()
     {
         base.OnStartClient();

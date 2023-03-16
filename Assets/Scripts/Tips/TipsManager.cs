@@ -31,7 +31,7 @@ public class TipsManager : MonoBehaviour
         get => _tipsIsActive;
         set
         {
-            print($"value = {value}");
+            //print($"value = {value}");
             mask.enabled = !value;
             _tipsIsActive = value;
             OnSetActiveTips?.Invoke(value);
