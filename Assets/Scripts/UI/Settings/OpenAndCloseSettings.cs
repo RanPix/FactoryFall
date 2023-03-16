@@ -38,7 +38,7 @@ namespace PlayerSettings
 
                 StreamWriter fileWriter = new StreamWriter(SettingsLoader.SettingsGameFilePath);
                 fileWriter.WriteLine(Settings.isShowingTips);
-                fileWriter.WriteLine(Settings.isShowingNickNames);
+                fileWriter.WriteLine(Settings.isShowingNicknames);
                 fileWriter.WriteLine(Settings.sensetivity);
                 fileWriter.WriteLine(Settings.FOV);
                 fileWriter.WriteLine(Settings.masterVolume);

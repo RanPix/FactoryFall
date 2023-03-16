@@ -245,7 +245,12 @@ namespace Player
             Destroy(playerMark);
             health.onDeath -= Die;
             gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= playerVFX.RedirectFX;
-            OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
+
+            if (OreGiveAwayArea.instance)
+                OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
+
+            if (!spectatorCamera)
+                return;
             spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= GetComponent<MovementMachine>().PublicToggle;
             spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= weaponKeyCodes.ToggleCanShoot;
         }

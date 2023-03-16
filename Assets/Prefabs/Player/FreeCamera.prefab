@@ -218,4 +218,10 @@ MonoBehaviour:
   cam: {fileID: 1759439985541251230}
   sensX: 6
   sensY: 6
+  maskWithNicknames:
+    serializedVersion: 2
+    m_Bits: 133055
+  maskWithoutNicknames:
+    serializedVersion: 2
+    m_Bits: 1983
   orientation: {fileID: 0}

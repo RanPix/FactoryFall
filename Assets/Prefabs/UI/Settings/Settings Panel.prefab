@@ -94,13 +94,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   closeButton: {fileID: 779900533208688273}
+  isShowingTipsToggle: {fileID: 1088881803298221362}
+  isShowingNickNamesToggle: {fileID: 3395838855978379581}
   sensetivitySlider: {fileID: 344607680008997598}
   FOVSlider: {fileID: 1635030752593817380}
   masterVolumeSlider: {fileID: 7331553829519710702}
   playerSoundsVolumeSlider: {fileID: 5301284994645842104}
   shootVolumeSlider: {fileID: 1876515869491504511}
-  isShowingTipsToggle: {fileID: 1088881803298221362}
-  isShowingNickNamesToggle: {fileID: 3395838855978379581}
   graphicsQualitySelector: {fileID: 958911282993966925}
   healthBarColorSelector: {fileID: 2529562178750949740}
   MasterMixer: {fileID: 24100000, guid: 4031e8e6ff826a54c9847afefbc08c15, type: 2}
@@ -2742,6 +2742,41 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 5869389583775390294}
     m_Modifications:
+    - target: {fileID: 8043818821991467655, guid: b2e19dd93a344dc4cb9258b5936d316a,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8043818821991467655, guid: b2e19dd93a344dc4cb9258b5936d316a,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Mode
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8043818821991467655, guid: b2e19dd93a344dc4cb9258b5936d316a,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Target
+      value: 
+      objectReference: {fileID: 5326630278377874165}
+    - target: {fileID: 8043818821991467655, guid: b2e19dd93a344dc4cb9258b5936d316a,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_CallState
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8043818821991467655, guid: b2e19dd93a344dc4cb9258b5936d316a,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_MethodName
+      value: UpdateisShowingNickNamesValue
+      objectReference: {fileID: 0}
+    - target: {fileID: 8043818821991467655, guid: b2e19dd93a344dc4cb9258b5936d316a,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_TargetAssemblyTypeName
+      value: PlayerSettings.Settings, Assembly-CSharp
+      objectReference: {fileID: 0}
+    - target: {fileID: 8043818821991467655, guid: b2e19dd93a344dc4cb9258b5936d316a,
+        type: 3}
+      propertyPath: onValueChanged.m_PersistentCalls.m_Calls.Array.data[1].m_Arguments.m_ObjectArgumentAssemblyTypeName
+      value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
     - target: {fileID: 8043818821991467706, guid: b2e19dd93a344dc4cb9258b5936d316a,
         type: 3}
       propertyPath: m_Pivot.x
