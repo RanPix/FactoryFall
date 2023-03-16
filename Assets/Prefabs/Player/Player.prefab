@@ -357,7 +357,7 @@ MonoBehaviour:
   menuPrefab: {fileID: 4635157150927694193, guid: d37a061eff4b9c64696edba900215302,
     type: 3}
   nameGO: {fileID: 2317577257594477167}
-  playerModel: {fileID: 9048311098197814485}
+  <playerModel>k__BackingField: {fileID: 9048311098197814485}
   playerMesh: {fileID: 7391237604317957376}
   bluePowerMat: {fileID: 2100000, guid: e6de2ecf39a549b499e314048f568a78, type: 2}
   blueBaseMat: {fileID: 2100000, guid: 775ce457daafa634b8b5fb3abf418b23, type: 2}
@@ -1514,6 +1514,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: PlayerModel Variant
+      objectReference: {fileID: 0}
+    - target: {fileID: 2971867948859384007, guid: 3a09a3db2757b4547a083bca9bf31c08,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 3620558024945320210, guid: 3a09a3db2757b4547a083bca9bf31c08,
         type: 3}

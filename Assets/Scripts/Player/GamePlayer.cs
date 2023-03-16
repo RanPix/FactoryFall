@@ -50,7 +50,7 @@ namespace Player
         [Header("Player")]
         [SerializeField] private GameObject nameGO;
 
-        [SerializeField] private GameObject playerModel;
+        [field: SerializeField] public GameObject playerModel { get; private set; }
         [SerializeField] private MeshRenderer playerMesh;
 
         [SerializeField] private Material bluePowerMat;
