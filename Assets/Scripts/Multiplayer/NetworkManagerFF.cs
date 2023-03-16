@@ -69,6 +69,8 @@ public class NetworkManagerFF : NetworkManager
         if (SceneManager.GetActiveScene().name != "Main Menu")
             Destroy(PlayerInfoTransfer.instance?.gameObject);
 
+        SceneManager.UnloadSceneAsync("MAP_CageCastle");
+
         onGameStop?.Invoke(false);
         GameManager.instance = null;
         base.OnStopClient();

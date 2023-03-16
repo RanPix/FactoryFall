@@ -74,6 +74,8 @@ public class TipsManager : MonoBehaviour
     {
         OnChangeTip -= ChangeTip;
         instance = null;
+        OnChangeTip -= ChangeTip;
+        OnSetActiveTips -= gameObject.SetActive;
     }
     public void ActivateTip(string tipName)
     {

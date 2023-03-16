@@ -243,7 +243,8 @@ namespace Player
 
         private void OnDestroy()
         {
-            Destroy(playerMark);
+            if(playerMark)
+                Destroy(playerMark);
             health.onDeath -= Die;
             gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= playerVFX.RedirectFX;
             OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
@@ -256,8 +257,11 @@ namespace Player
 
         private void SetTeam(Team oldTeam, Team newTeam)
         {
-            playerMark = Instantiate(playerMark);
-            playerMark.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
+            if (playerMark)
+            {
+                playerMark = Instantiate(playerMark);
+                playerMark.GetComponent<PlayerMark>().Setup(newTeam, isLocalPlayer, transform, gameObject.transform.GetChild(0).GetChild(0));
+            }
 
             /*if (nickname != String.Empty && !playerInfoTransferWasSet)
             {

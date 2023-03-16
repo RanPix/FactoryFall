@@ -100,7 +100,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         if (currentWeapon)
         {
             currentWeapon.wasChanged = true;
-
+            currentWeapon.reloading = false;
         }
 
         weapons[currentWeaponIndex].SetActive(false);
@@ -112,6 +112,7 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         currentWeapon = weapons[index].GetComponent<Weapon>();
         currentWeapon.wasChanged = false;
+        currentWeapon.reloading = false;
         currentWeapon._isLocalPLayer = true;
         ChangeAnotherValuesAfterChangeWeapon();
 

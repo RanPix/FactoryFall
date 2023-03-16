@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.IO;
 
 namespace PlayerSettings
 {
@@ -34,6 +35,19 @@ namespace PlayerSettings
             {
                 Destroy(settings);
                 isOpened = false;
+
+                StreamWriter fileWriter = new StreamWriter(SettingsLoader.SettingsGameFilePath);
+                fileWriter.WriteLine(Settings.isShowingTips);
+                fileWriter.WriteLine(Settings.isShowingNickNames);
+                fileWriter.WriteLine(Settings.sensetivity);
+                fileWriter.WriteLine(Settings.FOV);
+                fileWriter.WriteLine(Settings.masterVolume);
+                fileWriter.WriteLine(Settings.playerSoundsVolume);
+                fileWriter.WriteLine(Settings.shootVolume);
+                fileWriter.WriteLine(Settings.graphicsQuality);
+                fileWriter.WriteLine(Settings.healthBarColor);
+
+                fileWriter.Close();
             }
         }
     }

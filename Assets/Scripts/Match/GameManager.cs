@@ -131,6 +131,7 @@ public class GameManager : NetworkBehaviour
     public override void OnStartClient()
     {
         base.OnStartClient();
+        UnregisterAllPlayers();
         OnClientStart?.Invoke();
     }
 
