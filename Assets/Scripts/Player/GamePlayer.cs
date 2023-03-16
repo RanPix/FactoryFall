@@ -206,6 +206,7 @@ namespace Player
                     CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup();
                 else
                     OnSetPlayerInfoTransfer += CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup;
+
                 CanvasInstance.instance.weaponsToChose.GetComponent<ChoosingWeapon>().Setup();
                 CanvasInstance.instance.damageVingette.GetComponent<DamageVingette>().Setup(this);
 
@@ -248,6 +249,8 @@ namespace Player
             OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
             spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= GetComponent<MovementMachine>().PublicToggle;
             spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= weaponKeyCodes.ToggleCanShoot;
+            OnSetPlayerInfoTransfer -= () => nameGO.GetComponent<PlayerNicknameDisplay>().Setup(nickname, team);
+            OnSetPlayerInfoTransfer -= CanvasInstance.instance.oreInventory.GetComponent<OreInventory>().Setup;
         }
 
 
@@ -476,7 +479,7 @@ namespace Player
                 OnDeath?.Invoke(_sourceID, sourcePlayer.team, sourcePlayer.nickname, (int)sourcePlayer.gameObject.GetComponent<Health>().currentHealth);
                 //sourcePlayer.CmdAddKill();
 
-                print($"die {_sourceID} {GetNetID()}");
+                //print($"die {_sourceID} {GetNetID()}");
 
 
                 CmdPlayerKilled(GetNetID(), nickname, sourcePlayer.netIdentity);

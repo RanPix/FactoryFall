@@ -83,11 +83,11 @@ public class TabBar : MonoBehaviour
             switch (GameManager.GetAllPlayers()[i].team)
             {
                 case Team.Blue:
-                    bluePartUnsorted.Add(GameManager.GetAllPlayers()[i].GetNetID(), GameManager.GetAllPlayers()[i].kills);
+                    bluePartUnsorted.Add(GameManager.GetAllPlayers()[i].GetNetID(), GameManager.GetAllPlayers()[i].score);
                     break;
 
                 case Team.Red:
-                    redPartUnsorted.Add(GameManager.GetAllPlayers()[i].GetNetID(), GameManager.GetAllPlayers()[i].kills);
+                    redPartUnsorted.Add(GameManager.GetAllPlayers()[i].GetNetID(), GameManager.GetAllPlayers()[i].score);
                     break;
             }
         }

@@ -36,12 +36,14 @@ public class WeaponKeyCodes : NetworkBehaviour
     private void Start()
     {
         multiNetworkComponentsSorter = GetComponent<MultiNetworkComponentsSorter>();
+
         if(gamePlayer.team != Team.Null)
             arm.SetupArm(gamePlayer.team, gamePlayer.isLocalPlayer);
         else
         {
             gamePlayer.OnSetPlayerInfoTransfer += () => arm.SetupArm(gamePlayer.team, gamePlayer.isLocalPlayer);
         }
+
         if (!gamePlayer.isLocalPlayer)
             return;
 
@@ -61,6 +63,10 @@ public class WeaponKeyCodes : NetworkBehaviour
     {
         if(gamePlayer.isLocalPlayer)
             controls?.Player.Disable();
+
+        gamePlayer.OnSetPlayerInfoTransfer -= () => arm.SetupArm(gamePlayer.team, gamePlayer.isLocalPlayer);
+
+        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChoosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
     }
 
     private void Update()
