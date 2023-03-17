@@ -105,7 +105,7 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         weapons[currentWeaponIndex].SetActive(false);
         CmdChangeWeapon(currentWeaponIndex, index);
-        WeaponInventory.instance.ChangeBlurIcon(index, currentWeaponIndex);
+        CanvasInstance.instance.weaponInventory.ChangeIcon(index, currentWeaponIndex);
         currentWeaponIndex = index;
         
         weapons[currentWeaponIndex].SetActive(true);

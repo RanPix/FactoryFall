@@ -1,29 +1,20 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponInventory : MonoBehaviour
 {
-    public static WeaponInventory instance;
-    [SerializeField] private GameObject[] weaponBlurIcons;
+    [SerializeField] private RawImage[] weaponBlurIcons;
+    [SerializeField] private RawImage[] unSelectedWeaponBlurIcons;
     [SerializeField] private int activeWeaponIndex;
-    void Awake()
+
+
+    public void ChangeIcon(int indexToChange, int currentIndex)
     {
-        if(instance == null)
-            instance = this;
-        else
-        {
-            Debug.LogError("MORE THAN ONE INSTANCE OF WEAPON INVENTORY");
-        }
+        weaponBlurIcons[currentIndex].enabled = true;
+        weaponBlurIcons[indexToChange].enabled = false;
 
-    }
-
-
-    public void ChangeBlurIcon(int indexToChange, int currentIndex)
-    {
-        weaponBlurIcons[currentIndex].SetActive(true);
-        weaponBlurIcons[indexToChange].SetActive(false);
+        unSelectedWeaponBlurIcons[currentIndex].enabled = false;
+        unSelectedWeaponBlurIcons[indexToChange].enabled = true;
     }
     
 }

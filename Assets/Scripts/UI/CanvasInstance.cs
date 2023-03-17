@@ -6,7 +6,6 @@ public class CanvasInstance : MonoBehaviour
     public static CanvasInstance instance;
 
     public GameObject canvas;
-    public RectTransform panelWithElementsToHide;
     public GameObject hitMarker;
     public WeaponInventory weaponInventory;
     public KillFeed killFeed;

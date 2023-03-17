@@ -602,7 +602,7 @@ MonoBehaviour:
   baseBlueColor: {r: 0.29803923, g: 0.4862745, b: 1, a: 0.5019608}
   ownRedColor: {r: 1, g: 0.9685757, b: 0, a: 1}
   baseRedColor: {r: 1, g: 0.3647059, b: 0.3647059, a: 0.5019608}
-  firstSort: 0
+  firstSort: 1
   canOpen: 1
 --- !u!1 &5417629064372462422
 GameObject:

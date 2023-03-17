@@ -553,7 +553,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &8550018688244765856
 Transform:
   m_ObjectHideFlags: 0
@@ -612,6 +612,7 @@ MonoBehaviour:
   audioSource: {fileID: 0}
   ammoText: {fileID: 0}
   weaponView: {fileID: 8155312829579049598}
+  reloading: 0
   <_isLocalPLayer>k__BackingField: 0
 --- !u!114 &4159736794199569803
 MonoBehaviour:

@@ -31,20 +31,26 @@ public class ChoosingWeapon : MonoBehaviour
 
     public void OnWeaponClick(bool wasSelected)
     {
+        print("w klic");
+
         if (wasSelected)
         {
+            print("w fi 1");
             if (canSelectAnotherWeapon)
             {
+                print("w huy");
                 selectedWeaponsCount++;
             }
         }
         else
         {
+            print("w ");
             selectedWeaponsCount--;
         }
 
         if (selectedWeaponsCount >= 2)
         {
+            print("w klic");
             ActivateSelectedWeapons();
             gameObject.SetActive(false);
         }
@@ -65,11 +71,13 @@ public class ChoosingWeapon : MonoBehaviour
             if (weaponsInventoryItems[0] == CanvasInstance.instance.weaponInventory.transform.GetChild(i).gameObject)
             {
                 firstIndex = i;
-            }else if (weaponsInventoryItems[1] == CanvasInstance.instance.weaponInventory.transform.GetChild(i).gameObject)
+            }
+            else if (weaponsInventoryItems[1] == CanvasInstance.instance.weaponInventory.transform.GetChild(i).gameObject)
             {
                 secondIndex = i;
             }
         }
+
         GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>().weaponsWasSelected = true;
         CursorManager.instance.disablesToLockCount--;
         Menu.Instance.look.canRotateCamera = true;
