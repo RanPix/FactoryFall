@@ -50,7 +50,7 @@ namespace Player
         [Header("Player")]
         [SerializeField] private GameObject nameGO;
 
-        [SerializeField] private GameObject playerModel;
+        [field: SerializeField] public GameObject playerModel { get; private set; }
         [SerializeField] private MeshRenderer playerMesh;
 
         [SerializeField] private Material bluePowerMat;
@@ -247,7 +247,12 @@ namespace Player
                 Destroy(playerMark);
             health.onDeath -= Die;
             gameObject.GetComponent<MovementMachine>().midAir.OnRedirect -= playerVFX.RedirectFX;
-            OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
+
+            if (OreGiveAwayArea.instance)
+                OreGiveAwayArea.instance.OnAreaEnter -= UpdateScore;
+
+            if (!spectatorCamera)
+                return;
             spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= GetComponent<MovementMachine>().PublicToggle;
             spectatorCamera.GetComponent<SpectatorCameraController>().OnCameraChange -= weaponKeyCodes.ToggleCanShoot;
             OnSetPlayerInfoTransfer -= () => nameGO.GetComponent<PlayerNicknameDisplay>().Setup(nickname, team);

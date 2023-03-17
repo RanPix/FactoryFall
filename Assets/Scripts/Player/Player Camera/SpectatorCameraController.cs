@@ -1,6 +1,8 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 using System;
+using Mirror;
+using Player;
 
 public enum Pan
 {
@@ -139,6 +141,10 @@ public class SpectatorCameraController : MonoBehaviour
 
     public void ChangeCamera()
     {
+        GamePlayer _player = NetworkClient.localPlayer.GetComponent<GamePlayer>();
+        _player.playerModel.SetActive(!isInSpectate);
+        _player.cameraHolder.GetComponent<Look>().canRotateCamera = isInSpectate;
+
         look._isLocalPlayer = true;
 
         look.orientation = randomTransformForOrientationCalledSIIIUUUU;

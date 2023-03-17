@@ -12,13 +12,13 @@ namespace PlayerSettings
     public class Settings : MonoBehaviour
     {
         [SerializeField] public Button closeButton;
+        [SerializeField] private Toggle isShowingTipsToggle;
+        [SerializeField] private Toggle isShowingNickNamesToggle;
         [SerializeField] private Slider sensetivitySlider;
         [SerializeField] private Slider FOVSlider;
         [SerializeField] private Slider masterVolumeSlider;
         [SerializeField] private Slider playerSoundsVolumeSlider;
         [SerializeField] private Slider shootVolumeSlider;
-        [SerializeField] private Toggle isShowingTipsToggle;
-        [SerializeField] private Toggle isShowingNickNamesToggle;
         [SerializeField] private ArrayElementSelector graphicsQualitySelector;
         [SerializeField] private ArrayElementSelector healthBarColorSelector;
 
@@ -110,10 +110,10 @@ namespace PlayerSettings
         }
 
 
-        public static bool isShowingNickNames = true;
+        public static bool isShowingNicknames = true;
         public void UpdateisShowingNickNamesValue()
         {
-            isShowingNickNames = isShowingNickNamesToggle.isOn;
+            isShowingNicknames = isShowingNickNamesToggle.isOn;
 
             if (NetworkClient.localPlayer != null)
             {
@@ -132,7 +132,7 @@ namespace PlayerSettings
             shootVolumeSlider.value = shootVolume;
             graphicsQualitySelector.currentElement = graphicsQuality;
             healthBarColorSelector.currentElement = healthBarColor;
-            isShowingNickNamesToggle.isOn = isShowingNickNames;
+            isShowingNickNamesToggle.isOn = isShowingNicknames;
             UpdatehealthBarColor();
         }
     }

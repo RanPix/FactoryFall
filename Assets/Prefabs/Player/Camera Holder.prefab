@@ -201,6 +201,12 @@ MonoBehaviour:
   cam: {fileID: 1815510803066478689}
   sensX: 6
   sensY: 6
+  maskWithNicknames:
+    serializedVersion: 2
+    m_Bits: 133055
+  maskWithoutNicknames:
+    serializedVersion: 2
+    m_Bits: 1983
   orientation: {fileID: 0}
 --- !u!1 &7766143502835840579
 GameObject:

@@ -18,20 +18,29 @@ namespace PlayerSettings
             Debug.Log(SettingsGameFilePath);
             if (File.Exists(SettingsGameFilePath))
             {
-                StreamReader fileR = new StreamReader(SettingsGameFilePath);
-                Settings.isShowingTips = bool.Parse(fileR.ReadLine());
-                Settings.isShowingNickNames = bool.Parse(fileR.ReadLine());
-                Settings.sensetivity = float.Parse(fileR.ReadLine());
-                Settings.FOV = float.Parse(fileR.ReadLine());
-                Settings.masterVolume = float.Parse(fileR.ReadLine());
-                Settings.playerSoundsVolume = float.Parse(fileR.ReadLine());
-                Settings.shootVolume = float.Parse(fileR.ReadLine());
-                Settings.graphicsQuality = int.Parse(fileR.ReadLine());
-                Settings.healthBarColor = int.Parse(fileR.ReadLine());
+                StreamReader fileReader = new StreamReader(SettingsGameFilePath);
+                Settings.isShowingTips = bool.Parse(fileReader.ReadLine());
+                Settings.isShowingNicknames = bool.Parse(fileReader.ReadLine());
+                Settings.sensetivity = float.Parse(fileReader.ReadLine());
+                Settings.FOV = float.Parse(fileReader.ReadLine());
+                Settings.masterVolume = float.Parse(fileReader.ReadLine());
+                Settings.playerSoundsVolume = float.Parse(fileReader.ReadLine());
+                Settings.shootVolume = float.Parse(fileReader.ReadLine());
+                Settings.graphicsQuality = int.Parse(fileReader.ReadLine());
+                Settings.healthBarColor = int.Parse(fileReader.ReadLine());
             }
             else
             {
-                Debug.LogError("No settings file. To fix it reenter the game. If it still doesnt work, kick serhiikos fukin ass cuz he's stupid dumbass asshole");
+                StreamWriter fileWriter = new StreamWriter(SettingsLoader.SettingsGameFilePath);
+                fileWriter.WriteLine(Settings.isShowingTips);
+                fileWriter.WriteLine(Settings.isShowingNicknames);
+                fileWriter.WriteLine(Settings.sensetivity);
+                fileWriter.WriteLine(Settings.FOV);
+                fileWriter.WriteLine(Settings.masterVolume);
+                fileWriter.WriteLine(Settings.playerSoundsVolume);
+                fileWriter.WriteLine(Settings.shootVolume);
+                fileWriter.WriteLine(Settings.graphicsQuality);
+                fileWriter.WriteLine(Settings.healthBarColor);
             }
             Settings.UpdateGraphicsQuality();
 

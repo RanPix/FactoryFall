@@ -5,7 +5,7 @@ using PlayerSettings;
 
 public class Look : MonoBehaviour
 {
-    const string nickNameLayer = "Nickname";
+    const int nickNameLayer = 17;//sorry for magic numbers!
 
     private PlayerControls controls;
 
@@ -14,6 +14,9 @@ public class Look : MonoBehaviour
     [SerializeField] private Camera cam;
     [SerializeField] private float sensX;
     [SerializeField] private float sensY;
+
+    [SerializeField] private LayerMask maskWithNicknames;
+    [SerializeField] private LayerMask maskWithoutNicknames;
 
     private const float smoothing = 0.1f;
 
@@ -64,9 +67,11 @@ public class Look : MonoBehaviour
 
     public void UpdateShowingNickNames()
     {
-        bool isShowingNickNames = Settings.isShowingNickNames;
-        // if (isShowingNickNames)
-            //cam.cullingMask |= (1 << layerToAdd);//PLS END THIS
+        bool isShowingNicknames = Settings.isShowingNicknames;
+        if (isShowingNicknames)
+            cam.cullingMask = maskWithNicknames;
+        else
+            cam.cullingMask = maskWithoutNicknames;
     }
 
 

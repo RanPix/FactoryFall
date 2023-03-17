@@ -96,7 +96,7 @@ Camera:
   m_Depth: 0
   m_CullingMask:
     serializedVersion: 2
-    m_Bits: 85983
+    m_Bits: 217055
   m_RenderingPath: -1
   m_TargetTexture: {fileID: 0}
   m_TargetDisplay: 0
@@ -218,4 +218,10 @@ MonoBehaviour:
   cam: {fileID: 1759439985541251230}
   sensX: 6
   sensY: 6
+  maskWithNicknames:
+    serializedVersion: 2
+    m_Bits: 133055
+  maskWithoutNicknames:
+    serializedVersion: 2
+    m_Bits: 1983
   orientation: {fileID: 0}
