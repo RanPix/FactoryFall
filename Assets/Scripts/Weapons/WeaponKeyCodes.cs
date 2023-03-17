@@ -210,13 +210,13 @@ public class WeaponKeyCodes : NetworkBehaviour
                     {
                         //audioSync.PlaySound(0);
                         //print(gamePlayer.GetNetID());
-                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
+                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(currentWeapon.isInScope), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
                     }
                     else if (currentWeapon.shootType == ShootType.Semi && controls.Player.Fire.WasPerformedThisFrame())
                     {
                         //audioSync.PlaySound(0);
                         //print(gamePlayer.GetNetID());
-                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
+                        StartCoroutine(gamePlayer.Shoot(currentWeapon.Shoot(currentWeapon.isInScope), currentWeapon.weaponScriptableObject.damage, currentWeapon.weaponScriptableObject.shootRange, gamePlayer.GetNetID(), currentWeapon.weaponScriptableObject.timeBetweenSpawnBullets));
 
                     }
                 }

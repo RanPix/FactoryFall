@@ -1,0 +1,185 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!1 &6036049757807447208
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1751113187022029134}
+  - component: {fileID: 1184489982550717711}
+  - component: {fileID: 768219525199639166}
+  m_Layer: 0
+  m_Name: Sniper
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1751113187022029134
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6036049757807447208}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 8206986741155920631}
+  m_Father: {fileID: 0}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1184489982550717711
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6036049757807447208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bcba7333fee9d184285e1d31a7a4beee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startPosition: {x: 0.495, y: -0.303, z: 0.929}
+  rotationRecoilX: -15
+  rotationRecoilY: 4
+  rotationRecoilZ: 0.01
+  positionRecoilX: 0
+  positionRecoilY: 0
+  positionRecoilZ: -0.2
+  snappiness: 10
+  returnSpeed: 8
+--- !u!114 &768219525199639166
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6036049757807447208}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 950e656aae5d55243baeec94e11e237c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponScriptableObject: {fileID: 0}
+  gamePlayer: {fileID: 0}
+  _state: 0
+  <shootType>k__BackingField: 1
+  <weaponName>k__BackingField: 3
+  <weaponType>k__BackingField: 3
+  <animator>k__BackingField: {fileID: 1002140422583168801}
+  <shootAnimationName>k__BackingField: Shoot
+  <reloadAnimationName>k__BackingField: Reload
+  initialWeaponPosition: {x: 0.491, y: -0.24, z: 1.018}
+  recoil: {fileID: 1184489982550717711}
+  weaponAmmo: {fileID: 4373039419931091414, guid: 1b681d10356e5b84bbadfee2aa39f2be,
+    type: 3}
+  <hasInfiniteAmmo>k__BackingField: 1
+  reserveAmmo: 0
+  muzzlePosition: {fileID: 9024003752087443553}
+  hitMask:
+    serializedVersion: 2
+    m_Bits: 153
+  canShoot: 0
+  wasChanged: 0
+  weaponIndex: 0
+  cam: {fileID: 0}
+  gunCam: {fileID: 0}
+  audioSource: {fileID: 0}
+  ammoText: {fileID: 0}
+  weaponView: {fileID: 8206986741155920631}
+  reloading: 0
+  <_isLocalPLayer>k__BackingField: 0
+--- !u!1001 &780760917012316618
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    m_TransformParent: {fileID: 1751113187022029134}
+    m_Modifications:
+    - target: {fileID: 8105093614528831879, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_Name
+      value: SniperModel
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_RootOrder
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalRotation.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalRotation.z
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+        type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ea96cf43fa5d15147921a167ed9e68f7, type: 3}
+--- !u!95 &1002140422583168801 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 521714476100497131, guid: ea96cf43fa5d15147921a167ed9e68f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 780760917012316618}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &8206986741155920631 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8876809406679317309, guid: ea96cf43fa5d15147921a167ed9e68f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 780760917012316618}
+  m_PrefabAsset: {fileID: 0}
+--- !u!4 &9024003752087443553 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8641952981969918379, guid: ea96cf43fa5d15147921a167ed9e68f7,
+    type: 3}
+  m_PrefabInstance: {fileID: 780760917012316618}
+  m_PrefabAsset: {fileID: 0}

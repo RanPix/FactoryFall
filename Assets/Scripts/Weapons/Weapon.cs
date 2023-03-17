@@ -33,12 +33,14 @@ public enum WeaponName
     Pistol,
     AUG,
     Shotgun,
+    Sniper,
 }
 public enum WeaponType
 {
     Pistol,
     AutomaticRifle,
     Shotgun,
+    Sniper,
 
 }
 [RequireComponent(typeof(WeaponRecoil))]
@@ -71,17 +73,19 @@ public class Weapon : MonoBehaviour
 
 
 
-    [Space(10)] 
-
-    [Header("Audio")] 
-    [SerializeField] protected bool useAudio;
-    private AudioSync audioSync;
-
 
     [Space(10)] 
 
     [Header("Sway")] 
     public Vector3 initialWeaponPosition;
+
+    [Space(10)]
+
+    [Header("Scope")]
+    public bool canScope;
+    public bool isInScope = false;
+    [SerializeField] private float scopeFOV;
+    [SerializeField] private GameObject scopeIcon;
 
     [Space(10)] 
 
@@ -116,7 +120,6 @@ public class Weapon : MonoBehaviour
     [Header("Layers")] 
     public LayerMask hitMask;
 
-    public GameObject player;
     public bool canShoot;
     public bool wasChanged = false;
     public int weaponIndex;
@@ -134,6 +137,9 @@ public class Weapon : MonoBehaviour
 
 
     [field: SerializeField] public bool _isLocalPLayer { get; set; }
+
+
+    private AudioSync audioSync;
 
 
     private void Start()
@@ -196,7 +202,7 @@ public class Weapon : MonoBehaviour
         shootTimer += Time.deltaTime;
     }
 
-    public Ray[] Shoot()
+    public Ray[] Shoot(bool isInScope)
     {
         shootTimer = 0;
         nextFire = Time.time;
@@ -209,10 +215,31 @@ public class Weapon : MonoBehaviour
             recoil.RecoilFire();
         }
 
+        if(!isInScope)
+            return GetRay(weaponScriptableObject.patern);
+        else
+        {
+            Vector2[] _rays = weaponScriptableObject.patern;
+            for (int i = 0; i < _rays.Length; i++)
+            {
+                _rays[i] = new Vector2(_rays[i].x + Random.Range(-0.1f, 0.1f), _rays[i].y + Random.Range(-0.1f, 0.1f));
+            }
+            return GetRay(_rays);
+        }
 
-        return GetRay(weaponScriptableObject.patern);
     }
 
+    public void ScopeToggle()
+    {
+        if (!_isLocalPLayer || !canScope)
+            return;
+
+        isInScope = !isInScope;
+
+        weaponView.GetComponent<MeshRenderer>().enabled = !isInScope;
+        scopeIcon.SetActive(isInScope);
+        gamePlayer.cameraHolder.GetComponentInChildren<Camera>().fieldOfView = scopeFOV;
+    }
 
 
     public void UpdateAmmo()
