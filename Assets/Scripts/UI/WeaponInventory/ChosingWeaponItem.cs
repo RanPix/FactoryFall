@@ -1,10 +1,10 @@
-using System;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChosingWeaponItem : MonoBehaviour
 {
     [SerializeField] private GameObject weaponInventoryItem;
-    [SerializeField] private GameObject blur;
+    [SerializeField] private RawImage image;
 
     [SerializeField] private WeaponScriptableObject weaponScriptableObject;
 
@@ -13,7 +13,7 @@ public class ChosingWeaponItem : MonoBehaviour
 
     public void OnCursorEnter()
     {
-        blur.SetActive(false);
+        image.color = new Color(0.5f, 0.5f, 0.5f, 1f);
         transform.GetComponentInParent<ChoosingWeapon>().OnActivate?.Invoke(weaponScriptableObject.type, weaponScriptableObject.name, weaponScriptableObject.damage, weaponScriptableObject.timeBetweenShots, weaponScriptableObject.shootRange, weaponScriptableObject.numberOfBulletsPerShot);
     }
 
@@ -21,7 +21,7 @@ public class ChosingWeaponItem : MonoBehaviour
     {
         if(wasSelected)
             return;
-        blur.SetActive(true);
+        image.color = new Color(1f, 1f, 1f, 1f);
     }
 
     public void OnCursorClick()
@@ -31,6 +31,7 @@ public class ChosingWeaponItem : MonoBehaviour
             wasSelected = !wasSelected;
             if (wasSelected)
             {
+
                 CanvasInstance.instance.weaponsToChose.weaponsInventoryItems.Add(weaponInventoryItem);
                 transform.GetComponentInParent<ChoosingWeapon>().OnActivate?.Invoke(weaponScriptableObject.type, weaponScriptableObject.name, weaponScriptableObject.damage, weaponScriptableObject.timeBetweenShots, weaponScriptableObject.shootRange, weaponScriptableObject.numberOfBulletsPerShot);
 

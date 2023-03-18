@@ -47,7 +47,7 @@ public class WeaponKeyCodes : NetworkBehaviour
         if (!gamePlayer.isLocalPlayer)
             return;
 
-        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChoosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
+        CanvasInstance.instance.weaponsToChose.OnActivateWeapons += SetSelectedWeaponsIndexes;
 
 
         audioSync = GetComponent<AudioSync>();
@@ -66,7 +66,7 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         gamePlayer.OnSetPlayerInfoTransfer -= () => arm.SetupArm(gamePlayer.team, gamePlayer.isLocalPlayer);
 
-        CanvasInstance.instance.weaponsToChose.GetComponentInChildren<ChoosingWeapon>().OnActivateWeapons += SetSelectedWeaponsIndexes;
+        //CanvasInstance.instance.weaponsToChose.OnActivateWeapons -= SetSelectedWeaponsIndexes;
     }
 
     private void Update()
@@ -105,7 +105,7 @@ public class WeaponKeyCodes : NetworkBehaviour
 
         weapons[currentWeaponIndex].SetActive(false);
         CmdChangeWeapon(currentWeaponIndex, index);
-        WeaponInventory.instance.ChangeBlurIcon(index, currentWeaponIndex);
+        CanvasInstance.instance.weaponInventory.ChangeIcon(index, currentWeaponIndex);
         currentWeaponIndex = index;
         
         weapons[currentWeaponIndex].SetActive(true);

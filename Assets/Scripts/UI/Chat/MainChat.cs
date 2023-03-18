@@ -113,7 +113,7 @@ public class MainChat : MonoBehaviour
         if (!isOpened)
         {
             DeactivateBools();
-            CanvasInstance.instance.panelWithElementsToHide.transform.SetAsLastSibling();
+            CanvasInstance.instance.mainChat.transform.SetAsLastSibling();
             SelectInputField();
 
             //inputField.ActivateInputField();

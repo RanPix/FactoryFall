@@ -3,10 +3,11 @@ using System.Collections.Generic;
 using Mirror;
 using Player;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ChoosingWeapon : MonoBehaviour
 {
-    public List<GameObject> weaponsInventoryItems = new List<GameObject>();
+    [HideInInspector] public List<GameObject> weaponsInventoryItems = new List<GameObject>();
     private int selectedWeaponsCount;
     private int maxWeaponsCount;
     public bool canSelectAnotherWeapon = true;
@@ -31,6 +32,7 @@ public class ChoosingWeapon : MonoBehaviour
 
     public void OnWeaponClick(bool wasSelected)
     {
+
         if (wasSelected)
         {
             if (canSelectAnotherWeapon)
@@ -54,22 +56,35 @@ public class ChoosingWeapon : MonoBehaviour
     {
         int firstIndex = 0;
         int secondIndex = 0;
-        for (int i = 0; i < 2; i++)
+        for (int i = 0; i < CanvasInstance.instance.weaponInventory.otherFrame.childCount; i++)
         {
-            weaponsInventoryItems[i].SetActive(true);
+            if (weaponsInventoryItems[0].name == CanvasInstance.instance.weaponInventory.otherFrame.GetChild(i).name)
+            {
+                CanvasInstance.instance.weaponInventory.otherFrame.GetChild(i).gameObject.SetActive(true);
+                CanvasInstance.instance.weaponInventory.currentFrame.GetChild(i).gameObject.SetActive(true);
+                CanvasInstance.instance.weaponInventory.currentFrame.GetChild(i).GetComponent<RawImage>().enabled = false;
+            }
+            else if (weaponsInventoryItems[1].name == CanvasInstance.instance.weaponInventory.otherFrame.GetChild(i).name)
+            {
+                CanvasInstance.instance.weaponInventory.currentFrame.GetChild(i).gameObject.SetActive(true);
+                CanvasInstance.instance.weaponInventory.otherFrame.GetChild(i).gameObject.SetActive(true);
+                CanvasInstance.instance.weaponInventory.otherFrame.GetChild(i).GetComponent<RawImage>().enabled = false;
+            }
         }
 
-        
-        for (int i = 0; i < CanvasInstance.instance.weaponInventory.transform.childCount; i++)
+
+        for (int i = 0; i < CanvasInstance.instance.weaponInventory.otherFrame.childCount; i++)
         {
-            if (weaponsInventoryItems[0] == CanvasInstance.instance.weaponInventory.transform.GetChild(i).gameObject)
+            if (weaponsInventoryItems[0].name == CanvasInstance.instance.weaponInventory.otherFrame.GetChild(i).name)
             {
                 firstIndex = i;
-            }else if (weaponsInventoryItems[1] == CanvasInstance.instance.weaponInventory.transform.GetChild(i).gameObject)
+            }
+            else if (weaponsInventoryItems[1].name == CanvasInstance.instance.weaponInventory.otherFrame.GetChild(i).name)
             {
                 secondIndex = i;
             }
         }
+
         GameObject.FindGameObjectWithTag("LocalPlayer").GetComponent<WeaponKeyCodes>().weaponsWasSelected = true;
         CursorManager.instance.disablesToLockCount--;
         Menu.Instance.look.canRotateCamera = true;

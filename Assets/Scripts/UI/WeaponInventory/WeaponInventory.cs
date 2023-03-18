@@ -1,29 +1,33 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class WeaponInventory : MonoBehaviour
 {
-    public static WeaponInventory instance;
-    [SerializeField] private GameObject[] weaponBlurIcons;
-    [SerializeField] private int activeWeaponIndex;
-    void Awake()
-    {
-        if(instance == null)
-            instance = this;
-        else
-        {
-            Debug.LogError("MORE THAN ONE INSTANCE OF WEAPON INVENTORY");
-        }
+    public Transform otherFrame;
+    public Transform currentFrame;
 
+    [SerializeField] private RawImage[] weaponIcons;
+    [SerializeField] private RawImage[] unSelectedWeaponIcons;
+    [SerializeField] private int activeWeaponIndex;
+
+    private void Start()
+    {
+        for (int i = 0; i < otherFrame.childCount; i++)
+        {
+            if (otherFrame.GetChild(i).name != currentFrame.GetChild(i).name)
+            {
+                Debug.LogError($"Arr of otherFrame children`s names aren`t equal to arr of currentFrame children`s names");
+            }
+        }
     }
 
-
-    public void ChangeBlurIcon(int indexToChange, int currentIndex)
+    public void ChangeIcon(int indexToChange, int currentIndex)
     {
-        weaponBlurIcons[currentIndex].SetActive(true);
-        weaponBlurIcons[indexToChange].SetActive(false);
+        weaponIcons[currentIndex].enabled = true;
+        weaponIcons[indexToChange].enabled = false;
+
+        unSelectedWeaponIcons[currentIndex].enabled = false;
+        unSelectedWeaponIcons[indexToChange].enabled = true;
     }
     
 }
