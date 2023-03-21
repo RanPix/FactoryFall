@@ -29,27 +29,19 @@ public class MainMenu : MonoBehaviour
 
     public void Join()
     {
-        if (!NetworkManager.singleton)
-            return;
-
-        if (IPAdressInputFieldText.text != "localhost")
+        if(!ValidateIPAdress(IPAdressInputFieldText.text) || IPAdressInputFieldText.text == "localhost" || !NetworkManager.singleton)
         {
-            if (!ValidateIPAdress(IPAdressInputFieldText.text))
-                return;
+            return;
         }
-
+        
 
         string adress = IPAdressInputFieldText.text;
         NetworkManager.singleton.networkAddress = adress;
         NetworkManager.singleton.StartClient();
     }
 
-    private bool ValidateIPAdress(string userIP)
-    {
-        IPAddress adress;
-
-        return IPAddress.TryParse(userIP, out adress) && adress.ToString() == userIP;
-    }
+    private bool ValidateIPAdress(string userIP) => IPAddress.TryParse(userIP, out IPAddress adress) && adress.ToString() == userIP;
+    
 
     public void Host()
     {
