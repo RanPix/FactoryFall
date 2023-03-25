@@ -617,6 +617,26 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1465639442254931060, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_SizeDelta.x
+      value: 90.8261
+      objectReference: {fileID: 0}
+    - target: {fileID: 1465639442254931060, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_SizeDelta.y
+      value: 90.8261
+      objectReference: {fileID: 0}
+    - target: {fileID: 1465639442254931060, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1465639442254931060, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -49
+      objectReference: {fileID: 0}
     - target: {fileID: 1903031963525505236, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_Color.a
@@ -687,6 +707,11 @@ PrefabInstance:
       propertyPath: weaponsInventoryItems.Array.data[1]
       value: 
       objectReference: {fileID: 2638449499782410755}
+    - target: {fileID: 2940801330182090392, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: -50
+      objectReference: {fileID: 0}
     - target: {fileID: 3086079366839204625, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_Size
@@ -865,7 +890,12 @@ PrefabInstance:
     - target: {fileID: 6230493600400233984, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
       propertyPath: m_AnchoredPosition.x
-      value: 3.7366943
+      value: 3.7368164
+      objectReference: {fileID: 0}
+    - target: {fileID: 6230493600400233984, guid: 94380ed47c6bb404d9daf52ec7683569,
+        type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.0007324219
       objectReference: {fileID: 0}
     - target: {fileID: 6282325136406051655, guid: 94380ed47c6bb404d9daf52ec7683569,
         type: 3}
